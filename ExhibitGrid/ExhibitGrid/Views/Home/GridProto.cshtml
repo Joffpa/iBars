@@ -1,0 +1,17 @@
+﻿
+<script src="~/Scripts/GridProto/gridModule.js"></script>
+<script src="~/Scripts/GridProto/modelService.js"></script>
+<script src="~/Scripts/GridProto/calcService.js"></script>
+<script src="~/Scripts/GridProto/directives.js"></script>
+<link href="~/Content/exhibitGrid.min.css" rel="stylesheet" />
+
+<div ng-app="exhibitGrid">
+    <div ng-controller="exhibitGridController as gridCtrl">
+        <input type="button" ng-click="gridCtrl.addRow()" value="Add Another Row"/>
+        <input type="button" ng-click="gridCtrl.addCol()" value="Add Another Column" />
+
+        <div class="grid-wrapper">
+            <div exhibit-row class="row-wrapper" ng-repeat="row in gridCtrl.model.Rows track by row.RowCode"> </div>     
+        </div>        
+    </div>
+</div>

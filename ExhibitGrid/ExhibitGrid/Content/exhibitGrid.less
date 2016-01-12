@@ -1,0 +1,98 @@
+﻿.main-content{
+    display:inline-block;
+    padding: 20px 50px 10px 50px;
+}
+
+.grid-wrapper{
+    margin-top:40px;   
+}
+
+
+.row-wrapper{
+    display:inline-block;
+    /*height:40px;*/
+    width:auto;
+    border-bottom:solid;
+    border-left:solid;
+    border-right:solid;
+    border-width:1px;
+    border-color:black;
+    box-sizing:padding-box;
+}
+
+.row-wrapper:first-child{
+    border:solid;
+    border-width:1px;
+    border-color:black;    
+    border-radius:5px 5px 0 0;
+}
+
+.row-wrapper:last-child{
+    border-radius: 0 0 5px 5px;
+}
+
+.header-row{
+    height:35px;
+    width:auto;
+    background-color:#bfbfbf;
+    font-size:large;
+}
+ 
+.data-row{
+
+
+}
+
+.total-row{
+    background-color:#ffff99;
+}
+
+
+.cell-wrapper{
+    height:30px;    
+    display:inline-block;
+    /*margin: 2px;*/
+    padding: 2px;
+    border-right:1px;
+    border-color:black;
+    border-right-style:dotted;
+    width:auto;
+}
+
+.cell-wrapper:last-child{
+    border-right:none;
+}
+
+.cell{
+    height:30px;    
+    display:inline-block;
+
+}
+
+.blank-cell{
+    height:30px;
+}
+
+.text-cell{
+    line-height:30px;
+}
+
+.data-cell{
+    padding-top:5px;
+}
+
+.cell.cell-1x{
+    width:150px;
+}
+
+.cell.cell-2x{
+    width:300px;
+}
+
+.cell.cell-3x{
+    width:450px;
+}
+       
+.cell > input{
+    width:100px;
+}

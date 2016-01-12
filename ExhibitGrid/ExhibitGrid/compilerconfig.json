@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "Content/exhibitGrid.css",
+    "inputFile": "Content/exhibitGrid.less"
+  },
+  {
+    "outputFile": "Scripts/GridProto/exhibitCalcService.es5.js",
+    "inputFile": "Scripts/GridProto/exhibitCalcService.js"
+  },
+  {
+    "outputFile": "Scripts/GridProto/exhibitModelService.es5.js",
+    "inputFile": "Scripts/GridProto/exhibitModelService.js"
+  }
+]
