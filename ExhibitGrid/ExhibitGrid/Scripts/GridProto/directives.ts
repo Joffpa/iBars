@@ -1,5 +1,5 @@
-﻿
-(function () {
+﻿module app.directives{
+
     'use strict'
 
     var directives = angular.module('exhibitGrid.directives', ['exhibitGrid.calc'])
@@ -62,6 +62,6 @@
                 }
             }
         }]);
-} ())
+}
 
 
