@@ -29,11 +29,11 @@
         }
 
         addRow(): void {
-            this.modelService.addAnotherRow();
+            //this.modelService.addAnotherRow();
         }
 
         addCol(): void {
-            modelService.addAnotherColumn();
+            //modelService.addAnotherColumn();
         }
 
     }

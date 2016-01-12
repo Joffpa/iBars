@@ -13,10 +13,10 @@ var app;
             };
         }
         GridController.prototype.addRow = function () {
-            this.modelService.addAnotherRow();
+            //this.modelService.addAnotherRow();
         };
         GridController.prototype.addCol = function () {
-            modelService.addAnotherColumn();
+            //modelService.addAnotherColumn();
         };
         return GridController;
     })();
@@ -24,3 +24,4 @@ var app;
     var exhibitApp = angular.module('exhibitGrid', ['exhibitGrid.modelService', 'exhibitGrid.directives']);
     exhibitApp.controller('exhibitGridController', ['gridModelService', GridController]);
 })(app || (app = {}));
+//# sourceMappingURL=gridModule.js.map

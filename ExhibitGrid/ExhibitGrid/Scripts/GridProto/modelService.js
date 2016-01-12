@@ -104,3 +104,4 @@ var app;
         service.factory('gridModelService', ModelService);
     })(services = app.services || (app.services = {}));
 })(app || (app = {}));
+//# sourceMappingURL=modelService.js.map
