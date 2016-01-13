@@ -2,21 +2,15 @@ var app;
 (function (app) {
     var GridController = (function () {
         function GridController(gridModelService) {
-            var ctrlVm = this;
-            this.model = gridModelService.getModel();
             this.modelService = gridModelService;
-            ctrlVm.addRow = function () {
-                gridModelService.addAnotherRow();
-            };
-            ctrlVm.addCol = function () {
-                gridModelService.addAnotherColumn();
-            };
+            var ctrlVm = this;
+            this.model = gridModelService.getGridModel('');
         }
         GridController.prototype.addRow = function () {
-            //this.modelService.addAnotherRow();
+            this.modelService.addAnotherRow('');
         };
         GridController.prototype.addCol = function () {
-            //modelService.addAnotherColumn();
+            this.modelService.addAnotherColumn('');
         };
         return GridController;
     })();

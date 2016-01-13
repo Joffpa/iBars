@@ -1,69 +1,80 @@
 /// <reference path="../typings/lodash/lodash.d.ts" />
+'use strict';
 var app;
 (function (app) {
-    var services;
-    (function (services) {
-        var ModelService = (function () {
-            function ModelService() {
-                this.viewModel = {
-                    Cols: ['Col_Txt', 'Col_A', 'COL_B', 'COL_C'],
-                    Rows: [
-                        {
-                            RowCode: 'Row_0', RowParents: null, RowClass: 'header-row', RowText: 'Header Text',
-                            Cells: [
-                                { ColCode: 'Col_Txt', CellClass: 'blank-cell', CellType: 'text', CellValue: null, CellWidth: '2x', IsEditable: false },
-                                { ColCode: 'Col_A', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column A', CellWidth: '1x', IsEditable: false },
-                                { ColCode: 'Col_B', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column B', CellWidth: '1x', IsEditable: false },
-                                { ColCode: 'Col_C', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column C', CellWidth: '1x', IsEditable: false }
-                            ]
-                        },
-                        {
-                            RowCode: 'Row_1', RowParents: null, RowClass: 'total-row', RowText: 'Row 1 text',
-                            Cells: [
-                                { ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'text', CellWidth: '2x', IsEditable: false },
-                                { ColCode: 'Col_A', CellClass: 'data-cell', CellType: 'num', CellValue: 50, CellWidth: '1x', IsEditable: true },
-                                { ColCode: 'Col_B', CellClass: 'data-cell', CellType: 'num', CellValue: 100, CellWidth: '1x', IsEditable: true },
-                                { ColCode: 'Col_C', CellClass: 'data-cell', CellType: 'num', CellValue: 150, CellWidth: '1x', IsEditable: true }
-                            ]
-                        },
-                        {
-                            RowCode: 'Row_2', RowParents: ['Row_1'], RowClass: 'data-row', RowText: 'Row 2 text',
-                            Cells: [
-                                { ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'text', CellWidth: '2x', IsEditable: false },
-                                { ColCode: 'Col_A', CellClass: 'data-cell', CellType: 'num', CellValue: 200, CellWidth: '1x', IsEditable: true },
-                                { ColCode: 'Col_B', CellClass: 'data-cell', CellType: 'num', CellValue: 250, CellWidth: '1x', IsEditable: true },
-                                { ColCode: 'Col_C', CellClass: 'data-cell', CellType: 'num', CellValue: 300, CellWidth: '1x', IsEditable: true }
-                            ]
-                        },
-                        {
-                            RowCode: 'Row_3', RowParents: ['Row_1'], RowClass: 'data-row', RowText: 'Row 3 text',
-                            Cells: [
-                                { ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'more text', CellWidth: '2x', IsEditable: true },
-                                { ColCode: 'Col_A', CellClass: 'data-cell', CellType: 'num', CellValue: 350, CellWidth: '1x', IsEditable: true },
-                                { ColCode: 'Col_B', CellClass: 'data-cell', CellType: 'num', CellValue: 400, CellWidth: '1x', IsEditable: true },
-                                { ColCode: 'Col_C', CellClass: 'data-cell', CellType: 'num', CellValue: 450, CellWidth: '1x', IsEditable: true }
-                            ]
-                        }
-                    ]
-                };
+    var model;
+    (function (model) {
+        (function (RowType) {
+            RowType[RowType["Data"] = 0] = "Data";
+            RowType[RowType["Total"] = 1] = "Total";
+            RowType[RowType["Header"] = 2] = "Header";
+        })(model.RowType || (model.RowType = {}));
+        var RowType = model.RowType;
+        (function (RowFunction) {
+            RowFunction[RowFunction["Create"] = 0] = "Create";
+            RowFunction[RowFunction["Delete"] = 1] = "Delete";
+        })(model.RowFunction || (model.RowFunction = {}));
+        var RowFunction = model.RowFunction;
+        var GridVm = (function () {
+            function GridVm() {
             }
-            ModelService.prototype.getModel = function () {
-                return this.viewModel;
+            return GridVm;
+        })();
+        model.GridVm = GridVm;
+        var RowVm = (function () {
+            function RowVm() {
+            }
+            return RowVm;
+        })();
+        model.RowVm = RowVm;
+        var CellVm = (function () {
+            function CellVm() {
+            }
+            CellVm.prototype.getCoordinate = function () {
+                return '{[' + this.RowCode + '][' + this.ColCode + ']}';
             };
-            ModelService.prototype.getColumns = function () {
-                return this.viewModel.Cols;
+            return CellVm;
+        })();
+        model.CellVm = CellVm;
+        var MockModelService = (function () {
+            function MockModelService() {
+                //this.viewModel =  {
+                //    Rows: [
+                //        {
+                //            RowCode: 'Row_0', RowParents: null, RowClass: 'header-row', RowText: 'Header Text',
+                //            Cells: [
+                //                { ColCode: 'Col_Txt', CellClass: 'blank-cell', CellType: 'text', CellValue: null, CellWidth: '2x', IsEditable: false },
+                //                { ColCode: 'Col_A', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column A', CellWidth: '1x', IsEditable: false },
+                //                { ColCode: 'Col_B', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column B', CellWidth: '1x', IsEditable: false },
+                //                { ColCode: 'Col_C', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column C', CellWidth: '1x', IsEditable: false }
+                //            ]
+                //        },
+                //        {
+                //            RowCode: 'Row_1', RowParents: null, RowClass: 'total-row', RowText: 'Row 1 text',
+                //            Cells: [
+                //                { ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'text', CellWidth: '2x', IsEditable: false },
+                //                { ColCode: 'Col_A', CellClass: 'data-cell', CellType: 'num', CellValue: 50, CellWidth: '1x', IsEditable: true },
+                //                { ColCode: 'Col_B', CellClass: 'data-cell', CellType: 'num', CellValue: 100, CellWidth: '1x', IsEditable: true },
+                //                { ColCode: 'Col_C', CellClass: 'data-cell', CellType: 'num', CellValue: 150, CellWidth: '1x', IsEditable: true }
+                //            ]
+                //        }
+                //    ]
+                //};
+            }
+            MockModelService.prototype.getGridModel = function (gridCode) {
+                return this.viewModel[gridCode];
             };
-            ModelService.prototype.getChildRows = function (rowCode, pluckProp) {
-                var rows = _.where(this.viewModel.Rows, { 'RowParents': [rowCode] });
+            MockModelService.prototype.getChildRows = function (gridCode, rowCode, pluckProp) {
+                var rows = _.where(this.viewModel[gridCode].Rows, { 'RowParents': [rowCode] });
                 if (pluckProp) {
                     rows = _.pluck(rows, pluckProp);
                 }
                 return rows;
             };
-            ModelService.prototype.addAnotherRow = function () {
-                var rowNum = this.viewModel.Rows.length;
+            MockModelService.prototype.addAnotherRow = function (gridCode) {
+                var rowNum = this.viewModel[gridCode].Rows.length;
                 var cells = [];
-                _.forEach(this.viewModel.Rows[0].Cells, function (va, idx) {
+                _.forEach(this.viewModel[gridCode].Rows[0].Cells, function (va, idx) {
                     if (idx === 0) {
                         cells.push({
                             ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'Row ' + rowNum, CellWidth: '2x'
@@ -75,13 +86,13 @@ var app;
                         });
                     }
                 });
-                this.viewModel.Rows.push({
+                this.viewModel[gridCode].Rows.push({
                     RowCode: 'Row_' + rowNum, RowParents: null, RowClass: 'data-row', Cells: cells, RowText: 'Row ' + rowNum + ' Text'
                 });
             };
-            ModelService.prototype.addAnotherColumn = function () {
-                var colLetter = String.fromCharCode(this.viewModel.Rows[0].Cells.length + 64);
-                _.forEach(this.viewModel.Rows, function (val, idx) {
+            MockModelService.prototype.addAnotherColumn = function (gridCode) {
+                var colLetter = String.fromCharCode(this.viewModel[gridCode].Rows[0].Cells.length + 64);
+                _.forEach(this.viewModel[gridCode].Rows, function (val, idx) {
                     if (idx == 0) {
                         val.Cells.push({
                             ColCode: 'Col_' + colLetter, CellClass: 'header-cell', CellType: 'text', CellValue: 'Column ' + colLetter, CellWidth: '1x', IsEditable: false
@@ -94,14 +105,14 @@ var app;
                     }
                 });
             };
-            ModelService.prototype.getCellValue = function (coordinate) {
+            MockModelService.prototype.getCellValue = function (coordinate) {
                 return 1;
             };
-            return ModelService;
+            return MockModelService;
         })();
-        'use strict';
+        model.MockModelService = MockModelService;
         var service = angular.module('exhibitGrid.modelService', []);
-        service.factory('gridModelService', ModelService);
-    })(services = app.services || (app.services = {}));
+        service.factory('gridModelService', MockModelService);
+    })(model = app.model || (app.model = {}));
 })(app || (app = {}));
 //# sourceMappingURL=modelService.js.map

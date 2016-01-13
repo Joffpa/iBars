@@ -1,41 +1,43 @@
 ﻿module app{
+    
 
     interface IGridController {
-        model: {},
+        model: app.model.IGridVm,
+        modelService: app.model.IModelService,
         addRow(): void,
-        addCol(): void,
-        modelService: {}
+        addCol(): void
     }
+
+    interface IExhibitController {
+        
+    }
+
+
 
     class GridController implements IGridController{
 
-        model: {};
-        modelService: {};
+        model;
+        modelService: app.model.IModelService;
 
-        constructor(gridModelService) {
-            var ctrlVm = this;
-
-            this.model = gridModelService.getModel();
-
+        constructor(gridModelService: app.model.IModelService) {
             this.modelService = gridModelService;
-
-            ctrlVm.addRow = function () {
-                gridModelService.addAnotherRow();
-            }
-
-            ctrlVm.addCol = function () {
-                gridModelService.addAnotherColumn();
-            }
+            var ctrlVm = this;
+            this.model = gridModelService.getGridModel('');   
         }
 
         addRow(): void {
-            //this.modelService.addAnotherRow();
+            this.modelService.addAnotherRow('');
         }
 
         addCol(): void {
-            //modelService.addAnotherColumn();
+            this.modelService.addAnotherColumn('');
         }
 
+    }
+
+
+    interface IRowController {
+        
     }
 
 

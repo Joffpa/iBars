@@ -3,23 +3,27 @@ var app;
     var directives;
     (function (directives_1) {
         'use strict';
+        var RowController = (function () {
+            function RowController(scope, element, attrs) {
+                this.RowVm = scope;
+            }
+            RowController.prototype.getRowCssClass = function () {
+                if (this.RowVm.Type == app.model.RowType.Data)
+                    return 'data-row';
+                else if (this.RowVm.Type == app.model.RowType.Total)
+                    return 'total-row';
+                else if (this.RowVm.Type == app.model.RowType.Header)
+                    return 'header-row';
+            };
+            return RowController;
+        })();
         var directives = angular.module('exhibitGrid.directives', ['exhibitGrid.calc'])
             .directive('exhibitRow', ['$compile', 'gridModelService', 'calcService', function ($compile, gridModelService, calcService) {
                 return {
                     restrict: 'A',
                     templateUrl: '/templates/exhibitRow.html',
-                    //link: function (scope, ele, attr, ctrl) {
-                    //    var generatedTemplate;
-                    //    if (scope.row.CellType == 'num') {
-                    //    } else {
-                    //    }
-                    //    ele.append($compile(generatedTemplate)(scope));
-                    //},
                     controllerAs: 'rowCtrl',
-                    controller: function ($scope, $element, $attrs) {
-                        var ctrlVm = this;
-                        ctrlVm.row = $scope;
-                    }
+                    controller: RowController
                 };
             }])
             .directive('exhibitCell', ['$compile', 'gridModelService', function ($compile, gridModelService) {
