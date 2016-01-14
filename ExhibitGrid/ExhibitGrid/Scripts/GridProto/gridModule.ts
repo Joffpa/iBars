@@ -1,28 +1,27 @@
-﻿module app{
+﻿
+'use strict'
+
+module app{
+
+    export class ExhibitController {
+        model: app.model.ExhibitVm;
+        modelService: app.model.IModelService;
+
+        constructor(modelService: app.model.IModelService) {
+            this.modelService = modelService;
+            this.model = modelService.getExhibitModel();
+        }
+                
+    }
     
-
-    interface IGridController {
-        model: app.model.IGridVm,
-        modelService: app.model.IModelService,
-        addRow(): void,
-        addCol(): void
-    }
-
-    interface IExhibitController {
-        
-    }
-
-
-
-    class GridController implements IGridController{
-
+    class GridController{
         model;
         modelService: app.model.IModelService;
 
-        constructor(gridModelService: app.model.IModelService) {
-            this.modelService = gridModelService;
+        constructor(modelService: app.model.IModelService) {
+            this.modelService = modelService;
             var ctrlVm = this;
-            this.model = gridModelService.getGridModel('');   
+            this.model = modelService.getGridModel('');   
         }
 
         addRow(): void {
@@ -32,18 +31,9 @@
         addCol(): void {
             this.modelService.addAnotherColumn('');
         }
-
     }
 
+    var exhibitApp = angular.module('app', ['app.model', 'app.directives', 'app.calc']);
 
-    interface IRowController {
-        
-    }
-
-
-    'use strict'
-    var exhibitApp = angular.module('exhibitGrid', ['exhibitGrid.modelService', 'exhibitGrid.directives']);
-
-
-    exhibitApp.controller('exhibitGridController', ['gridModelService', GridController]);
+    exhibitApp.controller('exhibitController', ['modelService', ExhibitController]);
 }

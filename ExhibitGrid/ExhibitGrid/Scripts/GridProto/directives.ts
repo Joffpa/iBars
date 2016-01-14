@@ -1,18 +1,15 @@
 ﻿module app.directives{
 
     'use strict'
+    
+    class RowController{
 
-    interface IRowController {
-        RowVm: app.model.IRowVm,
+        RowVm: app.model.RowVm;
+        modelService: app.model.IModelService;
 
-    }
-
-    class RowController implements IRowController{
-
-        RowVm: app.model.IRowVm;
-
-        constructor(scope: app.model.IRowVm, element, attrs) {
+        constructor(scope: app.model.RowVm, modelService: app.model.IModelService) {
             this.RowVm = scope;
+            this.modelService = modelService;
         }
 
         getRowCssClass() {
@@ -24,32 +21,68 @@
                 return 'header-row';
         }
     }
+    
+    class NumericInputCellController {
+        CellVm: app.model.CellVm;
+        
+    }
 
-    interface ICellController {
-        CellVm: app.model.ICellVm
+    class GridController{
+
+        model: app.model.ExhibitVm;
+        modelService: app.model.IModelService;
+
+        //constructor($scope, modelService: app.model.IModelService) {
+        //    this.model = $scope;
+        //    this.modelService = modelService;
+        //    alert('controller constructed' + $scope.ExhibitCode);
+        //}        
+
+        constructor() {
+            alert('controller constructed');
+        } 
+
+        addRow() {
+            alert('row added');
+        }
+
+        addCol() {
+            alert('col added');
+        }
     }
     
 
-
-    var directives = angular.module('exhibitGrid.directives', ['exhibitGrid.calc'])
-
-        .directive('exhibitRow', ['$compile', 'gridModelService', 'calcService', function ($compile, gridModelService, calcService) {
+    //var directives = angular.module('app.directives', ['app.calc', 'app.model'])
+    var directives = angular.module('app.directives', ['app.model'])
+        .directive('exhibitGrid',function () {
+            return {
+                restrict: 'A',
+                templateUrl: '/templates/exhibitGrid.html',
+                controllerAs: 'gridCtrl',
+                controller: ['modelService', GridController],
+                link: function (scope, element, attrs, tabsCtrl) {
+                    console.log('controller linked');
+                }
+            }
+        }) 
+        
+        .directive('exhibitRow', ['$compile', 'modelService', 'calcService', function ($compile, modelService, calcService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/exhibitRow.html',
                 controllerAs: 'rowCtrl',
-                controller: RowController
+                controller: ['$scope', 'modelService', RowController],
             }
         }]) 
 
-        .directive('exhibitCell', ['$compile', 'gridModelService', function ($compile, gridModelService) {
+        .directive('exhibitCell', ['$compile', 'modelService', function ($compile, modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/exhibitCell.html'
             }
         }])
 
-        .directive('exhibitCellNumInput', ['gridModelService', function (gridModelService) {
+        .directive('exhibitCellNumInput', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/exhibitCellNumInput.html',
@@ -65,7 +98,7 @@
             }
         }])
 
-        .directive('exhibitCellReadOnly', ['gridModelService', function (gridModelService) {
+        .directive('exhibitCellReadOnly', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/exhibitCellReadOnly.html',
@@ -79,7 +112,8 @@
 
                 }
             }
-        }]);
+        }])
+        ;
 }
 
 

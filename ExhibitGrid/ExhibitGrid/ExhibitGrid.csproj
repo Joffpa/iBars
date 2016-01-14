@@ -427,8 +427,8 @@
     <Content Include="templates\exhibitCell.html" />
     <Content Include="templates\exhibitCellReadOnly.html" />
     <Content Include="templates\exhibitCellNumInput.html" />
+    <Content Include="templates\exhibitGrid.html" />
     <Content Include="templates\exhibitRow.html" />
-    <Content Include="templates\routeA.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

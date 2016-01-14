@@ -1,0 +1,9 @@
+﻿
+<input type="button" ng-click="gridCtrl.addRow()" value="Add Another Row" />
+<input type="button" ng-click="gridCtrl.addCol()" value="Add Another Column" />
+
+<div class="grid-wrapper">
+    <div exhibit-row class="row-wrapper" ng-repeat="row in gridCtrl.model.Rows track by row.RowCode"> </div>
+</div>
+
+<p>Grid template loaded</p>

@@ -2,11 +2,12 @@
 
 'use strict';
 
-module app.model{
+module app.model {
 
     export interface IModelService {
-        viewModel: IGridVm[],
-        getGridModel(gridCode: string): IGridVm,
+        exhibitModel: ExhibitVm
+        getExhibitModel(): ExhibitVm,
+        getGridModel(gridCode: string): GridVm,
         getChildRows(gridCode: string, rowCode: string, pluckProp: string): {}[],
         addAnotherRow(gridCode: string): void,
         addAnotherColumn(gridCode: string): void,
@@ -14,123 +15,135 @@ module app.model{
 
     }
 
-    export interface IGridVm {        
-        HasCreateDeleteColumn: boolean,
-        HasSelectColumn: boolean,
-        HasPostItColumn: boolean,
-        HasNarrativeColumn: boolean,
-        Rows: IRowVm[]
+    export class ExhibitVm {
+        ExhibitCode: string;
+        Grids: GridVm[];
 
+        constructor() {
+            this.Grids = new Array<GridVm>();
+        }
+
+        addGrid(grid: GridVm) {
+            this.Grids.push(grid);
+        }
     }
 
-    export interface IRowVm {
-        RowCode: string,
-        ParentRowCodes: string[],
-        Type: RowType,
-        Text: string,
-        CreateDeleteFunction: RowFunction,
-        CanSelect: boolean,
-        HasNarrative: boolean,
-        HasPostIt: boolean,
-        Cells: ICellVm[]
-
-    }
-    
-    export interface ICellVm {
-        ColCode: string,
-        RowCode: string,
-        Class: string,
-        Type: string,
-        Value: any,
-        Width: number,
-        IsEditable: boolean,
-        getCoordinate(): string,
-
-    }
-
-    export enum RowType {
-        Data, Total, Header
-    }
-
-    export enum RowFunction{
-        Create, Delete
-    }
-
-    export class GridVm implements IGridVm{
+    export class GridVm {
+        GridCode: string;
         HasCreateDeleteColumn: boolean;
         HasSelectColumn: boolean;
         HasPostItColumn: boolean;
         HasNarrativeColumn: boolean;
-        Rows: IRowVm[];
+        Rows: RowVm[];
 
-        constructor() {
-
+        constructor(GridCode: string, HasCreateDeleteColumn: boolean, HasSelectColumn: boolean, HasPostItColumn: boolean, HasNarrativeColumn: boolean) {
+            this.GridCode = GridCode;
+            this.HasCreateDeleteColumn = HasCreateDeleteColumn;
+            this.HasSelectColumn = HasSelectColumn;
+            this.HasPostItColumn = HasPostItColumn;
+            this.HasNarrativeColumn = HasNarrativeColumn;
         }
     }
 
-    export class RowVm implements IRowVm {
+    export class RowVm {
         RowCode: string;
         ParentRowCodes: string[];
         Type: RowType;
         Text: string;
         CreateDeleteFunction: RowFunction;
         CanSelect: boolean;
-        HasNarrative: boolean;
-        HasPostIt: boolean;
-        Cells: ICellVm[];
-        constructor() {
-
+        AllowNarrative: boolean;
+        AllowPostIt: boolean;
+        Cells: CellVm[];
+        constructor(RowCode: string, ParentRowCodes: string[], Type: RowType, Text: string, CreateDeleteFunction: RowFunction, CanSelect: boolean, AllowNarrative: boolean, AllowPostIt: boolean) {
+            this.RowCode = RowCode;
+            this.ParentRowCodes = ParentRowCodes;
+            this.Type = Type;
+            this.Text = Text;
+            this.CreateDeleteFunction = CreateDeleteFunction;
+            this.CanSelect = CanSelect;
+            this.AllowNarrative = AllowNarrative;
+            this.AllowPostIt = AllowPostIt;
         }
     }
 
-    export class CellVm implements ICellVm {
+    export enum RowType {
+        Data, Total, Header
+    }
+
+    export enum RowFunction {
+        Create, Delete, None
+    }
+
+    export class CellVm {
         ColCode: string;
         RowCode: string;
         Class: string;
-        Type: string;
+        Type: CellType;
         Value: any;
-        Width: number;
+        Width: string;
         IsEditable: boolean;
 
+        constructor(ColCode: string, RowCode: string, Class: string, Type: CellType, Value: any, Width: string, IsEditable: boolean) {
+            this.ColCode = ColCode;
+            this.RowCode = RowCode;
+            this.Class = Class;
+            this.Type = Type;
+            this.Value = Value;
+            this.Width = Width;
+            this.IsEditable = IsEditable;
+        }
+
         getCoordinate() {
-            return '{[' + this.RowCode + '][' + this.ColCode +']}';
+            return '{[' + this.RowCode + '][' + this.ColCode + ']}';
         }
     }
-    
+
+    export enum CellType {
+        NumericInput = 0, TextInput = 1, ReadOnly = 2
+    }
+
     export class MockModelService implements IModelService {
-        viewModel:  IGridVm[];
+        exhibitModel: ExhibitVm;
 
         constructor() {
-            //this.viewModel =  {
-            //    Rows: [
-            //        {
-            //            RowCode: 'Row_0', RowParents: null, RowClass: 'header-row', RowText: 'Header Text',
-            //            Cells: [
-            //                { ColCode: 'Col_Txt', CellClass: 'blank-cell', CellType: 'text', CellValue: null, CellWidth: '2x', IsEditable: false },
-            //                { ColCode: 'Col_A', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column A', CellWidth: '1x', IsEditable: false },
-            //                { ColCode: 'Col_B', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column B', CellWidth: '1x', IsEditable: false },
-            //                { ColCode: 'Col_C', CellClass: 'header-cell', CellType: 'text', CellValue: 'Column C', CellWidth: '1x', IsEditable: false }
-            //            ]
-            //        },
-            //        {
-            //            RowCode: 'Row_1', RowParents: null, RowClass: 'total-row', RowText: 'Row 1 text',
-            //            Cells: [
-            //                { ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'text', CellWidth: '2x', IsEditable: false },
-            //                { ColCode: 'Col_A', CellClass: 'data-cell', CellType: 'num', CellValue: 50, CellWidth: '1x', IsEditable: true },
-            //                { ColCode: 'Col_B', CellClass: 'data-cell', CellType: 'num', CellValue: 100, CellWidth: '1x', IsEditable: true },
-            //                { ColCode: 'Col_C', CellClass: 'data-cell', CellType: 'num', CellValue: 150, CellWidth: '1x', IsEditable: true }
-            //            ]
-            //        }
-            //    ]
-            //};
+            console.log('constructing model service');
+            this.exhibitModel = new ExhibitVm();
+            this.exhibitModel.ExhibitCode = "Test Exhibit";
+
+            this.exhibitModel.addGrid(new GridVm('Grid_A', true, true, true, true));
+            var grid0 = this.exhibitModel.Grids[0];
+
+            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Row Text', RowFunction.None, false, false, false);
+            headerRow.Cells = [
+                new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
+                new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
+                new CellVm('Col_B', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column B', '1x', false),
+                new CellVm('Col_C', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column C', '1x', false)
+            ]
+
+            var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text', RowFunction.None, false, false, false);
+            dataRow0.Cells = [
+                new CellVm('Col_Txt', 'Row_1', 'text-cell', CellType.ReadOnly, null, '2x', false),
+                new CellVm('Col_A', 'Row_1', 'data-cell', CellType.NumericInput, 50, '1x', false),
+                new CellVm('Col_B', 'Row_1', 'data-cell', CellType.NumericInput, 100, '1x', false),
+                new CellVm('Col_C', 'Row_1', 'data-cell', CellType.NumericInput, 150, '1x', false)
+            ]
+
+            grid0.Rows = [headerRow, dataRow0];
+        }
+
+        getExhibitModel() {
+            return this.exhibitModel;
         }
 
         getGridModel(gridCode: string) {
-            return this.viewModel[gridCode];
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': [gridCode] })[0];
+            return grid;
         }
-        
-        getChildRows(gridCode:string, rowCode: string, pluckProp: string) {
-            var rows = _.where(this.viewModel[gridCode].Rows, { 'RowParents': [rowCode] });
+
+        getChildRows(gridCode: string, rowCode: string, pluckProp: string) {
+            var rows = _.where(this.exhibitModel[gridCode].Rows, { 'RowParents': [rowCode] });
             if (pluckProp) {
                 rows = _.pluck(rows, pluckProp);
             }
@@ -138,9 +151,9 @@ module app.model{
         }
 
         addAnotherRow(gridCode: string) {
-            var rowNum = this.viewModel[gridCode].Rows.length;
+            var rowNum = this.exhibitModel[gridCode].Rows.length;
             var cells = [];
-            _.forEach(this.viewModel[gridCode].Rows[0].Cells, function (va, idx: number) {
+            _.forEach(this.exhibitModel[gridCode].Rows[0].Cells, function (va, idx: number) {
                 if (idx === 0) {
                     cells.push({
                         ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'Row ' + rowNum, CellWidth: '2x'
@@ -152,15 +165,15 @@ module app.model{
                 }
             })
 
-            this.viewModel[gridCode].Rows.push({
+            this.exhibitModel[gridCode].Rows.push({
                 RowCode: 'Row_' + rowNum, RowParents: null, RowClass: 'data-row', Cells: cells, RowText: 'Row ' + rowNum + ' Text'
             });
         }
 
         addAnotherColumn(gridCode: string) {
-            var colLetter = String.fromCharCode(this.viewModel[gridCode].Rows[0].Cells.length + 64);
+            var colLetter = String.fromCharCode(this.exhibitModel[gridCode].Rows[0].Cells.length + 64);
 
-            _.forEach(this.viewModel[gridCode].Rows, function (val, idx: number) {
+            _.forEach(this.exhibitModel[gridCode].Rows, function (val, idx: number) {
                 if (idx == 0) {
                     val.Cells.push({
                         ColCode: 'Col_' + colLetter, CellClass: 'header-cell', CellType: 'text', CellValue: 'Column ' + colLetter, CellWidth: '1x', IsEditable: false
@@ -176,11 +189,15 @@ module app.model{
         getCellValue(coordinate: string) {
             return 1;
         }
-        
+
     }
 
+    var service = angular.module('app.model', []);
 
-    var service = angular.module('exhibitGrid.modelService', []);
+    service.factory('modelService', function () {
+        return new MockModelService();
+    });
 
-    service.factory('gridModelService', MockModelService);
 }
+
+

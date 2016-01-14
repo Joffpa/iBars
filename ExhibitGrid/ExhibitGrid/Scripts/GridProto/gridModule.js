@@ -1,10 +1,19 @@
+'use strict';
 var app;
 (function (app) {
+    var ExhibitController = (function () {
+        function ExhibitController(modelService) {
+            this.modelService = modelService;
+            this.model = modelService.getExhibitModel();
+        }
+        return ExhibitController;
+    })();
+    app.ExhibitController = ExhibitController;
     var GridController = (function () {
-        function GridController(gridModelService) {
-            this.modelService = gridModelService;
+        function GridController(modelService) {
+            this.modelService = modelService;
             var ctrlVm = this;
-            this.model = gridModelService.getGridModel('');
+            this.model = modelService.getGridModel('');
         }
         GridController.prototype.addRow = function () {
             this.modelService.addAnotherRow('');
@@ -14,8 +23,7 @@ var app;
         };
         return GridController;
     })();
-    'use strict';
-    var exhibitApp = angular.module('exhibitGrid', ['exhibitGrid.modelService', 'exhibitGrid.directives']);
-    exhibitApp.controller('exhibitGridController', ['gridModelService', GridController]);
+    var exhibitApp = angular.module('app', ['app.model', 'app.directives', 'app.calc']);
+    exhibitApp.controller('exhibitController', ['modelService', ExhibitController]);
 })(app || (app = {}));
 //# sourceMappingURL=gridModule.js.map
