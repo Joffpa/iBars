@@ -5,7 +5,8 @@ var app;
     var model;
     (function (model) {
         var ExhibitVm = (function () {
-            function ExhibitVm() {
+            function ExhibitVm(ExhibitCode) {
+                this.ExhibitCode = ExhibitCode;
                 this.Grids = new Array();
             }
             ExhibitVm.prototype.addGrid = function (grid) {
@@ -75,12 +76,9 @@ var app;
         var CellType = model.CellType;
         var MockModelService = (function () {
             function MockModelService() {
-                console.log('constructing model service');
-                this.exhibitModel = new ExhibitVm();
-                this.exhibitModel.ExhibitCode = "Test Exhibit";
-                this.exhibitModel.addGrid(new GridVm('Grid_A', true, true, true, true));
-                var grid0 = this.exhibitModel.Grids[0];
-                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Row Text', RowFunction.None, false, false, false);
+                this.exhibitModel = new ExhibitVm("Test Exhibit");
+                var grid = new GridVm('Grid_A', true, true, true, true);
+                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text', RowFunction.None, false, false, false);
                 headerRow.Cells = [
                     new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
                     new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
@@ -94,7 +92,8 @@ var app;
                     new CellVm('Col_B', 'Row_1', 'data-cell', CellType.NumericInput, 100, '1x', false),
                     new CellVm('Col_C', 'Row_1', 'data-cell', CellType.NumericInput, 150, '1x', false)
                 ];
-                grid0.Rows = [headerRow, dataRow0];
+                grid.Rows = [headerRow, dataRow0];
+                this.exhibitModel.addGrid(grid);
             }
             MockModelService.prototype.getExhibitModel = function () {
                 return this.exhibitModel;
@@ -156,4 +155,3 @@ var app;
         });
     })(model = app.model || (app.model = {}));
 })(app || (app = {}));
-//# sourceMappingURL=modelService.js.map

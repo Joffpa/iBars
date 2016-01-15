@@ -1,5 +1,5 @@
 ﻿
-<div ng-switch="cell.CellVm.Type">
+<div ng-switch="{{cell.Type}}">
     <div exhibit-cell-num-input ng-switch-when="0"></div>
     <div exhibit-cell-text-input ng-switch-when="1"></div>
     <div exhibit-cell-read-only ng-switch-when="2"></div>

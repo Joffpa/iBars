@@ -4,8 +4,8 @@ var app;
     (function (directives_1) {
         'use strict';
         var RowController = (function () {
-            function RowController(scope, modelService) {
-                this.RowVm = scope;
+            function RowController($scope, modelService) {
+                this.RowVm = $scope.row;
                 this.modelService = modelService;
             }
             RowController.prototype.getRowCssClass = function () {
@@ -24,19 +24,13 @@ var app;
             return NumericInputCellController;
         })();
         var GridController = (function () {
-            //constructor($scope, modelService: app.model.IModelService) {
-            //    this.model = $scope;
-            //    this.modelService = modelService;
-            //    alert('controller constructed' + $scope.ExhibitCode);
-            //}        
-            function GridController() {
-                alert('controller constructed');
+            function GridController($scope, modelService) {
+                this.GridVm = $scope.grid;
+                this.modelService = modelService;
             }
             GridController.prototype.addRow = function () {
-                alert('row added');
             };
             GridController.prototype.addCol = function () {
-                alert('col added');
             };
             return GridController;
         })();
@@ -47,10 +41,7 @@ var app;
                 restrict: 'A',
                 templateUrl: '/templates/exhibitGrid.html',
                 controllerAs: 'gridCtrl',
-                controller: ['modelService', GridController],
-                link: function (scope, element, attrs, tabsCtrl) {
-                    console.log('controller linked');
-                }
+                controller: ['$scope', 'modelService', GridController]
             };
         })
             .directive('exhibitRow', ['$compile', 'modelService', 'calcService', function ($compile, modelService, calcService) {
@@ -72,6 +63,7 @@ var app;
                     restrict: 'A',
                     templateUrl: '/templates/exhibitCellNumInput.html',
                     controller: function ($scope, $element, $attrs) {
+                        console.log($scope);
                         var ctrlVm = this;
                         var thisCell = $scope.cell;
                     },
@@ -95,4 +87,3 @@ var app;
             }]);
     })(directives = app.directives || (app.directives = {}));
 })(app || (app = {}));
-//# sourceMappingURL=directives.js.map

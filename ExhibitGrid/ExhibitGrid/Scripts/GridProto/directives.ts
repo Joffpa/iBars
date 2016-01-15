@@ -7,11 +7,11 @@
         RowVm: app.model.RowVm;
         modelService: app.model.IModelService;
 
-        constructor(scope: app.model.RowVm, modelService: app.model.IModelService) {
-            this.RowVm = scope;
+        constructor($scope, modelService: app.model.IModelService) {
+            this.RowVm = $scope.row;
             this.modelService = modelService;
         }
-
+        
         getRowCssClass() {
             if (this.RowVm.Type == app.model.RowType.Data)
                 return 'data-row';
@@ -29,25 +29,20 @@
 
     class GridController{
 
-        model: app.model.ExhibitVm;
+        GridVm: app.model.ExhibitVm;
         modelService: app.model.IModelService;
 
-        //constructor($scope, modelService: app.model.IModelService) {
-        //    this.model = $scope;
-        //    this.modelService = modelService;
-        //    alert('controller constructed' + $scope.ExhibitCode);
-        //}        
-
-        constructor() {
-            alert('controller constructed');
+        constructor($scope, modelService: app.model.IModelService) {
+            this.GridVm = $scope.grid;
+            this.modelService = modelService;
         } 
 
         addRow() {
-            alert('row added');
+
         }
 
         addCol() {
-            alert('col added');
+
         }
     }
     
@@ -59,10 +54,10 @@
                 restrict: 'A',
                 templateUrl: '/templates/exhibitGrid.html',
                 controllerAs: 'gridCtrl',
-                controller: ['modelService', GridController],
-                link: function (scope, element, attrs, tabsCtrl) {
-                    console.log('controller linked');
-                }
+                controller: ['$scope','modelService', GridController]
+                //link: function (scope, element, attrs, tabsCtrl) {
+                //    console.log('controller linked');
+                //}
             }
         }) 
         
@@ -87,9 +82,10 @@
                 restrict: 'A',
                 templateUrl: '/templates/exhibitCellNumInput.html',
                 controller: function ($scope, $element, $attrs) {
+
+                    console.log($scope);
                     var ctrlVm = this;
                     var thisCell = $scope.cell;
-
                 },
                 controllerAs: 'cellCtrl',
                 link: function (scope, ele, attr, ctrl) {
@@ -112,8 +108,7 @@
 
                 }
             }
-        }])
-        ;
+        }]);
 }
 
 

@@ -1,9 +1,9 @@
 ﻿
-<div class="{{row.RowVm.getRowCssClass()}}">
+<div ng-class="{{rowCtrl.getRowCssClass()}}">
     <div class="cell-wrapper">
         <div class="cell text-cell cell-3x">
-            {{row.RowVm.Text }} <br />
+            {{row.Text }} <br />
         </div>        
     </div>
-    <div exhibit-cell class="cell-wrapper" ng-repeat="cell in row.RowVm.Cells track by cell.ColCode"></div>
+    <div exhibit-cell class="cell-wrapper" ng-repeat="cell in row.Cells track by cell.ColCode"></div>
 </div>

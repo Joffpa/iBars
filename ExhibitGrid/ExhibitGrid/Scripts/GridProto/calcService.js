@@ -26,4 +26,3 @@ var app;
             }]);
     })(calc = app.calc || (app.calc = {}));
 })(app || (app = {}));
-//# sourceMappingURL=calcService.js.map

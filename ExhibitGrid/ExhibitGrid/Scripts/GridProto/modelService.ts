@@ -19,7 +19,8 @@ module app.model {
         ExhibitCode: string;
         Grids: GridVm[];
 
-        constructor() {
+        constructor(ExhibitCode: string) {
+            this.ExhibitCode = ExhibitCode;
             this.Grids = new Array<GridVm>();
         }
 
@@ -107,14 +108,11 @@ module app.model {
         exhibitModel: ExhibitVm;
 
         constructor() {
-            console.log('constructing model service');
-            this.exhibitModel = new ExhibitVm();
-            this.exhibitModel.ExhibitCode = "Test Exhibit";
+            this.exhibitModel = new ExhibitVm("Test Exhibit");
+            
+            var grid = new GridVm('Grid_A', true, true, true, true);
 
-            this.exhibitModel.addGrid(new GridVm('Grid_A', true, true, true, true));
-            var grid0 = this.exhibitModel.Grids[0];
-
-            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Row Text', RowFunction.None, false, false, false);
+            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text', RowFunction.None, false, false, false);
             headerRow.Cells = [
                 new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
                 new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
@@ -130,7 +128,9 @@ module app.model {
                 new CellVm('Col_C', 'Row_1', 'data-cell', CellType.NumericInput, 150, '1x', false)
             ]
 
-            grid0.Rows = [headerRow, dataRow0];
+            grid.Rows = [headerRow, dataRow0];
+
+            this.exhibitModel.addGrid(grid);
         }
 
         getExhibitModel() {
