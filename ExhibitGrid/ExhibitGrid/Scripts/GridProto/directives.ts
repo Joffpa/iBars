@@ -45,7 +45,6 @@
 
         }
     }
-    
 
     //var directives = angular.module('app.directives', ['app.calc', 'app.model'])
     var directives = angular.module('app.directives', ['app.model'])

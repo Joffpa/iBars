@@ -4,7 +4,7 @@ module app.calc {
     'use strict'
 
     var service = angular.module('app.calc', ['app.model']);
-
+     
     service.factory('calcService', ['modelService', function (modelService) {
 
         var calcVm = {

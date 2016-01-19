@@ -11,6 +11,10 @@ module app{
             this.modelService = modelService;
             this.model = modelService.getExhibitModel();
         }
+
+        doExhibitLevelWork() {
+            return true;
+        }
                 
     }
     

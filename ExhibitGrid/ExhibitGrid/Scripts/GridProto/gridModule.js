@@ -6,6 +6,9 @@ var app;
             this.modelService = modelService;
             this.model = modelService.getExhibitModel();
         }
+        ExhibitController.prototype.doExhibitLevelWork = function () {
+            return true;
+        };
         return ExhibitController;
     })();
     app.ExhibitController = ExhibitController;

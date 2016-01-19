@@ -31,18 +31,9 @@ module app.model {
 
     export class GridVm {
         GridCode: string;
-        HasCreateDeleteColumn: boolean;
-        HasSelectColumn: boolean;
-        HasPostItColumn: boolean;
-        HasNarrativeColumn: boolean;
         Rows: RowVm[];
-
-        constructor(GridCode: string, HasCreateDeleteColumn: boolean, HasSelectColumn: boolean, HasPostItColumn: boolean, HasNarrativeColumn: boolean) {
+        constructor(GridCode: string) {
             this.GridCode = GridCode;
-            this.HasCreateDeleteColumn = HasCreateDeleteColumn;
-            this.HasSelectColumn = HasSelectColumn;
-            this.HasPostItColumn = HasPostItColumn;
-            this.HasNarrativeColumn = HasNarrativeColumn;
         }
     }
 
@@ -51,28 +42,33 @@ module app.model {
         ParentRowCodes: string[];
         Type: RowType;
         Text: string;
-        CreateDeleteFunction: RowFunction;
+        HasCrudColumn: boolean;
+        CrudFunctionality: RowCrud;
+        HasSelectColumn: boolean;
         CanSelect: boolean;
+        HasNarrativeColumn: boolean;
         AllowNarrative: boolean;
+        HasPostItColumn: boolean;
         AllowPostIt: boolean;
         Cells: CellVm[];
-        constructor(RowCode: string, ParentRowCodes: string[], Type: RowType, Text: string, CreateDeleteFunction: RowFunction, CanSelect: boolean, AllowNarrative: boolean, AllowPostIt: boolean) {
+        constructor(RowCode: string, ParentRowCodes: string[], Type: RowType, Text: string, CanSelect: boolean, CrudFunction: RowCrud, AllowNarrative: boolean, AllowPostIt: boolean) {
             this.RowCode = RowCode;
             this.ParentRowCodes = ParentRowCodes;
             this.Type = Type;
             this.Text = Text;
-            this.CreateDeleteFunction = CreateDeleteFunction;
             this.CanSelect = CanSelect;
+            this.CrudFunctionality = CrudFunction;
             this.AllowNarrative = AllowNarrative;
             this.AllowPostIt = AllowPostIt;
-        }
+        }        
+
     }
 
     export enum RowType {
         Data, Total, Header
     }
 
-    export enum RowFunction {
+    export enum RowCrud {
         Create, Delete, None
     }
 
@@ -110,9 +106,9 @@ module app.model {
         constructor() {
             this.exhibitModel = new ExhibitVm("Test Exhibit");
             
-            var grid = new GridVm('Grid_A', true, true, true, true);
+            var grid = new GridVm('Grid_A');
 
-            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text', RowFunction.None, false, false, false);
+            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text', false, RowCrud.None,  false, false);
             headerRow.Cells = [
                 new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
                 new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
@@ -120,7 +116,7 @@ module app.model {
                 new CellVm('Col_C', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column C', '1x', false)
             ]
 
-            var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text', RowFunction.None, false, false, false);
+            var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text', false,  RowCrud.None,  false, false);
             dataRow0.Cells = [
                 new CellVm('Col_Txt', 'Row_1', 'text-cell', CellType.ReadOnly, null, '2x', false),
                 new CellVm('Col_A', 'Row_1', 'data-cell', CellType.NumericInput, 50, '1x', false),
@@ -133,6 +129,18 @@ module app.model {
             this.exhibitModel.addGrid(grid);
         }
 
+        private initModel() {
+            var hasSelectColumn = false;
+            _.forEach(this.exhibitModel.Grids, function (eVal, eIdx) {
+                _.forEach(eVal.Rows, function (val, idx, coll) {
+                    if (val.CrudFunctionality != RowCrud.None) {
+                        hasSelectColumn = true;
+                        return false;
+                    }
+                })
+            });
+        }
+
         getExhibitModel() {
             return this.exhibitModel;
         }
@@ -141,6 +149,11 @@ module app.model {
             var grid = _.where(this.exhibitModel.Grids, { 'GridCode': [gridCode] })[0];
             return grid;
         }
+
+        AddSpaceForSelectColumn() {
+            
+        }
+
 
         getChildRows(gridCode: string, rowCode: string, pluckProp: string) {
             var rows = _.where(this.exhibitModel[gridCode].Rows, { 'RowParents': [rowCode] });
@@ -193,7 +206,7 @@ module app.model {
     }
 
     var service = angular.module('app.model', []);
-
+    
     service.factory('modelService', function () {
         return new MockModelService();
     });

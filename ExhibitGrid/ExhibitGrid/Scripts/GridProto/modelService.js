@@ -16,24 +16,20 @@ var app;
         })();
         model.ExhibitVm = ExhibitVm;
         var GridVm = (function () {
-            function GridVm(GridCode, HasCreateDeleteColumn, HasSelectColumn, HasPostItColumn, HasNarrativeColumn) {
+            function GridVm(GridCode) {
                 this.GridCode = GridCode;
-                this.HasCreateDeleteColumn = HasCreateDeleteColumn;
-                this.HasSelectColumn = HasSelectColumn;
-                this.HasPostItColumn = HasPostItColumn;
-                this.HasNarrativeColumn = HasNarrativeColumn;
             }
             return GridVm;
         })();
         model.GridVm = GridVm;
         var RowVm = (function () {
-            function RowVm(RowCode, ParentRowCodes, Type, Text, CreateDeleteFunction, CanSelect, AllowNarrative, AllowPostIt) {
+            function RowVm(RowCode, ParentRowCodes, Type, Text, CanSelect, CrudFunction, AllowNarrative, AllowPostIt) {
                 this.RowCode = RowCode;
                 this.ParentRowCodes = ParentRowCodes;
                 this.Type = Type;
                 this.Text = Text;
-                this.CreateDeleteFunction = CreateDeleteFunction;
                 this.CanSelect = CanSelect;
+                this.CrudFunctionality = CrudFunction;
                 this.AllowNarrative = AllowNarrative;
                 this.AllowPostIt = AllowPostIt;
             }
@@ -46,12 +42,12 @@ var app;
             RowType[RowType["Header"] = 2] = "Header";
         })(model.RowType || (model.RowType = {}));
         var RowType = model.RowType;
-        (function (RowFunction) {
-            RowFunction[RowFunction["Create"] = 0] = "Create";
-            RowFunction[RowFunction["Delete"] = 1] = "Delete";
-            RowFunction[RowFunction["None"] = 2] = "None";
-        })(model.RowFunction || (model.RowFunction = {}));
-        var RowFunction = model.RowFunction;
+        (function (RowCrud) {
+            RowCrud[RowCrud["Create"] = 0] = "Create";
+            RowCrud[RowCrud["Delete"] = 1] = "Delete";
+            RowCrud[RowCrud["None"] = 2] = "None";
+        })(model.RowCrud || (model.RowCrud = {}));
+        var RowCrud = model.RowCrud;
         var CellVm = (function () {
             function CellVm(ColCode, RowCode, Class, Type, Value, Width, IsEditable) {
                 this.ColCode = ColCode;
@@ -77,15 +73,15 @@ var app;
         var MockModelService = (function () {
             function MockModelService() {
                 this.exhibitModel = new ExhibitVm("Test Exhibit");
-                var grid = new GridVm('Grid_A', true, true, true, true);
-                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text', RowFunction.None, false, false, false);
+                var grid = new GridVm('Grid_A');
+                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text', false, RowCrud.None, false, false);
                 headerRow.Cells = [
                     new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
                     new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
                     new CellVm('Col_B', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column B', '1x', false),
                     new CellVm('Col_C', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column C', '1x', false)
                 ];
-                var dataRow0 = new RowVm('Row_1', null, RowType.Data, 'Row Text', RowFunction.None, false, false, false);
+                var dataRow0 = new RowVm('Row_1', null, RowType.Data, 'Row Text', false, RowCrud.None, false, false);
                 dataRow0.Cells = [
                     new CellVm('Col_Txt', 'Row_1', 'text-cell', CellType.ReadOnly, null, '2x', false),
                     new CellVm('Col_A', 'Row_1', 'data-cell', CellType.NumericInput, 50, '1x', false),
@@ -95,12 +91,25 @@ var app;
                 grid.Rows = [headerRow, dataRow0];
                 this.exhibitModel.addGrid(grid);
             }
+            MockModelService.prototype.initModel = function () {
+                var hasSelectColumn = false;
+                _.forEach(this.exhibitModel.Grids, function (eVal, eIdx) {
+                    _.forEach(eVal.Rows, function (val, idx, coll) {
+                        if (val.CrudFunctionality != RowCrud.None) {
+                            hasSelectColumn = true;
+                            return false;
+                        }
+                    });
+                });
+            };
             MockModelService.prototype.getExhibitModel = function () {
                 return this.exhibitModel;
             };
             MockModelService.prototype.getGridModel = function (gridCode) {
                 var grid = _.where(this.exhibitModel.Grids, { 'GridCode': [gridCode] })[0];
                 return grid;
+            };
+            MockModelService.prototype.AddSpaceForSelectColumn = function () {
             };
             MockModelService.prototype.getChildRows = function (gridCode, rowCode, pluckProp) {
                 var rows = _.where(this.exhibitModel[gridCode].Rows, { 'RowParents': [rowCode] });
