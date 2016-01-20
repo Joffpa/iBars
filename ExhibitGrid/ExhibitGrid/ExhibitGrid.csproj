@@ -138,6 +138,8 @@
     <Content Include="Content\exhibitGrid.min.css">
       <DependentUpon>exhibitGrid.css</DependentUpon>
     </Content>
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\kendo\2014.2.716\Black\editor.png" />
     <Content Include="Content\kendo\2014.2.716\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2014.2.716\Black\indeterminate.gif" />
@@ -374,6 +376,7 @@
     <Content Include="Content\kendo\2015.1.429\Uniform\sprite_kpi.png" />
     <Content Include="Content\kendo\2015.1.429\Uniform\sprite_kpi_2x.png" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -407,6 +410,11 @@
     <Content Include="Scripts\GridProto\modelService.js.map" />
     <Content Include="Scripts\GridProto\directives.js.map" />
     <Content Include="Scripts\GridProto\gridModule.js.map" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\GridProto\modelService.js" />
     <Content Include="Scripts\inversify.js" />

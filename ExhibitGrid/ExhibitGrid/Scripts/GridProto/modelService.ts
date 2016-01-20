@@ -58,19 +58,19 @@ module app.model {
     
     export class SelectionCellVm {
         IncludeSpaceForCell: boolean;
-        CanSelect: boolean;
+        AllowSelect: boolean;
         IsSelected: boolean;
-        constructor(IncludeSpaceForCell: boolean, CanSelect: boolean, IsSelected: boolean) {
+        constructor(IncludeSpaceForCell: boolean, AllowSelect: boolean, IsSelected: boolean) {
             this.IncludeSpaceForCell = IncludeSpaceForCell;
-            this.CanSelect = CanSelect;
+            this.AllowSelect = AllowSelect;
             this.IsSelected = IsSelected;
         }
     }
 
     export class CrudCellVm {
         IncludeSpaceForCell: boolean;
-        CrudFunctionality: RowCrud;
-        constructor(IncludeSpaceForCell: boolean, CrudFunctionality: RowCrud) {
+        CrudFunctionality: string;
+        constructor(IncludeSpaceForCell: boolean, CrudFunctionality: string) {
             this.IncludeSpaceForCell = IncludeSpaceForCell;
             this.CrudFunctionality = CrudFunctionality;
         }
@@ -101,10 +101,7 @@ module app.model {
     export enum RowType {
         Data, Total, Header
     }
-
-    export enum RowCrud {
-        Create, Delete, None
-    }
+    
 
     export class DataCellVm {
         ColCode: string;
@@ -140,11 +137,11 @@ module app.model {
 
             var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text');
             headerRow.SelectionCell = new SelectionCellVm(true, false, false);
-            headerRow.CrudCell = new CrudCellVm(true, RowCrud.None);
+            headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
             headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
             headerRow.PostItCell = new PostItCellVm(true, false, false);
             headerRow.DataCells = [
-                new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '2x', false),
+                new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '1x', false),
                 new DataCellVm('Col_A', 'Row_0', 'header-cell', 'read-only', 'Column A', '1x', false),
                 new DataCellVm('Col_B', 'Row_0', 'header-cell', 'read-only', 'Column B', '1x', false),
                 new DataCellVm('Col_C', 'Row_0', 'header-cell', 'read-only', 'Column C', '1x', false)
@@ -152,11 +149,11 @@ module app.model {
 
             var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text');
             dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
-            dataRow0.CrudCell = new CrudCellVm(true, RowCrud.Create);
+            dataRow0.CrudCell = new CrudCellVm(true, 'create');
             dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
             dataRow0.PostItCell = new PostItCellVm(true, true, false);
             dataRow0.DataCells = [
-                new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '2x', false),
+                new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '1x', false),
                 new DataCellVm('Col_A', 'Row_1', 'data-cell', 'num-input', 50, '1x', false),
                 new DataCellVm('Col_B', 'Row_1', 'data-cell', 'num-input', 100, '1x', false),
                 new DataCellVm('Col_C', 'Row_1', 'data-cell', 'num-input', 150, '1x', false)

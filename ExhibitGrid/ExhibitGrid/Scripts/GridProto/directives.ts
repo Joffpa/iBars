@@ -20,6 +20,11 @@
             else if (this.RowVm.Type == app.model.RowType.Header)
                 return 'header-row';
         }
+
+        addRow() {
+            alert('row added' + this.RowVm.RowCode);
+        }
+
     }
     
     class NumericInputCellController {

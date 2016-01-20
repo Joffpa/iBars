@@ -33,9 +33,9 @@ var app;
         })();
         model.RowVm = RowVm;
         var SelectionCellVm = (function () {
-            function SelectionCellVm(IncludeSpaceForCell, CanSelect, IsSelected) {
+            function SelectionCellVm(IncludeSpaceForCell, AllowSelect, IsSelected) {
                 this.IncludeSpaceForCell = IncludeSpaceForCell;
-                this.CanSelect = CanSelect;
+                this.AllowSelect = AllowSelect;
                 this.IsSelected = IsSelected;
             }
             return SelectionCellVm;
@@ -73,12 +73,6 @@ var app;
             RowType[RowType["Header"] = 2] = "Header";
         })(model.RowType || (model.RowType = {}));
         var RowType = model.RowType;
-        (function (RowCrud) {
-            RowCrud[RowCrud["Create"] = 0] = "Create";
-            RowCrud[RowCrud["Delete"] = 1] = "Delete";
-            RowCrud[RowCrud["None"] = 2] = "None";
-        })(model.RowCrud || (model.RowCrud = {}));
-        var RowCrud = model.RowCrud;
         var DataCellVm = (function () {
             function DataCellVm(ColCode, RowCode, Class, Type, Value, Width, IsEditable) {
                 this.ColCode = ColCode;
@@ -101,22 +95,22 @@ var app;
                 var grid = new GridVm('Grid_A');
                 var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text');
                 headerRow.SelectionCell = new SelectionCellVm(true, false, false);
-                headerRow.CrudCell = new CrudCellVm(true, RowCrud.None);
+                headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
                 headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
                 headerRow.PostItCell = new PostItCellVm(true, false, false);
                 headerRow.DataCells = [
-                    new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '2x', false),
+                    new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '1x', false),
                     new DataCellVm('Col_A', 'Row_0', 'header-cell', 'read-only', 'Column A', '1x', false),
                     new DataCellVm('Col_B', 'Row_0', 'header-cell', 'read-only', 'Column B', '1x', false),
                     new DataCellVm('Col_C', 'Row_0', 'header-cell', 'read-only', 'Column C', '1x', false)
                 ];
                 var dataRow0 = new RowVm('Row_1', null, RowType.Data, 'Row Text');
                 dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
-                dataRow0.CrudCell = new CrudCellVm(true, RowCrud.Create);
+                dataRow0.CrudCell = new CrudCellVm(true, 'create');
                 dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
                 dataRow0.PostItCell = new PostItCellVm(true, true, false);
                 dataRow0.DataCells = [
-                    new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '2x', false),
+                    new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '1x', false),
                     new DataCellVm('Col_A', 'Row_1', 'data-cell', 'num-input', 50, '1x', false),
                     new DataCellVm('Col_B', 'Row_1', 'data-cell', 'num-input', 100, '1x', false),
                     new DataCellVm('Col_C', 'Row_1', 'data-cell', 'num-input', 150, '1x', false)

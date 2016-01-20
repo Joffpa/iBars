@@ -16,6 +16,9 @@ var app;
                 else if (this.RowVm.Type == app.model.RowType.Header)
                     return 'header-row';
             };
+            RowController.prototype.addRow = function () {
+                alert('row added' + this.RowVm.RowCode);
+            };
             return RowController;
         })();
         var NumericInputCellController = (function () {
