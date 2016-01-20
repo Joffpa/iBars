@@ -23,7 +23,7 @@
     }
     
     class NumericInputCellController {
-        CellVm: app.model.CellVm;
+        CellVm: app.model.DataCellVm;
         
     }
 
@@ -72,7 +72,11 @@
         .directive('exhibitCell', ['$compile', 'modelService', function ($compile, modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/exhibitCell.html'
+                templateUrl: '/templates/exhibitCell.html',
+                controller: function ($scope, $element, $attrs) {
+
+                    console.log($scope);
+                }
             }
         }])
 

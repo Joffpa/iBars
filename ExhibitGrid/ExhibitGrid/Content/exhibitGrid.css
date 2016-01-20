@@ -2,7 +2,7 @@
   display: inline-block;
   padding: 20px 50px 10px 50px;
 }
-.grid-wrapper {
+.main-content .grid-wrapper {
   margin-top: 40px;
 }
 .row-wrapper {

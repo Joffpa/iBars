@@ -42,28 +42,62 @@ module app.model {
         ParentRowCodes: string[];
         Type: RowType;
         Text: string;
-        HasCrudColumn: boolean;
-        CrudFunctionality: RowCrud;
-        HasSelectColumn: boolean;
-        CanSelect: boolean;
-        HasNarrativeColumn: boolean;
-        AllowNarrative: boolean;
-        HasPostItColumn: boolean;
-        AllowPostIt: boolean;
-        Cells: CellVm[];
-        constructor(RowCode: string, ParentRowCodes: string[], Type: RowType, Text: string, CanSelect: boolean, CrudFunction: RowCrud, AllowNarrative: boolean, AllowPostIt: boolean) {
+        SelectionCell: SelectionCellVm;
+        CrudCell: CrudCellVm;
+        NarrativeCell: NarrativeCellVm;
+        PostItCell: PostItCellVm;
+        DataCells: DataCellVm[];
+        constructor(RowCode: string, ParentRowCodes: string[], Type: RowType, Text: string) {
             this.RowCode = RowCode;
             this.ParentRowCodes = ParentRowCodes;
             this.Type = Type;
             this.Text = Text;
-            this.CanSelect = CanSelect;
-            this.CrudFunctionality = CrudFunction;
-            this.AllowNarrative = AllowNarrative;
-            this.AllowPostIt = AllowPostIt;
-        }        
+        }
 
     }
+    
+    export class SelectionCellVm {
+        IncludeSpaceForCell: boolean;
+        CanSelect: boolean;
+        IsSelected: boolean;
+        constructor(IncludeSpaceForCell: boolean, CanSelect: boolean, IsSelected: boolean) {
+            this.IncludeSpaceForCell = IncludeSpaceForCell;
+            this.CanSelect = CanSelect;
+            this.IsSelected = IsSelected;
+        }
+    }
 
+    export class CrudCellVm {
+        IncludeSpaceForCell: boolean;
+        CrudFunctionality: RowCrud;
+        constructor(IncludeSpaceForCell: boolean, CrudFunctionality: RowCrud) {
+            this.IncludeSpaceForCell = IncludeSpaceForCell;
+            this.CrudFunctionality = CrudFunctionality;
+        }
+    }
+
+    export class NarrativeCellVm {
+        IncludeSpaceForCell: boolean;
+        AllowNarrative: boolean;
+        HasNarrative: boolean;
+        constructor(IncludeSpaceForCell: boolean, AllowNarrative: boolean, HasNarrative: boolean) {
+            this.IncludeSpaceForCell = IncludeSpaceForCell;
+            this.AllowNarrative = AllowNarrative;
+            this.HasNarrative = HasNarrative;
+        }   
+    }
+
+    export class PostItCellVm {
+        IncludeSpaceForCell: boolean;
+        AllowPostIt: boolean;
+        HasPostIt: boolean;
+        constructor(IncludeSpaceForCell: boolean, AllowPostIt: boolean, HasPostIt: boolean) {
+            this.IncludeSpaceForCell = IncludeSpaceForCell;
+            this.AllowPostIt = AllowPostIt;
+            this.HasPostIt = HasPostIt;
+        }      
+    }
+    
     export enum RowType {
         Data, Total, Header
     }
@@ -72,16 +106,16 @@ module app.model {
         Create, Delete, None
     }
 
-    export class CellVm {
+    export class DataCellVm {
         ColCode: string;
         RowCode: string;
         Class: string;
-        Type: CellType;
+        Type: string;
         Value: any;
         Width: string;
         IsEditable: boolean;
 
-        constructor(ColCode: string, RowCode: string, Class: string, Type: CellType, Value: any, Width: string, IsEditable: boolean) {
+        constructor(ColCode: string, RowCode: string, Class: string, Type: string, Value: any, Width: string, IsEditable: boolean) {
             this.ColCode = ColCode;
             this.RowCode = RowCode;
             this.Class = Class;
@@ -95,11 +129,7 @@ module app.model {
             return '{[' + this.RowCode + '][' + this.ColCode + ']}';
         }
     }
-
-    export enum CellType {
-        NumericInput = 0, TextInput = 1, ReadOnly = 2
-    }
-
+    
     export class MockModelService implements IModelService {
         exhibitModel: ExhibitVm;
 
@@ -108,39 +138,35 @@ module app.model {
             
             var grid = new GridVm('Grid_A');
 
-            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text', false, RowCrud.None,  false, false);
-            headerRow.Cells = [
-                new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
-                new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
-                new CellVm('Col_B', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column B', '1x', false),
-                new CellVm('Col_C', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column C', '1x', false)
+            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text');
+            headerRow.SelectionCell = new SelectionCellVm(true, false, false);
+            headerRow.CrudCell = new CrudCellVm(true, RowCrud.None);
+            headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
+            headerRow.PostItCell = new PostItCellVm(true, false, false);
+            headerRow.DataCells = [
+                new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '2x', false),
+                new DataCellVm('Col_A', 'Row_0', 'header-cell', 'read-only', 'Column A', '1x', false),
+                new DataCellVm('Col_B', 'Row_0', 'header-cell', 'read-only', 'Column B', '1x', false),
+                new DataCellVm('Col_C', 'Row_0', 'header-cell', 'read-only', 'Column C', '1x', false)
             ]
 
-            var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text', false,  RowCrud.None,  false, false);
-            dataRow0.Cells = [
-                new CellVm('Col_Txt', 'Row_1', 'text-cell', CellType.ReadOnly, null, '2x', false),
-                new CellVm('Col_A', 'Row_1', 'data-cell', CellType.NumericInput, 50, '1x', false),
-                new CellVm('Col_B', 'Row_1', 'data-cell', CellType.NumericInput, 100, '1x', false),
-                new CellVm('Col_C', 'Row_1', 'data-cell', CellType.NumericInput, 150, '1x', false)
+            var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text');
+            dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
+            dataRow0.CrudCell = new CrudCellVm(true, RowCrud.Create);
+            dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
+            dataRow0.PostItCell = new PostItCellVm(true, true, false);
+            dataRow0.DataCells = [
+                new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '2x', false),
+                new DataCellVm('Col_A', 'Row_1', 'data-cell', 'num-input', 50, '1x', false),
+                new DataCellVm('Col_B', 'Row_1', 'data-cell', 'num-input', 100, '1x', false),
+                new DataCellVm('Col_C', 'Row_1', 'data-cell', 'num-input', 150, '1x', false)
             ]
 
             grid.Rows = [headerRow, dataRow0];
 
             this.exhibitModel.addGrid(grid);
         }
-
-        private initModel() {
-            var hasSelectColumn = false;
-            _.forEach(this.exhibitModel.Grids, function (eVal, eIdx) {
-                _.forEach(eVal.Rows, function (val, idx, coll) {
-                    if (val.CrudFunctionality != RowCrud.None) {
-                        hasSelectColumn = true;
-                        return false;
-                    }
-                })
-            });
-        }
-
+        
         getExhibitModel() {
             return this.exhibitModel;
         }

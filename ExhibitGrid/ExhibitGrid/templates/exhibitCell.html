@@ -1,6 +1,14 @@
 ﻿
-<div ng-switch="{{cell.Type}}">
-    <div exhibit-cell-num-input ng-switch-when="0"></div>
-    <div exhibit-cell-text-input ng-switch-when="1"></div>
-    <div exhibit-cell-read-only ng-switch-when="2"></div>
+<div ng-switch="cell.Type">
+    <div ng-switch-when="num-input">
+        <div class="cell {{cell.Class}} cell-{{cell.Width}}">
+            <input type="number" class="k-input" ng-model="cell.Value" />
+        </div>
+    </div>
+    <div ng-switch-when="text-input">
+
+    </div>
+    <div ng-switch-when="read-only">
+        <div class="cell {{cell.Class}} cell-{{cell.Width}}">{{cell.Value }} <br /> </div>
+    </div>
 </div> 

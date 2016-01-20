@@ -23,19 +23,50 @@ var app;
         })();
         model.GridVm = GridVm;
         var RowVm = (function () {
-            function RowVm(RowCode, ParentRowCodes, Type, Text, CanSelect, CrudFunction, AllowNarrative, AllowPostIt) {
+            function RowVm(RowCode, ParentRowCodes, Type, Text) {
                 this.RowCode = RowCode;
                 this.ParentRowCodes = ParentRowCodes;
                 this.Type = Type;
                 this.Text = Text;
-                this.CanSelect = CanSelect;
-                this.CrudFunctionality = CrudFunction;
-                this.AllowNarrative = AllowNarrative;
-                this.AllowPostIt = AllowPostIt;
             }
             return RowVm;
         })();
         model.RowVm = RowVm;
+        var SelectionCellVm = (function () {
+            function SelectionCellVm(IncludeSpaceForCell, CanSelect, IsSelected) {
+                this.IncludeSpaceForCell = IncludeSpaceForCell;
+                this.CanSelect = CanSelect;
+                this.IsSelected = IsSelected;
+            }
+            return SelectionCellVm;
+        })();
+        model.SelectionCellVm = SelectionCellVm;
+        var CrudCellVm = (function () {
+            function CrudCellVm(IncludeSpaceForCell, CrudFunctionality) {
+                this.IncludeSpaceForCell = IncludeSpaceForCell;
+                this.CrudFunctionality = CrudFunctionality;
+            }
+            return CrudCellVm;
+        })();
+        model.CrudCellVm = CrudCellVm;
+        var NarrativeCellVm = (function () {
+            function NarrativeCellVm(IncludeSpaceForCell, AllowNarrative, HasNarrative) {
+                this.IncludeSpaceForCell = IncludeSpaceForCell;
+                this.AllowNarrative = AllowNarrative;
+                this.HasNarrative = HasNarrative;
+            }
+            return NarrativeCellVm;
+        })();
+        model.NarrativeCellVm = NarrativeCellVm;
+        var PostItCellVm = (function () {
+            function PostItCellVm(IncludeSpaceForCell, AllowPostIt, HasPostIt) {
+                this.IncludeSpaceForCell = IncludeSpaceForCell;
+                this.AllowPostIt = AllowPostIt;
+                this.HasPostIt = HasPostIt;
+            }
+            return PostItCellVm;
+        })();
+        model.PostItCellVm = PostItCellVm;
         (function (RowType) {
             RowType[RowType["Data"] = 0] = "Data";
             RowType[RowType["Total"] = 1] = "Total";
@@ -48,8 +79,8 @@ var app;
             RowCrud[RowCrud["None"] = 2] = "None";
         })(model.RowCrud || (model.RowCrud = {}));
         var RowCrud = model.RowCrud;
-        var CellVm = (function () {
-            function CellVm(ColCode, RowCode, Class, Type, Value, Width, IsEditable) {
+        var DataCellVm = (function () {
+            function DataCellVm(ColCode, RowCode, Class, Type, Value, Width, IsEditable) {
                 this.ColCode = ColCode;
                 this.RowCode = RowCode;
                 this.Class = Class;
@@ -58,50 +89,41 @@ var app;
                 this.Width = Width;
                 this.IsEditable = IsEditable;
             }
-            CellVm.prototype.getCoordinate = function () {
+            DataCellVm.prototype.getCoordinate = function () {
                 return '{[' + this.RowCode + '][' + this.ColCode + ']}';
             };
-            return CellVm;
+            return DataCellVm;
         })();
-        model.CellVm = CellVm;
-        (function (CellType) {
-            CellType[CellType["NumericInput"] = 0] = "NumericInput";
-            CellType[CellType["TextInput"] = 1] = "TextInput";
-            CellType[CellType["ReadOnly"] = 2] = "ReadOnly";
-        })(model.CellType || (model.CellType = {}));
-        var CellType = model.CellType;
+        model.DataCellVm = DataCellVm;
         var MockModelService = (function () {
             function MockModelService() {
                 this.exhibitModel = new ExhibitVm("Test Exhibit");
                 var grid = new GridVm('Grid_A');
-                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text', false, RowCrud.None, false, false);
-                headerRow.Cells = [
-                    new CellVm('Col_Txt', 'Row_0', 'blank-cell', CellType.ReadOnly, null, '2x', false),
-                    new CellVm('Col_A', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column A', '1x', false),
-                    new CellVm('Col_B', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column B', '1x', false),
-                    new CellVm('Col_C', 'Row_0', 'header-cell', CellType.ReadOnly, 'Column C', '1x', false)
+                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text');
+                headerRow.SelectionCell = new SelectionCellVm(true, false, false);
+                headerRow.CrudCell = new CrudCellVm(true, RowCrud.None);
+                headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
+                headerRow.PostItCell = new PostItCellVm(true, false, false);
+                headerRow.DataCells = [
+                    new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '2x', false),
+                    new DataCellVm('Col_A', 'Row_0', 'header-cell', 'read-only', 'Column A', '1x', false),
+                    new DataCellVm('Col_B', 'Row_0', 'header-cell', 'read-only', 'Column B', '1x', false),
+                    new DataCellVm('Col_C', 'Row_0', 'header-cell', 'read-only', 'Column C', '1x', false)
                 ];
-                var dataRow0 = new RowVm('Row_1', null, RowType.Data, 'Row Text', false, RowCrud.None, false, false);
-                dataRow0.Cells = [
-                    new CellVm('Col_Txt', 'Row_1', 'text-cell', CellType.ReadOnly, null, '2x', false),
-                    new CellVm('Col_A', 'Row_1', 'data-cell', CellType.NumericInput, 50, '1x', false),
-                    new CellVm('Col_B', 'Row_1', 'data-cell', CellType.NumericInput, 100, '1x', false),
-                    new CellVm('Col_C', 'Row_1', 'data-cell', CellType.NumericInput, 150, '1x', false)
+                var dataRow0 = new RowVm('Row_1', null, RowType.Data, 'Row Text');
+                dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
+                dataRow0.CrudCell = new CrudCellVm(true, RowCrud.Create);
+                dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
+                dataRow0.PostItCell = new PostItCellVm(true, true, false);
+                dataRow0.DataCells = [
+                    new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '2x', false),
+                    new DataCellVm('Col_A', 'Row_1', 'data-cell', 'num-input', 50, '1x', false),
+                    new DataCellVm('Col_B', 'Row_1', 'data-cell', 'num-input', 100, '1x', false),
+                    new DataCellVm('Col_C', 'Row_1', 'data-cell', 'num-input', 150, '1x', false)
                 ];
                 grid.Rows = [headerRow, dataRow0];
                 this.exhibitModel.addGrid(grid);
             }
-            MockModelService.prototype.initModel = function () {
-                var hasSelectColumn = false;
-                _.forEach(this.exhibitModel.Grids, function (eVal, eIdx) {
-                    _.forEach(eVal.Rows, function (val, idx, coll) {
-                        if (val.CrudFunctionality != RowCrud.None) {
-                            hasSelectColumn = true;
-                            return false;
-                        }
-                    });
-                });
-            };
             MockModelService.prototype.getExhibitModel = function () {
                 return this.exhibitModel;
             };
@@ -164,3 +186,4 @@ var app;
         });
     })(model = app.model || (app.model = {}));
 })(app || (app = {}));
+//# sourceMappingURL=modelService.js.map

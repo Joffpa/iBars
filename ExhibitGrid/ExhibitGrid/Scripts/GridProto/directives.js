@@ -55,7 +55,10 @@ var app;
             .directive('exhibitCell', ['$compile', 'modelService', function ($compile, modelService) {
                 return {
                     restrict: 'A',
-                    templateUrl: '/templates/exhibitCell.html'
+                    templateUrl: '/templates/exhibitCell.html',
+                    controller: function ($scope, $element, $attrs) {
+                        console.log($scope);
+                    }
                 };
             }])
             .directive('exhibitCellNumInput', ['modelService', function (modelService) {
@@ -87,3 +90,4 @@ var app;
             }]);
     })(directives = app.directives || (app.directives = {}));
 })(app || (app = {}));
+//# sourceMappingURL=directives.js.map
