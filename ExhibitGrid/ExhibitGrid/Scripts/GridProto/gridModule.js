@@ -4,28 +4,54 @@ var app;
     var ExhibitController = (function () {
         function ExhibitController(modelService) {
             this.modelService = modelService;
-            this.model = modelService.getExhibitModel();
+            this.exhibitVm = modelService.getExhibitModel();
+            this.currentGridVm = modelService.getGridModel('Grid_A');
+            //console.log(this.curentGridVm);
         }
-        ExhibitController.prototype.doExhibitLevelWork = function () {
-            return true;
-        };
         return ExhibitController;
     })();
     app.ExhibitController = ExhibitController;
     var GridController = (function () {
-        function GridController(modelService) {
-            this.modelService = modelService;
-            var ctrlVm = this;
-            this.model = modelService.getGridModel('');
+        function GridController($scope, modelService) {
+            this.GridVm = $scope.gridVm;
+            this.ModelService = modelService;
         }
         GridController.prototype.addRow = function () {
-            this.modelService.addAnotherRow('');
+            this.ModelService.addAnotherRow('');
         };
         GridController.prototype.addCol = function () {
-            this.modelService.addAnotherColumn('');
+            this.ModelService.addAnotherColumn('');
         };
         return GridController;
     })();
+    app.GridController = GridController;
+    var RowController = (function () {
+        function RowController($scope, modelService) {
+            this.RowVm = $scope.row;
+            this.ModelService = modelService;
+        }
+        RowController.prototype.getRowCssClass = function () {
+            if (this.RowVm.Type == app.model.RowType.Data)
+                return 'data-row';
+            else if (this.RowVm.Type == app.model.RowType.Total)
+                return 'total-row';
+            else if (this.RowVm.Type == app.model.RowType.Header)
+                return 'header-row';
+        };
+        RowController.prototype.addRow = function () {
+            alert('row added' + this.RowVm.RowCode);
+        };
+        return RowController;
+    })();
+    app.RowController = RowController;
+    var CellController = (function () {
+        function CellController($scope, calcService) {
+            this.DataCellVm = $scope.cell;
+            this.CalcService = calcService;
+        }
+        return CellController;
+    })();
+    app.CellController = CellController;
     var exhibitApp = angular.module('app', ['app.model', 'app.directives', 'app.calc']);
     exhibitApp.controller('exhibitController', ['modelService', ExhibitController]);
 })(app || (app = {}));

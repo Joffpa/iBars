@@ -169,7 +169,7 @@ module app.model {
         }
 
         getGridModel(gridCode: string) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': [gridCode] })[0];
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
             return grid;
         }
 

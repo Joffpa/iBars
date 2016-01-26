@@ -4,25 +4,15 @@ var app;
     var calc;
     (function (calc) {
         'use strict';
+        var CalcService = (function () {
+            function CalcService(modelService) {
+            }
+            return CalcService;
+        })();
+        calc.CalcService = CalcService;
         var service = angular.module('app.calc', ['app.model']);
         service.factory('calcService', ['modelService', function (modelService) {
-                var calcVm = {
-                    RowCalcs: ['Row_1']
-                };
-                function getIndependantCells() {
-                    //_(calcVm.RowCalcs).forEach(function(n){
-                    //    return gridModelService.getChildRows(n, )
-                    //});                      
-                }
-                return {
-                    isCellIndependantVariable: function (cellIdentifier) {
-                        //_(calcVm.RowCalcs).forEach(function (n) {
-                        //    return gridModelService.getChildRows(n, )
-                        //});
-                    },
-                    callDependantCalcs: function (cellIdentifier) {
-                    }
-                };
+                return new CalcService(modelService);
             }]);
     })(calc = app.calc || (app.calc = {}));
 })(app || (app = {}));

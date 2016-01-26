@@ -7,18 +7,7 @@
 @*<script src="~/Scripts/inversify.js"></script>*@
 
 <div ng-app="app">
-
     <div ng-controller="exhibitController as exhibitCtrl">
-        <div exhibit-grid ng-repeat="grid in exhibitCtrl.model.Grids track by grid.GridCode"></div>
-    </div>
-
-    @*<div ng-controller="exhibitGridController as gridCtrl">
-            <input type="button" ng-click="gridCtrl.addRow()" value="Add Another Row"/>
-            <input type="button" ng-click="gridCtrl.addCol()" value="Add Another Column" />
-
-            <div class="grid-wrapper">
-                <div exhibit-row class="row-wrapper" ng-repeat="row in gridCtrl.model.Rows track by row.RowCode"> </div>
-            </div>
-     </div>*@
-    
+        <div exhibit-grid grid-vm="exhibitCtrl.currentGridVm"></div>
+    </div>    
 </div>

@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GridCode" Type="nvarchar" MaxLength="64" />
+          <Property Name="RowCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ColCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attrib" Type="nvarchar" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" />
+          <Property Name="Expand" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EAS_DEV_AF.dbo.AttributeDeNorm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AttributeDeNorm">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GridCode" Type="nvarchar" MaxLength="64" />
+          <Property Name="RowCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ColCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowAttrib1" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowAttrib2" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowAttrib3" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowAttrib4" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowAttrib5" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowAttrib6" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowAttrib7" Type="bit" />
+          <Property Name="RowAttrib8" Type="bit" />
+          <Property Name="RowAttrib9" Type="bit" />
+          <Property Name="RowAttrib10" Type="bit" />
+          <Property Name="RowAttrib11" Type="bit" />
+          <Property Name="RowAttrib12" Type="bit" />
+          <Property Name="CellAttrib1" Type="nvarchar" MaxLength="100" />
+          <Property Name="CellAttrib2" Type="nvarchar" MaxLength="100" />
+          <Property Name="CellAttrib3" Type="nvarchar" MaxLength="100" />
+          <Property Name="CellAttrib4" Type="nvarchar" MaxLength="100" />
+          <Property Name="CellAttrib5" Type="nvarchar" MaxLength="100" />
+          <Property Name="CellAttrib6" Type="nvarchar" MaxLength="100" />
+          <Property Name="CellAttrib7" Type="bit" />
+          <Property Name="CellAttrib8" Type="bit" />
+          <Property Name="CellAttrib9" Type="bit" />
+          <Property Name="CellAttrib10" Type="bit" />
+          <Property Name="CellAttrib11" Type="bit" />
+          <Property Name="CellAttrib12" Type="bit" />
+        </EntityType>
+        <Function Name="UspGetAttribute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UspInsAttribute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="RowCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="ColCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="Attrib" Type="nvarchar" Mode="In" />
+          <Parameter Name="Value" Type="nvarchar" Mode="In" />
+          <Parameter Name="Expand" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EasModelStoreContainer">
+          <EntitySet Name="Attribute" EntityType="Self.Attribute" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttributeDeNorm" EntityType="Self.AttributeDeNorm" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AttributeDeNorm].[AttributeId] AS [AttributeId], 
+    [AttributeDeNorm].[GridCode] AS [GridCode], 
+    [AttributeDeNorm].[RowCode] AS [RowCode], 
+    [AttributeDeNorm].[ColCode] AS [ColCode], 
+    [AttributeDeNorm].[RowAttrib1] AS [RowAttrib1], 
+    [AttributeDeNorm].[RowAttrib2] AS [RowAttrib2], 
+    [AttributeDeNorm].[RowAttrib3] AS [RowAttrib3], 
+    [AttributeDeNorm].[RowAttrib4] AS [RowAttrib4], 
+    [AttributeDeNorm].[RowAttrib5] AS [RowAttrib5], 
+    [AttributeDeNorm].[RowAttrib6] AS [RowAttrib6], 
+    [AttributeDeNorm].[RowAttrib7] AS [RowAttrib7], 
+    [AttributeDeNorm].[RowAttrib8] AS [RowAttrib8], 
+    [AttributeDeNorm].[RowAttrib9] AS [RowAttrib9], 
+    [AttributeDeNorm].[RowAttrib10] AS [RowAttrib10], 
+    [AttributeDeNorm].[RowAttrib11] AS [RowAttrib11], 
+    [AttributeDeNorm].[RowAttrib12] AS [RowAttrib12], 
+    [AttributeDeNorm].[CellAttrib1] AS [CellAttrib1], 
+    [AttributeDeNorm].[CellAttrib2] AS [CellAttrib2], 
+    [AttributeDeNorm].[CellAttrib3] AS [CellAttrib3], 
+    [AttributeDeNorm].[CellAttrib4] AS [CellAttrib4], 
+    [AttributeDeNorm].[CellAttrib5] AS [CellAttrib5], 
+    [AttributeDeNorm].[CellAttrib6] AS [CellAttrib6], 
+    [AttributeDeNorm].[CellAttrib7] AS [CellAttrib7], 
+    [AttributeDeNorm].[CellAttrib8] AS [CellAttrib8], 
+    [AttributeDeNorm].[CellAttrib9] AS [CellAttrib9], 
+    [AttributeDeNorm].[CellAttrib10] AS [CellAttrib10], 
+    [AttributeDeNorm].[CellAttrib11] AS [CellAttrib11], 
+    [AttributeDeNorm].[CellAttrib12] AS [CellAttrib12]
+    FROM [dbo].[AttributeDeNorm] AS [AttributeDeNorm]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GridCode" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="RowCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ColCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attrib" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Expand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="DEV_AF" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Attributes" EntityType="Self.Attribute" />
+          <FunctionImport Name="UspGetAttribute" ReturnType="Collection(EasModel.UspGetAttribute_Result)">
+          <Parameter Name="GridCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UspInsAttribute" ReturnType="Collection(EasModel.UspInsAttribute_Result)">
+            <Parameter Name="GridCode" Mode="In" Type="String" />
+            <Parameter Name="RowCode" Mode="In" Type="String" />
+            <Parameter Name="ColCode" Mode="In" Type="String" />
+            <Parameter Name="Attrib" Mode="In" Type="String" />
+            <Parameter Name="Value" Mode="In" Type="String" />
+            <Parameter Name="Expand" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="AttributeDeNorms" EntityType="EasModel.AttributeDeNorm" />
+        </EntityContainer>
+        <ComplexType Name="UspGetAttribute_Result">
+          <Property Type="String" Name="GridCode" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="RowCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ColCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Attrib" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Value" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Expand" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="UspInsAttribute_Result">
+          <Property Type="String" Name="syntax" Nullable="false" MaxLength="81" />
+          <Property Type="String" Name="action" Nullable="false" MaxLength="85" />
+        </ComplexType>
+        <ComplexType Name="GetAttributeResult" >
+          <Property Type="String" Name="GridCode" Nullable="false" />
+          <Property Type="String" Name="RowCode" Nullable="false" />
+          <Property Type="String" Name="ColCode" Nullable="false" />
+          <Property Type="String" Name="Attrib" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="false" />
+          <Property Type="String" Name="Expand" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="AttributeDeNorm">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GridCode" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="RowCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ColCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib6" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowAttrib7" Type="Boolean" />
+          <Property Name="RowAttrib8" Type="Boolean" />
+          <Property Name="RowAttrib9" Type="Boolean" />
+          <Property Name="RowAttrib10" Type="Boolean" />
+          <Property Name="RowAttrib11" Type="Boolean" />
+          <Property Name="RowAttrib12" Type="Boolean" />
+          <Property Name="CellAttrib1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CellAttrib2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CellAttrib3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CellAttrib4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CellAttrib5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CellAttrib6" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CellAttrib7" Type="Boolean" />
+          <Property Name="CellAttrib8" Type="Boolean" />
+          <Property Name="CellAttrib9" Type="Boolean" />
+          <Property Name="CellAttrib10" Type="Boolean" />
+          <Property Name="CellAttrib11" Type="Boolean" />
+          <Property Name="CellAttrib12" Type="Boolean" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EasModelStoreContainer" CdmEntityContainer="DEV_AF">
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="EasModel.Attribute">
+              <MappingFragment StoreEntitySet="Attribute">
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+                <ScalarProperty Name="Attrib" ColumnName="Attrib" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Expand" ColumnName="Expand" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UspGetAttribute" FunctionName="EasModel.Store.UspGetAttribute">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.UspGetAttribute_Result">
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+                <ScalarProperty Name="Attrib" ColumnName="Attrib" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Expand" ColumnName="Expand" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspInsAttribute" FunctionName="EasModel.Store.UspInsAttribute">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.UspInsAttribute_Result">
+                <ScalarProperty Name="syntax" ColumnName="syntax" />
+                <ScalarProperty Name="action" ColumnName="action" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="AttributeDeNorms">
+            <EntityTypeMapping TypeName="EasModel.AttributeDeNorm">
+              <MappingFragment StoreEntitySet="AttributeDeNorm">
+                <ScalarProperty Name="CellAttrib12" ColumnName="CellAttrib12" />
+                <ScalarProperty Name="CellAttrib11" ColumnName="CellAttrib11" />
+                <ScalarProperty Name="CellAttrib10" ColumnName="CellAttrib10" />
+                <ScalarProperty Name="CellAttrib9" ColumnName="CellAttrib9" />
+                <ScalarProperty Name="CellAttrib8" ColumnName="CellAttrib8" />
+                <ScalarProperty Name="CellAttrib7" ColumnName="CellAttrib7" />
+                <ScalarProperty Name="CellAttrib6" ColumnName="CellAttrib6" />
+                <ScalarProperty Name="CellAttrib5" ColumnName="CellAttrib5" />
+                <ScalarProperty Name="CellAttrib4" ColumnName="CellAttrib4" />
+                <ScalarProperty Name="CellAttrib3" ColumnName="CellAttrib3" />
+                <ScalarProperty Name="CellAttrib2" ColumnName="CellAttrib2" />
+                <ScalarProperty Name="CellAttrib1" ColumnName="CellAttrib1" />
+                <ScalarProperty Name="RowAttrib12" ColumnName="RowAttrib12" />
+                <ScalarProperty Name="RowAttrib11" ColumnName="RowAttrib11" />
+                <ScalarProperty Name="RowAttrib10" ColumnName="RowAttrib10" />
+                <ScalarProperty Name="RowAttrib9" ColumnName="RowAttrib9" />
+                <ScalarProperty Name="RowAttrib8" ColumnName="RowAttrib8" />
+                <ScalarProperty Name="RowAttrib7" ColumnName="RowAttrib7" />
+                <ScalarProperty Name="RowAttrib6" ColumnName="RowAttrib6" />
+                <ScalarProperty Name="RowAttrib5" ColumnName="RowAttrib5" />
+                <ScalarProperty Name="RowAttrib4" ColumnName="RowAttrib4" />
+                <ScalarProperty Name="RowAttrib3" ColumnName="RowAttrib3" />
+                <ScalarProperty Name="RowAttrib2" ColumnName="RowAttrib2" />
+                <ScalarProperty Name="RowAttrib1" ColumnName="RowAttrib1" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

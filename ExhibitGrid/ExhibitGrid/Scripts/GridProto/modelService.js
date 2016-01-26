@@ -122,7 +122,7 @@ var app;
                 return this.exhibitModel;
             };
             MockModelService.prototype.getGridModel = function (gridCode) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': [gridCode] })[0];
+                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
                 return grid;
             };
             MockModelService.prototype.AddSpaceForSelectColumn = function () {
