@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ExhibitGrid.EntityDataModel;
 using ExhibitGrid.ViewModel;
+using ExhibitGrid.Processes;
 
 namespace ExhibitGrid.Controllers
 {
@@ -18,8 +19,8 @@ namespace ExhibitGrid.Controllers
 
         public ActionResult DynamicViewGrid()
         {
-
-            return View();
+            var gridVm = GridVmFactory.GetGridVm("mock");
+            return View(gridVm);
         }
 
 

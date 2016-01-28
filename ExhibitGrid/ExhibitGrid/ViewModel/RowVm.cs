@@ -9,8 +9,9 @@ namespace ExhibitGrid.ViewModel
     {
         public string RowCode { get; set; }
         public string[] ParentRowCodes { get; set; }
-        public RowType Type { get; set; }
+        public string Class { get; set; }
         public string Text { get; set; }
+        public string PeCode { get; set; }
         public SelectionCellVm SelectionCell { get; set; }
         public CrudCellVm CrudCell { get; set; }
         public NarrativeCellVm NarrativeCell { get; set; }
@@ -18,11 +19,7 @@ namespace ExhibitGrid.ViewModel
 
         public List<DataCellVm> DataCells { get; set; }
     }
-
-    public enum RowType
-    {
-        Data, Total, Header
-    }
+    
 
     public class SelectionCellVm
     {

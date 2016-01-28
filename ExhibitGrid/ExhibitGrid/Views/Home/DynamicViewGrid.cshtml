@@ -1,7 +1,35 @@
-﻿
+﻿@model ExhibitGrid.ViewModel.GridVm
 @{
     ViewBag.Title = "DynamicViewGrid";
 }
+<script src="~/Scripts/GridProto/gridModule.js"></script>
+<script src="~/Scripts/GridProto/directives.js"></script>
+<script src="~/Scripts/GridProto/modelService.js"></script>
+<script src="~/Scripts/GridProto/calcService.js"></script>
+<link href="~/Content/exhibitGrid.min.css" rel="stylesheet" />
+@*<script src="~/Scripts/inversify.js"></script>*@
 
-<h2>DynamicViewGrid</h2>
+
+<div ng-app="app">
+    <div ng-controller="exhibitController as exCtrl">
+
+        <input type="button" class="k-button" ng-click="exCtrl.ModifyFirstRow()" value="Alter RowVm" />
+
+        <ul class="grid-wrapper">
+            <li ng-repeat="row in gridCtrl.currentGridVm.Rows track by row.RowCode">
+                <div class="row-wrapper">
+                    <div class="row-inline ">
+                        <div independant-row>
+                            @for (int i = 0; i < Model.Rows[0].DataCells.Count; i ++)
+                            {
+                                <div independant-cell cell-vm=""></div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</div>
 

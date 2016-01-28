@@ -18,8 +18,9 @@ declare module ExhibitGrid.ViewModel {
 	interface IRowVm {
 		RowCode: string;
 		ParentRowCodes: string[];
-		Type: ExhibitGrid.ViewModel.RowType;
+		Class: string;
 		Text: string;
+		PeCode: string;
 		SelectionCell: ExhibitGrid.ViewModel.ISelectionCellVm;
 		CrudCell: ExhibitGrid.ViewModel.ICrudCellVm;
 		NarrativeCell: ExhibitGrid.ViewModel.INarrativeCellVm;

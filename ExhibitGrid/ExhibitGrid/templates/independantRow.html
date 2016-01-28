@@ -1,0 +1,31 @@
+﻿
+    <div class="cell-wrapper">
+        <div class="cell select-cell" ng-show="rowCtrl.RowVm.SelectionCell.IncludeSpaceForCell">
+            <input type="checkbox" ng-show="rowVm.SelectionCell.AllowSelect" ng-model="rowVm.SelectionCell.IsSelected">
+        </div>
+    </div>
+    <div class="cell-wrapper">
+        <div class="cell crud-cell" ng-show="row.CrudCell.IncludeSpaceForCell">
+            <div ng-switch="row.CrudCell.CrudFunctionality">
+                <i ng-switch-when="create" style="cursor:pointer" ng-click="rowCtrl.addRow()" class="fa-plus fa-2x"></i>
+            </div>
+        </div>
+    </div>
+    <div class="cell-wrapper">
+        <div class="cell text-cell cell-2x">
+            {{row.Text }} <br />
+        </div>
+    </div>
+    <div class="cell-wrapper">
+        <div class="cell narr-cell" ng-show="row.NarrativeCell.IncludeSpaceForCell">
+
+        </div>
+    </div>
+    <div class="cell-wrapper">
+        <div class="cell postit-cell" ng-show="row.PostItCell.IncludeSpaceForCell">
+
+        </div>
+    </div>
+
+    <div ng-transclude>
+    </div>

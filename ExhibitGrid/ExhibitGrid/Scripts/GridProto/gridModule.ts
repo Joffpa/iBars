@@ -11,9 +11,18 @@ module app{
         constructor(modelService: app.model.IModelService) {
             this.modelService = modelService;
             this.exhibitVm = modelService.getExhibitModel();
-            this.currentGridVm = modelService.getGridModel('Grid_A');
+            this.currentGridVm = modelService.getGridModel('MockGrid');
             //console.log(this.curentGridVm);
         }                     
+
+        getRowModel(gridCode: string, rowCode: string) {
+            return this.modelService.getRowModel(gridCode, rowCode);
+        }
+
+        ModifyFirstRow() {
+            var row = this.modelService.getRowModel("MockGrid", "Row_0");
+            row.SelectionCell.IncludeSpaceForCell = !row.SelectionCell.IncludeSpaceForCell;
+        }
     }
     
     export class GridController {
@@ -25,6 +34,7 @@ module app{
             this.GridVm = $scope.gridVm;
             this.ModelService = modelService;
         }
+
         
     }
 
@@ -38,19 +48,28 @@ module app{
             this.ModelService = modelService;
         }
 
-        getRowCssClass() {
-            if (this.RowVm.Type == ExhibitGrid.ViewModel.RowType.Data)
-                return 'data-row';
-            else if (this.RowVm.Type == ExhibitGrid.ViewModel.RowType.Total)
-                return 'total-row';
-            else if (this.RowVm.Type == ExhibitGrid.ViewModel.RowType.Header)
-                return 'header-row';
-        }
-
         addRow() {
             alert('row added' + this.RowVm.RowCode);
         }
     }
+
+    export class IndependantRowController {
+
+        RowVm: app.model.RowVm;
+        ModelService: app.model.IModelService;
+
+        constructor($scope, modelService: app.model.IModelService) {
+            this.RowVm = $scope.rowVm;
+            this.ModelService = modelService;
+
+            console.log("i row ctrl const");
+            console.log($scope);
+        }
+
+        
+    }
+
+
 
     export class CellController {
         DataCellVm: app.model.DataCellVm;

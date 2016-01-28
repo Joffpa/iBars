@@ -7,19 +7,20 @@ module app.model {
     export interface IModelService {
         exhibitModel: ExhibitVm
         getExhibitModel(): ExhibitVm,
-        getGridModel(gridCode: string): GridVm
+        getGridModel(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
+        getRowModel(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
     }
 
     export class ExhibitVm {
         ExhibitCode: string;
-        Grids: GridVm[];
+        Grids: ExhibitGrid.ViewModel.IGridVm[];
          
         constructor(ExhibitCode: string) {
             this.ExhibitCode = ExhibitCode;
-            this.Grids = new Array<GridVm>();
+            this.Grids = new Array<ExhibitGrid.ViewModel.IGridVm>();
         }
 
-        addGrid(grid: GridVm) {
+        addGrid(grid: ExhibitGrid.ViewModel.IGridVm) {
             this.Grids.push(grid);
         }
     }
@@ -36,17 +37,18 @@ module app.model {
     export class RowVm implements ExhibitGrid.ViewModel.IRowVm{
         RowCode: string;
         ParentRowCodes: string[];
-        Type: ExhibitGrid.ViewModel.RowType;
+        Class: string;
         Text: string;
+        PeCode: string;
         SelectionCell: ExhibitGrid.ViewModel.ISelectionCellVm;
         CrudCell: ExhibitGrid.ViewModel.ICrudCellVm;
         NarrativeCell: ExhibitGrid.ViewModel.INarrativeCellVm;
         PostItCell: ExhibitGrid.ViewModel.IPostItCellVm;
         DataCells: ExhibitGrid.ViewModel.IDataCellVm[];
-        constructor(RowCode: string, ParentRowCodes: string[], Type: ExhibitGrid.ViewModel.RowType, Text: string) {
+        constructor(RowCode: string, ParentRowCodes: string[], Class: string, Text: string) {
             this.RowCode = RowCode;
             this.ParentRowCodes = ParentRowCodes;
-            this.Type = Type;
+            this.Class = Class;
             this.Text = Text;
         }
 
@@ -128,9 +130,9 @@ module app.model {
             var numRows = 16;
             var numColumns = 17;
 
-            var grid = new GridVm('Grid_A');
+            var grid = new GridVm('MockGrid');
 
-            var headerRow: RowVm = new RowVm('Row_0', null, ExhibitGrid.ViewModel.RowType.Header, 'Header Text');
+            var headerRow: RowVm = new RowVm('Row_0', null, 'header-row', 'Header Text');
             headerRow.SelectionCell = new SelectionCellVm(true, false, false);
             headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
             headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
@@ -145,7 +147,7 @@ module app.model {
             grid.Rows = [headerRow];
 
             for (var r = 1; r <= numRows; r++) {
-                var dataRow0: RowVm = new RowVm('Row_' + r, null, ExhibitGrid.ViewModel.RowType.Data, 'Row Text');
+                var dataRow0: RowVm = new RowVm('Row_' + r, null, 'data-row', 'Row Text');
                 dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
                 dataRow0.CrudCell = new CrudCellVm(true, 'create');
                 dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
@@ -176,7 +178,13 @@ module app.model {
             var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
             return grid;
         }
-        
+
+        getRowModel(gridCode: string, rowCode: string) {
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+            var row = _.where(grid.Rows, { 'RowCode': rowCode })[0];
+            return row;
+        }
+               
     }
 
     var service = angular.module('app.model', []);

@@ -37,14 +37,29 @@
                     if (scope.cell.Type == 'num-input') {
                         console.log(element);
                         console.log($('#' +scope.cell.RowCode + scope.cell.ColCode));
-                        //$('#' + scope.cell.RowCode + scope.cell.ColCode).kendoMaskedTextBox({
-                        //    mask: "$00,000,000.00"
-                        //});
                     }
                 }
             }
         }])
 
+        .directive('independantRow', ['$compile', 'modelService', function ($compile, modelService) {
+            return {
+                restrict: 'A',
+                templateUrl: '/templates/independantRow.html',
+                controllerAs: 'rowCtrl',
+                transclude: true,
+                controller: ['$scope', 'modelService', IndependantRowController]
+            }
+        }])
+
+        //.directive('independantCell', ['$compile', 'modelService', function ($compile, modelService) {
+        //    return {
+        //        restrict: 'A',
+        //        templateUrl: '/templates/independantRow.html',
+        //        controllerAs: 'rowCtrl',
+        //        controller: ['$scope', 'modelService', IndependantRowController],
+        //    }
+        //}])
         //.directive('exhibitCellNumInput', ['modelService', function (modelService) {
         //    return {
         //        restrict: 'A',

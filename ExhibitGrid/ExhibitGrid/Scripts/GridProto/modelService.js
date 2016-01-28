@@ -23,10 +23,10 @@ var app;
         })();
         model.GridVm = GridVm;
         var RowVm = (function () {
-            function RowVm(RowCode, ParentRowCodes, Type, Text) {
+            function RowVm(RowCode, ParentRowCodes, Class, Text) {
                 this.RowCode = RowCode;
                 this.ParentRowCodes = ParentRowCodes;
-                this.Type = Type;
+                this.Class = Class;
                 this.Text = Text;
             }
             return RowVm;
@@ -88,8 +88,8 @@ var app;
                 this.exhibitModel = new ExhibitVm("Test Exhibit");
                 var numRows = 16;
                 var numColumns = 17;
-                var grid = new GridVm('Grid_A');
-                var headerRow = new RowVm('Row_0', null, 2 /* Header */, 'Header Text');
+                var grid = new GridVm('MockGrid');
+                var headerRow = new RowVm('Row_0', null, 'header-row', 'Header Text');
                 headerRow.SelectionCell = new SelectionCellVm(true, false, false);
                 headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
                 headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
@@ -101,7 +101,7 @@ var app;
                 }
                 grid.Rows = [headerRow];
                 for (var r = 1; r <= numRows; r++) {
-                    var dataRow0 = new RowVm('Row_' + r, null, 0 /* Data */, 'Row Text');
+                    var dataRow0 = new RowVm('Row_' + r, null, 'data-row', 'Row Text');
                     dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
                     dataRow0.CrudCell = new CrudCellVm(true, 'create');
                     dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
@@ -123,6 +123,11 @@ var app;
                 var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
                 return grid;
             };
+            MockModelService.prototype.getRowModel = function (gridCode, rowCode) {
+                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+                var row = _.where(grid.Rows, { 'RowCode': rowCode })[0];
+                return row;
+            };
             return MockModelService;
         })();
         model.MockModelService = MockModelService;
@@ -132,4 +137,3 @@ var app;
         });
     })(model = app.model || (app.model = {}));
 })(app || (app = {}));
-//# sourceMappingURL=modelService.js.map
