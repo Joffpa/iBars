@@ -114,6 +114,14 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="TypeLite, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
+      <HintPath>..\packages\TypeLite.1.6.0\lib\net4\TypeLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TypeLite.Net4, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8cd4b9c9ac23d744, processorArchitecture=MSIL">
+      <HintPath>..\packages\TypeLite.1.6.0\lib\net4\TypeLite.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -493,6 +501,10 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\TypeLite.Net4.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
+    </Content>
     <Content Include="Scripts\_references.js" />
     <Content Include="templates\exhibitCell.html" />
     <Content Include="templates\exhibitCellReadOnly.html" />
@@ -514,6 +526,7 @@
     <Content Include="Scripts\kendo\2015.1.429\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\kendo\2015.1.429\kendo.web.min.js.map" />
     <Content Include="Views\Home\DynamicViewGrid.cshtml" />
+    <Content Include="Scripts\Manager.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -531,10 +544,18 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Enums.ts">
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\GridProto\calcService.ts" />
     <TypeScriptCompile Include="Scripts\GridProto\directives.ts" />
     <TypeScriptCompile Include="Scripts\GridProto\gridModule.ts" />
     <TypeScriptCompile Include="Scripts\GridProto\modelService.ts" />
+    <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -587,6 +608,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

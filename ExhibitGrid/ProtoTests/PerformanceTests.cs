@@ -195,12 +195,12 @@ namespace ProtoTests
         {
             try
             {
-
+                var x = 0;
                 using (var db = new DEV_AF())
                 {
                     var grid1 = CreateNewGridVm();
 
-                    var x = 1;
+                    x = 1;
                     var spResult = db.UspGetAttribute("PBA12_ProgData1").ToList();
 
                     //about 159 ms
@@ -245,7 +245,7 @@ namespace ProtoTests
                 {
                     var grid2 = CreateNewGridVm();
 
-                    var x = 1;
+                    x = 1;
                     var attribDic = db.UspGetAttribute("PBA12_ProgData1").ToDictionary(a => a.GridCode + "_" + a.RowCode + "_" + (a.ColCode != null ? a.ColCode : "") + "_" + a.Attrib, a => a.Value);
 
                     var gridCode = grid2.GridCode;
@@ -290,7 +290,7 @@ namespace ProtoTests
                 {
 
                     var grid3 = CreateNewGridVm();
-                    var x = 3;
+                    x = 3;
                     var deNormAttribs = db.AttributeDeNorms.Where(a => a.GridCode == grid3.GridCode).ToList();
 
                     foreach (RowVm row in grid3.Rows)
@@ -330,7 +330,7 @@ namespace ProtoTests
                     x = 4;
                 }
 
-
+                Console.Write(x);
 
             }
             catch (Exception e)

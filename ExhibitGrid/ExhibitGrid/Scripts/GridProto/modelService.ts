@@ -13,7 +13,7 @@ module app.model {
     export class ExhibitVm {
         ExhibitCode: string;
         Grids: GridVm[];
-
+         
         constructor(ExhibitCode: string) {
             this.ExhibitCode = ExhibitCode;
             this.Grids = new Array<GridVm>();
@@ -25,6 +25,7 @@ module app.model {
     }
 
     export class GridVm {
+
         GridCode: string;
         Rows: RowVm[];
         constructor(GridCode: string) {
