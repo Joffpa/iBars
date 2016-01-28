@@ -33,6 +33,15 @@
                 restrict: 'A',
                 templateUrl: '/templates/exhibitCell.html',
                 controller: ['$scope', 'calcService', CellController],
+                link: function (scope, element, attrs, controller, transcludeFn) {
+                    if (scope.cell.Type == 'num-input') {
+                        console.log(element);
+                        console.log($('#' +scope.cell.RowCode + scope.cell.ColCode));
+                        //$('#' + scope.cell.RowCode + scope.cell.ColCode).kendoMaskedTextBox({
+                        //    mask: "$00,000,000.00"
+                        //});
+                    }
+                }
             }
         }])
 

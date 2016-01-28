@@ -7,12 +7,7 @@ module app.model {
     export interface IModelService {
         exhibitModel: ExhibitVm
         getExhibitModel(): ExhibitVm,
-        getGridModel(gridCode: string): GridVm,
-        getChildRows(gridCode: string, rowCode: string, pluckProp: string): {}[],
-        addAnotherRow(gridCode: string): void,
-        addAnotherColumn(gridCode: string): void,
-        getCellValue(coordinate: string): number
-
+        getGridModel(gridCode: string): GridVm
     }
 
     export class ExhibitVm {
@@ -36,6 +31,27 @@ module app.model {
             this.GridCode = GridCode;
         }
     }
+
+    export class GeneratedRowVm {
+        RowCode: string;
+        RowAttrib1: string;
+        RowAttrib2: string;
+        RowAttrib3: string;
+        RowAttrib4: string;
+        RowAttrib5: string;
+        RowAttrib6: string;
+        RowAttrib7: boolean;
+        RowAttrib8: boolean;
+        RowAttrib9: boolean;
+        RowAttrib10: boolean;
+        RowAttrib11: boolean;
+        RowAttrib12: boolean;
+       // Cells: ExhibitGrid.ViewModel.CellVm[];
+    }
+
+
+
+
 
     export class RowVm {
         RowCode: string;
@@ -132,7 +148,10 @@ module app.model {
 
         constructor() {
             this.exhibitModel = new ExhibitVm("Test Exhibit");
-            
+
+            var numRows = 16;
+            var numColumns = 17;
+
             var grid = new GridVm('Grid_A');
 
             var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text');
@@ -140,29 +159,38 @@ module app.model {
             headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
             headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
             headerRow.PostItCell = new PostItCellVm(true, false, false);
-            headerRow.DataCells = [
-                new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '1x', false),
-                new DataCellVm('Col_A', 'Row_0', 'header-cell', 'read-only', 'Column A', '1x', false),
-                new DataCellVm('Col_B', 'Row_0', 'header-cell', 'read-only', 'Column B', '1x', false),
-                new DataCellVm('Col_C', 'Row_0', 'header-cell', 'read-only', 'Column C', '1x', false)
-            ]
+            headerRow.DataCells = [new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '1x', false)];
 
-            var dataRow0: RowVm = new RowVm('Row_1', null, RowType.Data, 'Row Text');
-            dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
-            dataRow0.CrudCell = new CrudCellVm(true, 'create');
-            dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
-            dataRow0.PostItCell = new PostItCellVm(true, true, false);
-            dataRow0.DataCells = [
-                new DataCellVm('Col_Txt', 'Row_1', 'text-cell', 'read-only', null, '1x', false),
-                new DataCellVm('Col_A', 'Row_1', 'data-cell', 'num-input', 50, '1x', false),
-                new DataCellVm('Col_B', 'Row_1', 'data-cell', 'num-input', 100, '1x', false),
-                new DataCellVm('Col_C', 'Row_1', 'data-cell', 'num-input', 150, '1x', false)
-            ]
+            for (var c = 0; c <= numColumns; c++) {
+                var cell = new DataCellVm('Col_' + c, 'Row_0', 'header-cell', 'read-only', 'Column ' + c, '1x', false);
+                headerRow.DataCells.push(cell); 
+            }
+            
+            grid.Rows = [headerRow];
 
-            grid.Rows = [headerRow, dataRow0];
+            for (var r = 1; r <= numRows; r++) {
+                var dataRow0: RowVm = new RowVm('Row_' + r, null, RowType.Data, 'Row Text');
+                dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
+                dataRow0.CrudCell = new CrudCellVm(true, 'create');
+                dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
+                dataRow0.PostItCell = new PostItCellVm(true, true, false);
+                dataRow0.DataCells = [new DataCellVm('Col_Txt', 'Row_' + r, 'text-cell', 'read-only', null, '1x', false)];
+
+                for (var c = 0; c <= numColumns; c++) {
+                    var cell = new DataCellVm('Col_' +c, 'Row_' + r, 'data-cell', 'num-input', 150, '1x', false);
+                    dataRow0.DataCells.push(cell);
+                }
+
+                grid.Rows.push(dataRow0);
+
+            }
+
+            console.log(grid);
+                                    
 
             this.exhibitModel.addGrid(grid);
         }
+        
         
         getExhibitModel() {
             return this.exhibitModel;
@@ -172,60 +200,7 @@ module app.model {
             var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
             return grid;
         }
-
-        AddSpaceForSelectColumn() {
-            
-        }
-
-
-        getChildRows(gridCode: string, rowCode: string, pluckProp: string) {
-            var rows = _.where(this.exhibitModel[gridCode].Rows, { 'RowParents': [rowCode] });
-            if (pluckProp) {
-                rows = _.pluck(rows, pluckProp);
-            }
-            return rows;
-        }
-
-        addAnotherRow(gridCode: string) {
-            var rowNum = this.exhibitModel[gridCode].Rows.length;
-            var cells = [];
-            _.forEach(this.exhibitModel[gridCode].Rows[0].Cells, function (va, idx: number) {
-                if (idx === 0) {
-                    cells.push({
-                        ColCode: 'Col_Txt', CellClass: 'text-cell', CellType: 'text', CellValue: 'Row ' + rowNum, CellWidth: '2x'
-                    });
-                } else {
-                    cells.push({
-                        ColCode: 'Col_' + String.fromCharCode(idx + 64), CellClass: 'data-cell', CellType: 'num', CellValue: 500, CellWidth: '1x'
-                    });
-                }
-            })
-
-            this.exhibitModel[gridCode].Rows.push({
-                RowCode: 'Row_' + rowNum, RowParents: null, RowClass: 'data-row', Cells: cells, RowText: 'Row ' + rowNum + ' Text'
-            });
-        }
-
-        addAnotherColumn(gridCode: string) {
-            var colLetter = String.fromCharCode(this.exhibitModel[gridCode].Rows[0].Cells.length + 64);
-
-            _.forEach(this.exhibitModel[gridCode].Rows, function (val, idx: number) {
-                if (idx == 0) {
-                    val.Cells.push({
-                        ColCode: 'Col_' + colLetter, CellClass: 'header-cell', CellType: 'text', CellValue: 'Column ' + colLetter, CellWidth: '1x', IsEditable: false
-                    })
-                } else {
-                    val.Cells.push({
-                        ColCode: 'Col_' + colLetter, CellClass: 'data-cell', CellType: 'num', CellValue: 800, CellWidth: '1x', IsEditable: true
-                    })
-                }
-            })
-        }
-
-        getCellValue(coordinate: string) {
-            return 1;
-        }
-
+        
     }
 
     var service = angular.module('app.model', []);

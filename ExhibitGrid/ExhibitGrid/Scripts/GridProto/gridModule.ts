@@ -25,15 +25,7 @@ module app{
             this.GridVm = $scope.gridVm;
             this.ModelService = modelService;
         }
-
-        addRow() {
-            this.ModelService.addAnotherRow('');
-
-        }
-
-        addCol() {
-            this.ModelService.addAnotherColumn('');
-        }
+        
     }
 
     export class RowController {

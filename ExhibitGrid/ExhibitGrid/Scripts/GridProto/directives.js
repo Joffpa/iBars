@@ -27,6 +27,12 @@ var app;
                     restrict: 'A',
                     templateUrl: '/templates/exhibitCell.html',
                     controller: ['$scope', 'calcService', app.CellController],
+                    link: function (scope, element, attrs, controller, transcludeFn) {
+                        if (scope.cell.Type == 'num-input') {
+                            console.log(element);
+                            console.log($('#' + scope.cell.RowCode + scope.cell.ColCode));
+                        }
+                    }
                 };
             }]);
     })(directives = app.directives || (app.directives = {}));

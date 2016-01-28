@@ -2,7 +2,7 @@
 <div ng-switch="cell.Type">
     <div ng-switch-when="num-input">
         <div class="cell {{cell.Class}} cell-{{cell.Width}}">
-            <input type="number" class="k-input" ng-model="cell.Value" />
+            <input id="{{cell.RowCode + cell.ColCode}}" ng-model="{{cell.Value}}" class="k-textbox" />
         </div>
     </div>
     <div ng-switch-when="text-input">

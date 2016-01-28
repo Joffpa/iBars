@@ -16,12 +16,6 @@ var app;
             this.GridVm = $scope.gridVm;
             this.ModelService = modelService;
         }
-        GridController.prototype.addRow = function () {
-            this.ModelService.addAnotherRow('');
-        };
-        GridController.prototype.addCol = function () {
-            this.ModelService.addAnotherColumn('');
-        };
         return GridController;
     })();
     app.GridController = GridController;

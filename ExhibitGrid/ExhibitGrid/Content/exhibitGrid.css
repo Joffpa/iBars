@@ -4,22 +4,49 @@
 }
 .main-content .grid-wrapper {
   margin-top: 40px;
+  width: 4000px;
 }
 .main-content .grid-wrapper .row-wrapper {
+  display: block;
+  /*.cell-wrapper :before {
+                content: '';
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+                margin-right: -0.25em;
+            }*/
+}
+.main-content .grid-wrapper .row-wrapper .header-row {
+  /*height: 35px;*/
+  background-color: rgba(191, 191, 191, 0.38);
+  font-size: large;
+}
+.main-content .grid-wrapper .row-wrapper .data-row {
+  background-color: #bfbfbf;
+}
+.main-content .grid-wrapper .row-wrapper .total-row {
+  background-color: #ffff99;
+}
+.main-content .grid-wrapper .row-wrapper .row-inline {
   display: inline-block;
-  min-height: 30px;
-  width: auto;
   border-bottom: solid;
   border-left: solid;
   border-right: solid;
-  border-width: 1px;
+  border-width: 5px;
   border-color: black;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
+  min-height: 40px;
+  width: auto;
+}
+.main-content .grid-wrapper .row-wrapper .row-inline:first-child {
+  border: solid;
+  border-width: 1px;
+  border-color: black;
 }
 .main-content .grid-wrapper .row-wrapper .cell-wrapper {
-  min-height: 40px;
+  /*min-height: 40px;*/
   display: inline-block;
   /*margin: 2px;*/
   padding: 2px;
@@ -33,6 +60,7 @@
   vertical-align: top;
   text-align: center;
   white-space: nowrap;
+  height: 50px;
   /*.blank-cell {
                     height: 30px;
                 }*/
@@ -42,6 +70,9 @@
   display: inline-block;
   vertical-align: middle;
   width: 300px;
+}
+.main-content .grid-wrapper .row-wrapper .cell-wrapper .cell:before {
+  content: none;
 }
 .main-content .grid-wrapper .row-wrapper .cell-wrapper .select-cell {
   width: 20px;
@@ -79,35 +110,9 @@
 .main-content .grid-wrapper .row-wrapper .cell-wrapper .cell-3x {
   width: 450px;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper :before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -0.25em;
-  /* Adjusts for spacing */
-}
 .main-content .grid-wrapper .row-wrapper .cell-wrapper:last-child {
   border-right: none;
 }
-.main-content .grid-wrapper .row-wrapper:first-child {
-  border: solid;
-  border-width: 1px;
-  border-color: black;
-  border-radius: 5px 5px 0 0;
-}
-.main-content .grid-wrapper .row-wrapper:last-child {
-  border-radius: 0 0 5px 5px;
-}
-.main-content .grid-wrapper .header-row {
-  /*height: 35px;*/
-  width: auto;
-  background-color: rgba(191, 191, 191, 0.38);
-  font-size: large;
-}
-.main-content .grid-wrapper .data-row {
-  background-color: #bfbfbf;
-}
-.main-content .grid-wrapper .total-row {
-  background-color: #ffff99;
+.main-content .grid-wrapper .row-wrapper:after {
+  clear: both;
 }

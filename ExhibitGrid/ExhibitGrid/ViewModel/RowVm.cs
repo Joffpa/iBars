@@ -12,7 +12,7 @@ namespace ExhibitGrid.ViewModel
             this.RowCode = rowCode;
             this.Cells = cells;
         }
-
+        public string newProp { get; set; }
         public string RowCode { get; set; }
         public string RowAttrib1 { get; set; }
         public string RowAttrib2 { get; set; }
