@@ -24,26 +24,26 @@ module app.model {
         }
     }
 
-    export class GridVm {
+    export class GridVm implements ExhibitGrid.ViewModel.IGridVm {
 
         GridCode: string;
-        Rows: RowVm[];
+        Rows: ExhibitGrid.ViewModel.IRowVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
     }
     
-    export class RowVm {
+    export class RowVm implements ExhibitGrid.ViewModel.IRowVm{
         RowCode: string;
         ParentRowCodes: string[];
-        Type: RowType;
+        Type: ExhibitGrid.ViewModel.RowType;
         Text: string;
-        SelectionCell: SelectionCellVm;
-        CrudCell: CrudCellVm;
-        NarrativeCell: NarrativeCellVm;
-        PostItCell: PostItCellVm;
-        DataCells: DataCellVm[];
-        constructor(RowCode: string, ParentRowCodes: string[], Type: RowType, Text: string) {
+        SelectionCell: ExhibitGrid.ViewModel.ISelectionCellVm;
+        CrudCell: ExhibitGrid.ViewModel.ICrudCellVm;
+        NarrativeCell: ExhibitGrid.ViewModel.INarrativeCellVm;
+        PostItCell: ExhibitGrid.ViewModel.IPostItCellVm;
+        DataCells: ExhibitGrid.ViewModel.IDataCellVm[];
+        constructor(RowCode: string, ParentRowCodes: string[], Type: ExhibitGrid.ViewModel.RowType, Text: string) {
             this.RowCode = RowCode;
             this.ParentRowCodes = ParentRowCodes;
             this.Type = Type;
@@ -52,7 +52,7 @@ module app.model {
 
     }
     
-    export class SelectionCellVm {
+    export class SelectionCellVm implements ExhibitGrid.ViewModel.ISelectionCellVm{
         IncludeSpaceForCell: boolean;
         AllowSelect: boolean;
         IsSelected: boolean;
@@ -63,7 +63,7 @@ module app.model {
         }
     }
 
-    export class CrudCellVm {
+    export class CrudCellVm implements ExhibitGrid.ViewModel.ICrudCellVm{
         IncludeSpaceForCell: boolean;
         CrudFunctionality: string;
         constructor(IncludeSpaceForCell: boolean, CrudFunctionality: string) {
@@ -72,7 +72,7 @@ module app.model {
         }
     }
 
-    export class NarrativeCellVm {
+    export class NarrativeCellVm implements ExhibitGrid.ViewModel.INarrativeCellVm {
         IncludeSpaceForCell: boolean;
         AllowNarrative: boolean;
         HasNarrative: boolean;
@@ -83,7 +83,7 @@ module app.model {
         }   
     }
 
-    export class PostItCellVm {
+    export class PostItCellVm implements ExhibitGrid.ViewModel.IPostItCellVm {
         IncludeSpaceForCell: boolean;
         AllowPostIt: boolean;
         HasPostIt: boolean;
@@ -94,12 +94,8 @@ module app.model {
         }      
     }
     
-    export enum RowType {
-        Data, Total, Header
-    }
-    
 
-    export class DataCellVm {
+   export class DataCellVm implements ExhibitGrid.ViewModel.IDataCellVm{
         ColCode: string;
         RowCode: string;
         Class: string;
@@ -134,7 +130,7 @@ module app.model {
 
             var grid = new GridVm('Grid_A');
 
-            var headerRow: RowVm = new RowVm('Row_0', null, RowType.Header, 'Header Text');
+            var headerRow: RowVm = new RowVm('Row_0', null, ExhibitGrid.ViewModel.RowType.Header, 'Header Text');
             headerRow.SelectionCell = new SelectionCellVm(true, false, false);
             headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
             headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
@@ -149,7 +145,7 @@ module app.model {
             grid.Rows = [headerRow];
 
             for (var r = 1; r <= numRows; r++) {
-                var dataRow0: RowVm = new RowVm('Row_' + r, null, RowType.Data, 'Row Text');
+                var dataRow0: RowVm = new RowVm('Row_' + r, null, ExhibitGrid.ViewModel.RowType.Data, 'Row Text');
                 dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
                 dataRow0.CrudCell = new CrudCellVm(true, 'create');
                 dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);

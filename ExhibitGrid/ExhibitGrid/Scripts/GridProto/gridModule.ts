@@ -39,11 +39,11 @@ module app{
         }
 
         getRowCssClass() {
-            if (this.RowVm.Type == app.model.RowType.Data)
+            if (this.RowVm.Type == ExhibitGrid.ViewModel.RowType.Data)
                 return 'data-row';
-            else if (this.RowVm.Type == app.model.RowType.Total)
+            else if (this.RowVm.Type == ExhibitGrid.ViewModel.RowType.Total)
                 return 'total-row';
-            else if (this.RowVm.Type == app.model.RowType.Header)
+            else if (this.RowVm.Type == ExhibitGrid.ViewModel.RowType.Header)
                 return 'header-row';
         }
 

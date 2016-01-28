@@ -25,11 +25,11 @@ var app;
             this.ModelService = modelService;
         }
         RowController.prototype.getRowCssClass = function () {
-            if (this.RowVm.Type == app.model.RowType.Data)
+            if (this.RowVm.Type == 0 /* Data */)
                 return 'data-row';
-            else if (this.RowVm.Type == app.model.RowType.Total)
+            else if (this.RowVm.Type == 1 /* Total */)
                 return 'total-row';
-            else if (this.RowVm.Type == app.model.RowType.Header)
+            else if (this.RowVm.Type == 2 /* Header */)
                 return 'header-row';
         };
         RowController.prototype.addRow = function () {

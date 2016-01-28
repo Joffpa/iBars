@@ -67,12 +67,6 @@ var app;
             return PostItCellVm;
         })();
         model.PostItCellVm = PostItCellVm;
-        (function (RowType) {
-            RowType[RowType["Data"] = 0] = "Data";
-            RowType[RowType["Total"] = 1] = "Total";
-            RowType[RowType["Header"] = 2] = "Header";
-        })(model.RowType || (model.RowType = {}));
-        var RowType = model.RowType;
         var DataCellVm = (function () {
             function DataCellVm(ColCode, RowCode, Class, Type, Value, Width, IsEditable) {
                 this.ColCode = ColCode;
@@ -95,7 +89,7 @@ var app;
                 var numRows = 16;
                 var numColumns = 17;
                 var grid = new GridVm('Grid_A');
-                var headerRow = new RowVm('Row_0', null, RowType.Header, 'Header Text');
+                var headerRow = new RowVm('Row_0', null, 2 /* Header */, 'Header Text');
                 headerRow.SelectionCell = new SelectionCellVm(true, false, false);
                 headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
                 headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
@@ -107,7 +101,7 @@ var app;
                 }
                 grid.Rows = [headerRow];
                 for (var r = 1; r <= numRows; r++) {
-                    var dataRow0 = new RowVm('Row_' + r, null, RowType.Data, 'Row Text');
+                    var dataRow0 = new RowVm('Row_' + r, null, 0 /* Data */, 'Row Text');
                     dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
                     dataRow0.CrudCell = new CrudCellVm(true, 'create');
                     dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);

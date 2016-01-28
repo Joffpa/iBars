@@ -11,45 +11,48 @@
 /// <reference path="Enums.ts" />
 
 declare module ExhibitGrid.ViewModel {
-	interface GridVm {
+	interface IGridVm {
 		GridCode: string;
-		GridAttrib1: string;
-		GridAttrib2: string;
-		GridAttrib3: string;
-		GridAttrib4: string;
-		Rows: ExhibitGrid.ViewModel.RowVm[];
+		Rows: ExhibitGrid.ViewModel.IRowVm[];
 	}
-	interface RowVm {
+	interface IRowVm {
 		RowCode: string;
-		RowAttrib1: string;
-		RowAttrib2: string;
-		RowAttrib3: string;
-		RowAttrib4: string;
-		RowAttrib5: string;
-		RowAttrib6: string;
-		RowAttrib7: boolean;
-		RowAttrib8: boolean;
-		RowAttrib9: boolean;
-		RowAttrib10: boolean;
-		RowAttrib11: boolean;
-		RowAttrib12: boolean;
-		Cells: ExhibitGrid.ViewModel.CellVm[];
+		ParentRowCodes: string[];
+		Type: ExhibitGrid.ViewModel.RowType;
+		Text: string;
+		SelectionCell: ExhibitGrid.ViewModel.ISelectionCellVm;
+		CrudCell: ExhibitGrid.ViewModel.ICrudCellVm;
+		NarrativeCell: ExhibitGrid.ViewModel.INarrativeCellVm;
+		PostItCell: ExhibitGrid.ViewModel.IPostItCellVm;
+		DataCells: ExhibitGrid.ViewModel.IDataCellVm[];
 	}
-	interface CellVm {
+	interface ISelectionCellVm {
+		IncludeSpaceForCell: boolean;
+		AllowSelect: boolean;
+		IsSelected: boolean;
+	}
+	interface ICrudCellVm {
+		IncludeSpaceForCell: boolean;
+		CrudFunctionality: string;
+	}
+	interface INarrativeCellVm {
+		IncludeSpaceForCell: boolean;
+		AllowNarrative: boolean;
+		HasNarrative: boolean;
+	}
+	interface IPostItCellVm {
+		IncludeSpaceForCell: boolean;
+		AllowPostIt: boolean;
+		HasPostIt: boolean;
+	}
+	interface IDataCellVm {
 		RowCode: string;
 		ColCode: string;
-		CellAttrib1: string;
-		CellAttrib2: string;
-		CellAttrib3: string;
-		CellAttrib4: string;
-		CellAttrib5: string;
-		CellAttrib6: string;
-		CellAttrib7: boolean;
-		CellAttrib8: boolean;
-		CellAttrib9: boolean;
-		CellAttrib10: boolean;
-		CellAttrib11: boolean;
-		CellAttrib12: boolean;
+		Class: string;
+		Type: string;
+		Width: string;
+		IsEditable: boolean;
+		Value: any;
 	}
 }
 
