@@ -5,9 +5,9 @@ using System.Web;
 
 namespace ExhibitGrid.ViewModel
 {
-    public class CellVm
+    public class CellAttribsVm
     {
-        public CellVm(string colCode)
+        public CellAttribsVm(string colCode)
         {
             this.ColCode = colCode;
         }

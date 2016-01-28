@@ -32,28 +32,7 @@ module app.model {
             this.GridCode = GridCode;
         }
     }
-
-    export class GeneratedRowVm {
-        RowCode: string;
-        RowAttrib1: string;
-        RowAttrib2: string;
-        RowAttrib3: string;
-        RowAttrib4: string;
-        RowAttrib5: string;
-        RowAttrib6: string;
-        RowAttrib7: boolean;
-        RowAttrib8: boolean;
-        RowAttrib9: boolean;
-        RowAttrib10: boolean;
-        RowAttrib11: boolean;
-        RowAttrib12: boolean;
-       // Cells: ExhibitGrid.ViewModel.CellVm[];
-    }
-
-
-
-
-
+    
     export class RowVm {
         RowCode: string;
         ParentRowCodes: string[];

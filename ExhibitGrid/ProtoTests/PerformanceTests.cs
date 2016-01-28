@@ -11,178 +11,178 @@ namespace ProtoTests
     public class PerformanceTests
     {
 
-        private GridVm CreateNewGridVm()
+        private GridAttribsVm CreateNewGridVm()
         {
-            var grid1 = new GridVm("PBA12_ProgData1");
-            grid1.Rows = new List<RowVm>()
+            var grid1 = new GridAttribsVm("PBA12_ProgData1");
+            grid1.Rows = new List<RowAttribsVm>()
                     {
-                        new RowVm("PBA12_ProgData_CommunHdr", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CommunHdr", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CommunSustBase", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CommunSustBase", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CommunLongHaul", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CommunLongHaul", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CommunDeplMobl", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CommunDeplMobl", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CmdCntrlHdr", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CmdCntrlHdr", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CmdCntrlNatnl", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CmdCntrlNatnl", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CmdCntrlOpera", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CmdCntrlOpera", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_CmdCntrlTact", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_CmdCntrlTact", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_C3RelHdr", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_C3RelHdr", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_C3RelNavig", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_C3RelNavig", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_C3RelMetrlgy", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_C3RelMetrlgy", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_C3RelCombID", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_C3RelCombID", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_C3RelInfoAssur", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_C3RelInfoAssur", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         }),
-                        new RowVm("PBA12_ProgData_TOTAL", new List<CellVm>() {
-                            new CellVm("PBA12_ProgData_Py"),
-                            new CellVm("PBA12_ProgData_Pyprice"),
-                            new CellVm("PBA12_ProgData_Pyprog"),
-                            new CellVm("PBA12_ProgData_Cy"),
-                            new CellVm("PBA12_ProgData_Cyprice"),
-                            new CellVm("PBA12_ProgData_Cyprog"),
-                            new CellVm("PBA12_ProgData_By1"),
-                            new CellVm("PBA12_ProgData_By1price"),
-                            new CellVm("PBA12_ProgData_By1prog"),
-                            new CellVm("PBA12_ProgData_By2"),
+                        new RowAttribsVm("PBA12_ProgData_TOTAL", new List<CellAttribsVm>() {
+                            new CellAttribsVm("PBA12_ProgData_Py"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Pyprog"),
+                            new CellAttribsVm("PBA12_ProgData_Cy"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprice"),
+                            new CellAttribsVm("PBA12_ProgData_Cyprog"),
+                            new CellAttribsVm("PBA12_ProgData_By1"),
+                            new CellAttribsVm("PBA12_ProgData_By1price"),
+                            new CellAttribsVm("PBA12_ProgData_By1prog"),
+                            new CellAttribsVm("PBA12_ProgData_By2"),
                         })
 
                     };
@@ -204,7 +204,7 @@ namespace ProtoTests
                     var spResult = db.UspGetAttribute("PBA12_ProgData1").ToList();
 
                     //about 159 ms
-                    foreach (RowVm row in grid1.Rows)
+                    foreach (RowAttribsVm row in grid1.Rows)
                     {
                         var rowCode = row.RowCode;
                         var rowAttribs = spResult.Where(r => r.GridCode == grid1.GridCode && r.RowCode == rowCode);
@@ -220,7 +220,7 @@ namespace ProtoTests
                         row.RowAttrib10 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib10").Value);
                         row.RowAttrib11 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib11").Value);
                         row.RowAttrib12 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib12").Value);
-                        foreach (CellVm cell in row.Cells)
+                        foreach (CellAttribsVm cell in row.Cells)
                         {
                             var cellAttribs = spResult.Where(r => r.GridCode == grid1.GridCode && r.RowCode == rowCode && r.ColCode == cell.ColCode);
                             cell.CellAttrib1 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib1").Value;
@@ -249,7 +249,7 @@ namespace ProtoTests
                     var attribDic = db.UspGetAttribute("PBA12_ProgData1").ToDictionary(a => a.GridCode + "_" + a.RowCode + "_" + (a.ColCode != null ? a.ColCode : "") + "_" + a.Attrib, a => a.Value);
 
                     var gridCode = grid2.GridCode;
-                    foreach (RowVm row in grid2.Rows)
+                    foreach (RowAttribsVm row in grid2.Rows)
                     {
                         var rowCode = gridCode + "_" + row.RowCode + "_";
                         row.RowAttrib1 = attribDic[rowCode + "_RowAttrib1"];
@@ -264,7 +264,7 @@ namespace ProtoTests
                         row.RowAttrib10 = bool.Parse(attribDic[rowCode + "_RowAttrib10"]);
                         row.RowAttrib11 = bool.Parse(attribDic[rowCode + "_RowAttrib11"]);
                         row.RowAttrib12 = bool.Parse(attribDic[rowCode + "_RowAttrib12"]);
-                        foreach (CellVm cell in row.Cells)
+                        foreach (CellAttribsVm cell in row.Cells)
                         {
                             var cellCode = rowCode + cell.ColCode;
                             cell.CellAttrib1 = attribDic[cellCode + "_CellAttrib1"];
@@ -293,7 +293,7 @@ namespace ProtoTests
                     x = 3;
                     var deNormAttribs = db.AttributeDeNorms.Where(a => a.GridCode == grid3.GridCode).ToList();
 
-                    foreach (RowVm row in grid3.Rows)
+                    foreach (RowAttribsVm row in grid3.Rows)
                     {
                         var rowCode = row.RowCode;
                         var rowAttribs = deNormAttribs.FirstOrDefault(r => r.GridCode == grid3.GridCode && r.RowCode == rowCode && string.IsNullOrEmpty(r.ColCode));
@@ -309,7 +309,7 @@ namespace ProtoTests
                         row.RowAttrib10 = rowAttribs.RowAttrib10 ?? false;
                         row.RowAttrib11 = rowAttribs.RowAttrib11 ?? false;
                         row.RowAttrib12 = rowAttribs.RowAttrib12 ?? false;
-                        foreach (CellVm cell in row.Cells)
+                        foreach (CellAttribsVm cell in row.Cells)
                         {
                             var cellAttribs = deNormAttribs.FirstOrDefault(r => r.GridCode == grid3.GridCode && r.RowCode == rowCode && r.ColCode == cell.ColCode);
                             cell.CellAttrib1 = cellAttribs.CellAttrib1;

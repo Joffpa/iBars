@@ -22,12 +22,6 @@ var app;
             return GridVm;
         })();
         model.GridVm = GridVm;
-        var GeneratedRowVm = (function () {
-            function GeneratedRowVm() {
-            }
-            return GeneratedRowVm;
-        })();
-        model.GeneratedRowVm = GeneratedRowVm;
         var RowVm = (function () {
             function RowVm(RowCode, ParentRowCodes, Type, Text) {
                 this.RowCode = RowCode;

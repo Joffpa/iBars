@@ -5,9 +5,9 @@ using System.Web;
 
 namespace ExhibitGrid.ViewModel
 {
-    public class RowVm
+    public class RowAttribsVm
     {
-        public RowVm(string rowCode, List<CellVm> cells)
+        public RowAttribsVm(string rowCode, List<CellAttribsVm> cells)
         {
             this.RowCode = rowCode;
             this.Cells = cells;
@@ -26,7 +26,7 @@ namespace ExhibitGrid.ViewModel
         public bool RowAttrib11 { get; set; }
         public bool RowAttrib12 { get; set; }
 
-        public List<CellVm> Cells { get; set; }
+        public List<CellAttribsVm> Cells { get; set; }
 
     }
 }
