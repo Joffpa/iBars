@@ -19,7 +19,7 @@ namespace ExhibitGrid.Controllers
 
         public ActionResult DynamicViewGrid()
         {
-            var gridVm = GridVmFactory.GetGridVm("mock");
+            var gridVm = GridVmFactory.GetGridVmV2("mock");
             return View(gridVm);
         }
 

@@ -58,3 +58,4 @@ var app;
     var exhibitApp = angular.module('app', ['app.model', 'app.directives', 'app.calc']);
     exhibitApp.controller('exhibitController', ['modelService', ExhibitController]);
 })(app || (app = {}));
+//# sourceMappingURL=gridModule.js.map

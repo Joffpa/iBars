@@ -10,5 +10,9 @@
   {
     "outputFile": "Scripts/GridProto/exhibitModelService.es5.js",
     "inputFile": "Scripts/GridProto/exhibitModelService.js"
+  },
+  {
+    "outputFile": "Content/exhibitGrid.v2.css",
+    "inputFile": "Content/exhibitGrid.v2.less"
   }
 ]

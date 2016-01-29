@@ -4,22 +4,25 @@
 
     .grid-wrapper {
         margin-top: 40px;
-        width: 4000px;
+        width: auto;
 
         .row-wrapper {
             display: block;
 
-            .header-row {
-                /*height: 35px;*/
+            .header {
+                height: 45px;
                 background-color: rgba(191, 191, 191, 0.38);
-                /*font-size: large;*/
+                padding-left:100px;
+                padding-top:10px;
+                font-size: large;
+                border:solid;
             }
 
-            .data-row {
-                background-color: #bfbfbf;
+            .data {
+                background-color: white;
             }
 
-            .total-row {
+            .total {
                 background-color: #ffff99;
             }
 
@@ -35,6 +38,7 @@
                 box-sizing: content-box;
                 min-height:40px;
                 width:auto;
+                white-space:nowrap;
             }
 
            .row-inline:first-child {
@@ -113,7 +117,7 @@
                         width: 100px;
                     }
                 }
-
+                 
                 .cell-1x {
                     width: 150px;
                 }

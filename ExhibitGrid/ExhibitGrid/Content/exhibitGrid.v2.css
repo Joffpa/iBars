@@ -4,7 +4,7 @@
 }
 .main-content .grid-wrapper {
   margin-top: 40px;
-  width: 4000px;
+  width: auto;
 }
 .main-content .grid-wrapper .row-wrapper {
   display: block;
@@ -16,15 +16,18 @@
                 margin-right: -0.25em;
             }*/
 }
-.main-content .grid-wrapper .row-wrapper .header-row {
-  /*height: 35px;*/
+.main-content .grid-wrapper .row-wrapper .header {
+  height: 45px;
   background-color: rgba(191, 191, 191, 0.38);
-  /*font-size: large;*/
+  padding-left: 100px;
+  padding-top: 10px;
+  font-size: large;
+  border: solid;
 }
-.main-content .grid-wrapper .row-wrapper .data-row {
-  background-color: #bfbfbf;
+.main-content .grid-wrapper .row-wrapper .data {
+  background-color: white;
 }
-.main-content .grid-wrapper .row-wrapper .total-row {
+.main-content .grid-wrapper .row-wrapper .total {
   background-color: #ffff99;
 }
 .main-content .grid-wrapper .row-wrapper .row-inline {
@@ -39,6 +42,7 @@
   box-sizing: content-box;
   min-height: 40px;
   width: auto;
+  white-space: nowrap;
 }
 .main-content .grid-wrapper .row-wrapper .row-inline:first-child {
   border: solid;

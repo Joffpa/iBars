@@ -42,15 +42,7 @@
             }
         }])
 
-        .directive('independantRow', ['$compile', 'modelService', function ($compile, modelService) {
-            return {
-                restrict: 'A',
-                templateUrl: '/templates/independantRow.html',
-                controllerAs: 'rowCtrl',
-                transclude: true,
-                controller: ['$scope', 'modelService', IndependantRowController]
-            }
-        }])
+
 
         //.directive('independantCell', ['$compile', 'modelService', function ($compile, modelService) {
         //    return {

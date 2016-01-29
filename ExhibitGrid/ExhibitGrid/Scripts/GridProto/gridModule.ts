@@ -24,7 +24,7 @@ module app{
             row.SelectionCell.IncludeSpaceForCell = !row.SelectionCell.IncludeSpaceForCell;
         }
     }
-    
+     
     export class GridController {
 
         GridVm: app.model.ExhibitVm;

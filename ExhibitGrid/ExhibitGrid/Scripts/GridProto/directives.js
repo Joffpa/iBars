@@ -34,15 +34,7 @@ var app;
                         }
                     }
                 };
-            }])
-            .directive('independantRow', ['$compile', 'modelService', function ($compile, modelService) {
-                return {
-                    restrict: 'A',
-                    templateUrl: '/templates/independantRow.html',
-                    controllerAs: 'rowCtrl',
-                    transclude: true,
-                    controller: ['$scope', 'modelService', app.IndependantRowController]
-                };
             }]);
     })(directives = app.directives || (app.directives = {}));
 })(app || (app = {}));
+//# sourceMappingURL=directives.js.map
