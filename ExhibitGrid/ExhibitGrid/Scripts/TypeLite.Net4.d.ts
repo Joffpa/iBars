@@ -56,5 +56,30 @@ declare module ExhibitGrid.ViewModel {
 		Value: any;
 	}
 }
+declare module ExhibitGrid.ViewModel.v2 {
+	interface IGridVm {
+		GridCode: string;
+		Rows: ExhibitGrid.ViewModel.v2.IRowVm[];
+	}
+	interface IRowVm {
+		RowCode: string;
+		Class: string;
+		Text: string;
+		IncludeSpaceForCollapseIcon: boolean;
+		CanCollapse: boolean;
+		IncludeSpaceForSelectIcon: boolean;
+		CanSelect: boolean;
+		IsSelected: boolean;
+		IncludeSpaceForCrudIcon: boolean;
+		CrudIcon: string;
+		Cells: ExhibitGrid.ViewModel.v2.IBaseCellVm[];
+	}
+	interface IBaseCellVm {
+		Order: number;
+		Type: string;
+		RowCode: string;
+		ColCode: string;
+	}
+}
 
 

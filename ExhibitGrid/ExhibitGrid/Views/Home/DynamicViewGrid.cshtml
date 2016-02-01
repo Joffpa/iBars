@@ -20,7 +20,6 @@
                             {{row.Text }} <br />
                         </div>
                     </div>
-
                     <div ng-class="" class="row-inline {{row.Class}}" ng-switch-when="data">
                         <div class="cell-wrapper">
                             <div class="cell select-cell" ng-show="row.SelectionCell.IncludeSpaceForCell">
@@ -34,23 +33,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="cell-wrapper">
-                            <div class="cell text-cell cell-2x">
-                                {{row.Text }} <br />
-                            </div>
-                        </div>
-                        <div class="cell-wrapper">
-                            <div class="cell narr-cell" ng-show="row.NarrativeCell.IncludeSpaceForCell">
-
-                            </div>
-                        </div>
-                        <div class="cell-wrapper">
-                            <div class="cell postit-cell" ng-show="row.PostItCell.IncludeSpaceForCell">
-                            </div>
-                        </div>
-                        @for (int i = 0; i < Model.Rows[0].Cells.Count; i++)
+                        @foreach (var cell in Model.DataRows[0].Cells.OrderBy(c => c.Order))
                         {
-                            <div class="cell-wrapper"> Cell @i</div>
+                            <div class="cell-wrapper"> Cell @cell.ColCode</div>
                         }
                     </div>
                 </div>

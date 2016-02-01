@@ -5,16 +5,14 @@ using System.Web;
 
 namespace ExhibitGrid.ViewModel.v2
 {
-    public class NarrativeCellVm :CellVm
+    public class NarrativeCellVm : BaseCellVm
     {
         public NarrativeCellVm()
         {
-            this.Type = "narrative-cell";
+            this.Type = "narrative";
         }
-
-        public bool IncludeSpaceForCell { get; set; }
-        public bool AllowNarrative { get; set; }
+        
+        public bool CanAddNarrative { get; set; }
         public bool HasNarrative { get; set; }
-
     }
 }

@@ -178,10 +178,12 @@ namespace ExhibitGrid.Processes
             //postItCell.HasPostIt = false;
             //headerRow.PostItCell = postItCell;
 
-            headerRow.Cells = new List<ViewModel.v2.CellVm>();
+            headerRow.Cells = new List<ViewModel.v2.BaseCellVm>();
+            //var selectCell
+
             for (var c = 0; c <= numColumns; c++)
             {
-                var cell = new ViewModel.v2.CellVm();
+                var cell = new ViewModel.v2.DataCellVm();
                 cell.RowCode = headerRow.RowCode;
                 cell.ColCode = "Col_" + c;
                 cell.Class = "header-cell";
@@ -193,7 +195,7 @@ namespace ExhibitGrid.Processes
                 headerRow.Cells.Add(cell);
             }
 
-            grid.Rows = new List<ViewModel.v2.RowVm>() { headerRow };
+            grid.DataRows = new List<ViewModel.v2.RowVm>() { headerRow };
 
             for (var r = 1; r <= numRows; r++)
             {
@@ -225,11 +227,11 @@ namespace ExhibitGrid.Processes
                 //postItCell.HasPostIt = false;
                 //dataRow.PostItCell = postItCell;
 
-                dataRow.Cells = new List<ViewModel.v2.CellVm>();
+                dataRow.Cells = new List<ViewModel.v2.BaseCellVm>();
 
                 for (var c = 0; c <= numColumns; c++)
                 {
-                    var cell = new ViewModel.v2.CellVm();
+                    var cell = new ViewModel.v2.DataCellVm();
                     cell.RowCode = dataRow.RowCode;
                     cell.ColCode = "Col_" + c;
                     cell.Class = "data-cell";
@@ -241,7 +243,7 @@ namespace ExhibitGrid.Processes
                     dataRow.Cells.Add(cell);
                 }
 
-                grid.Rows.Add(dataRow);
+                grid.DataRows.Add(dataRow);
             }
 
             return grid;
