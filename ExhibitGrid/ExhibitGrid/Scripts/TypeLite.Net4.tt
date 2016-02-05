@@ -16,7 +16,13 @@
 		.WithReference("Enums.ts")
 		.For<ExhibitGrid.ViewModel.GridVm>()
 		.For<ExhibitGrid.ViewModel.RowVm>()
+		.For<ExhibitGrid.ViewModel.v2.BaseCellVm>()
+		.For<ExhibitGrid.ViewModel.v2.DataCellVm>()
 		.For<ExhibitGrid.ViewModel.v2.GridVm>()
+		.For<ExhibitGrid.ViewModel.v2.NarrativeCellVm>()
+		.For<ExhibitGrid.ViewModel.v2.PostItCellVm>()
+		.For<ExhibitGrid.ViewModel.v2.RowTextCellVm>()
+		.For<ExhibitGrid.ViewModel.v2.RowVm>()
 		.WithTypeFormatter((type, f) => "I" + ((TypeLite.TsModels.TsClass)type).Name);
 
 #>

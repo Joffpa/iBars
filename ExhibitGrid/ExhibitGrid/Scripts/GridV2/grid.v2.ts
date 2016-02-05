@@ -3,35 +3,14 @@
 
 module app.v2 {
 
-    //export class ExhibitController {
-    //    exhibitVm: app.model.ExhibitVm;
-    //    modelService: app.model.IModelService;
-    //    currentGridVm: app.model.GridVm;
-
-    //    constructor(modelService: app.model.IModelService) {
-    //        this.modelService = modelService;
-    //        this.exhibitVm = modelService.getExhibitModel();
-    //        this.currentGridVm = modelService.getGridModel('MockGrid');
-    //        //console.log(this.curentGridVm);
-    //    }
-
-    //    getRowModel(gridCode: string, rowCode: string) {
-    //        return this.modelService.getRowModel(gridCode, rowCode);
-    //    }
-
-    //    ModifyFirstRow() {
-    //        var row = this.modelService.getRowModel("MockGrid", "Row_0");
-    //        row.SelectionCell.IncludeSpaceForCell = !row.SelectionCell.IncludeSpaceForCell;
-    //    }
-    //}
-
     export class GridController {
 
-        GridVm: ExhibitGrid.ViewModel.IGridVm;
+        GridVm: ExhibitGrid.ViewModel.v2.IGridVm;
         ModelService: app.v2.model.IModelService;
 
         constructor(modelService: app.v2.model.IModelService) {
             this.GridVm = modelService.getGridVm('MockGrid');
+            console.log(this.GridVm);
             this.ModelService = modelService;
         }
     }
@@ -47,7 +26,10 @@ module app.v2 {
         }
 
         addRow() {
-            alert('row added' + this.RowVm.RowCode);
+            alert('row added: ' + this.RowVm.RowCode);
+        }
+        deleteRow() {
+            alert('row deleted: ' + this.RowVm.RowCode);
         }
     }
     

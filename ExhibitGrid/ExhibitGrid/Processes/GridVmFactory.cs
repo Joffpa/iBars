@@ -40,40 +40,40 @@ namespace ExhibitGrid.Processes
             var grid = new GridVm();
             grid.GridCode = "MockGrid";
             
-            var headerRow = new RowVm();
-            headerRow.RowCode = "Row_0";
-            headerRow.ParentRowCodes = null;
-            headerRow.Class = "header-row";
-            headerRow.Text = "Header Text";
+            var subHeaderRow = new RowVm();
+            subHeaderRow.RowCode = "Row_0";
+            subHeaderRow.ParentRowCodes = null;
+            subHeaderRow.Class = "header-row";
+            subHeaderRow.Text = "Header Text";
 
             var selectCell = new SelectionCellVm();
             selectCell.IncludeSpaceForCell = true;
             selectCell.AllowSelect = false;
             selectCell.IsSelected = false;
-            headerRow.SelectionCell = selectCell;
+            subHeaderRow.SelectionCell = selectCell;
 
             var crudCell = new CrudCellVm();
             crudCell.IncludeSpaceForCell = true;
             crudCell.CrudFunctionality = "no-crud";
-            headerRow.CrudCell = crudCell;
+            subHeaderRow.CrudCell = crudCell;
             
             var narrCell = new NarrativeCellVm();
             narrCell.IncludeSpaceForCell = true;
             narrCell.AllowNarrative = false;
             narrCell.HasNarrative = false;
-            headerRow.NarrativeCell = narrCell;
+            subHeaderRow.NarrativeCell = narrCell;
 
             var postItCell = new PostItCellVm();
             postItCell.IncludeSpaceForCell = true;
             postItCell.AllowPostIt = false;
             postItCell.HasPostIt = false;
-            headerRow.PostItCell = postItCell;
+            subHeaderRow.PostItCell = postItCell;
 
-            headerRow.DataCells = new List<DataCellVm>();
+            subHeaderRow.DataCells = new List<DataCellVm>();
             for (var c = 0; c <= numColumns; c++)
             {
                 var cell = new DataCellVm();
-                cell.RowCode = headerRow.RowCode;
+                cell.RowCode = subHeaderRow.RowCode;
                 cell.ColCode = "Col_" + c;
                 cell.Class = "header-cell";
                 cell.Type = "read-only";
@@ -81,10 +81,10 @@ namespace ExhibitGrid.Processes
                 cell.Width = "1x";
                 cell.IsEditable = false;
 
-                headerRow.DataCells.Add(cell);
+                subHeaderRow.DataCells.Add(cell);
             }
 
-            grid.Rows = new List<RowVm>() { headerRow };
+            grid.Rows = new List<RowVm>() { subHeaderRow };
 
             for (var r = 1; r <= numRows; r++)
             {
@@ -149,53 +149,61 @@ namespace ExhibitGrid.Processes
 
             var grid = new ViewModel.v2.GridVm();
             grid.GridCode = "MockGrid";
-
+            
             var headerRow = new ViewModel.v2.RowVm();
-            headerRow.RowCode = "Row_0";
-            headerRow.Class = "header-row";
-            headerRow.Text = "Header Text";
 
-            //var selectCell = new SelectionCellVm();
-            //selectCell.IncludeSpaceForCell = true;
-            //selectCell.AllowSelect = false;
-            //selectCell.IsSelected = false;
-            //headerRow.SelectionCell = selectCell;
 
-            //var crudCell = new CrudCellVm();
-            //crudCell.IncludeSpaceForCell = true;
-            //crudCell.CrudFunctionality = "no-crud";
-            //headerRow.CrudCell = crudCell;
+            var subHeaderRow = new ViewModel.v2.RowVm();
+            subHeaderRow.RowCode = "Row_0";
+            subHeaderRow.Class = "header-row";
+            subHeaderRow.Text = "Header Text";
+            subHeaderRow.CanCollapse = false;
+            subHeaderRow.CanSelect = false;
+            subHeaderRow.IsSelected = false;
+            subHeaderRow.CrudFunctionality = "none";
 
-            //var narrCell = new NarrativeCellVm();
-            //narrCell.IncludeSpaceForCell = true;
-            //narrCell.AllowNarrative = false;
-            //narrCell.HasNarrative = false;
-            //headerRow.NarrativeCell = narrCell;
+            subHeaderRow.Cells = new List<ViewModel.v2.BaseCellVm>();
 
-            //var postItCell = new PostItCellVm();
-            //postItCell.IncludeSpaceForCell = true;
-            //postItCell.AllowPostIt = false;
-            //postItCell.HasPostIt = false;
-            //headerRow.PostItCell = postItCell;
+            var rowText = new ViewModel.v2.TextCellVm();
+            rowText.Order = 2;
+            rowText.RowCode = subHeaderRow.RowCode;
+            rowText.ColCode = "RowText";
+            rowText.IsEditable = false;
+            rowText.Text = "";
+            subHeaderRow.Cells.Add(rowText);
 
-            headerRow.Cells = new List<ViewModel.v2.BaseCellVm>();
-            //var selectCell
+            var postitCell = new ViewModel.v2.PostItCellVm();
+            postitCell.Order = 3;
+            postitCell.CanHavePostIt = false;
+            postitCell.HasPostIt = false;
+            postitCell.RowCode = subHeaderRow.RowCode;
+            postitCell.ColCode = "PostIt";
+            subHeaderRow.Cells.Add(postitCell);
+
+            var narrCell = new ViewModel.v2.NarrativeCellVm();
+            narrCell.Order = 4;
+            narrCell.CanAddNarrative = false;
+            narrCell.HasNarrative = false;
+            narrCell.RowCode = subHeaderRow.RowCode;
+            narrCell.ColCode = "Narrative";
+            subHeaderRow.Cells.Add(narrCell);
 
             for (var c = 0; c <= numColumns; c++)
             {
                 var cell = new ViewModel.v2.DataCellVm();
-                cell.RowCode = headerRow.RowCode;
+                cell.RowCode = subHeaderRow.RowCode;
                 cell.ColCode = "Col_" + c;
                 cell.Class = "header-cell";
-                cell.Type = "read-only";
                 cell.Value = "Column " + c;
                 cell.Width = "1x";
                 cell.IsEditable = false;
+                cell.Order = 5 + c;
+                cell.IsRenderable = true;
 
-                headerRow.Cells.Add(cell);
+                subHeaderRow.Cells.Add(cell);
             }
 
-            grid.DataRows = new List<ViewModel.v2.RowVm>() { headerRow };
+            grid.DataRows = new List<ViewModel.v2.RowVm>() { subHeaderRow };
 
             for (var r = 1; r <= numRows; r++)
             {
@@ -203,31 +211,39 @@ namespace ExhibitGrid.Processes
                 dataRow.RowCode = "Row_" + r;
                 dataRow.Class = "data-row";
                 dataRow.Text = "Row Text " + r;
-
-                //selectCell = new SelectionCellVm();
-                //selectCell.IncludeSpaceForCell = true;
-                //selectCell.AllowSelect = true;
-                //selectCell.IsSelected = false;
-                //dataRow.SelectionCell = selectCell;
-
-                //crudCell = new CrudCellVm();
-                //crudCell.IncludeSpaceForCell = true;
-                //crudCell.CrudFunctionality = "create";
-                //dataRow.CrudCell = crudCell;
-
-                //narrCell = new NarrativeCellVm();
-                //narrCell.IncludeSpaceForCell = true;
-                //narrCell.AllowNarrative = true;
-                //narrCell.HasNarrative = false;
-                //dataRow.NarrativeCell = narrCell;
-
-                //postItCell = new PostItCellVm();
-                //postItCell.IncludeSpaceForCell = true;
-                //postItCell.AllowPostIt = true;
-                //postItCell.HasPostIt = false;
-                //dataRow.PostItCell = postItCell;
-
+                dataRow.CanCollapse = r % 2 == 0;
+                dataRow.CanSelect = r % 3 == 0;
+                dataRow.IsSelected = false;
+                dataRow.CrudFunctionality = r % 2 == 0 ? "create" : r% 3 == 0 ? "delete" : "none";
+                
                 dataRow.Cells = new List<ViewModel.v2.BaseCellVm>();
+
+                rowText = new ViewModel.v2.TextCellVm();
+                rowText.Order = 2;
+                rowText.RowCode = dataRow.RowCode;
+                rowText.ColCode = "RowText";
+                rowText.IsEditable = false;
+                rowText.Text = "Row Text " + r;
+                dataRow.Cells.Add(rowText);
+                rowText.IsRenderable = true;
+
+                postitCell = new ViewModel.v2.PostItCellVm();
+                postitCell.Order = 3;
+                postitCell.CanHavePostIt = false;
+                postitCell.HasPostIt = false;
+                postitCell.RowCode = dataRow.RowCode;
+                postitCell.ColCode = "PostIt";
+                dataRow.Cells.Add(postitCell);
+                postitCell.IsRenderable = true;
+
+                narrCell = new ViewModel.v2.NarrativeCellVm();
+                narrCell.Order = 4;
+                narrCell.CanAddNarrative = false;
+                narrCell.HasNarrative = false;
+                narrCell.RowCode = dataRow.RowCode;
+                narrCell.ColCode = "Narrative";
+                dataRow.Cells.Add(narrCell);
+                narrCell.IsRenderable = true;
 
                 for (var c = 0; c <= numColumns; c++)
                 {
@@ -235,11 +251,11 @@ namespace ExhibitGrid.Processes
                     cell.RowCode = dataRow.RowCode;
                     cell.ColCode = "Col_" + c;
                     cell.Class = "data-cell";
-                    cell.Type = "num-input";
                     cell.Value = 5 * c;
                     cell.Width = "1x";
                     cell.IsEditable = true;
-
+                    cell.Order = 5 + c;
+                    cell.IsRenderable = true;
                     dataRow.Cells.Add(cell);
                 }
 

@@ -23,6 +23,11 @@ namespace ExhibitGrid.Controllers
             return View(gridVm);
         }
 
+        public ActionResult NowIGottaMakeItATableThanksALotKaren()
+        {
+            var gridVm = GridVmFactory.GetGridVmV2("mock");
+            return View(gridVm);
+        }
 
     }
 }

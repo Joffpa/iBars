@@ -9,7 +9,7 @@ namespace ExhibitGrid.ViewModel.v2
     {
         public DataCellVm()
         {
-            this.Type = "data";
+
         }
 
         public string Class { get; set; }

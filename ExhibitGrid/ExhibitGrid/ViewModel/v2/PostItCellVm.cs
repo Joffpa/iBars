@@ -9,7 +9,7 @@ namespace ExhibitGrid.ViewModel.v2
     {
         public PostItCellVm()
         {
-            this.Type = "postit";
+
         }
         
         public bool CanHavePostIt { get; set; }

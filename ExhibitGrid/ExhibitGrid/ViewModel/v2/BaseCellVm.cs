@@ -5,11 +5,12 @@ using System.Web;
 
 namespace ExhibitGrid.ViewModel.v2
 {
-    public class BaseCellVm
+    public abstract class BaseCellVm
     {
         public int Order { get; set; }
-        public string Type { get; set; }
+        //public string Type { get; set; }
         public string RowCode { get; set; }
         public string ColCode { get; set; }
+        public bool IsRenderable { get; set; }
     }
 }

@@ -9,24 +9,24 @@
         .row-wrapper {
             display: block;
 
-            .header {
+            .header-row {
                 height: 45px;
                 background-color: rgba(191, 191, 191, 0.38);
-                padding-left:100px;
-                padding-top:10px;
+                padding-left: 100px;
+                padding-top: 10px;
                 font-size: large;
-                border:solid;
+                border: solid;
             }
 
-            .data {
+            .data-row {
                 background-color: white;
             }
 
-            .total {
+            .total-row {
                 background-color: #ffff99;
             }
 
-            .row-inline{
+            .row-inline {
                 display: inline-block;
                 border-bottom: solid;
                 border-left: solid;
@@ -36,117 +36,123 @@
                 -moz-box-sizing: content-box;
                 -webkit-box-sizing: content-box;
                 box-sizing: content-box;
-                min-height:40px;
-                width:auto;
-                white-space:nowrap;
+                min-height: 40px;
+                width: auto;
+                white-space: nowrap;
+
+                .cell-wrapper {
+                    /*min-height: 40px;*/
+                    display: inline-block;
+                    /*margin: 2px;*/
+                    padding: 2px;
+                    border-right: 1px;
+                    border-color: black;
+                    border-right-style: dotted;
+                    -moz-box-sizing: content-box;
+                    -webkit-box-sizing: content-box;
+                    box-sizing: content-box;
+                    width: auto;
+                    vertical-align: top;
+                    text-align: center;
+                    white-space: nowrap;
+                    height: 40px;
+
+
+                    .cell {
+                        /*height: 30px;*/
+                        display: inline-block;
+                        /*vertical-align: middle;*/
+                        width: 300px;
+                        position: relative;
+                        top: 50%;
+                        -moz-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                        -o-transform: translateY(-50%);
+                        -webkit-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                    }
+
+                    .cell:before {
+                        content: none;
+                    }
+
+                    .collapse-cell {
+                        width: 20px;
+                        height: 20px;
+                        /*border: solid;*/
+                        display: inline-block;
+                    }
+
+                    .select-cell {
+                        width: 20px;
+                        height: 20px;
+                        /*border: solid;*/
+                        display: inline-block;
+                    }
+
+                    .crud-cell {
+                        width: 20px;
+                        height: 20px;
+                        /*border: solid;*/
+                        display: inline-block;
+
+                    }
+
+                    .narr-cell {
+                        width: 20px;
+                        height: 20px;
+                        display: inline-block;
+                    }
+
+                    .postit-cell {
+                        width: 20px;
+                        height: 20px;
+                        display: inline-block;
+                    }
+
+                    .text-cell {
+
+                    }
+
+                    .data-cell {
+                        input {
+                            width: 100px;
+                        }
+                    }
+
+                    .cell-1x {
+                        width: 150px;
+                    }
+
+                    .cell-2x {
+                        width: 300px;
+                    }
+
+                    .cell-3x {
+                        width: 450px;
+                    }
+                }
+
+                .cell-wrapper:last-child {
+                    border-right: none;
+                }
             }
 
-           .row-inline:first-child {
+            .row-inline:first-child {
                 border: solid;
                 border-width: 1px;
                 border-color: black;
             }
-
-            .cell-wrapper {
-                /*min-height: 40px;*/
-                display: inline-block;
-                /*margin: 2px;*/
-                padding: 2px;
-                border-right: 1px;
-                border-color: black;
-                border-right-style: dotted;
-                -moz-box-sizing: content-box;
-                -webkit-box-sizing: content-box;
-                box-sizing: content-box;
-                width: auto;
-                vertical-align: top;
-                text-align: center;
-                white-space: nowrap;
-                height:50px;
-
-
-                .cell {
-                    height: 30px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 300px;
-                }
-
-                .cell:before {
-                    content: none;
-                }
-
-                .select-cell {
-                    width: 20px;
-                    height: 20px;
-                    /*border: solid;*/
-                    display: inline-block;
-                }
-
-                .crud-cell {
-                    width: 20px;
-                    height: 20px;
-                    /*border: solid;*/
-                    display: inline-block;
-
-                    i {
-                    }
-                }
-
-                .narr-cell {
-                    width: 20px;
-                    height: 20px;
-                    /*border: solid;*/
-                    display: inline-block;
-                }
-
-                .postit-cell {
-                    width: 20px;
-                    height: 20px;
-                    /*border: solid;*/
-                    display: inline-block;
-                }
-                /*.blank-cell {
-                    height: 30px;
-                }*/
-                .text-cell {
-                }
-
-                .data-cell {
-                    input {
-                        width: 100px;
-                    }
-                }
-                 
-                .cell-1x {
-                    width: 150px;
-                }
-
-                .cell-2x {
-                    width: 300px;
-                }
-
-                .cell-3x {
-                    width: 450px;
-                }
-            }
-
-            /*.cell-wrapper :before {
+        }
+        /*.cell-wrapper :before {
                 content: '';
                 display: inline-block;
                 height: 100%;
                 vertical-align: middle;
                 margin-right: -0.25em;
             }*/
-
-            .cell-wrapper:last-child {
-                border-right: none;
-            }
+        .row-wrapper:after {
+            clear: both;
         }
-
-        .row-wrapper:after{
-            clear:both;
-        }
-
     }
 }

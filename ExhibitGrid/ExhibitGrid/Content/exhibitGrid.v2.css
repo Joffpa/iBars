@@ -5,9 +5,6 @@
 .main-content .grid-wrapper {
   margin-top: 40px;
   width: auto;
-}
-.main-content .grid-wrapper .row-wrapper {
-  display: block;
   /*.cell-wrapper :before {
                 content: '';
                 display: inline-block;
@@ -16,7 +13,10 @@
                 margin-right: -0.25em;
             }*/
 }
-.main-content .grid-wrapper .row-wrapper .header {
+.main-content .grid-wrapper .row-wrapper {
+  display: block;
+}
+.main-content .grid-wrapper .row-wrapper .header-row {
   height: 45px;
   background-color: rgba(191, 191, 191, 0.38);
   padding-left: 100px;
@@ -24,10 +24,10 @@
   font-size: large;
   border: solid;
 }
-.main-content .grid-wrapper .row-wrapper .data {
+.main-content .grid-wrapper .row-wrapper .data-row {
   background-color: white;
 }
-.main-content .grid-wrapper .row-wrapper .total {
+.main-content .grid-wrapper .row-wrapper .total-row {
   background-color: #ffff99;
 }
 .main-content .grid-wrapper .row-wrapper .row-inline {
@@ -44,12 +44,7 @@
   width: auto;
   white-space: nowrap;
 }
-.main-content .grid-wrapper .row-wrapper .row-inline:first-child {
-  border: solid;
-  border-width: 1px;
-  border-color: black;
-}
-.main-content .grid-wrapper .row-wrapper .cell-wrapper {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper {
   /*min-height: 40px;*/
   display: inline-block;
   /*margin: 2px;*/
@@ -64,58 +59,71 @@
   vertical-align: top;
   text-align: center;
   white-space: nowrap;
-  height: 50px;
-  /*.blank-cell {
-                    height: 30px;
-                }*/
+  height: 40px;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .cell {
-  height: 30px;
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .cell {
+  /*height: 30px;*/
   display: inline-block;
-  vertical-align: middle;
+  /*vertical-align: middle;*/
   width: 300px;
+  position: relative;
+  top: 50%;
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .cell:before {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .cell:before {
   content: none;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .select-cell {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .collapse-cell {
   width: 20px;
   height: 20px;
   /*border: solid;*/
   display: inline-block;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .crud-cell {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .select-cell {
   width: 20px;
   height: 20px;
   /*border: solid;*/
   display: inline-block;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .narr-cell {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .crud-cell {
   width: 20px;
   height: 20px;
   /*border: solid;*/
   display: inline-block;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .postit-cell {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .narr-cell {
   width: 20px;
   height: 20px;
-  /*border: solid;*/
   display: inline-block;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .data-cell input {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .postit-cell {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .data-cell input {
   width: 100px;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .cell-1x {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .cell-1x {
   width: 150px;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .cell-2x {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .cell-2x {
   width: 300px;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper .cell-3x {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper .cell-3x {
   width: 450px;
 }
-.main-content .grid-wrapper .row-wrapper .cell-wrapper:last-child {
+.main-content .grid-wrapper .row-wrapper .row-inline .cell-wrapper:last-child {
   border-right: none;
+}
+.main-content .grid-wrapper .row-wrapper .row-inline:first-child {
+  border: solid;
+  border-width: 1px;
+  border-color: black;
 }
 .main-content .grid-wrapper .row-wrapper:after {
   clear: both;

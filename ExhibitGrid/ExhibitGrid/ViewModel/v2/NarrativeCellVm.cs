@@ -9,7 +9,7 @@ namespace ExhibitGrid.ViewModel.v2
     {
         public NarrativeCellVm()
         {
-            this.Type = "narrative";
+
         }
         
         public bool CanAddNarrative { get; set; }

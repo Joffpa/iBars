@@ -188,6 +188,7 @@
     <Compile Include="ViewModel\v2\GridVm.cs" />
     <Compile Include="ViewModel\v2\NarrativeCellVm.cs" />
     <Compile Include="ViewModel\v2\PostItCellVm.cs" />
+    <Compile Include="ViewModel\v2\TextCellVm.cs" />
     <Compile Include="ViewModel\v2\RowVm.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -551,6 +552,7 @@
     <Content Include="Scripts\kendo\2015.1.429\kendo.web.min.js.map" />
     <Content Include="Views\Home\DynamicViewGrid.cshtml" />
     <Content Include="Scripts\Manager.ttinclude" />
+    <Content Include="Views\Home\NowIGottaMakeItATableThanksALotKaren.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

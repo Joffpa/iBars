@@ -10,32 +10,69 @@
 
 
 <div ng-app="app.v2">
-    <div ng-controller="gridController as gridCtrl">        
-        <ul class="grid-wrapper">
-            <li ng-repeat="row in gridCtrl.GridVm.Rows track by row.RowCode" ng-controller="rowController as rowctrl" class="row-wrapper">
+    <div ng-controller="gridController as gridCtrl">
+        <ul class="grid-wrapper table">
+            <li ng-repeat="row in gridCtrl.GridVm.DataRows track by row.RowCode" ng-controller="rowController as rowCtrl" class="row-wrapper">
                 <div ng-switch="row.Class">
-
-                    <div class="{{row.Class}}" ng-switch-when="header">
+                    <div class="{{row.Class}}" ng-switch-when="header-row">
                         <div class="cell text-cell cell-2x">
                             {{row.Text }} <br />
                         </div>
                     </div>
-                    <div ng-class="" class="row-inline {{row.Class}}" ng-switch-when="data">
-                        <div class="cell-wrapper">
-                            <div class="cell select-cell" ng-show="row.SelectionCell.IncludeSpaceForCell">
-                                <input type="checkbox" ng-show="row.SelectionCell.AllowSelect" ng-model="row.SelectionCell.IsSelected">
-                            </div>
-                        </div>
-                        <div class="cell-wrapper">
-                            <div class="cell crud-cell" ng-show="row.CrudCell.IncludeSpaceForCell">
-                                <div ng-switch="row.CrudCell.CrudFunctionality">
-                                    <i ng-switch-when="create" style="cursor:pointer" ng-click="rowCtrl.addRow()" class="fa-plus fa-2x"></i>
+                    <div ng-class="" class="row-inline {{row.Class}}" ng-switch-when="data-row">
+                        @if (Model.DataRows.Any(r => r.CanCollapse))
+                        {
+                            <div class="cell-wrapper">
+                                <div class="cell collapse-cell">
+                                    <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
                                 </div>
                             </div>
-                        </div>
+                        }
+                        @if (Model.DataRows.Any(r => r.CanSelect))
+                        {
+                            <div class="cell-wrapper">
+                                <div class="cell select-cell">
+                                    <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
+                                </div>
+                            </div>
+                        }
+                        @if (Model.DataRows.Any(r => r.CrudFunctionality != "none"))
+                        {
+                            <div class="cell-wrapper">
+                                <div class="cell crud-cell">
+                                    <div ng-switch="row.CrudFunctionality">
+                                        <i class="fa fa-user-plus fa-lg" ng-switch-when="create" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
+                                        <i class="fa fa-trash fa-lg" ng-switch-when="delete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         @foreach (var cell in Model.DataRows[0].Cells.OrderBy(c => c.Order))
                         {
-                            <div class="cell-wrapper"> Cell @cell.ColCode</div>
+                            var type = cell.GetType().ToString();
+                            switch (type)
+                            {
+                                case "ExhibitGrid.ViewModel.v2.TextCellVm":
+                                    <div class="cell-wrapper">
+                                        @cell.ColCode
+                                    </div>
+                                    break;
+                                case "ExhibitGrid.ViewModel.v2.DataCellVm":
+                                    <div class="cell-wrapper">
+                                        @cell.ColCode
+                                    </div>
+                                    break;
+                                case "ExhibitGrid.ViewModel.v2.NarrativeCellVm":
+                                    <div class="cell-wrapper">
+                                        @cell.ColCode
+                                    </div>
+                                    break;
+                                case "ExhibitGrid.ViewModel.v2.PostItCellVm":
+                                    <div class="cell-wrapper">
+                                        @cell.ColCode
+                                    </div>
+                                    break;
+                            }
                         }
                     </div>
                 </div>
@@ -43,3 +80,15 @@
         </ul>
     </div>
 </div>
+
+<script>
+
+    (function (gridModel) {
+
+        gridModel.currentGrid = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
+        //console.log(gridModel.currentGrid);
+
+    }(window.gridModel = window.gridModel || {} ));
+
+</script>

@@ -57,28 +57,42 @@ declare module ExhibitGrid.ViewModel {
 	}
 }
 declare module ExhibitGrid.ViewModel.v2 {
-	interface IGridVm {
-		GridCode: string;
-		Rows: ExhibitGrid.ViewModel.v2.IRowVm[];
-	}
-	interface IRowVm {
-		RowCode: string;
-		Class: string;
-		Text: string;
-		IncludeSpaceForCollapseIcon: boolean;
-		CanCollapse: boolean;
-		IncludeSpaceForSelectIcon: boolean;
-		CanSelect: boolean;
-		IsSelected: boolean;
-		IncludeSpaceForCrudIcon: boolean;
-		CrudIcon: string;
-		Cells: ExhibitGrid.ViewModel.v2.IBaseCellVm[];
-	}
 	interface IBaseCellVm {
 		Order: number;
 		Type: string;
 		RowCode: string;
 		ColCode: string;
+	}
+	interface IDataCellVm extends ExhibitGrid.ViewModel.v2.IBaseCellVm {
+		Class: string;
+		Width: string;
+		IsEditable: boolean;
+		Value: any;
+	}
+	interface IGridVm {
+		GridCode: string;
+		DataRows: ExhibitGrid.ViewModel.v2.IRowVm[];
+	}
+	interface IRowVm {
+		RowCode: string;
+		Class: string;
+		Text: string;
+		CanCollapse: boolean;
+		CanSelect: boolean;
+		IsSelected: boolean;
+		Cells: ExhibitGrid.ViewModel.v2.IBaseCellVm[];
+	}
+	interface INarrativeCellVm extends ExhibitGrid.ViewModel.v2.IBaseCellVm {
+		CanAddNarrative: boolean;
+		HasNarrative: boolean;
+	}
+	interface IPostItCellVm extends ExhibitGrid.ViewModel.v2.IBaseCellVm {
+		CanHavePostIt: boolean;
+		HasPostIt: boolean;
+	}
+	interface IRowTextCellVm extends ExhibitGrid.ViewModel.v2.IBaseCellVm {
+		Text: string;
+		IsEditable: boolean;
 	}
 }
 
