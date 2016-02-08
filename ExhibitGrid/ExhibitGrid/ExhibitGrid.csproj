@@ -184,6 +184,8 @@
     <Compile Include="ViewModel\GridVm.cs" />
     <Compile Include="ViewModel\RowAttribsVm.cs" />
     <Compile Include="ViewModel\RowVm.cs" />
+    <Compile Include="ViewModel\v2\ColumnHeaderNode.cs" />
+    <Compile Include="ViewModel\v2\ColumnHeaderVm.cs" />
     <Compile Include="ViewModel\v2\DataCellVm.cs" />
     <Compile Include="ViewModel\v2\GridVm.cs" />
     <Compile Include="ViewModel\v2\NarrativeCellVm.cs" />

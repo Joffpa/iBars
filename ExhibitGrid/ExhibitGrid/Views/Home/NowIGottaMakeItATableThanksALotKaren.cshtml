@@ -10,143 +10,88 @@
 <div ng-app="app.v2">
     <div ng-controller="gridController as gridCtrl">
         <table class="table table-bordered">
-            <tr>
-                <th colspan="6" rowspan="3">
-                    Grid Name
-                </th>
-                <th id="RowText" style="display:none;">                    
-                </th>
-                <th scope="col" colspan="17">
-                    Level 2 Header A
-                </th>
-                <th scope="col" colspan="1">
-                    Level 2 Header B
-                </th>
-            </tr>            
-            <tr>
-                <th scope="col" colspan="7">
-                    Level 1 Header A
-                </th>
-                <th scope="col" colspan="10">
-                    Level 1 Header B
-                </th>
-                <th scope="col" colspan="1">
-                    Level 1 Header C
-                </th>
-            </tr>
-            <tr>
-                <th scope="col" colspan="1">
-                    Level 0 Header A
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header B
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header C
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header D
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header E
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header F
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header G
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header H
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header I
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header J
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header K
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header L
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header M
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header N
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header O
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header P
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header Q
-                </th>
-                <th scope="col" colspan="1">
-                    Level 0 Header R
-                </th>
-            </tr>
+            @{
+                var headerLevels = Model.ColumnHeaders.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
+                var firstRow = true;
+                foreach (var level in headerLevels)
+                {
+                    <tr>
+                        @if (firstRow)
+                        {
+                            <th colspan="6" rowspan="@headerLevels.Count()">
+                                Grid Name
+                            </th>
+                            <th id="RowText" style="display:none;">
+                            </th>
+                        }
+                        @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level).OrderBy(h => h.Order))
+                        {
+                            <th scope="col" colspan="@header.ColSpan">
+                                @header.Text
+                            </th>
+                        }
+                        @{firstRow = false;}
+                    </tr>
+                }
+            }
+
             <tr ng-repeat="row in gridCtrl.GridVm.DataRows track by row.RowCode" ng-controller="rowController as rowCtrl" ng-switch="row.Class">
-                        
-                        @*Header Row cells*@
-                        <td class="{{row.Class}}" ng-switch-when="header-row" colspan="@(Model.DataRows[0].Cells.Count + 3)">
-                                {{row.Text }} <br />
-                        </td>
-                        
-                        @*Data Row cells*@
-                        @if (Model.DataRows.Any(r => r.CanCollapse))
-                        {
+
+                @*Header Row cells*@
+                <td class="{{row.Class}}" ng-switch-when="header-row" colspan="@(Model.DataRows[0].Cells.Count + 3)">
+                    {{row.Text}}
+                    <br />
+                </td>
+
+                @*Data Row cells*@
+                @if (Model.DataRows.Any(r => r.CanCollapse))
+                {
+                    <td ng-switch-when="data-row">
+                        <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
+                    </td>
+                }
+                @if (Model.DataRows.Any(r => r.CanSelect))
+                {
+                    <td ng-switch-when="data-row">
+                        <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
+                    </td>
+                }
+                @if (Model.DataRows.Any(r => r.CrudFunctionality != "none"))
+                {
+                    <td ng-switch-when="data-row">
+                        <div ng-switch="row.CrudFunctionality">
+                            <i class="fa fa-user-plus fa-lg" ng-switch-when="create" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
+                            <i class="fa fa-trash fa-lg" ng-switch-when="delete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
+                        </div>
+                    </td>
+                }
+                @foreach (var cell in Model.DataRows[0].Cells.OrderBy(c => c.Order))
+                {
+                    var type = cell.GetType().ToString();
+                    switch (type)
+                    {
+                        case "ExhibitGrid.ViewModel.v2.TextCellVm":
+                            <th scope="row" ng-switch-when="data-row">
+                                <input type="text" ng-model="row.Text" />
+                            </th>
+                            break;
+                        case "ExhibitGrid.ViewModel.v2.DataCellVm":
                             <td ng-switch-when="data-row">
-                                    <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
+                                @cell.ColCode
                             </td>
-                        }
-                        @if (Model.DataRows.Any(r => r.CanSelect))
-                        {
+                            break;
+                        case "ExhibitGrid.ViewModel.v2.NarrativeCellVm":
                             <td ng-switch-when="data-row">
-                                    <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
+                                @cell.ColCode
                             </td>
-                        }
-                        @if (Model.DataRows.Any(r => r.CrudFunctionality != "none"))
-                        {
+                            break;
+                        case "ExhibitGrid.ViewModel.v2.PostItCellVm":
                             <td ng-switch-when="data-row">
-                                    <div ng-switch="row.CrudFunctionality">
-                                        <i class="fa fa-user-plus fa-lg" ng-switch-when="create" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
-                                        <i class="fa fa-trash fa-lg" ng-switch-when="delete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
-                                    </div>
+                                @cell.ColCode
                             </td>
-                        }
-                        @foreach (var cell in Model.DataRows[0].Cells.OrderBy(c => c.Order))
-                        {
-                            var type = cell.GetType().ToString();
-                            switch (type)
-                            {
-                                case "ExhibitGrid.ViewModel.v2.TextCellVm":
-                                    <th scope="row" ng-switch-when="data-row">
-                                        <input type="text" ng-model="row.Text"/>
-                                        @*@cell.ColCode*@
-                                    </th>
-                                    break;
-                                case "ExhibitGrid.ViewModel.v2.DataCellVm":
-                                    <td ng-switch-when="data-row">
-                                        @cell.ColCode
-                                    </td>
-                                    break;
-                                case "ExhibitGrid.ViewModel.v2.NarrativeCellVm":
-                                    <td ng-switch-when="data-row">
-                                        @cell.ColCode
-                                    </td>
-                                    break;
-                                case "ExhibitGrid.ViewModel.v2.PostItCellVm":
-                                    <td ng-switch-when="data-row">
-                                        @cell.ColCode
-                                    </td>
-                                    break;
-                            }
-                        }
+                            break;
+                    }
+                }
             </tr>
         </table>
     </div>
