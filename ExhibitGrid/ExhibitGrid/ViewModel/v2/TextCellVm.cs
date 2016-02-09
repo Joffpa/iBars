@@ -7,12 +7,7 @@ namespace ExhibitGrid.ViewModel.v2
 {
     public class TextCellVm : BaseCellVm
     {
-        public TextCellVm()
-        {
-
-        }
-
         public string Text { get; set; }
-        public bool IsEditable { get; set; } 
+        public int Indent { get; set; }
     }
 }

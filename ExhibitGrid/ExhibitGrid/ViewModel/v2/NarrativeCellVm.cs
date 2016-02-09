@@ -12,7 +12,6 @@ namespace ExhibitGrid.ViewModel.v2
 
         }
         
-        public bool CanAddNarrative { get; set; }
         public bool HasNarrative { get; set; }
     }
 }

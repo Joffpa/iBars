@@ -14,5 +14,9 @@
   {
     "outputFile": "Content/exhibitGrid.v2.css",
     "inputFile": "Content/exhibitGrid.v2.less"
+  },
+  {
+    "outputFile": "Content/gridTable.css",
+    "inputFile": "Content/gridTable.less"
   }
 ]

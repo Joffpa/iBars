@@ -144,11 +144,12 @@ namespace ExhibitGrid.Processes
         {
             var numRows = 16;
             var numColumns = 17;
+            var rando = new Random();
+
 
             var grid = new ViewModel.v2.GridVm();
             grid.GridCode = "MockGrid";
-
-
+            
             //Add Column headers to list
             grid.ColumnHeaders = new List<ViewModel.v2.ColumnHeaderVm>();
 
@@ -351,8 +352,7 @@ namespace ExhibitGrid.Processes
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
 
-
-            //Convert header list to header tree DEPRECATED
+            
             //int maxLevels = 0;
             //int colSpan;
             //grid.ColumnHeaderTree = GetColumnHeaderTree(grid.ColumnHeaders, null, 0,out colSpan, ref maxLevels);
@@ -380,7 +380,7 @@ namespace ExhibitGrid.Processes
 
             var postitCell = new ViewModel.v2.PostItCellVm();
             postitCell.Order = 3;
-            postitCell.CanHavePostIt = false;
+            postitCell.IsEditable = false;
             postitCell.HasPostIt = false;
             postitCell.RowCode = subHeaderRow.RowCode;
             postitCell.ColCode = "PostIt";
@@ -388,7 +388,7 @@ namespace ExhibitGrid.Processes
 
             var narrCell = new ViewModel.v2.NarrativeCellVm();
             narrCell.Order = 4;
-            narrCell.CanAddNarrative = false;
+            narrCell.IsEditable = false;
             narrCell.HasNarrative = false;
             narrCell.RowCode = subHeaderRow.RowCode;
             narrCell.ColCode = "Narrative";
@@ -400,11 +400,10 @@ namespace ExhibitGrid.Processes
                 cell.RowCode = subHeaderRow.RowCode;
                 cell.ColCode = "Col_" + c;
                 cell.Class = "header-cell";
-                cell.Value = "Column " + c;
-                cell.Width = "1x";
+                cell.Value = rando.NextDouble() * (rando.Next(1, 6)*10);
                 cell.IsEditable = false;
                 cell.Order = 5 + c;
-                cell.IsRenderable = true;
+                //cell.IsRenderable = true;
 
                 subHeaderRow.Cells.Add(cell);
             }
@@ -430,26 +429,27 @@ namespace ExhibitGrid.Processes
                 rowText.ColCode = "RowText";
                 rowText.IsEditable = false;
                 rowText.Text = "Row Text " + r;
+                rowText.Indent = r % 4;
                 dataRow.Cells.Add(rowText);
-                rowText.IsRenderable = true;
+                //rowText.IsRenderable = true;
 
                 postitCell = new ViewModel.v2.PostItCellVm();
                 postitCell.Order = 3;
-                postitCell.CanHavePostIt = false;
+                postitCell.IsEditable = true;
                 postitCell.HasPostIt = false;
                 postitCell.RowCode = dataRow.RowCode;
                 postitCell.ColCode = "PostIt";
                 dataRow.Cells.Add(postitCell);
-                postitCell.IsRenderable = true;
+                //postitCell.IsRenderable = true;
 
                 narrCell = new ViewModel.v2.NarrativeCellVm();
                 narrCell.Order = 4;
-                narrCell.CanAddNarrative = false;
+                narrCell.IsEditable = true;
                 narrCell.HasNarrative = false;
                 narrCell.RowCode = dataRow.RowCode;
                 narrCell.ColCode = "Narrative";
                 dataRow.Cells.Add(narrCell);
-                narrCell.IsRenderable = true;
+                //narrCell.IsRenderable = true;
 
                 for (var c = 0; c <= numColumns; c++)
                 {
@@ -458,16 +458,20 @@ namespace ExhibitGrid.Processes
                     cell.ColCode = "Col_" + c;
                     cell.Class = "data-cell";
                     cell.Value = 5 * c;
-                    cell.Width = "1x";
                     cell.IsEditable = true;
                     cell.Order = 5 + c;
-                    cell.IsRenderable = true;
+                    //cell.IsRenderable = true;
                     dataRow.Cells.Add(cell);
                 }
-
+                dataRow.Cells = dataRow.Cells.OrderBy(c => c.Order).ToList();
                 grid.DataRows.Add(dataRow);
             }
 
+
+
+            grid.HasCollapseColumn = grid.DataRows.Any(r => r.CanCollapse);
+            grid.HasSelectColumn = grid.DataRows.Any(r => r.CanSelect);
+            grid.HasCrudColumn = grid.DataRows.Any(r => r.CrudFunctionality != "none");
             return grid;
         }
 

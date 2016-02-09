@@ -1,0 +1,8 @@
+﻿
+
+<div ng-switch="cellCtrl.CellVm.IsEditable" class="indent-{{cellCtrl.CellVm.Indent}}">
+    <input type="text" ng-switch-when="true" ng-model="cellCtrl.CellVm.Text" />
+    <div ng-switch-when="false">
+        {{cellCtrl.CellVm.Text}}
+    </div>
+</div>

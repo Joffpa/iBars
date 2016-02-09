@@ -11,16 +11,31 @@ module app.v2.directives {
                 templateUrl: '/templates/independantRow.html',
                 controllerAs: 'rowCtrl',
                 transclude: true,
-                controller: ['$scope', 'modelService', RowController]
+                controller: ['$scope', 'modelService', app.v2.RowController]
             }
         }])
-        .directive('exhibitCell', ['$compile', 'modelService', function ($compile, modelService) {
+        .directive('textCell', ['$compile', 'modelService', function ($compile, modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/independantRow.html',
-                controllerAs: 'rowCtrl',
+                templateUrl: '/templates/v2/textCell.html',
+                controllerAs: 'cellCtrl',
                 transclude: true,
-                controller: ['$scope', 'modelService', CellController]
+                scope: {
+                    cellVm: '='
+                },
+                controller: ['$scope', 'modelService', app.v2.TextCellController]
+            }
+        }])
+        .directive('postitCell', ['$compile', 'modelService', function ($compile, modelService) {
+            return {
+                restrict: 'A',
+                templateUrl: '/templates/v2/postitCell.html',
+                controllerAs: 'cellCtrl',
+                transclude: true,
+                scope: {
+                    cellVm: '='
+                },
+                controller: ['$scope', 'modelService', app.v2.PostItCellController]
             }
         }])
         ;

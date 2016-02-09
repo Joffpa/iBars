@@ -7,41 +7,47 @@ module app.v2.model {
     export interface IModelService {
         exhibitModel: ExhibitVm
         getExhibitVm(): ExhibitVm,
-        getGridVm(gridCode: string): ExhibitGrid.ViewModel.v2.IGridVm;
-        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.v2.IRowVm;
+        getGridVm(gridCode: string): ExhibitGrid.ViewModel.v2.Interface.IGridVm;
+        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.v2.Interface.IRowVm;
+        getTextCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.v2.Interface.ITextCellVm;
     }
 
     export class ExhibitVm {
         ExhibitCode: string;
-        Grids: ExhibitGrid.ViewModel.v2.IGridVm[];
+        Grids: ExhibitGrid.ViewModel.v2.Interface.IGridVm[];
 
         constructor(ExhibitCode: string) {
             this.ExhibitCode = ExhibitCode;
-            this.Grids = new Array<ExhibitGrid.ViewModel.v2.IGridVm>();
+            this.Grids = new Array<ExhibitGrid.ViewModel.v2.Interface.IGridVm>();
         }
 
-        addGrid(grid: ExhibitGrid.ViewModel.v2.IGridVm) {
+        addGrid(grid: ExhibitGrid.ViewModel.v2.Interface.IGridVm) {
             this.Grids.push(grid);
         }
     }
 
-    export class GridVm implements ExhibitGrid.ViewModel.v2.IGridVm {
+    export class GridVm implements ExhibitGrid.ViewModel.v2.Interface.IGridVm {
 
         GridCode: string;
-        DataRows: ExhibitGrid.ViewModel.v2.IRowVm[];
+        DataRows: ExhibitGrid.ViewModel.v2.Interface.IRowVm[];
+        HasCollapseColumn: boolean;
+        HasSelectColumn: boolean;
+        HasCrudColumn: boolean;
+        ColumnHeaders: ExhibitGrid.ViewModel.v2.Interface.IColumnHeaderVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
     }
 
-    export class RowVm implements ExhibitGrid.ViewModel.v2.IRowVm {
+    export class RowVm implements ExhibitGrid.ViewModel.v2.Interface.IRowVm {
         RowCode: string;
         Class: string;
         Text: string;
         CanCollapse: boolean;
         CanSelect: boolean;
         IsSelected: boolean;
-        Cells: ExhibitGrid.ViewModel.v2.IBaseCellVm[];
+        CrudFunctionality: string;
+        Cells: ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
             this.Class = Class;
@@ -50,13 +56,14 @@ module app.v2.model {
 
     }
 
-    export class NarrativeCellVm implements ExhibitGrid.ViewModel.v2.INarrativeCellVm {
+    export class NarrativeCellVm implements ExhibitGrid.ViewModel.v2.Interface.INarrativeCellVm {
         Order: number;
         Type: string;
         RowCode: string;
         ColCode: string;
         CanAddNarrative: boolean;
         HasNarrative: boolean;
+        IsRenderable: boolean;
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
             this.Order = Order;
             this.Type = Type;
@@ -67,13 +74,14 @@ module app.v2.model {
         }
     }
 
-    export class PostItCellVm implements ExhibitGrid.ViewModel.v2.IPostItCellVm {
+    export class PostItCellVm implements ExhibitGrid.ViewModel.v2.Interface.IPostItCellVm {
         Order: number;
         Type: string;
         RowCode: string;
         ColCode: string;
         CanHavePostIt: boolean;
         HasPostIt: boolean;
+        IsRenderable: boolean;
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanHavePostIt: boolean, HasPostIt: boolean) {
             this.Order = Order;
             this.Type = Type;
@@ -85,7 +93,7 @@ module app.v2.model {
     }
 
 
-    export class DataCellVm implements ExhibitGrid.ViewModel.v2.IDataCellVm {
+    export class DataCellVm implements ExhibitGrid.ViewModel.v2.Interface.IDataCellVm {
         Order: number;
         ColCode: string;
         RowCode: string;
@@ -94,6 +102,7 @@ module app.v2.model {
         Width: string;
         IsEditable: boolean;
         Value: any;
+        IsRenderable: boolean;
 
         constructor(Order: number, ColCode: string, RowCode: string, Class: string, Type: string, Value: any, Width: string, IsEditable: boolean) {
             this.Order = Order;
@@ -175,6 +184,15 @@ module app.v2.model {
             return row;
         }
 
+        getTextCellVm(gridCode: string, rowCode: string, colCode: string) {
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+            console.log(gridCode);
+            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
+            console.log(row);
+            var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+            console.log(cell);
+            return <ExhibitGrid.ViewModel.v2.Interface.ITextCellVm>cell;
+        }
     }
 
     var service = angular

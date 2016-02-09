@@ -7,44 +7,44 @@ module app.model {
     export interface IModelService {
         exhibitModel: ExhibitVm
         getExhibitModel(): ExhibitVm,
-        getGridModel(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
-        getRowModel(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
+        getGridModel(gridCode: string): ExhibitGrid.ViewModel.Interface.IGridVm;
+        getRowModel(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.Interface.IRowVm;
     }
 
     export class ExhibitVm {
         ExhibitCode: string;
-        Grids: ExhibitGrid.ViewModel.IGridVm[];
+        Grids: ExhibitGrid.ViewModel.Interface.IGridVm[];
          
         constructor(ExhibitCode: string) {
             this.ExhibitCode = ExhibitCode;
-            this.Grids = new Array<ExhibitGrid.ViewModel.IGridVm>();
+            this.Grids = new Array<ExhibitGrid.ViewModel.Interface.IGridVm>();
         }
 
-        addGrid(grid: ExhibitGrid.ViewModel.IGridVm) {
+        addGrid(grid: ExhibitGrid.ViewModel.Interface.IGridVm) {
             this.Grids.push(grid);
         }
     }
 
-    export class GridVm implements ExhibitGrid.ViewModel.IGridVm {
+    export class GridVm implements ExhibitGrid.ViewModel.Interface.IGridVm {
 
         GridCode: string;
-        Rows: ExhibitGrid.ViewModel.IRowVm[];
+        Rows: ExhibitGrid.ViewModel.Interface.IRowVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
     }
     
-    export class RowVm implements ExhibitGrid.ViewModel.IRowVm{
+    export class RowVm implements ExhibitGrid.ViewModel.Interface.IRowVm{
         RowCode: string;
         ParentRowCodes: string[];
         Class: string;
         Text: string;
         PeCode: string;
-        SelectionCell: ExhibitGrid.ViewModel.ISelectionCellVm;
-        CrudCell: ExhibitGrid.ViewModel.ICrudCellVm;
-        NarrativeCell: ExhibitGrid.ViewModel.INarrativeCellVm;
-        PostItCell: ExhibitGrid.ViewModel.IPostItCellVm;
-        DataCells: ExhibitGrid.ViewModel.IDataCellVm[];
+        SelectionCell: ExhibitGrid.ViewModel.Interface.ISelectionCellVm;
+        CrudCell: ExhibitGrid.ViewModel.Interface.ICrudCellVm;
+        NarrativeCell: ExhibitGrid.ViewModel.Interface.INarrativeCellVm;
+        PostItCell: ExhibitGrid.ViewModel.Interface.IPostItCellVm;
+        DataCells: ExhibitGrid.ViewModel.Interface.IDataCellVm[];
         constructor(RowCode: string, ParentRowCodes: string[], Class: string, Text: string) {
             this.RowCode = RowCode;
             this.ParentRowCodes = ParentRowCodes;
@@ -54,7 +54,7 @@ module app.model {
 
     }
     
-    export class SelectionCellVm implements ExhibitGrid.ViewModel.ISelectionCellVm{
+    export class SelectionCellVm implements ExhibitGrid.ViewModel.Interface.ISelectionCellVm{
         IncludeSpaceForCell: boolean;
         AllowSelect: boolean;
         IsSelected: boolean;
@@ -65,7 +65,7 @@ module app.model {
         }
     }
 
-    export class CrudCellVm implements ExhibitGrid.ViewModel.ICrudCellVm{
+    export class CrudCellVm implements ExhibitGrid.ViewModel.Interface.ICrudCellVm{
         IncludeSpaceForCell: boolean;
         CrudFunctionality: string;
         constructor(IncludeSpaceForCell: boolean, CrudFunctionality: string) {
@@ -74,7 +74,7 @@ module app.model {
         }
     }
 
-    export class NarrativeCellVm implements ExhibitGrid.ViewModel.INarrativeCellVm {
+    export class NarrativeCellVm implements ExhibitGrid.ViewModel.Interface.INarrativeCellVm {
         IncludeSpaceForCell: boolean;
         AllowNarrative: boolean;
         HasNarrative: boolean;
@@ -85,7 +85,7 @@ module app.model {
         }   
     }
 
-    export class PostItCellVm implements ExhibitGrid.ViewModel.IPostItCellVm {
+    export class PostItCellVm implements ExhibitGrid.ViewModel.Interface.IPostItCellVm {
         IncludeSpaceForCell: boolean;
         AllowPostIt: boolean;
         HasPostIt: boolean;
@@ -97,7 +97,7 @@ module app.model {
     }
     
 
-   export class DataCellVm implements ExhibitGrid.ViewModel.IDataCellVm{
+   export class DataCellVm implements ExhibitGrid.ViewModel.Interface.IDataCellVm{
         ColCode: string;
         RowCode: string;
         Class: string;

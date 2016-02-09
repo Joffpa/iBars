@@ -210,6 +210,12 @@
     </Content>
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\gridTable.css">
+      <DependentUpon>gridTable.less</DependentUpon>
+    </Content>
+    <Content Include="Content\gridTable.min.css">
+      <DependentUpon>gridTable.css</DependentUpon>
+    </Content>
     <Content Include="Content\kendo\2014.2.716\Black\editor.png" />
     <Content Include="Content\kendo\2014.2.716\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2014.2.716\Black\indeterminate.gif" />
@@ -507,6 +513,7 @@
     <Content Include="Scripts\GridV2\modelService.v2.js.map" />
     <Content Include="Scripts\GridV2\grid.v2.js.map" />
     <Content Include="Content\exhibitGrid.v2.less" />
+    <Content Include="Content\gridTable.less" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\GridProto\modelService.js" />
     <Content Include="Scripts\GridV2\directives.v2.js" />
@@ -538,6 +545,8 @@
     <Content Include="templates\exhibitGrid.html" />
     <Content Include="templates\exhibitRow.html" />
     <Content Include="templates\independantRow.html" />
+    <Content Include="templates\v2\postitCell.html" />
+    <Content Include="templates\v2\textCell.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -577,9 +586,11 @@
     <TypeScriptCompile Include="Scripts\GridProto\calcService.ts" />
     <TypeScriptCompile Include="Scripts\GridProto\directives.ts" />
     <TypeScriptCompile Include="Scripts\GridProto\gridModule.ts" />
+    <TypeScriptCompile Include="Scripts\GridProto\Interface.ts" />
     <TypeScriptCompile Include="Scripts\GridProto\modelService.ts" />
     <TypeScriptCompile Include="Scripts\GridV2\directives.v2.ts" />
     <TypeScriptCompile Include="Scripts\GridV2\grid.v2.ts" />
+    <TypeScriptCompile Include="Scripts\GridV2\Interface.ts" />
     <TypeScriptCompile Include="Scripts\GridV2\modelService.v2.ts" />
     <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
       <AutoGen>True</AutoGen>

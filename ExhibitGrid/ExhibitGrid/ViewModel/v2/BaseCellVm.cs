@@ -11,6 +11,6 @@ namespace ExhibitGrid.ViewModel.v2
         //public string Type { get; set; }
         public string RowCode { get; set; }
         public string ColCode { get; set; }
-        public bool IsRenderable { get; set; }
+        public bool IsEditable { get; set; }
     }
 }

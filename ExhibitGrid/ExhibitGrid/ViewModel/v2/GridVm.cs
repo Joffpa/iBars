@@ -8,6 +8,9 @@ namespace ExhibitGrid.ViewModel.v2
     public class GridVm
     {
         public string GridCode { get; set; }
+        public bool HasCollapseColumn { get; set; }
+        public bool HasSelectColumn { get; set; }
+        public bool HasCrudColumn { get; set; }
         //public int MaxHeaderLevels { get; set; }
         //public List<ColumnHeaderNode> ColumnHeaderTree { get; set; }
         public List<ColumnHeaderVm> ColumnHeaders { get; set; }

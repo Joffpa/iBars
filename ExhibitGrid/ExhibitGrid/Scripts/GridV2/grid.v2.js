@@ -6,7 +6,7 @@ var app;
         var GridController = (function () {
             function GridController(modelService) {
                 this.GridVm = modelService.getGridVm('MockGrid');
-                console.log(this.GridVm);
+                //console.log(this.GridVm);
                 this.ModelService = modelService;
             }
             return GridController;
@@ -26,18 +26,28 @@ var app;
             return RowController;
         })();
         v2.RowController = RowController;
-        //export class CellController {
-        //    DataCellVm: app.v2.model.DataCellVm;
-        //    CalcService: app.v2.calc.CalcService;
-        //    constructor($scope, calcService: app.calc.CalcService) {
-        //        this.DataCellVm = $scope.cell;
-        //        this.CalcService = calcService;
-        //    }
-        //}
+        var TextCellController = (function () {
+            function TextCellController($scope, modelService) {
+                this.CellVm = $scope.cellVm;
+                this.ModelService = modelService;
+            }
+            return TextCellController;
+        })();
+        v2.TextCellController = TextCellController;
+        var PostItCellController = (function () {
+            function PostItCellController($scope, modelService) {
+                console.log($scope.cellVm);
+                this.CellVm = $scope.cellVm;
+                this.ModelService = modelService;
+            }
+            return PostItCellController;
+        })();
+        v2.PostItCellController = PostItCellController;
         var exhibitApp = angular
             .module('app.v2', ['app.v2.model', 'app.v2.directives'])
             .controller('gridController', ['modelService', GridController])
-            .controller('rowController', ['$scope', 'modelService', RowController]);
+            .controller('rowController', ['$scope', 'modelService', RowController])
+            .controller('textCellController', ['$scope', 'modelService', TextCellController]);
     })(v2 = app.v2 || (app.v2 = {}));
 })(app || (app = {}));
 //# sourceMappingURL=grid.v2.js.map

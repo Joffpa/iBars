@@ -12,7 +12,6 @@ namespace ExhibitGrid.ViewModel.v2
 
         }
         
-        public bool CanHavePostIt { get; set; }
         public bool HasPostIt { get; set; }
     }
 }
