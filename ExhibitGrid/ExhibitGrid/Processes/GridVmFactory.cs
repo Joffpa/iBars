@@ -37,6 +37,7 @@ namespace ExhibitGrid.Processes
             var numRows = 16;
             var numColumns = 17;
 
+            
             var grid = new GridVm();
             grid.GridCode = "MockGrid";
 
@@ -142,11 +143,12 @@ namespace ExhibitGrid.Processes
 
         private static ViewModel.v2.GridVm GetMockGridVmV2()
         {
-            var numRows = 16;
-            var numColumns = 17;
+            var numRows = 25;
+            var numColumns = 21;
+            var totalRow = 1; // value of 1 means Row_1 is set as the total row
+
             var rando = new Random();
-
-
+            
             var grid = new ViewModel.v2.GridVm();
             grid.GridCode = "MockGrid";
             
@@ -155,210 +157,124 @@ namespace ExhibitGrid.Processes
 
             var colHeader = new ViewModel.v2.ColumnHeaderVm();
             colHeader.ColCode = "Level3Header";
-            //colHeader.ParentColCode = null;
+            colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 3 Header";
             colHeader.Level = 3;
             colHeader.Order = 0;
-            colHeader.ColSpan = 18;
+            colHeader.ColSpan = numColumns - 3;
             grid.ColumnHeaders.Add(colHeader);
 
             colHeader = new ViewModel.v2.ColumnHeaderVm();
             colHeader.ColCode = "Level2HeaderA";
-            //colHeader.ParentColCode = "Level3Header";
+            colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 2 Header A";
             colHeader.Level = 2;
             colHeader.Order = 0;
-            colHeader.ColSpan = 17;
+            colHeader.ColSpan = (numColumns - 3)/2;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ViewModel.v2.ColumnHeaderVm();
             colHeader.ColCode = "Level2HeaderB";
-            //colHeader.ParentColCode = "Level3Header";
+            colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 2 Header B";
             colHeader.Level = 2;
             colHeader.Order = 1;
-            colHeader.ColSpan = 1;
+            colHeader.ColSpan = ((numColumns - 3) - (numColumns - 3) / 2);
             grid.ColumnHeaders.Add(colHeader);
 
             colHeader = new ViewModel.v2.ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderA";
-            //colHeader.ParentColCode = "Level2HeaderA";
+            colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header A";
             colHeader.Level = 1;
             colHeader.Order = 0;
-            colHeader.ColSpan = 7;
+            colHeader.ColSpan = ((numColumns - 3) / 2 ) / 3;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ViewModel.v2.ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderB";
-            //colHeader.ParentColCode = "Level2HeaderA";
+            colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header B";
             colHeader.Level = 1;
             colHeader.Order = 1;
-            colHeader.ColSpan = 10;
+            colHeader.ColSpan = ((numColumns - 3) / 2) / 3;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ViewModel.v2.ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderC";
-            //colHeader.ParentColCode = "Level2HeaderB";
+            colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header C";
             colHeader.Level = 1;
             colHeader.Order = 2;
-            colHeader.ColSpan = 1;
+            colHeader.ColSpan = (((numColumns - 3) / 2) - (((numColumns - 3) / 2) / 3) * 2);
             grid.ColumnHeaders.Add(colHeader);
 
             colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderA";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header A";
-            colHeader.Level = 0;
+            colHeader.ColCode = "Level1HeaderA";
+            colHeader.HeaderIsVisible = true;
+            colHeader.Text = "Level 1 Header D";
+            colHeader.Level = 1;
+            colHeader.Order = 0;
+            colHeader.ColSpan = ((numColumns - 3) - (numColumns - 3) / 2) / 3;
+            grid.ColumnHeaders.Add(colHeader);
+            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader.ColCode = "Level1HeaderB";
+            colHeader.HeaderIsVisible = true;
+            colHeader.Text = "Level 1 Header E";
+            colHeader.Level = 1;
             colHeader.Order = 1;
-            colHeader.ColSpan = 1;
+            colHeader.ColSpan = ((numColumns - 3) - (numColumns - 3) / 2) / 3;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderB";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header B";
-            colHeader.Level = 0;
+            colHeader.ColCode = "Level1HeaderC";
+            colHeader.HeaderIsVisible = true;
+            colHeader.Text = "Level 1 Header F";
+            colHeader.Level = 1;
             colHeader.Order = 2;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderC";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header C";
-            colHeader.Level = 0;
-            colHeader.Order = 3;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderD";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header D";
-            colHeader.Level = 0;
-            colHeader.Order = 4;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderE";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header E";
-            colHeader.Level = 0;
-            colHeader.Order = 5;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderF";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header F";
-            colHeader.Level = 0;
-            colHeader.Order = 6;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderG";
-            //colHeader.ParentColCode = "Level1HeaderA";
-            colHeader.Text = "Level 0 Header G";
-            colHeader.Level = 0;
-            colHeader.Order = 7;
-            colHeader.ColSpan = 1;
+            colHeader.ColSpan = (((numColumns - 3) - (numColumns - 3) / 2) - (((numColumns - 3) - (numColumns - 3) / 2) / 3) * 2);
             grid.ColumnHeaders.Add(colHeader);
 
+            //Hidden Col Headers
             colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderH";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header H";
+            colHeader.ColCode = "RowText";
+            colHeader.HeaderIsVisible = false;
+            colHeader.Width = "200px";
+            colHeader.Text = "RowText";
             colHeader.Level = 0;
-            colHeader.Order = 8;
+            colHeader.Order = -2;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderI";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header I";
+            colHeader.ColCode = "PostIt";
+            colHeader.HeaderIsVisible = false;
+            colHeader.Width = "32px";
+            colHeader.Text = "PostIt";
             colHeader.Level = 0;
-            colHeader.Order = 9;
+            colHeader.Order = -1;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderJ";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header J";
+            colHeader.ColCode = "Narrative";
+            colHeader.HeaderIsVisible = false;
+            colHeader.Width = "32px";
+            colHeader.Text = "PostIt";
             colHeader.Level = 0;
-            colHeader.Order = 10;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderK";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header K";
-            colHeader.Level = 0;
-            colHeader.Order = 11;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderL";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header L";
-            colHeader.Level = 0;
-            colHeader.Order = 12;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderM";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header M";
-            colHeader.Level = 0;
-            colHeader.Order = 13;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderN";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header N";
-            colHeader.Level = 0;
-            colHeader.Order = 14;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderO";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header O";
-            colHeader.Level = 0;
-            colHeader.Order = 15;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderP";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header P";
-            colHeader.Level = 0;
-            colHeader.Order = 16;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderQ";
-            //colHeader.ParentColCode = "Level1HeaderB";
-            colHeader.Text = "Level 0 Header Q";
-            colHeader.Level = 0;
-            colHeader.Order = 17;
+            colHeader.Order = 0;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
 
 
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
-            colHeader.ColCode = "Level0HeaderR";
-            //colHeader.ParentColCode = "Level1HeaderC";
-            colHeader.Text = "Level 0 Header R";
-            colHeader.Level = 0;
-            colHeader.Order = 18;
-            colHeader.ColSpan = 1;
-            grid.ColumnHeaders.Add(colHeader);
+            for(int col = 0; col < numColumns - 3; col++)
+            {
+                colHeader = new ViewModel.v2.ColumnHeaderVm();
+                colHeader.ColCode = "Col_" + col;
+                colHeader.HeaderIsVisible = true;
+                colHeader.Width = "100px";
+                colHeader.Text = "Level 0 Header " + Convert.ToChar(col + 65);
+                colHeader.Level = 0;
+                colHeader.Order = col + 1;
+                colHeader.ColSpan = 1;
+                grid.ColumnHeaders.Add(colHeader);
+            }
 
             
-            //int maxLevels = 0;
-            //int colSpan;
-            //grid.ColumnHeaderTree = GetColumnHeaderTree(grid.ColumnHeaders, null, 0,out colSpan, ref maxLevels);
-            //grid.MaxHeaderLevels = maxLevels;
-
-
             var subHeaderRow = new ViewModel.v2.RowVm();
             subHeaderRow.RowCode = "Row_0";
             subHeaderRow.Class = "header-row";
@@ -366,45 +282,48 @@ namespace ExhibitGrid.Processes
             subHeaderRow.CanCollapse = false;
             subHeaderRow.CanSelect = false;
             subHeaderRow.IsSelected = false;
-            subHeaderRow.CrudFunctionality = "none";
+            subHeaderRow.CanAdd = false;
+            subHeaderRow.CanDelete = false;
 
-            subHeaderRow.Cells = new List<ViewModel.v2.BaseCellVm>();
+            subHeaderRow.Cells = new List<ViewModel.v2.CellVm>();
 
-            var rowText = new ViewModel.v2.TextCellVm();
+            var rowText = new ViewModel.v2.CellVm();
             rowText.Order = 2;
             rowText.RowCode = subHeaderRow.RowCode;
             rowText.ColCode = "RowText";
             rowText.IsEditable = false;
             rowText.Text = "";
+            rowText.Directive = "text-cell";
             subHeaderRow.Cells.Add(rowText);
 
-            var postitCell = new ViewModel.v2.PostItCellVm();
+            var postitCell = new ViewModel.v2.CellVm();
             postitCell.Order = 3;
             postitCell.IsEditable = false;
             postitCell.HasPostIt = false;
             postitCell.RowCode = subHeaderRow.RowCode;
             postitCell.ColCode = "PostIt";
+            postitCell.Directive = "postit-cell";
             subHeaderRow.Cells.Add(postitCell);
 
-            var narrCell = new ViewModel.v2.NarrativeCellVm();
+            var narrCell = new ViewModel.v2.CellVm();
             narrCell.Order = 4;
             narrCell.IsEditable = false;
             narrCell.HasNarrative = false;
             narrCell.RowCode = subHeaderRow.RowCode;
             narrCell.ColCode = "Narrative";
+            narrCell.Directive = "narrative-cell";
             subHeaderRow.Cells.Add(narrCell);
 
-            for (var c = 0; c <= numColumns; c++)
+            for (var c = 0; c < numColumns - 3; c++)
             {
-                var cell = new ViewModel.v2.DataCellVm();
+                var cell = new ViewModel.v2.CellVm();
                 cell.RowCode = subHeaderRow.RowCode;
                 cell.ColCode = "Col_" + c;
                 cell.Class = "header-cell";
-                cell.Value = rando.NextDouble() * (rando.Next(1, 6)*10);
+                cell.Value = 0;
                 cell.IsEditable = false;
                 cell.Order = 5 + c;
-                //cell.IsRenderable = true;
-
+                cell.Directive = "numeric-cell";
                 subHeaderRow.Cells.Add(cell);
             }
 
@@ -419,90 +338,102 @@ namespace ExhibitGrid.Processes
                 dataRow.CanCollapse = r % 2 == 0;
                 dataRow.CanSelect = r % 3 == 0;
                 dataRow.IsSelected = false;
-                dataRow.CrudFunctionality = r % 2 == 0 ? "create" : r % 3 == 0 ? "delete" : "none";
+                dataRow.CanAdd = r % 4 == 0;
+                dataRow.CanDelete = r % 5 == 0;
 
-                dataRow.Cells = new List<ViewModel.v2.BaseCellVm>();
+                dataRow.Cells = new List<ViewModel.v2.CellVm>();
 
-                rowText = new ViewModel.v2.TextCellVm();
+                rowText = new ViewModel.v2.CellVm();
                 rowText.Order = 2;
                 rowText.RowCode = dataRow.RowCode;
                 rowText.ColCode = "RowText";
                 rowText.IsEditable = false;
                 rowText.Text = "Row Text " + r;
                 rowText.Indent = r % 4;
+                rowText.Directive = "text-cell";
                 dataRow.Cells.Add(rowText);
-                //rowText.IsRenderable = true;
 
-                postitCell = new ViewModel.v2.PostItCellVm();
+                postitCell = new ViewModel.v2.CellVm();
                 postitCell.Order = 3;
                 postitCell.IsEditable = true;
                 postitCell.HasPostIt = false;
                 postitCell.RowCode = dataRow.RowCode;
                 postitCell.ColCode = "PostIt";
+                postitCell.Directive = "postit-cell";
                 dataRow.Cells.Add(postitCell);
-                //postitCell.IsRenderable = true;
 
-                narrCell = new ViewModel.v2.NarrativeCellVm();
+                narrCell = new ViewModel.v2.CellVm();
                 narrCell.Order = 4;
                 narrCell.IsEditable = true;
                 narrCell.HasNarrative = false;
                 narrCell.RowCode = dataRow.RowCode;
                 narrCell.ColCode = "Narrative";
+                narrCell.Directive = "narrative-cell";
                 dataRow.Cells.Add(narrCell);
-                //narrCell.IsRenderable = true;
 
-                for (var c = 0; c <= numColumns; c++)
+                for (var c = 0; c < numColumns -3; c++)
                 {
-                    var cell = new ViewModel.v2.DataCellVm();
+                    var cell = new ViewModel.v2.CellVm();
                     cell.RowCode = dataRow.RowCode;
                     cell.ColCode = "Col_" + c;
                     cell.Class = "data-cell";
-                    cell.Value = 5 * c;
-                    cell.IsEditable = true;
+                    cell.Value = c == 2 ? dataRow.Cells.FirstOrDefault(x => x.ColCode == "Col_0").Value : 5 * c;
+                    cell.IsEditable = c % 3 != 2 && r != totalRow;
                     cell.Order = 5 + c;
-                    //cell.IsRenderable = true;
+                    cell.Directive = "numeric-cell";
                     dataRow.Cells.Add(cell);
                 }
                 dataRow.Cells = dataRow.Cells.OrderBy(c => c.Order).ToList();
                 grid.DataRows.Add(dataRow);
+
+            }
+            
+            foreach(var row in grid.DataRows)
+            {
+                for (int i = 2; i <= row.Cells.Count - 3; i += 3){
+                    var prevPrevCellVal = row.Cells.FirstOrDefault(c => c.ColCode == "Col_" + (i - 2)).Value;
+                    var prevCellVal = row.Cells.FirstOrDefault(c => c.ColCode == "Col_" + (i - 1)).Value;
+                    row.Cells.FirstOrDefault(c => c.ColCode == "Col_" + i).Value = prevPrevCellVal + prevCellVal;
+                }
             }
 
+            var totalRowVm = grid.DataRows.FirstOrDefault(r => r.RowCode == "Row_" + totalRow);
 
+            foreach(var cell in totalRowVm.Cells.Where(c => c.ColCode.Substring(0, 3) == "Col"  ))
+            {
+                double sum = 0;
+                foreach(var row in grid.DataRows.Where(r => r.RowCode != totalRowVm.RowCode)){
+                    sum += row.Cells.FirstOrDefault(c => c.ColCode == cell.ColCode).Value;
+                }
+                cell.Value = sum;
 
-            grid.HasCollapseColumn = grid.DataRows.Any(r => r.CanCollapse);
-            grid.HasSelectColumn = grid.DataRows.Any(r => r.CanSelect);
-            grid.HasCrudColumn = grid.DataRows.Any(r => r.CrudFunctionality != "none");
+            }
+
+            grid.NumColumns = 0;
+            if (grid.DataRows.Any(r => r.CanCollapse))
+            {
+                grid.HasCollapseColumn = true;
+                grid.NumColumns++;
+            }
+            if (grid.DataRows.Any(r => r.CanSelect))
+            {
+                grid.HasSelectColumn = true;
+                grid.NumColumns++;
+            }
+            if (grid.DataRows.Any(r => r.CanAdd))
+            {
+                grid.HasAddColumn = true;
+                grid.NumColumns++;
+            }
+            if (grid.DataRows.Any(r => r.CanDelete))
+            {
+                grid.HasDeleteColumn = true;
+                grid.NumColumns++;
+            }
+            grid.NumColumns += grid.DataRows[0].Cells.Count;
             return grid;
         }
-
-        //    public static List<ViewModel.v2.ColumnHeaderNode> GetColumnHeaderTree(List<ViewModel.v2.ColumnHeaderVm> headerList, string parentColCode, int level, out int colSpan,  ref int maxLevel)
-        //    {
-        //        List<ViewModel.v2.ColumnHeaderNode> tree = null;
-        //        colSpan = 0;
-        //        if (headerList.Any(c => c.ParentColCode == parentColCode))
-        //        {
-        //            if (level > maxLevel)
-        //            {
-        //                maxLevel = level;
-        //            }
-        //            tree = new List<ViewModel.v2.ColumnHeaderNode>();
-        //            foreach (var colHeader in headerList.Where(c => c.ParentColCode == parentColCode))
-        //            {
-        //                var node = new ViewModel.v2.ColumnHeaderNode();
-        //                node.ViewModel = colHeader;
-        //                node.ChildNodes = GetColumnHeaderTree(headerList, colHeader.ColCode, level + 1, out colSpan, ref maxLevel);
-        //                node.ViewModel.ColSpan = colSpan;
-        //                tree.Add(node);
-        //            }
-        //            colSpan = tree.Sum(n => n.ViewModel.ColSpan);
-        //        }
-        //        else
-        //        {
-        //            colSpan = 1;
-        //        }
-        //        return tree;
-        //    }
-        //}
+        
     }
 
 }

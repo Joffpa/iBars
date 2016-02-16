@@ -6,48 +6,51 @@ module app.v2.model {
 
     export interface IModelService {
         exhibitModel: ExhibitVm
+        addGridVm(gridVm: ExhibitGrid.ViewModel.v2.IGridVm);
         getExhibitVm(): ExhibitVm,
-        getGridVm(gridCode: string): ExhibitGrid.ViewModel.v2.Interface.IGridVm;
-        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.v2.Interface.IRowVm;
-        getTextCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.v2.Interface.ITextCellVm;
+        getGridVm(gridCode: string): ExhibitGrid.ViewModel.v2.IGridVm;
+        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.v2.IRowVm;
+        getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.v2.ICellVm;
+        getCellValue(gridCode: string, rowCode: string, colCode: string): number;
+        updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number): void;
     }
 
     export class ExhibitVm {
         ExhibitCode: string;
-        Grids: ExhibitGrid.ViewModel.v2.Interface.IGridVm[];
+        Grids: ExhibitGrid.ViewModel.v2.IGridVm[];
 
         constructor(ExhibitCode: string) {
             this.ExhibitCode = ExhibitCode;
-            this.Grids = new Array<ExhibitGrid.ViewModel.v2.Interface.IGridVm>();
-        }
-
-        addGrid(grid: ExhibitGrid.ViewModel.v2.Interface.IGridVm) {
-            this.Grids.push(grid);
-        }
+            this.Grids = new Array<ExhibitGrid.ViewModel.v2.IGridVm>();
+        }        
     }
 
-    export class GridVm implements ExhibitGrid.ViewModel.v2.Interface.IGridVm {
+    export class GridVm implements ExhibitGrid.ViewModel.v2.IGridVm {
 
         GridCode: string;
-        DataRows: ExhibitGrid.ViewModel.v2.Interface.IRowVm[];
+        DataRows: ExhibitGrid.ViewModel.v2.IRowVm[];
         HasCollapseColumn: boolean;
         HasSelectColumn: boolean;
-        HasCrudColumn: boolean;
-        ColumnHeaders: ExhibitGrid.ViewModel.v2.Interface.IColumnHeaderVm[];
+        HasAddColumn: boolean;
+        HasDeleteColumn: boolean;
+        NumColumns: number;
+        ColumnHeaders: ExhibitGrid.ViewModel.v2.IColumnHeaderVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
     }
 
-    export class RowVm implements ExhibitGrid.ViewModel.v2.Interface.IRowVm {
+    export class RowVm implements ExhibitGrid.ViewModel.v2.IRowVm {
         RowCode: string;
         Class: string;
         Text: string;
         CanCollapse: boolean;
         CanSelect: boolean;
+        CanAdd: boolean;
+        CanDelete: boolean;
         IsSelected: boolean;
         CrudFunctionality: string;
-        Cells: ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm[];
+        Cells: ExhibitGrid.ViewModel.v2.ICellVm[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
             this.Class = Class;
@@ -56,14 +59,20 @@ module app.v2.model {
 
     }
 
-    export class NarrativeCellVm implements ExhibitGrid.ViewModel.v2.Interface.INarrativeCellVm {
+    export class CellVm implements ExhibitGrid.ViewModel.v2.ICellVm {
         Order: number;
         Type: string;
         RowCode: string;
         ColCode: string;
         CanAddNarrative: boolean;
         HasNarrative: boolean;
-        IsRenderable: boolean;
+        HasPostIt: boolean;
+        IsEditable: boolean;
+        Directive: string;
+        Text: string;
+        Indent: number;
+        Class: string;
+        Value: number;
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
             this.Order = Order;
             this.Type = Type;
@@ -74,99 +83,11 @@ module app.v2.model {
         }
     }
 
-    export class PostItCellVm implements ExhibitGrid.ViewModel.v2.Interface.IPostItCellVm {
-        Order: number;
-        Type: string;
-        RowCode: string;
-        ColCode: string;
-        CanHavePostIt: boolean;
-        HasPostIt: boolean;
-        IsRenderable: boolean;
-        constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanHavePostIt: boolean, HasPostIt: boolean) {
-            this.Order = Order;
-            this.Type = Type;
-            this.RowCode = RowCode;
-            this.ColCode = ColCode;
-            this.CanHavePostIt = CanHavePostIt;
-            this.HasPostIt = HasPostIt;
-        }
-    }
-
-
-    export class DataCellVm implements ExhibitGrid.ViewModel.v2.Interface.IDataCellVm {
-        Order: number;
-        ColCode: string;
-        RowCode: string;
-        Type: string;
-        Class: string;
-        Width: string;
-        IsEditable: boolean;
-        Value: any;
-        IsRenderable: boolean;
-
-        constructor(Order: number, ColCode: string, RowCode: string, Class: string, Type: string, Value: any, Width: string, IsEditable: boolean) {
-            this.Order = Order;
-            this.ColCode = ColCode;
-            this.RowCode = RowCode;
-            this.Class = Class;
-            this.Type = Type;
-            this.Value = Value;
-            this.Width = Width;
-            this.IsEditable = IsEditable;
-        }
-
-        getCoordinate() {
-            return '{[' + this.RowCode + '][' + this.ColCode + ']}';
-        }
-    }
-
     export class MockModelService implements IModelService {
         exhibitModel: ExhibitVm;
 
-        constructor() {
-            this.exhibitModel = new ExhibitVm("Test Exhibit");
-
-            var numRows = 16;
-            var numColumns = 10;
-            
-            var grid = window["gridModel"].currentGrid;
-
-            //console.log(grid);
-
-            //var grid = new GridVm('MockGrid');
-
-            //var headerRow: RowVm = new RowVm('Row_0', null, 'header', 'Header Text');
-            //headerRow.SelectionCell = new SelectionCellVm(true, false, false);
-            //headerRow.CrudCell = new CrudCellVm(true, 'no-crud');
-            //headerRow.NarrativeCell = new NarrativeCellVm(true, false, false);
-            //headerRow.PostItCell = new PostItCellVm(true, false, false);
-            //headerRow.DataCells = [new DataCellVm('Col_Txt', 'Row_0', 'blank-cell', 'read-only', null, '1x', false)];
-
-            //for (var c = 0; c <= numColumns; c++) {
-            //    var cell = new DataCellVm('Col_' + c, 'Row_0', 'header-cell', 'read-only', 'Column ' + c, '1x', false);
-            //    headerRow.DataCells.push(cell);
-            //}
-
-            //grid.Rows = [headerRow];
-
-            //for (var r = 1; r <= numRows; r++) {
-            //    var dataRow0: RowVm = new RowVm('Row_' + r, null, 'data', 'Row Text');
-            //    dataRow0.SelectionCell = new SelectionCellVm(true, true, false);
-            //    dataRow0.CrudCell = new CrudCellVm(true, 'create');
-            //    dataRow0.NarrativeCell = new NarrativeCellVm(true, true, false);
-            //    dataRow0.PostItCell = new PostItCellVm(true, true, false);
-            //    dataRow0.DataCells = [new DataCellVm('Col_Txt', 'Row_' + r, 'text-cell', 'read-only', null, '1x', false)];
-
-            //    for (var c = 0; c <= numColumns; c++) {
-            //        var cell = new DataCellVm('Col_' + c, 'Row_' + r, 'data-cell', 'num-input', 150, '1x', false);
-            //        dataRow0.DataCells.push(cell);
-            //    }
-            //    grid.Rows.push(dataRow0);
-            //}
-
-            //console.log(grid);
-            
-            this.exhibitModel.addGrid(grid);
+        addGridVm(gridVm: ExhibitGrid.ViewModel.v2.IGridVm) {
+            this.exhibitModel.Grids.push(gridVm);
         }
 
         getExhibitVm() {
@@ -183,23 +104,50 @@ module app.v2.model {
             var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
             return row;
         }
-
-        getTextCellVm(gridCode: string, rowCode: string, colCode: string) {
+        
+        getCellVm(gridCode: string, rowCode: string, colCode: string) {
             var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-            console.log(gridCode);
             var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-            console.log(row);
             var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
-            console.log(cell);
-            return <ExhibitGrid.ViewModel.v2.Interface.ITextCellVm>cell;
+            return cell;
+        }
+
+        updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number) {
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
+            var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+            cell.Value = value;
+        }
+
+        getCellValue(gridCode: string, rowCode: string, colCode: string) {
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
+            var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+            return cell.Value;
+        }
+
+        //hack to simulate total row calc 
+        sumAllCellsInColForTotalRow(gridCode: string, rowCode: string, colCode: string) {
+            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+            var sum = 0;
+            _.forEach(grid.DataRows, function (row) {
+                if (row.RowCode != rowCode) {
+                    var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+                    sum += cell.Value;
+                }
+            });
+            return sum;
+        }
+
+        constructor() {
+            this.exhibitModel = new ExhibitVm("Test Exhibit");
+            this.addGridVm(window['gridModel'].grid);
         }
     }
 
     var service = angular
         .module('app.v2.model', [])
-        .factory('modelService', function () {
-            return new MockModelService();
-        });
+        .service('modelService',  MockModelService);
 }
 
 

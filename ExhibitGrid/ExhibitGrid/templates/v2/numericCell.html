@@ -1,0 +1,8 @@
+﻿
+
+<div ng-switch="cellCtrl.CellVm.IsEditable">
+    <input type="number" ng-model="cellCtrl.CellVm.Value" ng-switch-when="true" />
+    <div  ng-switch-when="false">
+        {{cellCtrl.CellVm.Value}}
+    </div>
+</div>

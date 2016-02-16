@@ -7,7 +7,7 @@
 <link href="~/Content/gridTable.min.css" rel="stylesheet" />
 
 <div ng-app="app.v2">
-    <div ng-controller="gridController as gridCtrl">
+    <div id="grid-wrapper" ng-controller="gridController as gridCtrl">
         <table class="table table-bordered exhibit-table">
             <colgroup>
                 @if (Model.HasCollapseColumn)
@@ -18,73 +18,37 @@
                 {
                     <col span="1" style="width: 32px;">
                 }
-                @if (Model.HasCrudColumn)
+                @if (Model.HasAddColumn)
                 {
                     <col span="1" style="width: 32px;">
                 }
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 75px;">
-                <col span="1" style="width: 100px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
-                <col span="1" style="width: 200px;">
+                @if (Model.HasDeleteColumn)
+                {
+                    <col span="1" style="width: 32px;">
+                }
+                @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == 0))
+                {
+                    <col span="1" style="width: @header.Width;">
+                }
             </colgroup>
 
             @{
                 var headerLevels = Model.ColumnHeaders.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
                 var firstRow = true;
             }
-            @*if (hasCollapseCol)
-                {
-                    <colgroup span="1">
-                        <col width="100" />
-                    </colgroup>
-                }
-                if (hasSelectCol)
-                {
-                    <colgroup span="1" />
-                }
-                if (hasCrudCol)
-                {
-                    <colgroup span="1" />
-                }
-                var minLevelHeaders = Model.ColumnHeaders.Where(h => h.Level == headerLevels.Min()).OrderBy(h => h.Order);
-                for (int i = Model.DataRows[0].Cells.Count() - minLevelHeaders.Count(); i > 0; i--)
-                {
-                    <colgroup span="1" width="200px"/>
-                }
-                foreach (var header in minLevelHeaders)
-                {
-                    <colgroup span="1" width="@header.ColSpan" />
-                }*@
             <thead>
                 @foreach (var level in headerLevels)
                 {
                     <tr>
                         @if (firstRow)
                         {
-                            <th colspan="6" rowspan="@headerLevels.Count()">
+                            <th colspan="@(Model.NumColumns - Model.ColumnHeaders.Where(h => h.Level == 0 && h.HeaderIsVisible).Count())" rowspan="@headerLevels.Count()">
                                 Grid Name
                             </th>
                             <th id="RowText" style="display:none;">
                             </th>
                         }
-                        @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level).OrderBy(h => h.Order))
+                    @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level && h.HeaderIsVisible).OrderBy(h => h.Order))
                         {
                             <th scope="col" colspan="@header.ColSpan">
                                 @header.Text
@@ -92,81 +56,70 @@
                         }
                         @{ firstRow = false; }
                     </tr>
-                }
+               }
             </thead>
             <tbody>
-                <tr ng-repeat="row in gridCtrl.GridVm.DataRows track by row.RowCode" ng-controller="rowController as rowCtrl" ng-switch="row.Class">
-
+                <tr ng-repeat="row in gridCtrl.GridVm.DataRows track by row.RowCode" ng-controller="rowController as rowCtrl" ng-switch="::row.Class">
                     @*Header Row*@
-                    <td class="{{row.Class}}" ng-switch-when="header-row" colspan="@(Model.DataRows[0].Cells.Count + 3)">
+                    <td ng-switch-when="header-row" colspan="@Model.NumColumns">
                         {{row.Text}}
-                        <br />
                     </td>
 
                     @*Data Row*@
                     @if (Model.HasCollapseColumn)
                     {
-                        <td ng-switch-when="data-row">
+                        <td colspan="1" ng-switch-when="data-row">
                             <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
                         </td>
                     }
                     @if (Model.HasSelectColumn)
                     {
-                        <td ng-switch-when="data-row">
+                        <td colspan="1" ng-switch-when="data-row">
                             <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
                         </td>
                     }
-                    @if (Model.HasCrudColumn)
+                    @if (Model.HasAddColumn)
                     {
-                        <td ng-switch-when="data-row">
-                            <div ng-switch="row.CrudFunctionality">
-                                <i class="fa fa-user-plus fa-lg" ng-switch-when="create" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
-                                <i class="fa fa-trash fa-lg" ng-switch-when="delete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
-                            </div>
+                        <td colspan="1" ng-switch-when="data-row">
+                            <i class="fa fa-user-plus fa-lg" ng-show="row.CanAdd" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
                         </td>
                     }
-                    @for(int i = 0; i < Model.DataRows[0].Cells.Count(); i++)
+                    @if (Model.HasDeleteColumn)
+                    {
+                        <td colspan="1" ng-switch-when="data-row">
+                            <i class="fa fa-trash fa-lg" ng-show="row.CanDelete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
+                        </td>
+                    }
+                    @for (int i = 0; i < Model.DataRows[0].Cells.Count(); i++)
                     {
                         var cell = Model.DataRows[0].Cells[i];
-                        var type = cell.GetType().ToString();
-                        switch (type)
+                        if (cell.ColCode == "RowText")
                         {
-                            case "ExhibitGrid.ViewModel.v2.TextCellVm":
-                                <th scope="row" ng-switch-when="data-row">
-                                    <div text-cell cell-vm="row.Cells[@i]" >
-                                    </div>
-                                </th>
-                                break;
-                            case "ExhibitGrid.ViewModel.v2.DataCellVm":
-                                <td ng-switch-when="data-row">
-                                    @cell.ColCode
-                                </td>
-                                break;
-                            case "ExhibitGrid.ViewModel.v2.NarrativeCellVm":
-                                <td ng-switch-when="data-row">
-                                    @cell.ColCode
-                                </td>
-                                break;
-                            case "ExhibitGrid.ViewModel.v2.PostItCellVm":
-                                <td ng-switch-when="data-row">
-                                    <div postit-cell cell-vm="row.Cells[@i]">
-                                    </div>
-                                </td>
-                                break;
+                            <th scope="row" colspan="1" ng-switch-when="data-row">
+                                <div text-cell cell-vm="row.Cells[@i]">
+                                </div>
+                            </th>
                         }
+                        else
+                        {
+                            <td colspan="1" ng-switch-when="data-row">
+                                <div @cell.Directive cell-vm="row.Cells[@i]">
+                                </div>
+                            </td>
+                        }                        
                     }
                 </tr>
             </tbody>
         </table>
-
     </div>
 </div>
+
 
 <script>
 
     (function (gridModel) {
-
-        gridModel.currentGrid = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        
+        gridModel.grid = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
 
     }(window.gridModel = window.gridModel || {} ));
 

@@ -10,9 +10,10 @@ namespace ExhibitGrid.ViewModel.v2
         public string GridCode { get; set; }
         public bool HasCollapseColumn { get; set; }
         public bool HasSelectColumn { get; set; }
-        public bool HasCrudColumn { get; set; }
-        //public int MaxHeaderLevels { get; set; }
-        //public List<ColumnHeaderNode> ColumnHeaderTree { get; set; }
+        public bool HasAddColumn { get; set; }
+        public bool HasDeleteColumn { get; set; }
+        public int NumColumns { get; set; }
+
         public List<ColumnHeaderVm> ColumnHeaders { get; set; }
         public List<RowVm> DataRows { get; set; }
     }

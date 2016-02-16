@@ -56,3 +56,4 @@ declare module ExhibitGrid.ViewModel {
 		Value: any;
 	}
 }
+

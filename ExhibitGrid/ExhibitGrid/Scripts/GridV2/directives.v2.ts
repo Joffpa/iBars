@@ -26,6 +26,18 @@ module app.v2.directives {
                 controller: ['$scope', 'modelService', app.v2.TextCellController]
             }
         }])
+        .directive('numericCell', ['$compile', 'modelService', function ($compile, modelService) {
+            return {
+                restrict: 'A',
+                templateUrl: '/templates/v2/numericCell.html',
+                controllerAs: 'cellCtrl',
+                transclude: true,
+                scope: {
+                    cellVm: '='
+                },
+                controller: ['$scope', 'modelService', app.v2.NumericCellController]
+            }
+        }])
         .directive('postitCell', ['$compile', 'modelService', function ($compile, modelService) {
             return {
                 restrict: 'A',
@@ -36,6 +48,18 @@ module app.v2.directives {
                     cellVm: '='
                 },
                 controller: ['$scope', 'modelService', app.v2.PostItCellController]
+            }
+        }])
+        .directive('narrativeCell', ['$compile', 'modelService', function ($compile, modelService) {
+            return {
+                restrict: 'A',
+                templateUrl: '/templates/v2/narrativeCell.html',
+                controllerAs: 'cellCtrl',
+                transclude: true,
+                scope: {
+                    cellVm: '='
+                },
+                controller: ['$scope', 'modelService', app.v2.NarrativeCellController]
             }
         }])
         ;

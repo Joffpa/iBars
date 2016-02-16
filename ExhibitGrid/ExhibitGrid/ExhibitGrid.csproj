@@ -178,19 +178,14 @@
     <Compile Include="Processes\GridVmFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CellAttribsVm.cs" />
-    <Compile Include="ViewModel\v2\BaseCellVm.cs" />
+    <Compile Include="ViewModel\v2\CellVm.cs" />
     <Compile Include="ViewModel\DataCellVm.cs" />
     <Compile Include="ViewModel\GridAttribsVm.cs" />
     <Compile Include="ViewModel\GridVm.cs" />
     <Compile Include="ViewModel\RowAttribsVm.cs" />
     <Compile Include="ViewModel\RowVm.cs" />
-    <Compile Include="ViewModel\v2\ColumnHeaderNode.cs" />
     <Compile Include="ViewModel\v2\ColumnHeaderVm.cs" />
-    <Compile Include="ViewModel\v2\DataCellVm.cs" />
     <Compile Include="ViewModel\v2\GridVm.cs" />
-    <Compile Include="ViewModel\v2\NarrativeCellVm.cs" />
-    <Compile Include="ViewModel\v2\PostItCellVm.cs" />
-    <Compile Include="ViewModel\v2\TextCellVm.cs" />
     <Compile Include="ViewModel\v2\RowVm.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -545,6 +540,8 @@
     <Content Include="templates\exhibitGrid.html" />
     <Content Include="templates\exhibitRow.html" />
     <Content Include="templates\independantRow.html" />
+    <Content Include="templates\v2\narrativeCell.html" />
+    <Content Include="templates\v2\numericCell.html" />
     <Content Include="templates\v2\postitCell.html" />
     <Content Include="templates\v2\textCell.html" />
     <Content Include="Web.config" />

@@ -1,26 +1,32 @@
-﻿declare module ExhibitGrid.ViewModel.v2.Interface {
-    interface IBaseCellVm {
+﻿
+declare module ExhibitGrid.ViewModel.v2 {
+    interface ICellVm {
         Order: number;
         RowCode: string;
         ColCode: string;
-        IsRenderable: boolean;
-    }
-    interface IDataCellVm extends ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm {
-        Class: string;
-        Width: string;
         IsEditable: boolean;
-        Value: any;
+        Directive: string;
+        Text: string;
+        Class: string;
+        Value: number;
+        Indent: number;
+        HasNarrative: boolean;
+        HasPostIt: boolean;
     }
     interface IGridVm {
         GridCode: string;
         HasCollapseColumn: boolean;
         HasSelectColumn: boolean;
-        HasCrudColumn: boolean;
-        ColumnHeaders: ExhibitGrid.ViewModel.v2.Interface.IColumnHeaderVm[];
-        DataRows: ExhibitGrid.ViewModel.v2.Interface.IRowVm[];
+        HasAddColumn: boolean;
+        HasDeleteColumn: boolean;
+        NumColumns: number;
+        ColumnHeaders: ExhibitGrid.ViewModel.v2.IColumnHeaderVm[];
+        DataRows: ExhibitGrid.ViewModel.v2.IRowVm[];
     }
     interface IColumnHeaderVm {
         ColCode: string;
+        HeaderIsVisible: boolean;
+        Width: string;
         Text: string;
         ColSpan: number;
         Level: number;
@@ -32,20 +38,9 @@
         Text: string;
         CanCollapse: boolean;
         CanSelect: boolean;
+        CanAdd: boolean;
+        CanDelete: boolean;
         IsSelected: boolean;
-        CrudFunctionality: string;
-        Cells: ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm[];
-    }
-    interface INarrativeCellVm extends ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm {
-        CanAddNarrative: boolean;
-        HasNarrative: boolean;
-    }
-    interface IPostItCellVm extends ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm {
-        CanHavePostIt: boolean;
-        HasPostIt: boolean;
-    }
-    interface ITextCellVm extends ExhibitGrid.ViewModel.v2.Interface.IBaseCellVm {
-        Text: string;
-        IsEditable: boolean;
+        Cells: ExhibitGrid.ViewModel.v2.ICellVm[];
     }
 }
