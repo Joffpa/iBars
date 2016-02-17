@@ -13,6 +13,7 @@ var app;
         v2.GridController = GridController;
         var RowController = (function () {
             function RowController($scope, modelService) {
+                console.log($scope.row);
                 this.RowVm = $scope.row;
                 this.ModelService = modelService;
             }
@@ -93,6 +94,14 @@ var app;
             return NarrativeCellController;
         })();
         v2.NarrativeCellController = NarrativeCellController;
+        var BlankCellController = (function () {
+            function BlankCellController($scope, modelService) {
+                this.CellVm = $scope.cellVm;
+                this.ModelService = modelService;
+            }
+            return BlankCellController;
+        })();
+        v2.BlankCellController = BlankCellController;
         var exhibitApp = angular
             .module('app.v2', ['app.v2.model', 'app.v2.directives'])
             .controller('gridController', ['modelService', GridController])
@@ -100,3 +109,4 @@ var app;
             .controller('textCellController', ['$scope', 'modelService', TextCellController]);
     })(v2 = app.v2 || (app.v2 = {}));
 })(app || (app = {}));
+//# sourceMappingURL=grid.v2.js.map

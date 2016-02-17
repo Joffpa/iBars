@@ -20,6 +20,7 @@ module app.v2 {
         ModelService: app.v2.model.IModelService;
 
         constructor($scope, modelService: app.v2.model.IModelService) {
+            console.log($scope.row);
             this.RowVm = $scope.row;
             this.ModelService = modelService;
         }
@@ -118,6 +119,17 @@ module app.v2 {
             alert("Narrative for cell: " + this.CellVm.RowCode + " " + this.CellVm.ColCode);
             
         }
+    }
+
+    export class BlankCellController {
+
+        CellVm: ExhibitGrid.ViewModel.v2.ICellVm;
+        ModelService: app.v2.model.IModelService;
+
+        constructor($scope, modelService: app.v2.model.IModelService) {
+            this.CellVm = $scope.cellVm;
+            this.ModelService = modelService;
+        }        
     }
 
     var exhibitApp = angular

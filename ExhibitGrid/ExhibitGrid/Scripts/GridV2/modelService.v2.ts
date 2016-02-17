@@ -50,6 +50,7 @@ module app.v2.model {
         CanDelete: boolean;
         IsSelected: boolean;
         CrudFunctionality: string;
+        IsHidden: boolean;
         Cells: ExhibitGrid.ViewModel.v2.ICellVm[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;

@@ -540,6 +540,7 @@
     <Content Include="templates\exhibitGrid.html" />
     <Content Include="templates\exhibitRow.html" />
     <Content Include="templates\independantRow.html" />
+    <Content Include="templates\v2\blankCell.html" />
     <Content Include="templates\v2\narrativeCell.html" />
     <Content Include="templates\v2\numericCell.html" />
     <Content Include="templates\v2\postitCell.html" />

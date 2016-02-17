@@ -43,14 +43,14 @@
                         @if (firstRow)
                         {
                             <th colspan="@(Model.NumColumns - Model.ColumnHeaders.Where(h => h.Level == 0 && h.HeaderIsVisible).Count())" rowspan="@headerLevels.Count()">
-                                Grid Name
+                                @Model.GridName
                             </th>
                             <th id="RowText" style="display:none;">
                             </th>
                         }
-                    @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level && h.HeaderIsVisible).OrderBy(h => h.Order))
+                        @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level && h.HeaderIsVisible).OrderBy(h => h.Order))
                         {
-                            <th scope="col" colspan="@header.ColSpan">
+                            <th scope="col" colspan="@(header.Level == 0 ? 1 : header.ColSpan)">
                                 @header.Text
                             </th>
                         }
@@ -59,7 +59,7 @@
                }
             </thead>
             <tbody>
-                <tr ng-repeat="row in gridCtrl.GridVm.DataRows track by row.RowCode" ng-controller="rowController as rowCtrl" ng-switch="::row.Class">
+                <tr ng-repeat="row in gridCtrl.GridVm.DataRows | filter:{IsHidden: false} track by row.RowCode " ng-controller="rowController as rowCtrl" ng-switch="::row.Class">
                     @*Header Row*@
                     <td ng-switch-when="header-row" colspan="@Model.NumColumns">
                         {{row.Text}}
@@ -93,20 +93,23 @@
                     @for (int i = 0; i < Model.DataRows[0].Cells.Count(); i++)
                     {
                         var cell = Model.DataRows[0].Cells[i];
-                        if (cell.ColCode == "RowText")
+                        if (!cell.IsHidden)
                         {
-                            <th scope="row" colspan="1" ng-switch-when="data-row">
-                                <div text-cell cell-vm="row.Cells[@i]">
-                                </div>
-                            </th>
+                            if (cell.ColCode == "RowText")
+                            {
+                                <th scope="row" colspan="1" ng-switch-when="data-row">
+                                    <div text-cell cell-vm="row.Cells[@i]">
+                                    </div>
+                                </th>
+                            }
+                            else
+                            {
+                                <td colspan="1" ng-switch-when="data-row">
+                                    <div @cell.Directive cell-vm="row.Cells[@i]">
+                                    </div>
+                                </td>
+                            }
                         }
-                        else
-                        {
-                            <td colspan="1" ng-switch-when="data-row">
-                                <div @cell.Directive cell-vm="row.Cells[@i]">
-                                </div>
-                            </td>
-                        }                        
                     }
                 </tr>
             </tbody>

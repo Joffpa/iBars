@@ -15,6 +15,8 @@ namespace ExhibitGrid.ViewModel.v2
         public bool CanAdd { get; set; }
         public bool CanDelete { get; set; }
         public bool IsSelected { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsHidden { get; set; }
 
         public List<CellVm> Cells { get; set; }
     }

@@ -5,7 +5,7 @@ module app.v2.directives {
     'use strict'
     
     var directives = angular.module('app.v2.directives', ['app.v2.model'])
-        .directive('exhibitRow', ['$compile', 'modelService', function ($compile, modelService) {
+        .directive('exhibitRow', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/independantRow.html',
@@ -14,7 +14,7 @@ module app.v2.directives {
                 controller: ['$scope', 'modelService', app.v2.RowController]
             }
         }])
-        .directive('textCell', ['$compile', 'modelService', function ($compile, modelService) {
+        .directive('textCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/v2/textCell.html',
@@ -26,7 +26,7 @@ module app.v2.directives {
                 controller: ['$scope', 'modelService', app.v2.TextCellController]
             }
         }])
-        .directive('numericCell', ['$compile', 'modelService', function ($compile, modelService) {
+        .directive('numericCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/v2/numericCell.html',
@@ -38,7 +38,7 @@ module app.v2.directives {
                 controller: ['$scope', 'modelService', app.v2.NumericCellController]
             }
         }])
-        .directive('postitCell', ['$compile', 'modelService', function ($compile, modelService) {
+        .directive('postitCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/v2/postitCell.html',
@@ -50,7 +50,7 @@ module app.v2.directives {
                 controller: ['$scope', 'modelService', app.v2.PostItCellController]
             }
         }])
-        .directive('narrativeCell', ['$compile', 'modelService', function ($compile, modelService) {
+        .directive('narrativeCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
                 templateUrl: '/templates/v2/narrativeCell.html',
@@ -60,6 +60,18 @@ module app.v2.directives {
                     cellVm: '='
                 },
                 controller: ['$scope', 'modelService', app.v2.NarrativeCellController]
+            }
+        }])
+        .directive('blankCell', ['modelService', function (modelService) {
+            return {
+                restrict: 'A',
+                templateUrl: '/templates/v2/blankCell.html',
+                controllerAs: 'cellCtrl',
+                transclude: true,
+                scope: {
+                    cellVm: '='
+                },
+                controller: ['$scope', 'modelService', app.v2.BlankCellController]
             }
         }])
         ;
