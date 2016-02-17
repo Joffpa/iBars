@@ -177,32 +177,14 @@
     </Compile>
     <Compile Include="Processes\GridVmFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\CellAttribsVm.cs" />
-    <Compile Include="ViewModel\v2\CellVm.cs" />
-    <Compile Include="ViewModel\DataCellVm.cs" />
-    <Compile Include="ViewModel\GridAttribsVm.cs" />
+    <Compile Include="ViewModel\CellVm.cs" />
+    <Compile Include="ViewModel\ColumnHeaderVm.cs" />
     <Compile Include="ViewModel\GridVm.cs" />
-    <Compile Include="ViewModel\RowAttribsVm.cs" />
     <Compile Include="ViewModel\RowVm.cs" />
-    <Compile Include="ViewModel\v2\ColumnHeaderVm.cs" />
-    <Compile Include="ViewModel\v2\GridVm.cs" />
-    <Compile Include="ViewModel\v2\RowVm.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\exhibitGrid.css">
-      <DependentUpon>exhibitGrid.less</DependentUpon>
-    </Content>
-    <Content Include="Content\exhibitGrid.min.css">
-      <DependentUpon>exhibitGrid.css</DependentUpon>
-    </Content>
-    <Content Include="Content\exhibitGrid.v2.css">
-      <DependentUpon>exhibitGrid.v2.less</DependentUpon>
-    </Content>
-    <Content Include="Content\exhibitGrid.v2.min.css">
-      <DependentUpon>exhibitGrid.v2.css</DependentUpon>
-    </Content>
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\gridTable.css">
@@ -470,7 +452,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Content\exhibitGrid.less" />
     <None Include=".bin\bower.cmd" />
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
@@ -484,13 +465,6 @@
     <Content Include="Content\kendo\2015.1.429\kendo.common.less" />
     <Content Include="Content\kendo\2015.1.429\kendo.uniform.css.map" />
     <Content Include="Content\kendo\2015.1.429\kendo.uniform.less" />
-    <Content Include="Scripts\GridProto\calcService.js" />
-    <Content Include="Scripts\GridProto\directives.js" />
-    <Content Include="Scripts\GridProto\calcService.js.map" />
-    <Content Include="Scripts\GridProto\gridModule.js" />
-    <Content Include="Scripts\GridProto\modelService.js.map" />
-    <Content Include="Scripts\GridProto\directives.js.map" />
-    <Content Include="Scripts\GridProto\gridModule.js.map" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -503,16 +477,16 @@
     <Content Include="EntityDataModel\EasModel.edmx.diagram">
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Scripts\GridV2\directives.v2.js.map" />
-    <Content Include="Scripts\GridV2\grid.v2.js" />
-    <Content Include="Scripts\GridV2\modelService.v2.js.map" />
-    <Content Include="Scripts\GridV2\grid.v2.js.map" />
-    <Content Include="Content\exhibitGrid.v2.less" />
+    <Content Include="Scripts\Grid\directives.js" />
+    <Content Include="Scripts\Grid\grid.js" />
+    <Content Include="Scripts\Grid\Interface.js" />
+    <Content Include="Scripts\Grid\modelService.js" />
     <Content Include="Content\gridTable.less" />
+    <Content Include="Scripts\Grid\Interface.js.map" />
+    <Content Include="Scripts\Grid\directives.js.map" />
+    <Content Include="Scripts\Grid\grid.js.map" />
+    <Content Include="Scripts\Grid\modelService.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\GridProto\modelService.js" />
-    <Content Include="Scripts\GridV2\directives.v2.js" />
-    <Content Include="Scripts\GridV2\modelService.v2.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -534,17 +508,11 @@
       <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
     </Content>
     <Content Include="Scripts\_references.js" />
-    <Content Include="templates\exhibitCell.html" />
-    <Content Include="templates\exhibitCellReadOnly.html" />
-    <Content Include="templates\exhibitCellNumInput.html" />
-    <Content Include="templates\exhibitGrid.html" />
-    <Content Include="templates\exhibitRow.html" />
-    <Content Include="templates\independantRow.html" />
-    <Content Include="templates\v2\blankCell.html" />
-    <Content Include="templates\v2\narrativeCell.html" />
-    <Content Include="templates\v2\numericCell.html" />
-    <Content Include="templates\v2\postitCell.html" />
-    <Content Include="templates\v2\textCell.html" />
+    <Content Include="templates\blankCell.html" />
+    <Content Include="templates\narrativeCell.html" />
+    <Content Include="templates\numericCell.html" />
+    <Content Include="templates\postitCell.html" />
+    <Content Include="templates\textCell.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -559,9 +527,7 @@
     <Content Include="Views\Home\GridProto.cshtml" />
     <Content Include="Scripts\kendo\2015.1.429\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\kendo\2015.1.429\kendo.web.min.js.map" />
-    <Content Include="Views\Home\DynamicViewGrid.cshtml" />
     <Content Include="Scripts\Manager.ttinclude" />
-    <Content Include="Views\Home\NowIGottaMakeItATableThanksALotKaren.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -581,15 +547,10 @@
     <TypeScriptCompile Include="Scripts\Enums.ts">
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\GridProto\calcService.ts" />
-    <TypeScriptCompile Include="Scripts\GridProto\directives.ts" />
-    <TypeScriptCompile Include="Scripts\GridProto\gridModule.ts" />
-    <TypeScriptCompile Include="Scripts\GridProto\Interface.ts" />
-    <TypeScriptCompile Include="Scripts\GridProto\modelService.ts" />
-    <TypeScriptCompile Include="Scripts\GridV2\directives.v2.ts" />
-    <TypeScriptCompile Include="Scripts\GridV2\grid.v2.ts" />
-    <TypeScriptCompile Include="Scripts\GridV2\Interface.ts" />
-    <TypeScriptCompile Include="Scripts\GridV2\modelService.v2.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\directives.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\grid.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\Interface.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\modelService.ts" />
     <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

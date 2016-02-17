@@ -1,14 +1,14 @@
 ﻿
 'use strict'
 
-module app.v2 {
+module app {
 
     export class GridController {
 
-        GridVm: ExhibitGrid.ViewModel.v2.IGridVm;
-        ModelService: app.v2.model.IModelService;
+        GridVm: ExhibitGrid.ViewModel.IGridVm;
+        ModelService: app.model.IModelService;
 
-        constructor(modelService: app.v2.model.IModelService) {
+        constructor(modelService: app.model.IModelService) {
             this.ModelService = modelService;
             this.GridVm = this.ModelService.getGridVm('MockGrid');
         }
@@ -16,10 +16,10 @@ module app.v2 {
 
     export class RowController {
 
-        RowVm: ExhibitGrid.ViewModel.v2.IRowVm;
-        ModelService: app.v2.model.IModelService;
+        RowVm: ExhibitGrid.ViewModel.IRowVm;
+        ModelService: app.model.IModelService;
 
-        constructor($scope, modelService: app.v2.model.IModelService) {
+        constructor($scope, modelService: app.model.IModelService) {
             console.log($scope.row);
             this.RowVm = $scope.row;
             this.ModelService = modelService;
@@ -35,10 +35,10 @@ module app.v2 {
 
     export class TextCellController {
 
-        CellVm: ExhibitGrid.ViewModel.v2.ICellVm;
-        ModelService: app.v2.model.IModelService;
+        CellVm: ExhibitGrid.ViewModel.ICellVm;
+        ModelService: app.model.IModelService;
 
-        constructor($scope, modelService: app.v2.model.IModelService) {
+        constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }
@@ -47,10 +47,10 @@ module app.v2 {
 
     export class NumericCellController {
 
-        CellVm: ExhibitGrid.ViewModel.v2.ICellVm;
-        ModelService: app.v2.model.IModelService;
+        CellVm: ExhibitGrid.ViewModel.ICellVm;
+        ModelService: app.model.IModelService;
         
-        constructor($scope, modelService: app.v2.model.IModelService) {
+        constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
 
@@ -92,10 +92,10 @@ module app.v2 {
     }
     export class PostItCellController {
 
-        CellVm: ExhibitGrid.ViewModel.v2.ICellVm;
-        ModelService: app.v2.model.IModelService;
+        CellVm: ExhibitGrid.ViewModel.ICellVm;
+        ModelService: app.model.IModelService;
 
-        constructor($scope, modelService: app.v2.model.IModelService) {
+        constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }
@@ -107,10 +107,10 @@ module app.v2 {
 
     export class NarrativeCellController {
 
-        CellVm: ExhibitGrid.ViewModel.v2.ICellVm;
-        ModelService: app.v2.model.IModelService;
+        CellVm: ExhibitGrid.ViewModel.ICellVm;
+        ModelService: app.model.IModelService;
 
-        constructor($scope, modelService: app.v2.model.IModelService) {
+        constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }
@@ -123,17 +123,17 @@ module app.v2 {
 
     export class BlankCellController {
 
-        CellVm: ExhibitGrid.ViewModel.v2.ICellVm;
-        ModelService: app.v2.model.IModelService;
+        CellVm: ExhibitGrid.ViewModel.ICellVm;
+        ModelService: app.model.IModelService;
 
-        constructor($scope, modelService: app.v2.model.IModelService) {
+        constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }        
     }
 
     var exhibitApp = angular
-        .module('app.v2', ['app.v2.model', 'app.v2.directives'])    
+        .module('app', ['app.model', 'app.directives'])    
         .controller('gridController', ['modelService', GridController])
         .controller('rowController', ['$scope', 'modelService', RowController])
         .controller('textCellController', ['$scope', 'modelService', TextCellController]);

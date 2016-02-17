@@ -1,13 +1,130 @@
 ﻿
-<script src="~/Scripts/GridProto/gridModule.js"></script>
-<script src="~/Scripts/GridProto/directives.js"></script>
-<script src="~/Scripts/GridProto/modelService.js"></script>
-<script src="~/Scripts/GridProto/calcService.js"></script>
-<link href="~/Content/exhibitGrid.min.css" rel="stylesheet" />
-@*<script src="~/Scripts/inversify.js"></script>*@
+@model ExhibitGrid.ViewModel.GridVm
+
+<script src="~/Scripts/Grid/grid.js"></script>
+<script src="~/Scripts/Grid/directives.js"></script>
+<script src="~/Scripts/Grid/modelService.js"></script>
+<link href="~/Content/gridTable.min.css" rel="stylesheet" />
+<script src="~/Scripts/kendo/2015.1.429/kendo.all.min.js"></script>
 
 <div ng-app="app">
-    <div ng-controller="exhibitController as exhibitCtrl">
-        <div exhibit-grid grid-vm="exhibitCtrl.currentGridVm"></div>
-    </div>    
+    <div id="grid-wrapper" ng-controller="gridController as gridCtrl">
+        <table class="table table-bordered exhibit-table">
+            <colgroup>
+                @if (Model.HasCollapseColumn)
+                {
+                    <col span="1" style="width: 32px;">
+                }
+                @if (Model.HasSelectColumn)
+                {
+                    <col span="1" style="width: 32px;">
+                }
+                @if (Model.HasAddColumn)
+                {
+                    <col span="1" style="width: 32px;">
+                }
+                @if (Model.HasDeleteColumn)
+                {
+                    <col span="1" style="width: 32px;">
+                }
+                @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == 0))
+                {
+                    <col span="1" style="width: @header.Width;">
+                }
+            </colgroup>
+
+            @{
+                var headerLevels = Model.ColumnHeaders.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
+                var firstRow = true;
+            }
+            <thead>
+                @foreach (var level in headerLevels)
+                {
+                    <tr>
+                        @if (firstRow)
+                        {
+                            <th colspan="@(Model.NumColumns - Model.ColumnHeaders.Where(h => h.Level == 0 && h.HeaderIsVisible).Count())" rowspan="@headerLevels.Count()">
+                                @Model.GridName
+                            </th>
+                            <th id="RowText" style="display:none;">
+                            </th>
+                        }
+                        @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level && h.HeaderIsVisible).OrderBy(h => h.Order))
+                        {
+                            <th scope="col" colspan="@(header.Level == 0 ? 1 : header.ColSpan)">
+                                @header.Text
+                            </th>
+                        }
+                        @{ firstRow = false; }
+                    </tr>
+                            }
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in gridCtrl.GridVm.DataRows | filter:{IsHidden: false} track by row.RowCode " ng-controller="rowController as rowCtrl" ng-switch="::row.Class">
+                    @*Header Row*@
+                    <td ng-switch-when="header-row" colspan="@Model.NumColumns">
+                        {{row.Text}}
+                    </td>
+
+                    @*Data Row*@
+                    @if (Model.HasCollapseColumn)
+                    {
+                        <td colspan="1" ng-switch-when="data-row">
+                            <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
+                        </td>
+                    }
+                    @if (Model.HasSelectColumn)
+                    {
+                        <td colspan="1" ng-switch-when="data-row">
+                            <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
+                        </td>
+                    }
+                    @if (Model.HasAddColumn)
+                    {
+                        <td colspan="1" ng-switch-when="data-row">
+                            <i class="fa fa-user-plus fa-lg" ng-show="row.CanAdd" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
+                        </td>
+                    }
+                    @if (Model.HasDeleteColumn)
+                    {
+                        <td colspan="1" ng-switch-when="data-row">
+                            <i class="fa fa-trash fa-lg" ng-show="row.CanDelete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
+                        </td>
+                    }
+                    @for (int i = 0; i < Model.DataRows[0].Cells.Count(); i++)
+                    {
+                        var cell = Model.DataRows[0].Cells[i];
+                        if (!cell.IsHidden)
+                        {
+                            if (cell.ColCode == "RowText")
+                            {
+                                <th scope="row" colspan="{{::row.Cells[@i].ColSpan}}" ng-switch-when="data-row">
+                                    <div text-cell cell-vm="row.Cells[@i]">
+                                    </div>
+                                </th>
+                            }
+                            else
+                            {
+                                <td colspan="{{::row.Cells[@i].ColSpan}}" ng-switch-when="data-row" headers="{{row.Text}} {{row.Cells[@i].ColumnHeader}}">
+                                    <div @cell.Directive cell-vm="row.Cells[@i]">
+                                    </div>
+                                </td>
+                            }
+                        }
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+
+<script>
+
+    (function (gridModel) {
+
+        gridModel.grid = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
+    }(window.gridModel = window.gridModel || {} ));
+
+</script>

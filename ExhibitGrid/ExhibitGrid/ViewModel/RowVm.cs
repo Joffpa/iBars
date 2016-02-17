@@ -8,40 +8,16 @@ namespace ExhibitGrid.ViewModel
     public class RowVm
     {
         public string RowCode { get; set; }
-        public string[] ParentRowCodes { get; set; }
-        public string Class { get; set; }
+        public int DisplayOrder { get; set; }
+        public bool IsHidden { get; set; }
         public string Text { get; set; }
-        public string PeCode { get; set; }
-        public SelectionCellVm SelectionCell { get; set; }
-        public CrudCellVm CrudCell { get; set; }
-        public NarrativeCellVm NarrativeCell { get; set; }
-        public PostItCellVm PostItCell { get; set; }
-
-        public List<DataCellVm> DataCells { get; set; }
-    }
-    
-
-    public class SelectionCellVm
-    {
-        public bool IncludeSpaceForCell { get; set; }
-        public bool AllowSelect { get; set; }
+        public string Class { get; set; }
+        public bool CanCollapse { get; set; }
+        public bool CanSelect { get; set; }
+        public bool CanAdd { get; set; }
+        public bool CanDelete { get; set; }
         public bool IsSelected { get; set; }
-    }
-    public class CrudCellVm
-    {
-        public bool IncludeSpaceForCell { get; set; }
-        public string CrudFunctionality { get; set; }
-    }
-    public class NarrativeCellVm
-    {
-        public bool IncludeSpaceForCell { get; set; }
-        public bool AllowNarrative { get; set; }
-        public bool HasNarrative { get; set; }
-    }
-    public class PostItCellVm
-    {
-        public bool IncludeSpaceForCell { get; set; }
-        public bool AllowPostIt { get; set; }
-        public bool HasPostIt { get; set; }
+
+        public List<CellVm> Cells { get; set; }
     }
 }

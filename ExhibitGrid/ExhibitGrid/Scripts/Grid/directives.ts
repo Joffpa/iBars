@@ -1,77 +1,68 @@
 ﻿
 
-module app.v2.directives {
+module app.directives {
 
     'use strict'
     
-    var directives = angular.module('app.v2.directives', ['app.v2.model'])
-        .directive('exhibitRow', ['modelService', function (modelService) {
-            return {
-                restrict: 'A',
-                templateUrl: '/templates/independantRow.html',
-                controllerAs: 'rowCtrl',
-                transclude: true,
-                controller: ['$scope', 'modelService', app.v2.RowController]
-            }
-        }])
+    var directives = angular.module('app.directives', ['app.model'])
         .directive('textCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/v2/textCell.html',
+                templateUrl: '/templates/textCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
                     cellVm: '='
                 },
-                controller: ['$scope', 'modelService', app.v2.TextCellController]
+                controller: ['$scope', 'modelService', app.TextCellController]
             }
         }])
         .directive('numericCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/v2/numericCell.html',
+                templateUrl: '/templates/numericCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
                     cellVm: '='
                 },
-                controller: ['$scope', 'modelService', app.v2.NumericCellController]
+                controller: ['$scope', 'modelService', app.NumericCellController]
             }
         }])
         .directive('postitCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/v2/postitCell.html',
+                templateUrl: '/templates/postitCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
                     cellVm: '='
                 },
-                controller: ['$scope', 'modelService', app.v2.PostItCellController]
+                controller: ['$scope', 'modelService', app.PostItCellController]
             }
         }])
         .directive('narrativeCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/v2/narrativeCell.html',
+                templateUrl: '/templates/narrativeCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
                     cellVm: '='
                 },
-                controller: ['$scope', 'modelService', app.v2.NarrativeCellController]
+                controller: ['$scope', 'modelService', app.NarrativeCellController]
             }
         }])
         .directive('blankCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/v2/blankCell.html',
+                templateUrl: '/templates/blankCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
                     cellVm: '='
                 },
-                controller: ['$scope', 'modelService', app.v2.BlankCellController]
+                controller: ['$scope', 'modelService', app.BlankCellController]
             }
         }])
         ;

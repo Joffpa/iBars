@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ExhibitGrid.ViewModel.v2
+namespace ExhibitGrid.ViewModel
 {
     public class CellVm
     {
         public int Order { get; set; } //comes from col attr
         public string RowCode { get; set; } 
         public string ColCode { get; set; }  //comes from col attr
+        public int ColSpan{ get; set; }  //comes from col attr
+        public string ColumnHeader { get; set; }  //comes from col attr
         public bool IsEditable { get; set; }
         public string Directive { get; set; } 
         public string Text { get; set; } 

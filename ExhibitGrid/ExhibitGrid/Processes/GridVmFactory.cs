@@ -8,18 +8,18 @@ namespace ExhibitGrid.Processes
 {
     public class GridVmFactory
     {
-        public static GridVm GetGridVm(string gridCode)
-        {
-            switch (gridCode)
-            {
-                case "mock":
-                    return GetMockGridVm();
-                default:
-                    return null;
-            }
-        }
+        //public static GridVm GetGridVm(string gridCode)
+        //{
+        //    switch (gridCode)
+        //    {
+        //        case "mock":
+        //            return GetMockGridVm();
+        //        default:
+        //            return null;
+        //    }
+        //}
 
-        public static ViewModel.v2.GridVm GetGridVmV2(string gridCode)
+        public static ViewModel.GridVm GetGridVmV2(string gridCode)
         {
             switch (gridCode)
             {
@@ -32,116 +32,116 @@ namespace ExhibitGrid.Processes
 
 
 
-        private static GridVm GetMockGridVm()
-        {
-            var numRows = 16;
-            var numVisibleCols = 17;
+        //private static GridVm GetMockGridVm()
+        //{
+        //    var numRows = 16;
+        //    var numVisibleCols = 17;
 
             
-            var grid = new GridVm();
-            grid.GridCode = "MockGrid";
+        //    var grid = new GridVm();
+        //    grid.GridCode = "MockGrid";
 
-            var subHeaderRow = new RowVm();
-            subHeaderRow.RowCode = "Row_0";
-            subHeaderRow.ParentRowCodes = null;
-            subHeaderRow.Class = "header-row";
-            subHeaderRow.Text = "Header Text";
+        //    var subHeaderRow = new RowVm();
+        //    subHeaderRow.RowCode = "Row_0";
+        //    subHeaderRow.ParentRowCodes = null;
+        //    subHeaderRow.Class = "header-row";
+        //    subHeaderRow.Text = "Header Text";
 
-            var selectCell = new SelectionCellVm();
-            selectCell.IncludeSpaceForCell = true;
-            selectCell.AllowSelect = false;
-            selectCell.IsSelected = false;
-            subHeaderRow.SelectionCell = selectCell;
+        //    var selectCell = new SelectionCellVm();
+        //    selectCell.IncludeSpaceForCell = true;
+        //    selectCell.AllowSelect = false;
+        //    selectCell.IsSelected = false;
+        //    subHeaderRow.SelectionCell = selectCell;
 
-            var crudCell = new CrudCellVm();
-            crudCell.IncludeSpaceForCell = true;
-            crudCell.CrudFunctionality = "no-crud";
-            subHeaderRow.CrudCell = crudCell;
+        //    var crudCell = new CrudCellVm();
+        //    crudCell.IncludeSpaceForCell = true;
+        //    crudCell.CrudFunctionality = "no-crud";
+        //    subHeaderRow.CrudCell = crudCell;
 
-            var narrCell = new NarrativeCellVm();
-            narrCell.IncludeSpaceForCell = true;
-            narrCell.AllowNarrative = false;
-            narrCell.HasNarrative = false;
-            subHeaderRow.NarrativeCell = narrCell;
+        //    var narrCell = new NarrativeCellVm();
+        //    narrCell.IncludeSpaceForCell = true;
+        //    narrCell.AllowNarrative = false;
+        //    narrCell.HasNarrative = false;
+        //    subHeaderRow.NarrativeCell = narrCell;
 
-            var postItCell = new PostItCellVm();
-            postItCell.IncludeSpaceForCell = true;
-            postItCell.AllowPostIt = false;
-            postItCell.HasPostIt = false;
-            subHeaderRow.PostItCell = postItCell;
+        //    var postItCell = new PostItCellVm();
+        //    postItCell.IncludeSpaceForCell = true;
+        //    postItCell.AllowPostIt = false;
+        //    postItCell.HasPostIt = false;
+        //    subHeaderRow.PostItCell = postItCell;
 
-            subHeaderRow.DataCells = new List<DataCellVm>();
-            for (var c = 0; c <= numVisibleCols; c++)
-            {
-                var cell = new DataCellVm();
-                cell.RowCode = subHeaderRow.RowCode;
-                cell.ColCode = "Col_" + c;
-                cell.Class = "header-cell";
-                cell.Type = "read-only";
-                cell.Value = "Column " + c;
-                cell.Width = "1x";
-                cell.IsEditable = false;
+        //    subHeaderRow.DataCells = new List<DataCellVm>();
+        //    for (var c = 0; c <= numVisibleCols; c++)
+        //    {
+        //        var cell = new DataCellVm();
+        //        cell.RowCode = subHeaderRow.RowCode;
+        //        cell.ColCode = "Col_" + c;
+        //        cell.Class = "header-cell";
+        //        cell.Type = "read-only";
+        //        cell.Value = "Column " + c;
+        //        cell.Width = "1x";
+        //        cell.IsEditable = false;
 
-                subHeaderRow.DataCells.Add(cell);
-            }
+        //        subHeaderRow.DataCells.Add(cell);
+        //    }
 
-            grid.Rows = new List<RowVm>() { subHeaderRow };
+        //    grid.Rows = new List<RowVm>() { subHeaderRow };
 
-            for (var r = 1; r <= numRows; r++)
-            {
-                var dataRow = new RowVm();
-                dataRow.RowCode = "Row_" + r;
-                dataRow.ParentRowCodes = null;
-                dataRow.Class = "data-row";
-                dataRow.Text = "Row Text " + r;
+        //    for (var r = 1; r <= numRows; r++)
+        //    {
+        //        var dataRow = new RowVm();
+        //        dataRow.RowCode = "Row_" + r;
+        //        dataRow.ParentRowCodes = null;
+        //        dataRow.Class = "data-row";
+        //        dataRow.Text = "Row Text " + r;
 
-                selectCell = new SelectionCellVm();
-                selectCell.IncludeSpaceForCell = true;
-                selectCell.AllowSelect = true;
-                selectCell.IsSelected = false;
-                dataRow.SelectionCell = selectCell;
+        //        selectCell = new SelectionCellVm();
+        //        selectCell.IncludeSpaceForCell = true;
+        //        selectCell.AllowSelect = true;
+        //        selectCell.IsSelected = false;
+        //        dataRow.SelectionCell = selectCell;
 
-                crudCell = new CrudCellVm();
-                crudCell.IncludeSpaceForCell = true;
-                crudCell.CrudFunctionality = "create";
-                dataRow.CrudCell = crudCell;
+        //        crudCell = new CrudCellVm();
+        //        crudCell.IncludeSpaceForCell = true;
+        //        crudCell.CrudFunctionality = "create";
+        //        dataRow.CrudCell = crudCell;
 
-                narrCell = new NarrativeCellVm();
-                narrCell.IncludeSpaceForCell = true;
-                narrCell.AllowNarrative = true;
-                narrCell.HasNarrative = false;
-                dataRow.NarrativeCell = narrCell;
+        //        narrCell = new NarrativeCellVm();
+        //        narrCell.IncludeSpaceForCell = true;
+        //        narrCell.AllowNarrative = true;
+        //        narrCell.HasNarrative = false;
+        //        dataRow.NarrativeCell = narrCell;
 
-                postItCell = new PostItCellVm();
-                postItCell.IncludeSpaceForCell = true;
-                postItCell.AllowPostIt = true;
-                postItCell.HasPostIt = false;
-                dataRow.PostItCell = postItCell;
+        //        postItCell = new PostItCellVm();
+        //        postItCell.IncludeSpaceForCell = true;
+        //        postItCell.AllowPostIt = true;
+        //        postItCell.HasPostIt = false;
+        //        dataRow.PostItCell = postItCell;
 
-                dataRow.DataCells = new List<DataCellVm>();
+        //        dataRow.DataCells = new List<DataCellVm>();
 
-                for (var c = 0; c <= numVisibleCols; c++)
-                {
-                    var cell = new DataCellVm();
-                    cell.RowCode = dataRow.RowCode;
-                    cell.ColCode = "Col_" + c;
-                    cell.Class = "data-cell";
-                    cell.Type = "num-input";
-                    cell.Value = 5 * c;
-                    cell.Width = "1x";
-                    cell.IsEditable = true;
+        //        for (var c = 0; c <= numVisibleCols; c++)
+        //        {ViewModel.v2
+        //            var cell = new DataCellVm();
+        //            cell.RowCode = dataRow.RowCode;
+        //            cell.ColCode = "Col_" + c;
+        //            cell.Class = "data-cell";
+        //            cell.Type = "num-input";
+        //            cell.Value = 5 * c;
+        //            cell.Width = "1x";
+        //            cell.IsEditable = true;
 
-                    dataRow.DataCells.Add(cell);
-                }
+        //            dataRow.DataCells.Add(cell);
+        //        }
 
-                grid.Rows.Add(dataRow);
-            }
+        //        grid.Rows.Add(dataRow);
+        //    }
 
-            return grid;
-        }
+        //    return grid;
+        //}
 
 
-        private static ViewModel.v2.GridVm GetMockGridVmV2()
+        private static GridVm GetMockGridVmV2()
         {
             var numRows = 25;
             var numCols = 21;
@@ -152,14 +152,14 @@ namespace ExhibitGrid.Processes
 
             var rando = new Random();
             
-            var grid = new ViewModel.v2.GridVm();
+            var grid = new GridVm();
             grid.GridCode = "MockGrid";
             grid.GridName = "Grid Name";
 
             //Add Column headers to list
-            grid.ColumnHeaders = new List<ViewModel.v2.ColumnHeaderVm>();
+            grid.ColumnHeaders = new List<ColumnHeaderVm>();
 
-            var colHeader = new ViewModel.v2.ColumnHeaderVm();
+            var colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level3Header";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 3 Header";
@@ -168,7 +168,7 @@ namespace ExhibitGrid.Processes
             colHeader.ColSpan = numVisibleCols - 3;
             grid.ColumnHeaders.Add(colHeader);
 
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level2HeaderA";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 2 Header A";
@@ -176,7 +176,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = 0;
             colHeader.ColSpan = (numVisibleCols - 3)/2;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level2HeaderB";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 2 Header B";
@@ -185,7 +185,7 @@ namespace ExhibitGrid.Processes
             colHeader.ColSpan = ((numVisibleCols - 3) - (numVisibleCols - 3) / 2);
             grid.ColumnHeaders.Add(colHeader);
 
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderA";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header A";
@@ -193,7 +193,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = 0;
             colHeader.ColSpan = ((numVisibleCols - 3) / 2 ) / 3;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderB";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header B";
@@ -201,7 +201,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = 1;
             colHeader.ColSpan = ((numVisibleCols - 3) / 2) / 3;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderC";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header C";
@@ -210,7 +210,7 @@ namespace ExhibitGrid.Processes
             colHeader.ColSpan = ((numVisibleCols - 3) / 2) - ((((numVisibleCols - 3) / 2) / 3) * 2);
             grid.ColumnHeaders.Add(colHeader);
 
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderA";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header D";
@@ -218,7 +218,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = 3;
             colHeader.ColSpan = ((numVisibleCols - 3) - (numVisibleCols - 3) / 2) / 3;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderB";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header E";
@@ -226,7 +226,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = 4;
             colHeader.ColSpan = ((numVisibleCols - 3) - (numVisibleCols - 3) / 2) / 3;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Level1HeaderC";
             colHeader.HeaderIsVisible = true;
             colHeader.Text = "Level 1 Header F";
@@ -236,7 +236,7 @@ namespace ExhibitGrid.Processes
             grid.ColumnHeaders.Add(colHeader);
 
             //Hidden Col Headers
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "RowText";
             colHeader.HeaderIsVisible = false;
             colHeader.Width = "200px";
@@ -245,7 +245,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = -2;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "PostIt";
             colHeader.HeaderIsVisible = false;
             colHeader.Width = "32px";
@@ -254,7 +254,7 @@ namespace ExhibitGrid.Processes
             colHeader.Order = -1;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
-            colHeader = new ViewModel.v2.ColumnHeaderVm();
+            colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Narrative";
             colHeader.HeaderIsVisible = false;
             colHeader.Width = "32px";
@@ -269,7 +269,7 @@ namespace ExhibitGrid.Processes
             {
                 if (!hiddenCols.Contains(col))
                 {
-                    colHeader = new ViewModel.v2.ColumnHeaderVm();
+                    colHeader = new ColumnHeaderVm();
                     colHeader.ColCode = "Col_" + col;
                     colHeader.HeaderIsVisible = true;
                     colHeader.Width = "100px";
@@ -281,7 +281,7 @@ namespace ExhibitGrid.Processes
                 }
             }
                         
-            var subHeaderRow = new ViewModel.v2.RowVm();
+            var subHeaderRow = new RowVm();
             subHeaderRow.RowCode = "Row_0";
             subHeaderRow.Class = "header-row";
             subHeaderRow.Text = "Header Text";
@@ -292,9 +292,9 @@ namespace ExhibitGrid.Processes
             subHeaderRow.CanDelete = false;
             subHeaderRow.IsHidden = false;
 
-            subHeaderRow.Cells = new List<ViewModel.v2.CellVm>();
+            subHeaderRow.Cells = new List<CellVm>();
 
-            var rowText = new ViewModel.v2.CellVm();
+            var rowText = new CellVm();
             rowText.Order = 2;
             rowText.RowCode = subHeaderRow.RowCode;
             rowText.ColCode = "RowText";
@@ -304,7 +304,7 @@ namespace ExhibitGrid.Processes
             rowText.IsHidden = false;
             subHeaderRow.Cells.Add(rowText);
 
-            var postitCell = new ViewModel.v2.CellVm();
+            var postitCell = new CellVm();
             postitCell.Order = 3;
             postitCell.IsEditable = false;
             postitCell.HasPostIt = false;
@@ -314,7 +314,7 @@ namespace ExhibitGrid.Processes
             rowText.IsHidden = false;
             subHeaderRow.Cells.Add(postitCell);
 
-            var narrCell = new ViewModel.v2.CellVm();
+            var narrCell = new CellVm();
             narrCell.Order = 4;
             narrCell.IsEditable = false;
             narrCell.HasNarrative = false;
@@ -326,7 +326,7 @@ namespace ExhibitGrid.Processes
 
             for (var c = 0; c < numVisibleCols - 3; c++)
             {
-                var cell = new ViewModel.v2.CellVm();
+                var cell = new CellVm();
                 cell.RowCode = subHeaderRow.RowCode;
                 cell.ColCode = "Col_" + c;
                 cell.Class = "header-cell";
@@ -338,11 +338,11 @@ namespace ExhibitGrid.Processes
                 subHeaderRow.Cells.Add(cell);
             }
 
-            grid.DataRows = new List<ViewModel.v2.RowVm>() { subHeaderRow };
+            grid.DataRows = new List<RowVm>() { subHeaderRow };
 
             for (var r = 1; r <= numRows; r++)
             {
-                var dataRow = new ViewModel.v2.RowVm();
+                var dataRow = new RowVm();
                 dataRow.RowCode = "Row_" + r;
                 dataRow.Class = "data-row";
                 dataRow.Text = "Row Text " + r;
@@ -353,9 +353,9 @@ namespace ExhibitGrid.Processes
                 dataRow.CanDelete = r % 5 == 0;
                 dataRow.IsHidden = r % 6 == 0 ;
 
-                dataRow.Cells = new List<ViewModel.v2.CellVm>();
+                dataRow.Cells = new List<CellVm>();
 
-                rowText = new ViewModel.v2.CellVm();
+                rowText = new CellVm();
                 rowText.Order = 2;
                 rowText.RowCode = dataRow.RowCode;
                 rowText.ColCode = "RowText";
@@ -366,7 +366,7 @@ namespace ExhibitGrid.Processes
                 rowText.IsHidden = false;
                 dataRow.Cells.Add(rowText);
 
-                postitCell = new ViewModel.v2.CellVm();
+                postitCell = new CellVm();
                 postitCell.Order = 3;
                 postitCell.IsEditable = true;
                 postitCell.HasPostIt = false;
@@ -376,7 +376,7 @@ namespace ExhibitGrid.Processes
                 rowText.IsHidden = false;
                 dataRow.Cells.Add(postitCell);
 
-                narrCell = new ViewModel.v2.CellVm();
+                narrCell = new CellVm();
                 narrCell.Order = 4;
                 narrCell.IsEditable = true;
                 narrCell.HasNarrative = false;
@@ -388,7 +388,7 @@ namespace ExhibitGrid.Processes
 
                 for (var c = 0; c < numVisibleCols -3; c++)
                 {
-                    var cell = new ViewModel.v2.CellVm();
+                    var cell = new CellVm();
                     cell.RowCode = dataRow.RowCode;
                     cell.ColCode = "Col_" + c;
                     cell.Class = "data-cell";

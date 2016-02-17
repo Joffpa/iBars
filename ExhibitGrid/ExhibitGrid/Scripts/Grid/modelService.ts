@@ -2,46 +2,48 @@
 
 'use strict';
 
-module app.v2.model {
+module app.model {
 
     export interface IModelService {
         exhibitModel: ExhibitVm
-        addGridVm(gridVm: ExhibitGrid.ViewModel.v2.IGridVm);
+        addGridVm(gridVm: ExhibitGrid.ViewModel.IGridVm);
         getExhibitVm(): ExhibitVm,
-        getGridVm(gridCode: string): ExhibitGrid.ViewModel.v2.IGridVm;
-        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.v2.IRowVm;
-        getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.v2.ICellVm;
+        getGridVm(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
+        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
+        getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm;
         getCellValue(gridCode: string, rowCode: string, colCode: string): number;
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number): void;
     }
 
     export class ExhibitVm {
         ExhibitCode: string;
-        Grids: ExhibitGrid.ViewModel.v2.IGridVm[];
+        Grids: ExhibitGrid.ViewModel.IGridVm[];
 
         constructor(ExhibitCode: string) {
             this.ExhibitCode = ExhibitCode;
-            this.Grids = new Array<ExhibitGrid.ViewModel.v2.IGridVm>();
+            this.Grids = new Array<ExhibitGrid.ViewModel.IGridVm>();
         }        
     }
 
-    export class GridVm implements ExhibitGrid.ViewModel.v2.IGridVm {
+    export class GridVm implements ExhibitGrid.ViewModel.IGridVm {
 
         GridCode: string;
-        DataRows: ExhibitGrid.ViewModel.v2.IRowVm[];
+        GridName: string;
+        DataRows: ExhibitGrid.ViewModel.IRowVm[];
         HasCollapseColumn: boolean;
         HasSelectColumn: boolean;
         HasAddColumn: boolean;
         HasDeleteColumn: boolean;
         NumColumns: number;
-        ColumnHeaders: ExhibitGrid.ViewModel.v2.IColumnHeaderVm[];
+        ColumnHeaders: ExhibitGrid.ViewModel.IColumnHeaderVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
     }
 
-    export class RowVm implements ExhibitGrid.ViewModel.v2.IRowVm {
+    export class RowVm implements ExhibitGrid.ViewModel.IRowVm {
         RowCode: string;
+        DisplayOrder: number;
         Class: string;
         Text: string;
         CanCollapse: boolean;
@@ -51,7 +53,7 @@ module app.v2.model {
         IsSelected: boolean;
         CrudFunctionality: string;
         IsHidden: boolean;
-        Cells: ExhibitGrid.ViewModel.v2.ICellVm[];
+        Cells: ExhibitGrid.ViewModel.ICellVm[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
             this.Class = Class;
@@ -60,15 +62,18 @@ module app.v2.model {
 
     }
 
-    export class CellVm implements ExhibitGrid.ViewModel.v2.ICellVm {
+    export class CellVm implements ExhibitGrid.ViewModel.ICellVm {
         Order: number;
         Type: string;
         RowCode: string;
         ColCode: string;
+        ColSpan: string;
+        ColumnHeader: string;
         CanAddNarrative: boolean;
         HasNarrative: boolean;
         HasPostIt: boolean;
         IsEditable: boolean;
+        IsHidden: boolean;
         Directive: string;
         Text: string;
         Indent: number;
@@ -87,7 +92,7 @@ module app.v2.model {
     export class MockModelService implements IModelService {
         exhibitModel: ExhibitVm;
 
-        addGridVm(gridVm: ExhibitGrid.ViewModel.v2.IGridVm) {
+        addGridVm(gridVm: ExhibitGrid.ViewModel.IGridVm) {
             this.exhibitModel.Grids.push(gridVm);
         }
 
@@ -147,7 +152,7 @@ module app.v2.model {
     }
 
     var service = angular
-        .module('app.v2.model', [])
+        .module('app.model', [])
         .service('modelService',  MockModelService);
 }
 

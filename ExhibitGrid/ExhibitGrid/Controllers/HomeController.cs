@@ -14,20 +14,21 @@ namespace ExhibitGrid.Controllers
         
         public ActionResult GridProto()
         {
-            return View();
-        }
-
-        public ActionResult DynamicViewGrid()
-        {
             var gridVm = GridVmFactory.GetGridVmV2("mock");
             return View(gridVm);
         }
 
-        public ActionResult NowIGottaMakeItATableThanksALotKaren()
-        {
-            var gridVm = GridVmFactory.GetGridVmV2("mock");
-            return View(gridVm);
-        }
+        //public ActionResult DynamicViewGrid()
+        //{
+        //    var gridVm = GridVmFactory.GetGridVmV2("mock");
+        //    return View(gridVm);
+        //}
+
+        //public ActionResult NowIGottaMakeItATableThanksALotKaren()
+        //{
+        //    var gridVm = GridVmFactory.GetGridVmV2("mock");
+        //    return View(gridVm);
+        //}
 
     }
 }
