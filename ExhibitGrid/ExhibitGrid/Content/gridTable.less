@@ -9,6 +9,9 @@
         thead {
 
             tr{
+                th.grid-name{                                        
+                    font-weight:bolder; 
+                }
 
                 td, th{
 
@@ -18,12 +21,41 @@
 
         tbody {
 
+            tr.sub-header-row{                
+                background-color:lightgrey;    
+
+                th{                                        
+                    font-weight:bold; 
+                }
+            }
+            
+            tr.total-row{                              
+                font-weight:bold; 
+
+                th{                                        
+                    font-weight:bold; 
+                }
+            }
+
+            tr.data-row{                
+                    
+            }
+
             tr {
+
+                th{
+                    font-weight:normal;
+                }
 
                 td, th {
 
+
+
+                    input[type="text"]{
+                        width: 100%;
+                    }
                     input[type="number"]{
-                        width: 75px;
+                        width: 100%;
                     }
 
                     .indent-1 {
@@ -36,8 +68,8 @@
 
                     .indent-3 {
                         margin-left: 60px;
-                    }
-                    
+                    }   
+                                     
                 }
             }
         }

@@ -11,7 +11,6 @@ var app;
     app.GridController = GridController;
     var RowController = (function () {
         function RowController($scope, modelService) {
-            console.log($scope.row);
             this.RowVm = $scope.row;
             this.ModelService = modelService;
         }
@@ -34,38 +33,36 @@ var app;
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
         function NumericCellController($scope, modelService) {
+            //console.log($scope.cellVm);
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
-            //NOTE: the calcs are hacked in to repeat a pattern of column level calcs every three columns.
-            //There is also a total row calc
-            var colNum = parseInt(this.CellVm.ColCode.replace('Col_', ''));
-            var thisRow = this.CellVm.RowCode;
-            var totalRow = 'Row_1'; //the row that holds the total row result
-            var calcs = "";
-            //col 0
-            if (colNum % 3 == 0 && this.CellVm.RowCode != totalRow) {
-                calcs += "Col Calc (1st col),  ";
-                var nextCol = 'Col_' + (colNum + 1);
-                var nextNextCol = 'Col_' + (colNum + 2);
-                $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
-                    scope.cellCtrl.ModelService.updateCellValue('MockGrid', thisRow, nextNextCol, newVal + scope.cellCtrl.ModelService.getCellValue('MockGrid', thisRow, nextCol));
-                });
-            } //col 1
-            else if (colNum % 3 == 1 && this.CellVm.RowCode != totalRow) {
-                calcs += "Col Calc (2nd col),  ";
-                $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
+            if (this.CellVm.ColCode.indexOf('Col_') >= 0) {
+                //NOTE: the calcs are hacked in to repeat a pattern of column level calcs every three columns.
+                //There is also a total row calc
+                var colNum = parseInt(this.CellVm.ColCode.replace('Col_', ''));
+                var thisRow = this.CellVm.RowCode;
+                var totalRow = 'Row_1'; //the row that holds the total row result
+                //col 0
+                if (colNum % 3 == 0 && this.CellVm.RowCode != totalRow) {
                     var nextCol = 'Col_' + (colNum + 1);
-                    var prevCol = 'Col_' + (colNum - 1);
-                    scope.cellCtrl.ModelService.updateCellValue('MockGrid', thisRow, nextCol, newVal + scope.cellCtrl.ModelService.getCellValue('MockGrid', thisRow, prevCol));
-                });
+                    var nextNextCol = 'Col_' + (colNum + 2);
+                    $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
+                        scope.cellCtrl.ModelService.updateCellValue('MockGrid', thisRow, nextNextCol, newVal + scope.cellCtrl.ModelService.getCellValue('MockGrid', thisRow, nextCol));
+                    });
+                } //col 1
+                else if (colNum % 3 == 1 && this.CellVm.RowCode != totalRow) {
+                    $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
+                        var nextCol = 'Col_' + (colNum + 1);
+                        var prevCol = 'Col_' + (colNum - 1);
+                        scope.cellCtrl.ModelService.updateCellValue('MockGrid', thisRow, nextCol, newVal + scope.cellCtrl.ModelService.getCellValue('MockGrid', thisRow, prevCol));
+                    });
+                }
+                if (this.CellVm.RowCode != totalRow) {
+                    $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
+                        scope.cellCtrl.ModelService.updateCellValue('MockGrid', totalRow, scope.cellVm.ColCode, scope.cellCtrl.ModelService.sumAllCellsInColForTotalRow('MockGrid', totalRow, scope.cellVm.ColCode));
+                    });
+                }
             }
-            if (this.CellVm.RowCode != totalRow) {
-                calcs += "Total Row Calc";
-                $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
-                    scope.cellCtrl.ModelService.updateCellValue('MockGrid', totalRow, scope.cellVm.ColCode, scope.cellCtrl.ModelService.sumAllCellsInColForTotalRow('MockGrid', totalRow, scope.cellVm.ColCode));
-                });
-            }
-            //console.log(this.CellVm.RowCode + " " + this.CellVm.ColCode + ": " + calcs);
         }
         return NumericCellController;
     })();
@@ -92,14 +89,14 @@ var app;
         return NarrativeCellController;
     })();
     app.NarrativeCellController = NarrativeCellController;
-    var BlankCellController = (function () {
-        function BlankCellController($scope, modelService) {
+    var DropdownCellController = (function () {
+        function DropdownCellController($scope, modelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }
-        return BlankCellController;
+        return DropdownCellController;
     })();
-    app.BlankCellController = BlankCellController;
+    app.DropdownCellController = DropdownCellController;
     var exhibitApp = angular
         .module('app', ['app.model', 'app.directives'])
         .controller('gridController', ['modelService', GridController])

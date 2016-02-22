@@ -5,12 +5,19 @@
 <script src="~/Scripts/Grid/directives.js"></script>
 <script src="~/Scripts/Grid/modelService.js"></script>
 <link href="~/Content/gridTable.min.css" rel="stylesheet" />
-<script src="~/Scripts/kendo/2015.1.429/kendo.all.min.js"></script>
+<script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
+<link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
 
 <div ng-app="app">
     <div id="grid-wrapper" ng-controller="gridController as gridCtrl">
         <table class="table table-bordered exhibit-table">
             <colgroup>
+                @{
+                    var headerLevels = Model.ColumnHeaders.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
+                    var firstRow = true;
+                    var headerLevelZero = Model.ColumnHeaders.Where(c => c.Level == 0).OrderBy(c => c.Order);
+                }
                 @if (Model.HasCollapseColumn)
                 {
                     <col span="1" style="width: 32px;">
@@ -27,86 +34,76 @@
                 {
                     <col span="1" style="width: 32px;">
                 }
-                @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == 0))
+                @foreach (var header in headerLevelZero.Where(h => !h.IsHidden))
                 {
                     <col span="1" style="width: @header.Width;">
                 }
             </colgroup>
-
-            @{
-                var headerLevels = Model.ColumnHeaders.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
-                var firstRow = true;
-            }
             <thead>
                 @foreach (var level in headerLevels)
                 {
                     <tr>
                         @if (firstRow)
                         {
-                            <th colspan="@(Model.NumColumns - Model.ColumnHeaders.Where(h => h.Level == 0 && h.HeaderIsVisible).Count())" rowspan="@headerLevels.Count()">
+                            <th class="grid-name" colspan="@(Model.NumColumns - headerLevelZero.Where(h => h.HeaderIsVisible && !h.IsHidden).Count())" rowspan="@headerLevels.Count()">
                                 @Model.GridName
                             </th>
                             <th id="RowText" style="display:none;">
                             </th>
                         }
-                        @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level && h.HeaderIsVisible).OrderBy(h => h.Order))
+                        @foreach (var header in Model.ColumnHeaders.Where(h => h.Level == level && h.HeaderIsVisible && !h.IsHidden).OrderBy(h => h.Order))
                         {
-                            <th scope="col" colspan="@(header.Level == 0 ? 1 : header.ColSpan)">
+                            <th scope="col" colspan="@(header.ColSpan)">
                                 @header.Text
                             </th>
                         }
                         @{ firstRow = false; }
                     </tr>
-                            }
+                }
             </thead>
             <tbody>
-                <tr ng-repeat="row in gridCtrl.GridVm.DataRows | filter:{IsHidden: false} track by row.RowCode " ng-controller="rowController as rowCtrl" ng-switch="::row.Class">
-                    @*Header Row*@
-                    <td ng-switch-when="header-row" colspan="@Model.NumColumns">
-                        {{row.Text}}
-                    </td>
+                <tr ng-repeat="row in gridCtrl.GridVm.DataRows | filter:{IsHidden: false} track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class">
 
-                    @*Data Row*@
                     @if (Model.HasCollapseColumn)
                     {
-                        <td colspan="1" ng-switch-when="data-row">
+                        <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
                             <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
                         </td>
                     }
                     @if (Model.HasSelectColumn)
                     {
-                        <td colspan="1" ng-switch-when="data-row">
+                        <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
                             <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
                         </td>
                     }
                     @if (Model.HasAddColumn)
                     {
-                        <td colspan="1" ng-switch-when="data-row">
+                        <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
                             <i class="fa fa-user-plus fa-lg" ng-show="row.CanAdd" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
                         </td>
                     }
                     @if (Model.HasDeleteColumn)
                     {
-                        <td colspan="1" ng-switch-when="data-row">
+                        <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
                             <i class="fa fa-trash fa-lg" ng-show="row.CanDelete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
                         </td>
                     }
-                    @for (int i = 0; i < Model.DataRows[0].Cells.Count(); i++)
+                    @for (int i = 0; i < headerLevelZero.Count(); i++)
                     {
-                        var cell = Model.DataRows[0].Cells[i];
-                        if (!cell.IsHidden)
+                        var col = headerLevelZero.ElementAt(i);
+                        if (!col.IsHidden)
                         {
-                            if (cell.ColCode == "RowText")
+                            if (col.ColCode == "RowText")
                             {
-                                <th scope="row" colspan="{{::row.Cells[@i].ColSpan}}" ng-switch-when="data-row">
+                                <th scope="row" colspan="{{::row.Cells[@i].ColSpan}}">
                                     <div text-cell cell-vm="row.Cells[@i]">
                                     </div>
                                 </th>
                             }
                             else
                             {
-                                <td colspan="{{::row.Cells[@i].ColSpan}}" ng-switch-when="data-row" headers="{{row.Text}} {{row.Cells[@i].ColumnHeader}}">
-                                    <div @cell.Directive cell-vm="row.Cells[@i]">
+                                <td ng-show="{{::row.Cells[@i].ColSpan > 0}}" colspan="{{::row.Cells[@i].ColSpan}}" ng-if="::(row.Class == 'data-row' || row.Class ==  'total-row')" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
+                                    <div @(col.Type + "-cell") cell-vm="row.Cells[@i]" >
                                     </div>
                                 </td>
                             }

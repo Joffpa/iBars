@@ -139,7 +139,9 @@ module app.model {
             _.forEach(grid.DataRows, function (row) {
                 if (row.RowCode != rowCode) {
                     var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
-                    sum += cell.Value;
+                    if (cell) {
+                        sum += cell.Value;
+                    }
                 }
             });
             return sum;

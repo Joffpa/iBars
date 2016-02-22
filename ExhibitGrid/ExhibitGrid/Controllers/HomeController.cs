@@ -12,23 +12,44 @@ namespace ExhibitGrid.Controllers
     public class HomeController : Controller
     {
         
-        public ActionResult GridProto()
+        public ActionResult GridProto(string id)
         {
-            var gridVm = GridVmFactory.GetGridVmV2("mock");
+            var gridVm = new GridVmFactory().GetGridVmV2(id);
             return View(gridVm);
         }
+        
+        [HttpGet]
+        public JsonResult GetDdOptions(string rowCode, string colCode)
+        {
+            var options = new List<SelectListItem>();
+            options.Add(new SelectListItem()
+            {
+                Text = "Option 1",
+                Value = "1"
+            });
+            options.Add(new SelectListItem()
+            {
+                Text = "Option 2",
+                Value = "2"
+            });
+            options.Add(new SelectListItem()
+            {
+                Text = "Option 3",
+                Value = "3"
+            });
+            options.Add(new SelectListItem()
+            {
+                Text = "Option 4",
+                Value = "4"
+            });
 
-        //public ActionResult DynamicViewGrid()
-        //{
-        //    var gridVm = GridVmFactory.GetGridVmV2("mock");
-        //    return View(gridVm);
-        //}
+            return Json(options, JsonRequestBehavior.AllowGet);
+        }
 
-        //public ActionResult NowIGottaMakeItATableThanksALotKaren()
-        //{
-        //    var gridVm = GridVmFactory.GetGridVmV2("mock");
-        //    return View(gridVm);
-        //}
+        public ActionResult SpreadSheet()
+        {
+            return View();
+        }
 
     }
 }

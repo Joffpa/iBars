@@ -1,8 +1,8 @@
 ﻿
 
-<div ng-switch="cellCtrl.CellVm.IsEditable" class="indent-{{cellCtrl.CellVm.Indent}}">
-    <input type="text" ng-switch-when="true" ng-model="cellCtrl.CellVm.Text" />
-    <div ng-switch-when="false">
+<div ng-switch="cellCtrl.CellVm.IsEditable" class="indent-{{cellCtrl.CellVm.Indent}} {{cellCtrl.CellVm.Class}}" ng-hide="cellctrl.CellVm.IsBlank">
+    <input type="text" class="k-textbox" ng-switch-when="true" ng-model="cellCtrl.CellVm.Text" style="text-align:left" />
+    <div ng-switch-when="false" style="text-align:left">
         {{cellCtrl.CellVm.Text}}
     </div>
 </div>

@@ -5,9 +5,31 @@
 .main-content .exhibit-table {
   table-layout: fixed;
 }
+.main-content .exhibit-table thead tr th.grid-name {
+  font-weight: bolder;
+}
+.main-content .exhibit-table tbody tr.sub-header-row {
+  background-color: lightgrey;
+}
+.main-content .exhibit-table tbody tr.sub-header-row th {
+  font-weight: bold;
+}
+.main-content .exhibit-table tbody tr.total-row {
+  font-weight: bold;
+}
+.main-content .exhibit-table tbody tr.total-row th {
+  font-weight: bold;
+}
+.main-content .exhibit-table tbody tr th {
+  font-weight: normal;
+}
+.main-content .exhibit-table tbody tr td input[type="text"],
+.main-content .exhibit-table tbody tr th input[type="text"] {
+  width: 100%;
+}
 .main-content .exhibit-table tbody tr td input[type="number"],
 .main-content .exhibit-table tbody tr th input[type="number"] {
-  width: 75px;
+  width: 100%;
 }
 .main-content .exhibit-table tbody tr td .indent-1,
 .main-content .exhibit-table tbody tr th .indent-1 {

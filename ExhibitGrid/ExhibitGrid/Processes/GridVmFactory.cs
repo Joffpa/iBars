@@ -8,18 +8,24 @@ namespace ExhibitGrid.Processes
 {
     public class GridVmFactory
     {
-        //public static GridVm GetGridVm(string gridCode)
-        //{
-        //    switch (gridCode)
-        //    {
-        //        case "mock":
-        //            return GetMockGridVm();
-        //        default:
-        //            return null;
-        //    }
-        //}
 
-        public static ViewModel.GridVm GetGridVmV2(string gridCode)
+        private int numRows;
+        private int numCols;
+        private int totalRow;
+        private int[] hiddenCols;
+        private int numVisibleCols;
+
+        public GridVmFactory()
+        {
+             numRows = 25;
+             numCols = 24;
+             totalRow = 1; // value of 1 means Row_1 is set as the total row
+             hiddenCols = new int[3] { 3, 4, 5 };
+             numVisibleCols = numCols - hiddenCols.Count();
+        }
+
+
+        public GridVm GetGridVmV2(string gridCode)
         {
             switch (gridCode)
             {
@@ -29,126 +35,9 @@ namespace ExhibitGrid.Processes
                     return null;
             }
         }
-
-
-
-        //private static GridVm GetMockGridVm()
-        //{
-        //    var numRows = 16;
-        //    var numVisibleCols = 17;
-
-            
-        //    var grid = new GridVm();
-        //    grid.GridCode = "MockGrid";
-
-        //    var subHeaderRow = new RowVm();
-        //    subHeaderRow.RowCode = "Row_0";
-        //    subHeaderRow.ParentRowCodes = null;
-        //    subHeaderRow.Class = "header-row";
-        //    subHeaderRow.Text = "Header Text";
-
-        //    var selectCell = new SelectionCellVm();
-        //    selectCell.IncludeSpaceForCell = true;
-        //    selectCell.AllowSelect = false;
-        //    selectCell.IsSelected = false;
-        //    subHeaderRow.SelectionCell = selectCell;
-
-        //    var crudCell = new CrudCellVm();
-        //    crudCell.IncludeSpaceForCell = true;
-        //    crudCell.CrudFunctionality = "no-crud";
-        //    subHeaderRow.CrudCell = crudCell;
-
-        //    var narrCell = new NarrativeCellVm();
-        //    narrCell.IncludeSpaceForCell = true;
-        //    narrCell.AllowNarrative = false;
-        //    narrCell.HasNarrative = false;
-        //    subHeaderRow.NarrativeCell = narrCell;
-
-        //    var postItCell = new PostItCellVm();
-        //    postItCell.IncludeSpaceForCell = true;
-        //    postItCell.AllowPostIt = false;
-        //    postItCell.HasPostIt = false;
-        //    subHeaderRow.PostItCell = postItCell;
-
-        //    subHeaderRow.DataCells = new List<DataCellVm>();
-        //    for (var c = 0; c <= numVisibleCols; c++)
-        //    {
-        //        var cell = new DataCellVm();
-        //        cell.RowCode = subHeaderRow.RowCode;
-        //        cell.ColCode = "Col_" + c;
-        //        cell.Class = "header-cell";
-        //        cell.Type = "read-only";
-        //        cell.Value = "Column " + c;
-        //        cell.Width = "1x";
-        //        cell.IsEditable = false;
-
-        //        subHeaderRow.DataCells.Add(cell);
-        //    }
-
-        //    grid.Rows = new List<RowVm>() { subHeaderRow };
-
-        //    for (var r = 1; r <= numRows; r++)
-        //    {
-        //        var dataRow = new RowVm();
-        //        dataRow.RowCode = "Row_" + r;
-        //        dataRow.ParentRowCodes = null;
-        //        dataRow.Class = "data-row";
-        //        dataRow.Text = "Row Text " + r;
-
-        //        selectCell = new SelectionCellVm();
-        //        selectCell.IncludeSpaceForCell = true;
-        //        selectCell.AllowSelect = true;
-        //        selectCell.IsSelected = false;
-        //        dataRow.SelectionCell = selectCell;
-
-        //        crudCell = new CrudCellVm();
-        //        crudCell.IncludeSpaceForCell = true;
-        //        crudCell.CrudFunctionality = "create";
-        //        dataRow.CrudCell = crudCell;
-
-        //        narrCell = new NarrativeCellVm();
-        //        narrCell.IncludeSpaceForCell = true;
-        //        narrCell.AllowNarrative = true;
-        //        narrCell.HasNarrative = false;
-        //        dataRow.NarrativeCell = narrCell;
-
-        //        postItCell = new PostItCellVm();
-        //        postItCell.IncludeSpaceForCell = true;
-        //        postItCell.AllowPostIt = true;
-        //        postItCell.HasPostIt = false;
-        //        dataRow.PostItCell = postItCell;
-
-        //        dataRow.DataCells = new List<DataCellVm>();
-
-        //        for (var c = 0; c <= numVisibleCols; c++)
-        //        {ViewModel.v2
-        //            var cell = new DataCellVm();
-        //            cell.RowCode = dataRow.RowCode;
-        //            cell.ColCode = "Col_" + c;
-        //            cell.Class = "data-cell";
-        //            cell.Type = "num-input";
-        //            cell.Value = 5 * c;
-        //            cell.Width = "1x";
-        //            cell.IsEditable = true;
-
-        //            dataRow.DataCells.Add(cell);
-        //        }
-
-        //        grid.Rows.Add(dataRow);
-        //    }
-
-        //    return grid;
-        //}
-
-
-        private static GridVm GetMockGridVmV2()
+        
+        private GridVm GetMockGridVmV2()
         {
-            var numRows = 25;
-            var numCols = 21;
-            var totalRow = 1; // value of 1 means Row_1 is set as the total row
-            var hiddenCols = new int[3] { 3, 4, 5 };
-            var numVisibleCols = numCols - hiddenCols.Count(); 
-
 
             var rando = new Random();
             
@@ -239,177 +128,103 @@ namespace ExhibitGrid.Processes
             colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "RowText";
             colHeader.HeaderIsVisible = false;
+            colHeader.Type = "text";
             colHeader.Width = "200px";
             colHeader.Text = "RowText";
             colHeader.Level = 0;
-            colHeader.Order = -2;
+            colHeader.Order = -4;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "PostIt";
             colHeader.HeaderIsVisible = false;
+            colHeader.Type = "postit";
             colHeader.Width = "32px";
             colHeader.Text = "PostIt";
             colHeader.Level = 0;
-            colHeader.Order = -1;
+            colHeader.Order = -3;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
             colHeader = new ColumnHeaderVm();
             colHeader.ColCode = "Narrative";
             colHeader.HeaderIsVisible = false;
+            colHeader.Type = "narrative";
             colHeader.Width = "32px";
             colHeader.Text = "PostIt";
+            colHeader.Level = 0;
+            colHeader.Order = -2;
+            colHeader.ColSpan = 1;
+            grid.ColumnHeaders.Add(colHeader);
+            colHeader = new ColumnHeaderVm();
+            colHeader.ColCode = "DoubleOne";
+            colHeader.HeaderIsVisible = true;
+            colHeader.Type = "text";
+            colHeader.Width = "200px";
+            colHeader.Text = "Double Cell Header";
+            colHeader.Level = 0;
+            colHeader.Order = -1;
+            colHeader.ColSpan = 1;
+            grid.ColumnHeaders.Add(colHeader);
+            colHeader = new ColumnHeaderVm();
+            colHeader.ColCode = "DoubleTwo";
+            colHeader.HeaderIsVisible = true;
+            colHeader.Type = "text";
+            colHeader.Width = "200px";
+            colHeader.Text = "Double Cell Header";
             colHeader.Level = 0;
             colHeader.Order = 0;
             colHeader.ColSpan = 1;
             grid.ColumnHeaders.Add(colHeader);
+            colHeader = new ColumnHeaderVm();
+            colHeader.ColCode = "DropDown";
+            colHeader.HeaderIsVisible = true;
+            colHeader.Type = "dropdown";
+            colHeader.Width = "200px";
+            colHeader.Text = "DropDown Header";
+            colHeader.Level = 0;
+            colHeader.Order = 1;
+            colHeader.ColSpan = 1;
+            grid.ColumnHeaders.Add(colHeader);
 
-
-            for(int col = 0; col < numCols - 3; col++)
+            for (int col = 0; col < numCols - 6; col++)
             {
-                if (!hiddenCols.Contains(col))
-                {
-                    colHeader = new ColumnHeaderVm();
-                    colHeader.ColCode = "Col_" + col;
-                    colHeader.HeaderIsVisible = true;
-                    colHeader.Width = "100px";
-                    colHeader.Text = "Level 0 Header " + Convert.ToChar(col + 65);
-                    colHeader.Level = 0;
-                    colHeader.Order = col + 1;
-                    colHeader.ColSpan = 1;
-                    grid.ColumnHeaders.Add(colHeader);
-                }
+                colHeader = new ColumnHeaderVm();
+                colHeader.ColCode = "Col_" + col;
+                colHeader.HeaderIsVisible = !hiddenCols.Contains(col);
+                colHeader.IsHidden = hiddenCols.Contains(col);
+                colHeader.Type = "numeric";
+                colHeader.Width = "125px";
+                colHeader.Text = "Level 0 Header " + Convert.ToChar(col + 65);
+                colHeader.Level = 0;
+                colHeader.Order = col + 10;
+                colHeader.ColSpan = 1;
+                grid.ColumnHeaders.Add(colHeader);
             }
-                        
-            var subHeaderRow = new RowVm();
-            subHeaderRow.RowCode = "Row_0";
-            subHeaderRow.Class = "header-row";
-            subHeaderRow.Text = "Header Text";
-            subHeaderRow.CanCollapse = false;
-            subHeaderRow.CanSelect = false;
-            subHeaderRow.IsSelected = false;
-            subHeaderRow.CanAdd = false;
-            subHeaderRow.CanDelete = false;
-            subHeaderRow.IsHidden = false;
-
-            subHeaderRow.Cells = new List<CellVm>();
-
-            var rowText = new CellVm();
-            rowText.Order = 2;
-            rowText.RowCode = subHeaderRow.RowCode;
-            rowText.ColCode = "RowText";
-            rowText.IsEditable = false;
-            rowText.Text = "";
-            rowText.Directive = "text-cell";
-            rowText.IsHidden = false;
-            subHeaderRow.Cells.Add(rowText);
-
-            var postitCell = new CellVm();
-            postitCell.Order = 3;
-            postitCell.IsEditable = false;
-            postitCell.HasPostIt = false;
-            postitCell.RowCode = subHeaderRow.RowCode;
-            postitCell.ColCode = "PostIt";
-            postitCell.Directive = "postit-cell";
-            rowText.IsHidden = false;
-            subHeaderRow.Cells.Add(postitCell);
-
-            var narrCell = new CellVm();
-            narrCell.Order = 4;
-            narrCell.IsEditable = false;
-            narrCell.HasNarrative = false;
-            narrCell.RowCode = subHeaderRow.RowCode;
-            narrCell.ColCode = "Narrative";
-            narrCell.Directive = "narrative-cell";
-            rowText.IsHidden = false;
-            subHeaderRow.Cells.Add(narrCell);
-
-            for (var c = 0; c < numVisibleCols - 3; c++)
-            {
-                var cell = new CellVm();
-                cell.RowCode = subHeaderRow.RowCode;
-                cell.ColCode = "Col_" + c;
-                cell.Class = "header-cell";
-                cell.Value = 0;
-                cell.IsEditable = false;
-                cell.Order = 5 + c;
-                cell.Directive = "numeric-cell";
-                rowText.IsHidden = hiddenCols.Contains(c);
-                subHeaderRow.Cells.Add(cell);
-            }
-
-            grid.DataRows = new List<RowVm>() { subHeaderRow };
+            
+            //Add Rows
+            grid.DataRows = new List<RowVm>() { CreateSubHeaderRow(0) };
 
             for (var r = 1; r <= numRows; r++)
-            {
-                var dataRow = new RowVm();
-                dataRow.RowCode = "Row_" + r;
-                dataRow.Class = "data-row";
-                dataRow.Text = "Row Text " + r;
-                dataRow.CanCollapse = r % 2 == 0;
-                dataRow.CanSelect = r % 3 == 0;
-                dataRow.IsSelected = false;
-                dataRow.CanAdd = r % 4 == 0;
-                dataRow.CanDelete = r % 5 == 0;
-                dataRow.IsHidden = r % 6 == 0 ;
-
-                dataRow.Cells = new List<CellVm>();
-
-                rowText = new CellVm();
-                rowText.Order = 2;
-                rowText.RowCode = dataRow.RowCode;
-                rowText.ColCode = "RowText";
-                rowText.IsEditable = false;
-                rowText.Text = "Row Text " + r;
-                rowText.Indent = r % 4;
-                rowText.Directive = "text-cell";
-                rowText.IsHidden = false;
-                dataRow.Cells.Add(rowText);
-
-                postitCell = new CellVm();
-                postitCell.Order = 3;
-                postitCell.IsEditable = true;
-                postitCell.HasPostIt = false;
-                postitCell.RowCode = dataRow.RowCode;
-                postitCell.ColCode = "PostIt";
-                postitCell.Directive = "postit-cell";
-                rowText.IsHidden = false;
-                dataRow.Cells.Add(postitCell);
-
-                narrCell = new CellVm();
-                narrCell.Order = 4;
-                narrCell.IsEditable = true;
-                narrCell.HasNarrative = false;
-                narrCell.RowCode = dataRow.RowCode;
-                narrCell.ColCode = "Narrative";
-                narrCell.Directive = "narrative-cell";
-                rowText.IsHidden = false;
-                dataRow.Cells.Add(narrCell);
-
-                for (var c = 0; c < numVisibleCols -3; c++)
+            {    
+                if(r % 8 == 0)
                 {
-                    var cell = new CellVm();
-                    cell.RowCode = dataRow.RowCode;
-                    cell.ColCode = "Col_" + c;
-                    cell.Class = "data-cell";
-                    cell.Value = c == 2 ? dataRow.Cells.FirstOrDefault(x => x.ColCode == "Col_0").Value : 5 * c;
-                    cell.IsEditable = c % 3 != 2 && r != totalRow;
-                    cell.Order = 5 + c;
-                    cell.Directive = "numeric-cell";
-                    cell.IsHidden = hiddenCols.Contains(c);
-                    dataRow.Cells.Add(cell);
+                    grid.DataRows.Add(CreateSubHeaderRow(r));
                 }
-                dataRow.Cells = dataRow.Cells.OrderBy(c => c.Order).ToList();
-                grid.DataRows.Add(dataRow);
-
+                else
+                {
+                    grid.DataRows.Add(CreateDataRow(r));
+                }         
             }
+            
             
             foreach(var row in grid.DataRows)
             {
-                for (int i = 2; i <= row.Cells.Count - 3; i += 3){
+                for (int i = 2; i <= row.Cells.Count - 6; i += 3){
+
                     var prevPrevCellVal = row.Cells.FirstOrDefault(c => c.ColCode == "Col_" + (i - 2)).Value;
                     var prevCellVal = row.Cells.FirstOrDefault(c => c.ColCode == "Col_" + (i - 1)).Value;
                     row.Cells.FirstOrDefault(c => c.ColCode == "Col_" + i).Value = prevPrevCellVal + prevCellVal;
+
                 }
             }
 
@@ -419,7 +234,11 @@ namespace ExhibitGrid.Processes
             {
                 double sum = 0;
                 foreach(var row in grid.DataRows.Where(r => r.RowCode != totalRowVm.RowCode)){
-                    sum += row.Cells.FirstOrDefault(c => c.ColCode == cell.ColCode).Value;
+                    var cl = row.Cells.FirstOrDefault(c => c.ColCode == cell.ColCode);
+                    if (cl != null)
+                    {
+                        sum += row.Cells.FirstOrDefault(c => c.ColCode == cell.ColCode).Value;
+                    }
                 }
                 cell.Value = sum;
 
@@ -448,7 +267,213 @@ namespace ExhibitGrid.Processes
             }
             grid.NumColumns += numVisibleCols;
             return grid;
+
         }
+
+        private RowVm CreateSubHeaderRow(int r)
+        {
+            var subHeaderRow = new RowVm();
+            subHeaderRow.RowCode = "Row_" + r;
+            subHeaderRow.Class = "sub-header-row";
+            subHeaderRow.Text = "Sub Header Text";
+            subHeaderRow.CanCollapse = false;
+            subHeaderRow.CanSelect = false;
+            subHeaderRow.IsSelected = false;
+            subHeaderRow.CanAdd = false;
+            subHeaderRow.CanDelete = false;
+            subHeaderRow.IsHidden = false;
+
+            subHeaderRow.Cells = new List<CellVm>();
+
+            var rowText = new CellVm();
+            //rowText.Order = 2;
+            rowText.RowCode = subHeaderRow.RowCode;
+            rowText.ColCode = "RowText";
+            rowText.IsEditable = false;
+            rowText.Text = "Sub Header Text";
+            //rowText.Directive = "text-cell";
+            rowText.ColSpan = numVisibleCols + 4;
+            rowText.IsHidden = false;
+            rowText.IsBlank = false;
+            subHeaderRow.Cells.Add(rowText);
+
+            //var postitCell = new CellVm();
+            ////postitCell.Order = 3;
+            //postitCell.IsEditable = false;
+            //postitCell.HasPostIt = false;
+            //postitCell.RowCode = subHeaderRow.RowCode;
+            //postitCell.ColCode = "PostIt";
+            //postitCell.ColSpan = 0;
+            ////postitCell.Directive = "postit-cell";
+            //postitCell.IsHidden = false;
+            //postitCell.IsBlank = false;
+            //subHeaderRow.Cells.Add(postitCell);
+
+            //var narrCell = new CellVm();
+            ////narrCell.Order = 4;
+            //narrCell.IsEditable = false;
+            //narrCell.HasNarrative = false;
+            //narrCell.RowCode = subHeaderRow.RowCode;
+            //narrCell.ColCode = "Narrative";
+            //narrCell.ColSpan = 0;
+            ////narrCell.Directive = "narrative-cell";
+            //narrCell.IsHidden = false;
+            //narrCell.IsBlank = false;
+            //subHeaderRow.Cells.Add(narrCell);
+
+
+            //rowText = new CellVm();
+            ////rowText.Order = 3;
+            //rowText.RowCode = subHeaderRow.RowCode;
+            //rowText.ColCode = "DoubleOne";
+            //rowText.IsEditable = true;
+            //rowText.Text = "Single Span Text";
+            //rowText.Indent = 0;
+            //rowText.ColSpan = 0;
+            ////rowText.Directive = "text-cell";
+            //rowText.IsHidden = false;
+            //rowText.IsBlank = false;
+            //subHeaderRow.Cells.Add(rowText);
+            //rowText = new CellVm();
+            ////rowText.Order = 4;
+            //rowText.RowCode = subHeaderRow.RowCode;
+            //rowText.ColCode = "DoubleTwo";
+            //rowText.IsEditable = true;
+            //rowText.Text = "Single Span Text";
+            //rowText.Indent = 0;
+            //rowText.ColSpan = 0;
+            ////rowText.Directive = "text-cell";
+            //rowText.IsHidden = false;
+            //rowText.IsBlank = false;
+            //subHeaderRow.Cells.Add(rowText);
+
+            //for (var c = 0; c < numCols - 5; c++)
+            //{
+            //    var cell = new CellVm();
+            //    cell.RowCode = subHeaderRow.RowCode;
+            //    cell.ColCode = "Col_" + c;
+            //    cell.ColSpan =0;
+            //    cell.Class = "header-cell";
+            //    cell.Value = 0;
+            //    cell.IsEditable = false;
+            //    //cell.Order = 5 + c;
+            //    //cell.Directive = "numeric-cell";
+            //    cell.IsBlank = false;
+            //    cell.IsHidden = hiddenCols.Contains(c);
+            //    subHeaderRow.Cells.Add(cell);
+            //}
+
+            return subHeaderRow;
+        }
+
+        private RowVm CreateDataRow(int r)
+        {
+            var dataRow = new RowVm();
+            dataRow.RowCode = "Row_" + r;
+            dataRow.Class = r == totalRow ? "total-row" : "data-row";
+            dataRow.Text = r == totalRow ? "Total Row" : "Row Text " + r;
+            dataRow.CanCollapse = r % 2 == 0;
+            dataRow.CanSelect = r % 3 == 0;
+            dataRow.IsSelected = false;
+            dataRow.CanAdd = r % 4 == 0;
+            dataRow.CanDelete = r % 5 == 0;
+            dataRow.IsHidden = r % 6 == 0;
+
+            dataRow.Cells = new List<CellVm>();
+
+            var rowText = new CellVm();
+            //rowText.Order = 0;
+            rowText.RowCode = dataRow.RowCode;
+            rowText.ColCode = "RowText";
+            rowText.IsEditable = false;
+            rowText.Text = r == totalRow ? "Total Row" : "Row Text " + r;
+            rowText.Indent = r % 4;
+            rowText.ColSpan = 1;
+            //rowText.Directive = "text-cell";
+            rowText.IsHidden = false;
+            rowText.IsBlank = false;
+            dataRow.Cells.Add(rowText);
+
+            var postitCell = new CellVm();
+            //postitCell.Order = 1;
+            postitCell.IsEditable = true;
+            postitCell.HasPostIt = false;
+            postitCell.RowCode = dataRow.RowCode;
+            postitCell.ColCode = "PostIt";
+            postitCell.ColSpan = 1;
+            //postitCell.Directive = "postit-cell";
+            postitCell.IsHidden = false;
+            postitCell.IsBlank = false;
+            dataRow.Cells.Add(postitCell);
+
+            var narrCell = new CellVm();
+            //narrCell.Order = 2;
+            narrCell.IsEditable = true;
+            narrCell.HasNarrative = false;
+            narrCell.RowCode = dataRow.RowCode;
+            narrCell.ColCode = "Narrative";
+            narrCell.ColSpan = 1;
+            //narrCell.Directive = "narrative-cell";
+            narrCell.IsHidden = false;
+            narrCell.IsBlank = false;
+            dataRow.Cells.Add(narrCell);
+
+            rowText = new CellVm();
+            //rowText.Order = 3;
+            rowText.RowCode = dataRow.RowCode;
+            rowText.ColCode = "DoubleOne";
+            rowText.IsEditable = true;
+            rowText.Text = r % 2 == 0 ? "Double Span Text" : "Single Span Text";
+            rowText.Indent = 0;
+            rowText.ColSpan = r % 2 == 0 ? 2 : 1;
+            //rowText.Directive = "text-cell";
+            rowText.IsHidden = false;
+            rowText.IsBlank = false;
+            dataRow.Cells.Add(rowText);
+            rowText = new CellVm();
+            //rowText.Order = 4;
+            rowText.RowCode = dataRow.RowCode;
+            rowText.ColCode = "DoubleTwo";
+            rowText.IsEditable = true;
+            rowText.Text = "Single Span Text";
+            rowText.Indent = 0;
+            rowText.ColSpan = r % 2 == 0 ? 0 : 1;
+            //rowText.Directive = "text-cell";
+            rowText.IsHidden = false;
+            rowText.IsBlank = false;
+            dataRow.Cells.Add(rowText);
+            rowText = new CellVm();
+            //rowText.Order = 4;
+            rowText.RowCode = dataRow.RowCode;
+            rowText.ColCode = "DropDown";
+            rowText.IsEditable = r % 5 !=0;
+            rowText.Text = " ";
+            rowText.Indent = 0;
+            rowText.ColSpan = 1;
+            //rowText.Directive = "text-cell";
+            rowText.IsHidden = false;
+            rowText.IsBlank = r == totalRow;
+            dataRow.Cells.Add(rowText);
+
+            for (var c = 0; c < numCols - 5; c++)
+            {
+                var cell = new CellVm();
+                cell.RowCode = dataRow.RowCode;
+                cell.ColCode = "Col_" + c;
+                cell.Class = "data-cell";
+                cell.ColSpan = 1;
+                cell.Value = 5 * c;
+                cell.IsEditable = c % 3 != 2 && r != totalRow;
+                //cell.Order = 5 + c;
+                //cell.Directive = "numeric-cell";
+                cell.IsHidden = hiddenCols.Contains(c);
+                cell.IsBlank = r % 5 == 0 && c == 0 ? true : false;
+                dataRow.Cells.Add(cell);
+            }
+            //dataRow.Cells = dataRow.Cells.OrderBy(c => c.Order).ToList();
+            return dataRow;
+        }
+
         
     }
 

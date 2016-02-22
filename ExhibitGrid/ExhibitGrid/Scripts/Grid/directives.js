@@ -52,16 +52,34 @@ var app;
                     controller: ['$scope', 'modelService', app.NarrativeCellController]
                 };
             }])
-            .directive('blankCell', ['modelService', function (modelService) {
+            .directive('dropdownCell', ['modelService', function (modelService) {
                 return {
                     restrict: 'A',
-                    templateUrl: '/templates/blankCell.html',
+                    templateUrl: '/templates/dropdownCell.html',
                     controllerAs: 'cellCtrl',
                     transclude: true,
                     scope: {
                         cellVm: '='
                     },
-                    controller: ['$scope', 'modelService', app.BlankCellController]
+                    controller: ['$scope', 'modelService', app.DropdownCellController],
+                    compile: function compile(tElement, tAttrs, transclude) {
+                        return function postLink(scope, element, attrs, ctrl) {
+                            console.log(element.find('input'));
+                            element.find('input').kendoDropDownList({
+                                dataTextField: "Text",
+                                dataValueField: "Value",
+                                enable: scope.cellVm.IsEditable,
+                                dataSource: {
+                                    transport: {
+                                        read: {
+                                            url: "/Home/GetDdOptions?rowCode=" + scope.cellVm.RowCode + "&colCode=" + scope.cellVm.ColCode,
+                                            dataType: "json"
+                                        }
+                                    }
+                                }
+                            });
+                        };
+                    }
                 };
             }]);
     })(directives = app.directives || (app.directives = {}));

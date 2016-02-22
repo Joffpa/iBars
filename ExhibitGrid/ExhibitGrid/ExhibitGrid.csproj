@@ -54,6 +54,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Kendo.Mvc, Version=2016.1.112.545, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>3rd party\Kendo.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -61,6 +65,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -183,6 +188,28 @@
     <Compile Include="ViewModel\RowVm.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="3rd party\Kendo.Mvc.dll" />
+    <Content Include="3rd party\Kendo.Mvc.xml" />
+    <Content Include="3rd party\Telerik.Web.Spreadsheet.dll" />
+    <Content Include="3rd party\Telerik.Web.Spreadsheet.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Core.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Core.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Fixed.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Fixed.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Flow.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Flow.FormatProviders.Pdf.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Flow.FormatProviders.Pdf.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Flow.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Spreadsheet.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Spreadsheet.FormatProviders.Pdf.dll" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Spreadsheet.FormatProviders.Pdf.xml" />
+    <Content Include="3rd party\Telerik.Windows.Documents.Spreadsheet.xml" />
+    <Content Include="3rd party\Telerik.Windows.Zip.dll" />
+    <Content Include="3rd party\Telerik.Windows.Zip.Extensions.dll" />
+    <Content Include="3rd party\Telerik.Windows.Zip.Extensions.xml" />
+    <Content Include="3rd party\Telerik.Windows.Zip.xml" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
@@ -428,6 +455,73 @@
     <Content Include="Content\kendo\2015.1.429\Uniform\sprite_2x.png" />
     <Content Include="Content\kendo\2015.1.429\Uniform\sprite_kpi.png" />
     <Content Include="Content\kendo\2015.1.429\Uniform\sprite_kpi_2x.png" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\LICENSE.txt" />
+    <Content Include="Content\kendo\2016.1.112\fonts\glyphs\KendoUIGlyphs.svg" />
+    <Content Include="Content\kendo\2016.1.112\images\back.png" />
+    <Content Include="Content\kendo\2016.1.112\images\kendoui.svg" />
+    <Content Include="Content\kendo\2016.1.112\images\wp8_icons.png" />
+    <Content Include="Content\kendo\2016.1.112\images\wp8_inverseicons.png" />
+    <Content Include="Content\kendo\2016.1.112\kendo.common.min.css" />
+    <Content Include="Content\kendo\2016.1.112\kendo.silver.min.css" />
+    <Content Include="Content\kendo\2016.1.112\kendo.uniform.min.css" />
+    <Content Include="Content\kendo\2016.1.112\Silver\editor.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\imagebrowser.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\indeterminate.gif" />
+    <Content Include="Content\kendo\2016.1.112\Silver\loading-image.gif" />
+    <Content Include="Content\kendo\2016.1.112\Silver\loading.gif" />
+    <Content Include="Content\kendo\2016.1.112\Silver\loading_2x.gif" />
+    <Content Include="Content\kendo\2016.1.112\Silver\markers.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\markers_2x.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\slider-h.gif" />
+    <Content Include="Content\kendo\2016.1.112\Silver\slider-v.gif" />
+    <Content Include="Content\kendo\2016.1.112\Silver\sprite.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\sprite_2x.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\sprite_kpi.png" />
+    <Content Include="Content\kendo\2016.1.112\Silver\sprite_kpi_2x.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\brushed-metal.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots1.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots10.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots11.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots12.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots13.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots2.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots3.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots4.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots5.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots6.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots7.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots8.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\dots9.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\glass-lighter.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\glass.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\highlight.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\hsv-gradient.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\hue.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\leather1.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\leather2.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\noise.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\stripe1.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\stripe2.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\stripe3.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\stripe4.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\stripe5.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\stripe6.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\transparency.png" />
+    <Content Include="Content\kendo\2016.1.112\textures\transtexture.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\editor.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\imagebrowser.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\indeterminate.gif" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\loading-image.gif" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\loading.gif" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\loading_2x.gif" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\markers.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\markers_2x.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\slider-h.gif" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\slider-v.gif" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\sprite.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\sprite_2x.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\sprite_kpi.png" />
+    <Content Include="Content\kendo\2016.1.112\Uniform\sprite_kpi_2x.png" />
     <Content Include="EntityDataModel\EasModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EasModel.edmx</DependentUpon>
@@ -486,6 +580,27 @@
     <Content Include="Scripts\Grid\directives.js.map" />
     <Content Include="Scripts\Grid\grid.js.map" />
     <Content Include="Scripts\Grid\modelService.js.map" />
+    <Content Include="Content\kendo\2016.1.112\kendo.common.min.css.map" />
+    <Content Include="Content\kendo\2016.1.112\kendo.uniform.min.css.map" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSans-Bold.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSans-BoldOblique.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSans-ExtraLight.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSans-Oblique.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSans.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSansMono-Bold.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSansMono-BoldOblique.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSansMono-Oblique.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSansMono.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSerif-Bold.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSerif-BoldItalic.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSerif-Italic.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\DejaVu\DejaVuSerif.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\glyphs\KendoUIGlyphs.eot" />
+    <Content Include="Content\kendo\2016.1.112\fonts\glyphs\KendoUIGlyphs.ttf" />
+    <Content Include="Content\kendo\2016.1.112\fonts\glyphs\KendoUIGlyphs.woff" />
+    <Content Include="Content\kendo\2016.1.112\images\kendoui.ttf" />
+    <Content Include="Content\kendo\2016.1.112\images\kendoui.woff" />
+    <Content Include="Content\kendo\2016.1.112\kendo.silver.min.css.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -498,6 +613,16 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\kendo\2015.1.429\kendo.aspnetmvc.min.js" />
     <Content Include="Scripts\kendo\2015.1.429\kendo.web.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\angular.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\jquery.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\jszip.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.all.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.angular.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.angular2.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.autocomplete.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.web.min.js" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.webcomponents.min.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -509,6 +634,7 @@
     </Content>
     <Content Include="Scripts\_references.js" />
     <Content Include="templates\blankCell.html" />
+    <Content Include="templates\dropdownCell.html" />
     <Content Include="templates\narrativeCell.html" />
     <Content Include="templates\numericCell.html" />
     <Content Include="templates\postitCell.html" />
@@ -520,7 +646,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -528,6 +656,15 @@
     <Content Include="Scripts\kendo\2015.1.429\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\kendo\2015.1.429\kendo.web.min.js.map" />
     <Content Include="Scripts\Manager.ttinclude" />
+    <Content Include="Views\Home\SpreadSheet.cshtml" />
+    <Content Include="Scripts\kendo\2016.1.112\jquery.min.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.all.min.js.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.angular.min.js.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.angular2.min.js.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.aspnetmvc.min.js.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.autocomplete.min.js.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.web.min.js.map" />
+    <Content Include="Scripts\kendo\2016.1.112\kendo.webcomponents.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
