@@ -52,45 +52,31 @@ var app;
                 return this.exhibitModel;
             };
             MockModelService.prototype.getGridVm = function (gridCode) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
                 return grid;
             };
             MockModelService.prototype.getRowVm = function (gridCode, rowCode) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-                var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+                var row = _.find(grid.DataRows, { 'RowCode': rowCode });
                 return row;
             };
             MockModelService.prototype.getCellVm = function (gridCode, rowCode, colCode) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-                var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-                var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+                var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+                var cell = _.find(row.Cells, { 'ColCode': colCode });
                 return cell;
             };
             MockModelService.prototype.updateCellValue = function (gridCode, rowCode, colCode, value) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-                var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-                var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+                var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+                var cell = _.find(row.Cells, { 'ColCode': colCode });
                 cell.Value = value;
             };
             MockModelService.prototype.getCellValue = function (gridCode, rowCode, colCode) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-                var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-                var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+                var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+                var cell = _.find(row.Cells, { 'ColCode': colCode });
                 return cell.Value;
-            };
-            //hack to simulate total row calc 
-            MockModelService.prototype.sumAllCellsInColForTotalRow = function (gridCode, rowCode, colCode) {
-                var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-                var sum = 0;
-                _.forEach(grid.DataRows, function (row) {
-                    if (row.RowCode != rowCode) {
-                        var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
-                        if (cell) {
-                            sum += cell.Value;
-                        }
-                    }
-                });
-                return sum;
             };
             return MockModelService;
         })();

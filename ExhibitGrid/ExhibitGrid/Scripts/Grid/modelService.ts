@@ -65,15 +65,17 @@ module app.model {
     export class CellVm implements ExhibitGrid.ViewModel.ICellVm {
         Order: number;
         Type: string;
+        GridCode: string;
         RowCode: string;
         ColCode: string;
-        ColSpan: string;
+        ColSpan: number;
         ColumnHeader: string;
         CanAddNarrative: boolean;
         HasNarrative: boolean;
         HasPostIt: boolean;
         IsEditable: boolean;
         IsHidden: boolean;
+        IsBlank: boolean;
         Directive: string;
         Text: string;
         Indent: number;
@@ -101,52 +103,37 @@ module app.model {
         }
 
         getGridVm(gridCode: string) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
             return grid;
         }
 
         getRowVm(gridCode: string, rowCode: string) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
             return row;
         }
         
         getCellVm(gridCode: string, rowCode: string, colCode: string) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-            var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell;
         }
 
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-            var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var cell = _.find(row.Cells, { 'ColCode': colCode });
             cell.Value = value;
         }
 
         getCellValue(gridCode: string, rowCode: string, colCode: string) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-            var row = _.where(grid.DataRows, { 'RowCode': rowCode })[0];
-            var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell.Value;
         }
-
-        //hack to simulate total row calc 
-        sumAllCellsInColForTotalRow(gridCode: string, rowCode: string, colCode: string) {
-            var grid = _.where(this.exhibitModel.Grids, { 'GridCode': gridCode })[0];
-            var sum = 0;
-            _.forEach(grid.DataRows, function (row) {
-                if (row.RowCode != rowCode) {
-                    var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
-                    if (cell) {
-                        sum += cell.Value;
-                    }
-                }
-            });
-            return sum;
-        }
-
+        
         constructor() {
             this.exhibitModel = new ExhibitVm("Test Exhibit");
             this.addGridVm(window['gridModel'].grid);

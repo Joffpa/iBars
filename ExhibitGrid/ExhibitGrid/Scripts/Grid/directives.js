@@ -3,7 +3,7 @@ var app;
     var directives;
     (function (directives_1) {
         'use strict';
-        var directives = angular.module('app.directives', ['app.model'])
+        var directives = angular.module('app.directives', ['app.model', 'app.calc'])
             .directive('textCell', ['modelService', function (modelService) {
                 return {
                     restrict: 'A',
@@ -25,7 +25,7 @@ var app;
                     scope: {
                         cellVm: '='
                     },
-                    controller: ['$scope', 'modelService', app.NumericCellController]
+                    controller: ['$scope', 'modelService', 'calcService', app.NumericCellController]
                 };
             }])
             .directive('postitCell', ['modelService', function (modelService) {
@@ -64,7 +64,7 @@ var app;
                     controller: ['$scope', 'modelService', app.DropdownCellController],
                     compile: function compile(tElement, tAttrs, transclude) {
                         return function postLink(scope, element, attrs, ctrl) {
-                            console.log(element.find('input'));
+                            //console.log(element.find('input'));
                             element.find('input').kendoDropDownList({
                                 dataTextField: "Text",
                                 dataValueField: "Value",

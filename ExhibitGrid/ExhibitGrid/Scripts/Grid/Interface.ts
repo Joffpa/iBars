@@ -1,13 +1,12 @@
 ﻿
 declare module ExhibitGrid.ViewModel {
     interface ICellVm {
-        Order: number;
+        GridCode: string;
         RowCode: string;
         ColCode: string;
-        ColSpan: string;
+        ColSpan: number;
         ColumnHeader: string;
         IsEditable: boolean;
-        Directive: string;
         Text: string;
         Class: string;
         Value: number;
@@ -15,6 +14,7 @@ declare module ExhibitGrid.ViewModel {
         HasNarrative: boolean;
         HasPostIt: boolean;
         IsHidden: boolean;
+        IsBlank: boolean;
     }
     interface IGridVm {
         GridCode: string;
@@ -31,6 +31,7 @@ declare module ExhibitGrid.ViewModel {
         ColCode: string;
         HeaderIsVisible: boolean;
         IsHidden: boolean;
+        Type: string;
         Width: string;
         Text: string;
         ColSpan: number;

@@ -8,6 +8,7 @@ namespace ExhibitGrid.ViewModel
     public class CellVm
     {
         //public int Order { get; set; } //comes from col attr
+        public string GridCode { get; set; }
         public string RowCode { get; set; } 
         public string ColCode { get; set; }  //comes from col attr
         public int ColSpan{ get; set; }  //comes from col attr

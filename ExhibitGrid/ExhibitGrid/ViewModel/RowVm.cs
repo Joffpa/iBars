@@ -10,7 +10,6 @@ namespace ExhibitGrid.ViewModel
         public string RowCode { get; set; }
         public int DisplayOrder { get; set; }
         public bool IsHidden { get; set; }
-        public string Text { get; set; }
         public string Class { get; set; }
         public bool CanCollapse { get; set; }
         public bool CanSelect { get; set; }
