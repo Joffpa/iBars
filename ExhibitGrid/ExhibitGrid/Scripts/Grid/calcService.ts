@@ -20,14 +20,25 @@ module app.calc{
         
             //TODO: Replace with actual framework
             //*************************************************************************************************
-            if (colCode.indexOf('Col_') >= 0 && gridCode == 'MockGrid') {
-                var colNum = parseInt(colCode.replace('Col_', ''));
-                var totalRow = 'Row_1';             
-                if (rowCode != totalRow || colNum % 3 == 0 || colNum % 3 == 1) {
-                    return true;
+            //Mini Op-5
+            if (gridCode == 'MiniOp5'){
+                if (colCode == 'BY1Prog') {
+                    if (rowCode == 'Row_1_Sub_3' || rowCode == 'Row_2_Sub_3' || rowCode == 'Row_1_Sub_4' || rowCode == 'Row_2_Sub_4') {
+                        return true;
+                    }
                 }
             }
-            return false;
+            //Mock Grid
+            if (gridCode == 'MockGrid'){
+                if (colCode.indexOf('Col_') >= 0 && gridCode == 'MockGrid') {
+                    var colNum = parseInt(colCode.replace('Col_', ''));
+                    var totalRow = 'Row_1';
+                    if (rowCode != totalRow || colNum % 3 == 0 || colNum % 3 == 1) {
+                        return true;
+                    }
+                }
+                return false;
+            }
             //*************************************************************************************************
         }
 
@@ -35,6 +46,25 @@ module app.calc{
         
             //TODO: Replace with actual framework
             //*************************************************************************************************
+            //Mini Op5
+            if (gridCode == 'MiniOp5') {
+                if (colCode == 'BY1Prog') {
+                    if (rowCode == 'Row_1_Sub_3' || rowCode == 'Row_2_Sub_3') {
+                        var row1By1Val = this.ModelService.getCellValue(gridCode, 'Row_1_Sub_3', 'BY1Prog');
+                        var row2By1Val = this.ModelService.getCellValue(gridCode, 'Row_2_Sub_3', 'BY1Prog');
+                        var sum = row1By1Val + row2By1Val;
+                        this.ModelService.updateCellValue(gridCode, 'Total_Row_Sub_3', 'BY1Prog', sum);
+                    }
+                    if (rowCode == 'Row_1_Sub_4' || rowCode == 'Row_2_Sub_4') {
+                        var row1By1Val = this.ModelService.getCellValue(gridCode, 'Row_1_Sub_4', 'BY1Prog');
+                        var row2By1Val = this.ModelService.getCellValue(gridCode, 'Row_2_Sub_4', 'BY1Prog');
+                        var sum = row1By1Val + row2By1Val;
+                        this.ModelService.updateCellValue(gridCode, 'Total_Row_Sub_4', 'BY1Prog', sum);
+                    }
+                }
+            }
+
+
             //MockGrid Calcs
             if (colCode.indexOf('Col_') >= 0 && gridCode == 'MockGrid') {
                 //NOTE: the calcs are hacked in to repeat a pattern of column level calcs every three columns.

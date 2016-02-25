@@ -86,4 +86,3 @@ var app;
             .service('modelService', MockModelService);
     })(model = app.model || (app.model = {}));
 })(app || (app = {}));
-//# sourceMappingURL=modelService.js.map

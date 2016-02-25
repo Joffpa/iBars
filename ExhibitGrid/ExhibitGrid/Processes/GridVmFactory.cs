@@ -360,7 +360,7 @@ namespace ExhibitGrid.Processes
         {
             var dataRow = new RowVm();
             dataRow.RowCode = "Total_Row_Sub_1";
-            dataRow.Class = "total-row";
+            dataRow.Class = "grand-total-row";
             dataRow.CanCollapse = false;
             dataRow.CanSelect = false;
             dataRow.IsSelected = false;
@@ -670,7 +670,7 @@ namespace ExhibitGrid.Processes
         {
             var dataRow = new RowVm();
             dataRow.RowCode = "Total_Row_Sub_2";
-            dataRow.Class = "total-row";
+            dataRow.Class = "grand-total-row";
             dataRow.CanCollapse = false;
             dataRow.CanSelect = false;
             dataRow.IsSelected = false;
@@ -1009,7 +1009,7 @@ namespace ExhibitGrid.Processes
             cell.RowCode = dataRow.RowCode;
             cell.ColCode = "BY1Prog";
             cell.Class = "data-cell";
-            cell.IsEditable = false;
+            cell.IsEditable = true;
             cell.Value = 2044;
             cell.Indent = 0;
             cell.ColSpan = 1;
@@ -1513,7 +1513,7 @@ namespace ExhibitGrid.Processes
             cell.RowCode = dataRow.RowCode;
             cell.ColCode = "BY1Prog";
             cell.Class = "data-cell";
-            cell.IsEditable = false;
+            cell.IsEditable = true;
             cell.Value = 49116;
             cell.Indent = 0;
             cell.ColSpan = 1;
@@ -1959,7 +1959,7 @@ namespace ExhibitGrid.Processes
         {
             var dataRow = new RowVm();
             dataRow.RowCode = "Total_Row_Sub_3";
-            dataRow.Class = "total-row";
+            dataRow.Class = "grand-total-row";
             dataRow.CanCollapse = false;
             dataRow.CanSelect = false;
             dataRow.IsSelected = false;
@@ -2297,7 +2297,7 @@ namespace ExhibitGrid.Processes
             cell.RowCode = dataRow.RowCode;
             cell.ColCode = "BY1Prog";
             cell.Class = "data-cell";
-            cell.IsEditable = false;
+            cell.IsEditable = true;
             cell.Value = 168384;
             cell.Indent = 0;
             cell.ColSpan = 1;
@@ -3305,7 +3305,7 @@ namespace ExhibitGrid.Processes
             cell.RowCode = dataRow.RowCode;
             cell.ColCode = "BY1Prog";
             cell.Class = "data-cell";
-            cell.IsEditable = false;
+            cell.IsEditable = true;
             cell.Value = 17197;
             cell.Indent = 0;
             cell.ColSpan = 1;
@@ -3751,7 +3751,7 @@ namespace ExhibitGrid.Processes
         {
             var dataRow = new RowVm();
             dataRow.RowCode = "Total_Row_Sub_4";
-            dataRow.Class = "total-row";
+            dataRow.Class = "grand-total-row";
             dataRow.CanCollapse = false;
             dataRow.CanSelect = false;
             dataRow.IsSelected = false;

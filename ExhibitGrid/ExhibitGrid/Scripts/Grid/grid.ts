@@ -52,7 +52,7 @@ module app {
         CalcService: app.calc.ICalcService;
         
         constructor($scope, modelService: app.model.IModelService, calcService: app.calc.ICalcService) {
-            //console.log($scope);
+            console.log($scope);
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
             this.CalcService = calcService;
@@ -108,7 +108,7 @@ module app {
     }
 
     var exhibitApp = angular
-        .module('app', ['app.model', 'app.directives', 'app.calc'])    
+        .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])    
         .controller('gridController', ['modelService', GridController])
         .controller('rowController', ['$scope', 'modelService', RowController]);
 

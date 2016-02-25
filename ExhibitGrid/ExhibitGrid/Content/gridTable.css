@@ -14,14 +14,21 @@
 .main-content .exhibit-table tbody tr.sub-header-row th {
   font-weight: bold;
 }
-.main-content .exhibit-table tbody tr.total-row {
+.main-content .exhibit-table tbody tr.total-row td,
+.main-content .exhibit-table tbody tr.total-row th {
   font-weight: bold;
 }
-.main-content .exhibit-table tbody tr.total-row th {
+.main-content .exhibit-table tbody tr.grand-total-row td,
+.main-content .exhibit-table tbody tr.grand-total-row th {
+  text-decoration: underline;
   font-weight: bold;
 }
 .main-content .exhibit-table tbody tr th {
   font-weight: normal;
+}
+.main-content .exhibit-table tbody tr td .negative-val,
+.main-content .exhibit-table tbody tr th .negative-val {
+  color: red;
 }
 .main-content .exhibit-table tbody tr td input[type="text"],
 .main-content .exhibit-table tbody tr th input[type="text"] {

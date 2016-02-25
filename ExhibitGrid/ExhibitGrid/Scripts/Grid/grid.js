@@ -34,7 +34,7 @@ var app;
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
         function NumericCellController($scope, modelService, calcService) {
-            //console.log($scope);
+            console.log($scope);
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
             this.CalcService = calcService;
@@ -78,8 +78,7 @@ var app;
     })();
     app.DropdownCellController = DropdownCellController;
     var exhibitApp = angular
-        .module('app', ['app.model', 'app.directives', 'app.calc'])
+        .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])
         .controller('gridController', ['modelService', GridController])
         .controller('rowController', ['$scope', 'modelService', RowController]);
 })(app || (app = {}));
-//# sourceMappingURL=grid.js.map

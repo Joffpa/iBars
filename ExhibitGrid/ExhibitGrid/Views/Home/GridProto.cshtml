@@ -5,6 +5,7 @@
 <script src="~/Scripts/Grid/directives.js"></script>
 <script src="~/Scripts/Grid/modelService.js"></script>
 <script src="~/Scripts/Grid/calcService.js"></script>
+<script src="~/Scripts/Grid/filters.js"></script>
 <link href="~/Content/gridTable.min.css" rel="stylesheet" />
 <script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
 <link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
@@ -68,25 +69,25 @@
                     @if (Model.HasCollapseColumn)
                     {
                         <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
-                            <i class="fa fa-plus fa-lg" ng-show="row.CanCollapse"></i>
+                            <i class="fa fa-plus fa-lg" ng-if="row.CanCollapse"></i>
                         </td>
                     }
                     @if (Model.HasSelectColumn)
                     {
                         <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
-                            <input type="checkbox" ng-show="row.CanSelect" ng-model="row.IsSelected">
+                            <input type="checkbox" ng-if="row.CanSelect" ng-model="row.IsSelected">
                         </td>
                     }
                     @if (Model.HasAddColumn)
                     {
                         <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
-                            <i class="fa fa-user-plus fa-lg" ng-show="row.CanAdd" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
+                            <i class="fa fa-user-plus fa-lg" ng-if="row.CanAdd" style="cursor:pointer" ng-click="rowCtrl.addRow()"></i>
                         </td>
                     }
                     @if (Model.HasDeleteColumn)
                     {
                         <td colspan="1" ng-if="::(row.Class == 'data-row' || row.Class == 'total-row')">
-                            <i class="fa fa-trash fa-lg" ng-show="row.CanDelete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
+                            <i class="fa fa-trash fa-lg" ng-if="row.CanDelete" style="cursor:pointer" ng-click="rowCtrl.deleteRow()"></i>
                         </td>
                     }
                     @for (int i = 0; i < headerLevelZero.Count(); i++)
@@ -103,7 +104,7 @@
                             }
                             else
                             {
-                                <td ng-show="{{::row.Cells[@i].ColSpan > 0}}" colspan="{{::row.Cells[@i].ColSpan}}" ng-if="::(row.Class == 'data-row' || row.Class ==  'total-row')" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
+                                <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan > 0" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
                                     <div @(col.Type + "-cell") cell-vm="row.Cells[@i]">
                                     </div>
                                 </td>

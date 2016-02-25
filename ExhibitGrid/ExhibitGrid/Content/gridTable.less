@@ -19,7 +19,7 @@
             }
         }
 
-        tbody {
+        tbody { 
 
             tr.sub-header-row{                
                 background-color:lightgrey;    
@@ -29,11 +29,17 @@
                 }
             }
             
-            tr.total-row{                              
-                font-weight:bold; 
+            tr.total-row{             
 
-                th{                                        
-                    font-weight:bold; 
+                td, th{                  
+                    font-weight:bold;  
+                }
+            }
+
+            tr.grand-total-row{
+                td, th{     
+                    text-decoration:underline;             
+                    font-weight:bold;  
                 }
             }
 
@@ -48,8 +54,11 @@
                 }
 
                 td, th {
-
-
+                    
+                    .negative-val{
+                        color:red;
+                    }
+                    
 
                     input[type="text"]{
                         width: 100%;
