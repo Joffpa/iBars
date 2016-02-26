@@ -90,10 +90,10 @@ var app;
                 //*************************************************************************************************
             };
             return CalcService;
-        })();
+        }());
         calc.CalcService = CalcService;
-        var service = angular
-            .module('app.calc', ['app.model'])
+        angular.module('app.calc', ['app.model'])
             .service('calcService', ['modelService', CalcService]);
     })(calc = app.calc || (app.calc = {}));
 })(app || (app = {}));
+//# sourceMappingURL=calcService.js.map

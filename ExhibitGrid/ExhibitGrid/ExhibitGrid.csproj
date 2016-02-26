@@ -20,13 +20,13 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -571,6 +571,7 @@
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\Grid\calcService.js" />
+    <Content Include="Scripts\Grid\commonUI.js" />
     <Content Include="Scripts\Grid\directives.js" />
     <Content Include="Scripts\Grid\filters.js" />
     <Content Include="Scripts\Grid\grid.js" />
@@ -604,6 +605,8 @@
     <Content Include="Content\kendo\2016.1.112\kendo.silver.min.css.map" />
     <Content Include="Scripts\Grid\calcService.js.map" />
     <Content Include="Scripts\Grid\filters.js.map" />
+    <None Include="Properties\PublishProfiles\Easapps Publish.pubxml" />
+    <Content Include="Scripts\Grid\commonUI.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -688,6 +691,7 @@
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\Grid\calcService.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\commonUI.ts" />
     <TypeScriptCompile Include="Scripts\Grid\directives.ts" />
     <TypeScriptCompile Include="Scripts\Grid\filters.ts" />
     <TypeScriptCompile Include="Scripts\Grid\grid.ts" />

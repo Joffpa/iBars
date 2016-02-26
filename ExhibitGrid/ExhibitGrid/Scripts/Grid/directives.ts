@@ -33,7 +33,7 @@ module app.directives {
         .directive('textCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/textCell.html',
+                templateUrl: commonUI.getWebRoot() + 'templates/textCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
@@ -45,7 +45,7 @@ module app.directives {
         .directive('numericCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/numericCell.html',
+                templateUrl: commonUI.getWebRoot() + 'templates/numericCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
@@ -57,7 +57,7 @@ module app.directives {
         .directive('postitCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/postitCell.html',
+                templateUrl: commonUI.getWebRoot() + 'templates/postitCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
@@ -69,7 +69,7 @@ module app.directives {
         .directive('narrativeCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/narrativeCell.html',
+                templateUrl: commonUI.getWebRoot() + 'templates/narrativeCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
@@ -81,7 +81,7 @@ module app.directives {
         .directive('dropdownCell', ['modelService', function (modelService) {
             return {
                 restrict: 'A',
-                templateUrl: '/templates/dropdownCell.html',
+                templateUrl: commonUI.getWebRoot() + 'templates/dropdownCell.html',
                 controllerAs: 'cellCtrl',
                 transclude: true,
                 scope: {
@@ -98,7 +98,7 @@ module app.directives {
                             dataSource: {
                                 transport: {
                                     read: {
-                                        url: "/Home/GetDdOptions?rowCode=" + scope.cellVm.RowCode + "&colCode=" + scope.cellVm.ColCode,
+                                        url: commonUI.getWebRoot() + "Home/GetDdOptions?rowCode=" + scope.cellVm.RowCode + "&colCode=" + scope.cellVm.ColCode,
                                         dataType: "json"
                                     }
                                 }

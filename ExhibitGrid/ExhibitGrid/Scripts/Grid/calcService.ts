@@ -106,8 +106,7 @@ module app.calc{
         }       
     }
 
-    var service = angular
-        .module('app.calc', ['app.model'])
+    angular.module('app.calc', ['app.model'])
         .service('calcService', ['modelService', CalcService]);
 
 }

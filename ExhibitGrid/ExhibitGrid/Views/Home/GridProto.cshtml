@@ -47,7 +47,7 @@
                     <tr>
                         @if (firstRow)
                         {
-                            <th class="grid-name" colspan="@(Model.NumColumns - headerLevelZero.Where(h => h.HeaderIsVisible && !h.IsHidden).Count())" rowspan="@headerLevels.Count()">
+                            <th class="grid-name" colspan="@(Model.NumColumns - headerLevelZero.Count(h => h.HeaderIsVisible && !h.IsHidden))" rowspan="@headerLevels.Count()">
                                 @Model.GridName
                             </th>
                             <th id="RowText" style="display:none;">
