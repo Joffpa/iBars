@@ -1,3 +1,4 @@
+/// <reference path="../typings/angularjs/angular.d.ts" />
 'use strict';
 var app;
 (function (app) {
@@ -15,6 +16,13 @@ var app;
             this.RowVm = $scope.row;
             this.ModelService = modelService;
         }
+        RowController.prototype.collapseChildren = function () {
+            var _this = this;
+            this.RowVm.CollapseableChildren.forEach(function (val, idx) {
+                var child = _this.ModelService.getRowVm(_this.RowVm.GridCode, val);
+                child.IsCollapsed = !child.IsCollapsed;
+            });
+        };
         RowController.prototype.addRow = function () {
             alert('row added: ' + this.RowVm.RowCode);
         };
@@ -77,6 +85,7 @@ var app;
         return DropdownCellController;
     }());
     app.DropdownCellController = DropdownCellController;
+    // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
         .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])
         .controller('gridController', ['modelService', GridController])

@@ -1,4 +1,5 @@
 ﻿
+
 declare module ExhibitGrid.ViewModel {
     interface ICellVm {
         GridCode: string;
@@ -19,15 +20,17 @@ declare module ExhibitGrid.ViewModel {
     interface IGridVm {
         GridCode: string;
         GridName: string;
+        IsEditable: boolean;
+        Width: number;
         HasCollapseColumn: boolean;
         HasSelectColumn: boolean;
         HasAddColumn: boolean;
         HasDeleteColumn: boolean;
         NumColumns: number;
-        ColumnHeaders: ExhibitGrid.ViewModel.IColumnHeaderVm[];
+        ColumnHeaders: ExhibitGrid.ViewModel.IColumnVm[];
         DataRows: ExhibitGrid.ViewModel.IRowVm[];
     }
-    interface IColumnHeaderVm {
+    interface IColumnVm {
         ColCode: string;
         HeaderIsVisible: boolean;
         IsHidden: boolean;
@@ -36,13 +39,14 @@ declare module ExhibitGrid.ViewModel {
         Text: string;
         ColSpan: number;
         Level: number;
-        Order: number;
+        DisplayOrder: number;
     }
     interface IRowVm {
+        GridCode: string;
         RowCode: string;
         DisplayOrder: number;
         IsHidden: boolean;
-        Text: string;
+        IsCollapsed: boolean;
         Class: string;
         CanCollapse: boolean;
         CanSelect: boolean;
@@ -50,6 +54,7 @@ declare module ExhibitGrid.ViewModel {
         CanDelete: boolean;
         IsSelected: boolean;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
+        CollapseableChildren: string[];
     }
 }
 

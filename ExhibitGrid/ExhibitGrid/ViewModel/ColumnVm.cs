@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ExhibitGrid.ViewModel
 {
-    public class ColumnHeaderVm
+    public class ColumnVm
     {
         public string ColCode { get; set; }
         public bool HeaderIsVisible { get; set; }
@@ -15,6 +15,6 @@ namespace ExhibitGrid.ViewModel
         public string Text { get; set; }
         public int ColSpan { get; set; }
         public int Level { get; set; }
-        public int Order { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

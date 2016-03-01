@@ -1,3 +1,4 @@
+/// <reference path="../typings/angularjs/angular.d.ts" />
 var app;
 (function (app) {
     var filters;

@@ -1,5 +1,6 @@
-﻿
-'use strict'
+﻿/// <reference path="../typings/angularjs/angular.d.ts" />
+
+'use strict';
 
 module app {
 
@@ -23,6 +24,13 @@ module app {
         constructor($scope, modelService: app.model.IModelService) {
             this.RowVm = $scope.row;
             this.ModelService = modelService;
+        }
+
+        collapseChildren() {
+            this.RowVm.CollapseableChildren.forEach((val, idx) => {
+                var child = this.ModelService.getRowVm(this.RowVm.GridCode, val);
+                child.IsCollapsed = !child.IsCollapsed;
+            });
         }
 
         addRow() {
@@ -58,7 +66,7 @@ module app {
             this.CalcService = calcService;
 
             if (this.CalcService.cellHasCalcs(this.CellVm.GridCode, this.CellVm.RowCode, this.CellVm.ColCode)) {
-                $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
+                $scope.$watch('cellVm.Value', (newVal, oldVal, scope) => {
                     scope.cellCtrl.CalcService.runCalcsForCell(scope.cellVm.GridCode, scope.cellVm.RowCode, scope.cellVm.ColCode, newVal);
                 });
             }
@@ -107,6 +115,7 @@ module app {
         
     }
 
+    // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
         .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])    
         .controller('gridController', ['modelService', GridController])

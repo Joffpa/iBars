@@ -17,7 +17,7 @@
 		.For<ExhibitGrid.ViewModel.CellVm>()
 		.For<ExhibitGrid.ViewModel.GridVm>()
 		.For<ExhibitGrid.ViewModel.RowVm>()
-		.For<ExhibitGrid.ViewModel.ColumnHeaderVm>()
+		.For<ExhibitGrid.ViewModel.ColumnVm>()
 		.WithTypeFormatter((type, f) => "I" + ((TypeLite.TsModels.TsClass)type).Name);
 
 #>

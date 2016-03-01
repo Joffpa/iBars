@@ -5,9 +5,9 @@
 module app.model {
 
     export interface IModelService {
-        exhibitModel: ExhibitVm
+        exhibitModel: ExhibitVm;
         addGridVm(gridVm: ExhibitGrid.ViewModel.IGridVm);
-        getExhibitVm(): ExhibitVm,
+        getExhibitVm(): ExhibitVm;
         getGridVm(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
         getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm;
@@ -29,19 +29,22 @@ module app.model {
 
         GridCode: string;
         GridName: string;
+        IsEditable: boolean;
+        Width: number;
         DataRows: ExhibitGrid.ViewModel.IRowVm[];
         HasCollapseColumn: boolean;
         HasSelectColumn: boolean;
         HasAddColumn: boolean;
         HasDeleteColumn: boolean;
         NumColumns: number;
-        ColumnHeaders: ExhibitGrid.ViewModel.IColumnHeaderVm[];
+        ColumnHeaders: ExhibitGrid.ViewModel.IColumnVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
     }
 
     export class RowVm implements ExhibitGrid.ViewModel.IRowVm {
+        GridCode: string;
         RowCode: string;
         DisplayOrder: number;
         Class: string;
@@ -53,7 +56,9 @@ module app.model {
         IsSelected: boolean;
         CrudFunctionality: string;
         IsHidden: boolean;
+        IsCollapsed: boolean;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
+        CollapseableChildren: string[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
             this.Class = Class;
@@ -102,18 +107,18 @@ module app.model {
             return this.exhibitModel;
         }
 
-        getGridVm(gridCode: string) {
+        getGridVm(gridCode: string): ExhibitGrid.ViewModel.IGridVm {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
             return grid;
         }
 
-        getRowVm(gridCode: string, rowCode: string) {
+        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
             var row = _.find(grid.DataRows, { 'RowCode': rowCode });
             return row;
         }
         
-        getCellVm(gridCode: string, rowCode: string, colCode: string) {
+        getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
             var row = _.find(grid.DataRows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
@@ -127,7 +132,7 @@ module app.model {
             cell.Value = value;
         }
 
-        getCellValue(gridCode: string, rowCode: string, colCode: string) {
+        getCellValue(gridCode: string, rowCode: string, colCode: string): number {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
             var row = _.find(grid.DataRows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
