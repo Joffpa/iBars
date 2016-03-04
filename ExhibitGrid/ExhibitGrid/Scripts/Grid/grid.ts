@@ -27,6 +27,7 @@ module app {
         }
 
         collapseChildren() {
+            console.log(this.RowVm.CollapseableChildren);
             this.RowVm.CollapseableChildren.forEach((val, idx) => {
                 var child = this.ModelService.getRowVm(this.RowVm.GridCode, val);
                 child.IsCollapsed = !child.IsCollapsed;
@@ -46,11 +47,14 @@ module app {
         CellVm: ExhibitGrid.ViewModel.ICellVm;
         ModelService: app.model.IModelService;
 
+        getStyle() {
+            return { 'width': this.CellVm.Width };
+        }
+
         constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }
-
     } 
 
     export class NumericCellController {
@@ -58,15 +62,21 @@ module app {
         CellVm: ExhibitGrid.ViewModel.ICellVm;
         ModelService: app.model.IModelService;
         CalcService: app.calc.ICalcService;
-        
+
+        getStyle() {
+            if (this.CellVm.Width) {
+                return { 'width': this.CellVm.Width };
+            }
+            return { 'width': '110px' };
+        }
         constructor($scope, modelService: app.model.IModelService, calcService: app.calc.ICalcService) {
-            console.log($scope);
+            //console.log($scope);
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
             this.CalcService = calcService;
 
             if (this.CalcService.cellHasCalcs(this.CellVm.GridCode, this.CellVm.RowCode, this.CellVm.ColCode)) {
-                $scope.$watch('cellVm.Value', (newVal, oldVal, scope) => {
+                $scope.$watch('cellVm.NumValue', (newVal, oldVal, scope) => {
                     scope.cellCtrl.CalcService.runCalcsForCell(scope.cellVm.GridCode, scope.cellVm.RowCode, scope.cellVm.ColCode, newVal);
                 });
             }
@@ -95,10 +105,12 @@ module app {
         constructor($scope, modelService: app.model.IModelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
+            //console.log($scope.cellVm);
+
         }
 
         editNarrative() {
-            alert("Narrative for cell: " + this.CellVm.RowCode + " " + this.CellVm.ColCode);
+            alert(this.CellVm.Value);
             
         }
     }

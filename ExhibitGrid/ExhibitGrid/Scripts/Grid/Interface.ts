@@ -7,39 +7,34 @@ declare module ExhibitGrid.ViewModel {
         ColCode: string;
         ColSpan: number;
         ColumnHeader: string;
+        Width: string;
         IsEditable: boolean;
-        Text: string;
         Class: string;
-        Value: number;
+        NumValue: number;
+        Value: string;
         Indent: number;
-        HasNarrative: boolean;
-        HasPostIt: boolean;
         IsHidden: boolean;
         IsBlank: boolean;
     }
     interface IGridVm {
         GridCode: string;
-        GridName: string;
+        DisplayText: string;
         IsEditable: boolean;
         Width: number;
-        HasCollapseColumn: boolean;
-        HasSelectColumn: boolean;
-        HasAddColumn: boolean;
-        HasDeleteColumn: boolean;
-        NumColumns: number;
-        ColumnHeaders: ExhibitGrid.ViewModel.IColumnVm[];
+        Columns: ExhibitGrid.ViewModel.IColumnVm[];
         DataRows: ExhibitGrid.ViewModel.IRowVm[];
     }
     interface IColumnVm {
         ColCode: string;
-        HeaderIsVisible: boolean;
+        HasHeader: boolean;
         IsHidden: boolean;
-        Type: string;
+        Directive: string;
         Width: string;
-        Text: string;
+        DisplayText: string;
         ColSpan: number;
         Level: number;
         DisplayOrder: number;
+        IsEditable: boolean;
     }
     interface IRowVm {
         GridCode: string;
@@ -53,6 +48,7 @@ declare module ExhibitGrid.ViewModel {
         CanAdd: boolean;
         CanDelete: boolean;
         IsSelected: boolean;
+        IsEditable: boolean;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
         CollapseableChildren: string[];
     }

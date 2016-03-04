@@ -1,5 +1,5 @@
 ﻿
 
-<div ng-switch="cellCtrl.CellVm.IsEditable">
-    <i class="fa fa-sticky-note fa-lg" ng-switch-when="true" style="cursor:pointer" ng-click="cellCtrl.editNarrative()"></i>
+<div ng-hide="cellCtrl.CellVm.IsBlank">
+    <i class="fa fa-sticky-note fa-lg" style="cursor:pointer" ng-click="cellCtrl.editNarrative()"></i>
 </div>

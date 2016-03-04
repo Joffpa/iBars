@@ -3,10 +3,15 @@
   padding: 20px 50px 10px 50px;
 }
 .main-content .exhibit-table {
-  table-layout: fixed;
+  table-layout: auto;
+  /*width:2000px;*/
 }
 .main-content .exhibit-table thead tr th.grid-name {
   font-weight: bolder;
+}
+.main-content .exhibit-table thead tr td,
+.main-content .exhibit-table thead tr th {
+  /*white-space: nowrap;*/
 }
 .main-content .exhibit-table tbody tr.sub-header-row {
   background-color: lightgrey;
@@ -22,6 +27,19 @@
 .main-content .exhibit-table tbody tr.grand-total-row th {
   text-decoration: underline;
   font-weight: bold;
+}
+.main-content .exhibit-table tbody tr {
+  /*white-space: nowrap;*/
+}
+.main-content .exhibit-table tbody tr .text-th {
+  /*white-space: nowrap;*/
+}
+.main-content .exhibit-table tbody tr .numeric-td {
+  white-space: nowrap;
+  /*width:110px;*/
+}
+.main-content .exhibit-table tbody tr .text-td {
+  /*white-space: nowrap;*/
 }
 .main-content .exhibit-table tbody tr th {
   font-weight: normal;
@@ -50,3 +68,4 @@
 .main-content .exhibit-table tbody tr th .indent-3 {
   margin-left: 60px;
 }
+/*# sourceMappingURL=gridTable.css.map */

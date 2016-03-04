@@ -1,8 +1,8 @@
 ﻿
 
-<div ng-switch="cellCtrl.CellVm.IsEditable" ng-hide="cellCtrl.CellVm.IsBlank">
-    <input type="number" class="k-textbox" ng-model="cellCtrl.CellVm.Value" ng-switch-when="true"  style="text-align:right"/>
-    <div  ng-switch-when="false" style="text-align:right; padding-right:20px" maxlength="8" ng-class="cellCtrl.CellVm.Value < 0 ? 'negative-val' : 'positive-val'">
-        {{cellCtrl.CellVm.Value | negativeInParens}}
+<div ng-switch="cellCtrl.CellVm.IsEditable" ng-hide="cellCtrl.CellVm.IsBlank" ng-style="cellCtrl.getStyle()">
+    <input type="number" class="k-textbox" ng-model="cellCtrl.CellVm.NumValue" ng-switch-when="true" style="text-align:right" />
+    <div ng-switch-when="false" style="text-align:right; padding-right:20px" maxlength="8" ng-class="cellCtrl.CellVm.NumValue < 0 ? 'negative-val' : 'positive-val'">
+        {{cellCtrl.CellVm.NumValue | negativeInParens}}
     </div>
 </div>

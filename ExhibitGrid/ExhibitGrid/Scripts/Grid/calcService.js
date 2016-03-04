@@ -53,20 +53,22 @@ var app;
                     }
                 }
                 //MockGrid Calcs
-                if (colCode.indexOf('Col_') >= 0 && gridCode == 'MockGrid') {
+                if (colCode.indexOf('Col_') >= 0 && gridCode === 'MockGrid') {
                     //NOTE: the calcs are hacked in to repeat a pattern of column level calcs every three columns.
                     //There is also a total row calc
                     var colNum = parseInt(colCode.replace('Col_', ''));
                     var thisRow = rowCode;
                     var totalRow = 'Row_1'; //the row that holds the total row result
                     //col 0
-                    if (colNum % 3 == 0 && rowCode != totalRow) {
-                        var nextCol = 'Col_' + (colNum + 1);
+                    var nextCol;
+                    if (colNum % 3 === 0 && rowCode !== totalRow) {
+                        nextCol = 'Col_' + (colNum + 1);
                         var nextNextCol = 'Col_' + (colNum + 2);
-                        this.ModelService.updateCellValue('MockGrid', thisRow, nextNextCol, newVal + this.ModelService.getCellValue('MockGrid', thisRow, nextCol));
+                        var updateVal = newVal + this.ModelService.getCellValue('MockGrid', thisRow, nextCol);
+                        this.ModelService.updateCellValue('MockGrid', thisRow, nextNextCol, updateVal);
                     } //col 1
-                    else if (colNum % 3 == 1 && rowCode != totalRow) {
-                        var nextCol = 'Col_' + (colNum + 1);
+                    else if (colNum % 3 === 1 && rowCode !== totalRow) {
+                        nextCol = 'Col_' + (colNum + 1);
                         var prevCol = 'Col_' + (colNum - 1);
                         this.ModelService.updateCellValue('MockGrid', thisRow, nextCol, newVal + this.ModelService.getCellValue('MockGrid', thisRow, prevCol));
                     }
@@ -78,10 +80,10 @@ var app;
                     var grid = modelService.getGridVm(gridCode);
                     var sum = 0;
                     _.forEach(grid.DataRows, function (row) {
-                        if (row.RowCode != rowCode) {
+                        if (row.RowCode !== rowCode) {
                             var cell = _.where(row.Cells, { 'ColCode': colCode })[0];
                             if (cell) {
-                                sum += cell['Value'];
+                                sum += cell['NumValue'];
                             }
                         }
                     });

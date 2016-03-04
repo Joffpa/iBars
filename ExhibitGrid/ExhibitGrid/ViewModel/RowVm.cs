@@ -18,6 +18,9 @@ namespace ExhibitGrid.ViewModel
         public bool CanAdd { get; set; }
         public bool CanDelete { get; set; }
         public bool IsSelected { get; set; }
+        public bool IsEditable { get; set; }
+        //alignment
+        //hovertext
 
         public List<CellVm> Cells { get; set; }
         public List<string> CollapseableChildren { get; set; } 

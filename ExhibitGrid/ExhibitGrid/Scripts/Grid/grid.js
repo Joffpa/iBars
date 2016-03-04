@@ -18,6 +18,7 @@ var app;
         }
         RowController.prototype.collapseChildren = function () {
             var _this = this;
+            console.log(this.RowVm.CollapseableChildren);
             this.RowVm.CollapseableChildren.forEach(function (val, idx) {
                 var child = _this.ModelService.getRowVm(_this.RowVm.GridCode, val);
                 child.IsCollapsed = !child.IsCollapsed;
@@ -37,21 +38,30 @@ var app;
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
         }
+        TextCellController.prototype.getStyle = function () {
+            return { 'width': this.CellVm.Width };
+        };
         return TextCellController;
     }());
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
         function NumericCellController($scope, modelService, calcService) {
-            console.log($scope);
+            //console.log($scope);
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
             this.CalcService = calcService;
             if (this.CalcService.cellHasCalcs(this.CellVm.GridCode, this.CellVm.RowCode, this.CellVm.ColCode)) {
-                $scope.$watch('cellVm.Value', function (newVal, oldVal, scope) {
+                $scope.$watch('cellVm.NumValue', function (newVal, oldVal, scope) {
                     scope.cellCtrl.CalcService.runCalcsForCell(scope.cellVm.GridCode, scope.cellVm.RowCode, scope.cellVm.ColCode, newVal);
                 });
             }
         }
+        NumericCellController.prototype.getStyle = function () {
+            if (this.CellVm.Width) {
+                return { 'width': this.CellVm.Width };
+            }
+            return { 'width': '110px' };
+        };
         return NumericCellController;
     }());
     app.NumericCellController = NumericCellController;
@@ -70,9 +80,10 @@ var app;
         function NarrativeCellController($scope, modelService) {
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
+            //console.log($scope.cellVm);
         }
         NarrativeCellController.prototype.editNarrative = function () {
-            alert("Narrative for cell: " + this.CellVm.RowCode + " " + this.CellVm.ColCode);
+            alert(this.CellVm.Value);
         };
         return NarrativeCellController;
     }());

@@ -4,66 +4,82 @@
     padding: 20px 50px 10px 50px;
 
     .exhibit-table {
-        table-layout: fixed;
-
+        table-layout: auto;
+        /*width:2000px;*/
         thead {
 
-            tr{
-                th.grid-name{                                        
-                    font-weight:bolder; 
+            tr {
+                th.grid-name {
+                    font-weight: bolder;
                 }
 
-                td, th{
-
+                td, th {
+                    /*white-space: nowrap;*/
                 }
             }
         }
 
-        tbody { 
+        tbody {
 
-            tr.sub-header-row{                
-                background-color:lightgrey;    
+            tr.sub-header-row {
+                background-color: lightgrey;
 
-                th{                                        
-                    font-weight:bold; 
-                }
-            }
-            
-            tr.total-row{             
-
-                td, th{                  
-                    font-weight:bold;  
+                th {
+                    font-weight: bold;
                 }
             }
 
-            tr.grand-total-row{
-                td, th{     
-                    text-decoration:underline;             
-                    font-weight:bold;  
+            tr.total-row {
+
+                td, th {
+                    font-weight: bold;
                 }
             }
 
-            tr.data-row{                
-                    
+            tr.grand-total-row {
+                td, th {
+                    text-decoration: underline;
+                    font-weight: bold;
+                }
+            }
+
+            tr.data-row {
             }
 
             tr {
 
-                th{
-                    font-weight:normal;
+                /*white-space: nowrap;*/
+                .text-th {
+                    /*white-space: nowrap;*/
+                }
+
+                .numeric-td {
+                    white-space: nowrap;
+                    /*width:110px;*/
+                }
+
+                .text-td {
+                    /*white-space: nowrap;*/
+                }
+
+                th {
+                    font-weight: normal;
+                }
+
+                td {
                 }
 
                 td, th {
-                    
-                    .negative-val{
-                        color:red;
-                    }
-                    
 
-                    input[type="text"]{
+                    .negative-val {
+                        color: red;
+                    }
+
+                    input[type="text"] {
                         width: 100%;
                     }
-                    input[type="number"]{
+
+                    input[type="number"] {
                         width: 100%;
                     }
 
@@ -77,8 +93,7 @@
 
                     .indent-3 {
                         margin-left: 60px;
-                    }   
-                                     
+                    }
                 }
             }
         }

@@ -14,33 +14,27 @@ namespace ExhibitGrid.EntityDataModel
     
     public partial class AttributeDeNorm
     {
-        public int AttributeId { get; set; }
         public string GridCode { get; set; }
         public string RowCode { get; set; }
         public string ColCode { get; set; }
-        public string RowAttrib1 { get; set; }
-        public string RowAttrib2 { get; set; }
-        public string RowAttrib3 { get; set; }
-        public string RowAttrib4 { get; set; }
-        public string RowAttrib5 { get; set; }
-        public string RowAttrib6 { get; set; }
-        public Nullable<bool> RowAttrib7 { get; set; }
-        public Nullable<bool> RowAttrib8 { get; set; }
-        public Nullable<bool> RowAttrib9 { get; set; }
-        public Nullable<bool> RowAttrib10 { get; set; }
-        public Nullable<bool> RowAttrib11 { get; set; }
-        public Nullable<bool> RowAttrib12 { get; set; }
-        public string CellAttrib1 { get; set; }
-        public string CellAttrib2 { get; set; }
-        public string CellAttrib3 { get; set; }
-        public string CellAttrib4 { get; set; }
-        public string CellAttrib5 { get; set; }
-        public string CellAttrib6 { get; set; }
-        public Nullable<bool> CellAttrib7 { get; set; }
-        public Nullable<bool> CellAttrib8 { get; set; }
-        public Nullable<bool> CellAttrib9 { get; set; }
-        public Nullable<bool> CellAttrib10 { get; set; }
-        public Nullable<bool> CellAttrib11 { get; set; }
-        public Nullable<bool> CellAttrib12 { get; set; }
+        public string Class { get; set; }
+        public Nullable<bool> CanCollapse { get; set; }
+        public Nullable<bool> CanSelect { get; set; }
+        public Nullable<int> DisplayOrder { get; set; }
+        public Nullable<bool> IsEditable { get; set; }
+        public Nullable<bool> IsHidden { get; set; }
+        public string HeaderText { get; set; }
+        public string HoverBase { get; set; }
+        public string HoverAddition { get; set; }
+        public string DisplayText { get; set; }
+        public string Width { get; set; }
+        public Nullable<bool> HasHeader { get; set; }
+        public string Directive { get; set; }
+        public Nullable<int> ColSpan { get; set; }
+        public Nullable<int> Level { get; set; }
+        public Nullable<bool> CanAdd { get; set; }
+        public Nullable<bool> CanDelete { get; set; }
+        public Nullable<int> Indent { get; set; }
+        public Nullable<bool> IsBlank { get; set; }
     }
 }
