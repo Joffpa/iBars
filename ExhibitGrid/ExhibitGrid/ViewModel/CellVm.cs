@@ -25,6 +25,6 @@ namespace ExhibitGrid.ViewModel
         public bool IsHidden { get; set; }  //comes from col attr
         public bool IsBlank { get; set; }
         
-        public List<CellCalcVm> Calcs { get; set; }
+        public List<CalcExpressionVm> Calcs { get; set; }
     }
 }

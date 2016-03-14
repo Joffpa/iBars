@@ -151,6 +151,12 @@
     <Compile Include="EntityDataModel\Attributes.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityDataModel\CalcExpression.cs">
+      <DependentUpon>MBASE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\CalcOperand.cs">
+      <DependentUpon>MBASE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityDataModel\EasModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,19 +172,43 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EntityDataModel\Expression.cs">
+      <DependentUpon>MBASE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\GetCalcs_Result.cs">
+      <DependentUpon>MBASE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\MBASE.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MBASE.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\MBASE.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MBASE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\MBASE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MBASE.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\Operand.cs">
+      <DependentUpon>MBASE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Filters\AuthFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Globals\Literals.cs" />
+    <Compile Include="Processes\GetGridVmProcess.cs" />
     <Compile Include="Processes\GridVmFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CalcOperandVm.cs" />
-    <Compile Include="ViewModel\CellCalcVm.cs" />
+    <Compile Include="ViewModel\CalcExpressionVm.cs" />
     <Compile Include="ViewModel\CellVm.cs" />
-    <Compile Include="ViewModel\ColCalcVm.cs" />
     <Compile Include="ViewModel\ColumnVm.cs" />
     <Compile Include="ViewModel\GridVm.cs" />
-    <Compile Include="ViewModel\RowCalcVm.cs" />
     <Compile Include="ViewModel\RowVm.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -527,6 +557,16 @@
       <DependentUpon>EasModel.edmx</DependentUpon>
       <LastGenOutput>EasModel.cs</LastGenOutput>
     </Content>
+    <Content Include="EntityDataModel\MBASE.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MBASE.edmx</DependentUpon>
+      <LastGenOutput>MBASE.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityDataModel\MBASE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MBASE.edmx</DependentUpon>
+      <LastGenOutput>MBASE.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -679,6 +719,13 @@
     <Content Include="Content\gridTable.css.map">
       <DependentUpon>gridTable.css</DependentUpon>
     </Content>
+    <EntityDeploy Include="EntityDataModel\MBASE.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MBASE.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EntityDataModel\MBASE.edmx.diagram">
+      <DependentUpon>MBASE.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Easapps Publish.pubxml" />
     <Content Include="Scripts\Grid\commonUI.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -715,13 +762,21 @@
       <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
     </Content>
     <Content Include="Scripts\_references.js" />
+    <Content Include="Sql\Create Expression Tables.sql" />
+    <Content Include="Sql\Create terrys version of this shit.sql" />
+    <Content Include="Sql\GetCalcs.sql" />
+    <Content Include="Sql\Insert Expression examples.sql" />
+    <Content Include="Sql\Insert into terrys version.sql" />
+    <Content Include="Sql\multiple result set sp.sql" />
     <Content Include="templates\blankCell.html" />
     <Content Include="templates\dropdownCell.html" />
     <Content Include="templates\narrativeCell.html" />
     <Content Include="templates\numericCell.html" />
     <Content Include="templates\postitCell.html" />
     <Content Include="templates\textCell.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

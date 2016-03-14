@@ -1,9 +1,10 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ExhibitGrid.ViewModel;
 using ExhibitGrid.EntityDataModel;
+using System.Data.Entity.Infrastructure;
 
 namespace ProtoTests
 {
@@ -11,332 +12,218 @@ namespace ProtoTests
     public class PerformanceTests
     {
 
-        //private GridAttribsVm CreateNewGridVm()
-        //{
-        //    var grid1 = new GridAttribsVm("PBA12_ProgData1");
-        //    grid1.Rows = new List<RowAttribsVm>()
-        //            {
-        //                new RowAttribsVm("PBA12_ProgData_CommunHdr", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CommunSustBase", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CommunLongHaul", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CommunDeplMobl", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CmdCntrlHdr", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CmdCntrlNatnl", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CmdCntrlOpera", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_CmdCntrlTact", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_C3RelHdr", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_C3RelNavig", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_C3RelMetrlgy", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_C3RelCombID", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_C3RelInfoAssur", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                }),
-        //                new RowAttribsVm("PBA12_ProgData_TOTAL", new List<CellAttribsVm>() {
-        //                    new CellAttribsVm("PBA12_ProgData_Py"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Pyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cy"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprice"),
-        //                    new CellAttribsVm("PBA12_ProgData_Cyprog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1price"),
-        //                    new CellAttribsVm("PBA12_ProgData_By1prog"),
-        //                    new CellAttribsVm("PBA12_ProgData_By2"),
-        //                })
+        [TestMethod]
+        public void TestReplaceInExpression()
+        {
+            var expression = "{grid.row.} + {grid.row.} + {grid.row.} + {grid.row.}";
+            for (int i = 0; i < 300; i++)
+            {
+                var expanded = expression.Replace(".}", ".col}");
+                Assert.AreEqual("{grid.row.col} + {grid.row.col} + {grid.row.col} + {grid.row.col}", expanded);
+            }
+        }
 
-        //            };
-        //    return grid1;
-        //}
+        [TestMethod]
+        public void TestSplitInsertInExpression()
+        {
+            var expression = "{grid.row..} + {grid.row..} + {grid.row..} + {grid.row..}";
+            for (int i = 0; i < 300; i++)
+            {
+                var split = expression.Split('.');
+                var expanded = split.Aggregate((c, n) => n == "" ? c + ".col" : c + "." + n);
+                Assert.AreEqual("{grid.row.col.} + {grid.row.col.} + {grid.row.col.} + {grid.row.col.}", expanded);
+            }
+        }
 
+        [TestMethod]
+        public void TestOperandQuery()
+        {
+            //using (var myDb = new ExhibitProtoEntities())
+            //{
+            //    var operands = myDb.CalcOperands.ToList();
+            //}
+        }
 
-        //[TestMethod]
-        //public void TestGridAttributeAssignment()
-        //{
-        //    try
-        //    {
-        //        var x = 0;
-        //        using (var db = new DEV_AF())
-        //        {
-        //            var grid1 = CreateNewGridVm();
+        [TestMethod]
+        public void TestOperandSp()
+        {
+            List<GetCalcs_Result> getCalcsResult;
+            //using (var mydb = new ExhibitProtoEntities())
+            //{
+            //    getCalcsResult = mydb.GetCalcs("MockGrid").ToList();
+            //}
 
-        //            x = 1;
-        //            var spResult = db.UspGetAttribute("PBA12_ProgData1").ToList();
+            #region mock calc result
+            getCalcsResult = new List<GetCalcs_Result>()
+            {
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_2",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_3",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_4",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_5",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_6",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_7",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_8",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_9",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_10",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_11",
+                    ColCode = ""
+                },
+                new GetCalcs_Result()
+                {
+                    TargetGridCode = "MockGrid",
+                    TargetRowCode = "Row_1",
+                    TargetColCode = "",
+                    Expression = "{Mockgrid.Row_2..} + {Mockgrid.Row_3..} + {Mockgrid.Row_4..} + {Mockgrid.Row_5..} + {Mockgrid.Row_6..} + {Mockgrid.Row_7..} + {Mockgrid.Row_8..} + {Mockgrid.Row_9..} + {Mockgrid.Row_10..} + {Mockgrid.Row_11..} + {Mockgrid.Row_12..}",
+                    GridCode = "MockGrid",
+                    RowCode = "Row_12",
+                    ColCode = ""
+                }
+            };
 
-        //            //about 159 ms
-        //            foreach (RowAttribsVm row in grid1.Rows)
-        //            {
-        //                var rowCode = row.RowCode;
-        //                var rowAttribs = spResult.Where(r => r.GridCode == grid1.GridCode && r.RowCode == rowCode);
-        //                row.RowAttrib1 = rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib1").Value;
-        //                row.RowAttrib2 = rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib2").Value;
-        //                row.RowAttrib3 = rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib3").Value;
-        //                row.RowAttrib4 = rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib4").Value;
-        //                row.RowAttrib5 = rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib5").Value;
-        //                row.RowAttrib6 = rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib6").Value;
-        //                row.RowAttrib7 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib7").Value);
-        //                row.RowAttrib8 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib8").Value);
-        //                row.RowAttrib9 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib9").Value);
-        //                row.RowAttrib10 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib10").Value);
-        //                row.RowAttrib11 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib11").Value);
-        //                row.RowAttrib12 = bool.Parse(rowAttribs.FirstOrDefault(a => a.Attrib == "RowAttrib12").Value);
-        //                foreach (CellAttribsVm cell in row.Cells)
-        //                {
-        //                    var cellAttribs = spResult.Where(r => r.GridCode == grid1.GridCode && r.RowCode == rowCode && r.ColCode == cell.ColCode);
-        //                    cell.CellAttrib1 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib1").Value;
-        //                    cell.CellAttrib2 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib2").Value;
-        //                    cell.CellAttrib3 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib3").Value;
-        //                    cell.CellAttrib4 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib4").Value;
-        //                    cell.CellAttrib5 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib5").Value;
-        //                    cell.CellAttrib6 = cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib6").Value;
-        //                    cell.CellAttrib7 = bool.Parse(cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib7").Value);
-        //                    cell.CellAttrib8 = bool.Parse(cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib8").Value);
-        //                    cell.CellAttrib9 = bool.Parse(cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib9").Value);
-        //                    cell.CellAttrib10 = bool.Parse(cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib10").Value);
-        //                    cell.CellAttrib11 = bool.Parse(cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib11").Value);
-        //                    cell.CellAttrib12 = bool.Parse(cellAttribs.FirstOrDefault(a => a.Attrib == "CellAttrib12").Value);
-        //                }
-        //            }
+            #endregion
 
-        //            x = 2;
-        //        }
+            List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
+            List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
+            List<GetCalcs_Result> cellCalcResults = new List<GetCalcs_Result>();
+            foreach (var calc in getCalcsResult)
+            {
+                if (string.IsNullOrEmpty(calc.TargetColCode))
+                {
+                    rowCalcResults.Add(calc);
+                }
+                else if (string.IsNullOrEmpty(calc.TargetRowCode))
+                {
+                    colCalcResults.Add(calc);
+                }
+                else
+                {
+                    cellCalcResults.Add(calc);
+                }
+            }
+            var allCalcExpressions = getCalcsResult.GroupBy(r => new { r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression }, (key, group) => new CalcExpressionVm()
+            {
+                TargetGridCode = key.TargetGridCode,
+                TargetRowCode = key.TargetRowCode,
+                TargetColCode = key.TargetColCode,
+                Expression = key.Expression,
+                Operands = group.Select(g => new CalcOperandVm() { GridCode = g.GridCode, RowCode = g.RowCode, ColCode = g.ColCode }).ToList()
+            });
+        }
 
-        //        using (var db = new DEV_AF())
-        //        {
-        //            var grid2 = CreateNewGridVm();
+        [TestMethod]
+        public void TestMultipleResults()
+        {
+            using (var db = new ExhibitProtoEntities())
+            using (var connection = db.Database.Connection)
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = "EXEC [dbo].[GetExpressionAndOperands] 'MockGrid'" ;
+                using (var reader = command.ExecuteReader())
+                {
+                    var expressions =
+                        ((IObjectContextAdapter)db)
+                            .ObjectContext
+                            .Translate<Expression>(reader)
+                            .ToList();
 
-        //            x = 1;
-        //            var attribDic = db.UspGetAttribute("PBA12_ProgData1").ToDictionary(a => a.GridCode + "_" + a.RowCode + "_" + (a.ColCode != null ? a.ColCode : "") + "_" + a.Attrib, a => a.Value);
+                    reader.NextResult();
 
-        //            var gridCode = grid2.GridCode;
-        //            foreach (RowAttribsVm row in grid2.Rows)
-        //            {
-        //                var rowCode = gridCode + "_" + row.RowCode + "_";
-        //                row.RowAttrib1 = attribDic[rowCode + "_RowAttrib1"];
-        //                row.RowAttrib2 = attribDic[rowCode + "_RowAttrib2"];
-        //                row.RowAttrib3 = attribDic[rowCode + "_RowAttrib3"];
-        //                row.RowAttrib4 = attribDic[rowCode + "_RowAttrib4"];
-        //                row.RowAttrib5 = attribDic[rowCode + "_RowAttrib5"];
-        //                row.RowAttrib6 = attribDic[rowCode + "_RowAttrib6"];
-        //                row.RowAttrib7 = bool.Parse(attribDic[rowCode + "_RowAttrib7"]);
-        //                row.RowAttrib8 = bool.Parse(attribDic[rowCode + "_RowAttrib8"]);
-        //                row.RowAttrib9 = bool.Parse(attribDic[rowCode + "_RowAttrib9"]);
-        //                row.RowAttrib10 = bool.Parse(attribDic[rowCode + "_RowAttrib10"]);
-        //                row.RowAttrib11 = bool.Parse(attribDic[rowCode + "_RowAttrib11"]);
-        //                row.RowAttrib12 = bool.Parse(attribDic[rowCode + "_RowAttrib12"]);
-        //                foreach (CellAttribsVm cell in row.Cells)
-        //                {
-        //                    var cellCode = rowCode + cell.ColCode;
-        //                    cell.CellAttrib1 = attribDic[cellCode + "_CellAttrib1"];
-        //                    cell.CellAttrib2 = attribDic[cellCode + "_CellAttrib2"];
-        //                    cell.CellAttrib3 = attribDic[cellCode + "_CellAttrib3"];
-        //                    cell.CellAttrib4 = attribDic[cellCode + "_CellAttrib4"];
-        //                    cell.CellAttrib5 = attribDic[cellCode + "_CellAttrib5"];
-        //                    cell.CellAttrib6 = attribDic[cellCode + "_CellAttrib6"];
-        //                    cell.CellAttrib7 = bool.Parse(attribDic[cellCode + "_CellAttrib7"]);
-        //                    cell.CellAttrib8 = bool.Parse(attribDic[cellCode + "_CellAttrib8"]);
-        //                    cell.CellAttrib9 = bool.Parse(attribDic[cellCode + "_CellAttrib9"]);
-        //                    cell.CellAttrib10 = bool.Parse(attribDic[cellCode + "_CellAttrib10"]);
-        //                    cell.CellAttrib11 = bool.Parse(attribDic[cellCode + "_CellAttrib11"]);
-        //                    cell.CellAttrib12 = bool.Parse(attribDic[cellCode + "_CellAttrib12"]);
-        //                }
-        //            }
-
-        //            x = 2;
-        //        }
-
-
-        //        using (var db = new DEV_AF())
-        //        {
-
-        //            var grid3 = CreateNewGridVm();
-        //            x = 3;
-        //            var deNormAttribs = db.AttributeDeNorms.Where(a => a.GridCode == grid3.GridCode).ToList();
-
-        //            foreach (RowAttribsVm row in grid3.Rows)
-        //            {
-        //                var rowCode = row.RowCode;
-        //                var rowAttribs = deNormAttribs.FirstOrDefault(r => r.GridCode == grid3.GridCode && r.RowCode == rowCode && string.IsNullOrEmpty(r.ColCode));
-        //                row.RowAttrib1 = rowAttribs.RowAttrib1;
-        //                row.RowAttrib2 = rowAttribs.RowAttrib2;
-        //                row.RowAttrib3 = rowAttribs.RowAttrib3;
-        //                row.RowAttrib4 = rowAttribs.RowAttrib4;
-        //                row.RowAttrib5 = rowAttribs.RowAttrib5;
-        //                row.RowAttrib6 = rowAttribs.RowAttrib6;
-        //                row.RowAttrib7 = rowAttribs.RowAttrib7 ?? false;
-        //                row.RowAttrib8 = rowAttribs.RowAttrib8 ?? false;
-        //                row.RowAttrib9 = rowAttribs.RowAttrib9 ?? false;
-        //                row.RowAttrib10 = rowAttribs.RowAttrib10 ?? false;
-        //                row.RowAttrib11 = rowAttribs.RowAttrib11 ?? false;
-        //                row.RowAttrib12 = rowAttribs.RowAttrib12 ?? false;
-        //                foreach (CellAttribsVm cell in row.Cells)
-        //                {
-        //                    var cellAttribs = deNormAttribs.FirstOrDefault(r => r.GridCode == grid3.GridCode && r.RowCode == rowCode && r.ColCode == cell.ColCode);
-        //                    cell.CellAttrib1 = cellAttribs.CellAttrib1;
-        //                    cell.CellAttrib2 = cellAttribs.CellAttrib2;
-        //                    cell.CellAttrib3 = cellAttribs.CellAttrib3;
-        //                    cell.CellAttrib4 = cellAttribs.CellAttrib4;
-        //                    cell.CellAttrib5 = cellAttribs.CellAttrib5;
-        //                    cell.CellAttrib6 = cellAttribs.CellAttrib6;
-        //                    cell.CellAttrib7 = cellAttribs.CellAttrib7 ?? false;
-        //                    cell.CellAttrib8 = cellAttribs.CellAttrib8 ?? false;
-        //                    cell.CellAttrib9 = cellAttribs.CellAttrib9 ?? false;
-        //                    cell.CellAttrib10 = cellAttribs.CellAttrib10 ?? false;
-        //                    cell.CellAttrib11 = cellAttribs.CellAttrib11 ?? false;
-        //                    cell.CellAttrib12 = cellAttribs.CellAttrib12 ?? false;
-        //                }
-        //            }
-
-        //            x = 4;
-        //        }
-
-        //        Console.Write(x);
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        var x = e;
-        //    }
-        //}
+                    var operands =
+                        ((IObjectContextAdapter)db)
+                            .ObjectContext
+                            .Translate<Operand>(reader)
+                            .ToList();
+                }
+            }
+        }          
     }
 }

@@ -6,6 +6,7 @@ using System.Web;
 using Antlr.Runtime;
 using ExhibitGrid.EntityDataModel;
 using ExhibitGrid.ViewModel;
+using ExhibitGrid.Globals;
 
 namespace ExhibitGrid.Processes
 {
@@ -47,103 +48,8 @@ namespace ExhibitGrid.Processes
 
         private GridVm GetGridFromDb(string gridCode)
         {
-            var grid = new GridVm()
-            {
-                GridCode = gridCode,
-                Columns = new List<ColumnVm>(),
-                DataRows = new List<RowVm>()
-            };
-            try
-            {
-
-                using (var db = new DEV_AF())
-                {
-                    var attribs = db.UspGetAttribVal(gridCode).ToList();
-                    var cellDictionary = new Dictionary<string, Attributes>();
-                    foreach (var attrib in attribs)
-                    {
-                        if (!string.IsNullOrEmpty(attrib.RowCode) && !string.IsNullOrEmpty(attrib.ColCode))
-                        {
-                            cellDictionary.Add(attrib.GridCode + attrib.RowCode + attrib.ColCode, attrib);
-                        }
-                        else if (string.IsNullOrEmpty(attrib.RowCode) && !string.IsNullOrEmpty(attrib.ColCode))
-                        {
-                            grid.Columns.Add(new ColumnVm()
-                            {
-                                ColCode = attrib.ColCode,
-                                ColSpan = attrib.ColSpan ?? 1,
-                                Directive = attrib.Directive,
-                                DisplayOrder = attrib.DisplayOrder ?? 1,
-                                DisplayText = attrib.DisplayText,
-                                HasHeader = attrib.HasHeader ?? true,
-                                IsHidden = attrib.IsHidden ?? false,
-                                Level = attrib.Level ?? 0,
-                                Width = attrib.Width,
-                                IsEditable = attrib.IsEditable ?? false
-                            });
-                        }
-                        else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
-                        {
-                            grid.DataRows.Add(new RowVm()
-                            {
-                                CanAdd = attrib.CanAdd ?? false,
-                                CanCollapse = attrib.CanCollapse ?? false,
-                                CanDelete = attrib.CanDelete ?? false,
-                                CanSelect = attrib.CanSelect ?? false,
-                                Cells = new List<CellVm>(),
-                                Class = attrib.Class,
-                                CollapseableChildren = new List<string>(),
-                                DisplayOrder = attrib.DisplayOrder ?? 0,
-                                GridCode = attrib.GridCode,
-                                IsSelected = false,
-                                IsCollapsed = false,
-                                IsHidden = attrib.IsHidden ?? false,
-                                RowCode = attrib.RowCode,
-                                IsEditable = attrib.IsEditable ?? false
-                            });
-                        }
-                        else
-                        {
-                            grid.IsEditable = attrib.IsEditable ?? true;
-                            grid.DisplayText = attrib.DisplayText;
-                        }
-                    }
-                    foreach (var row in grid.DataRows)
-                    {
-                        foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
-                        {
-                            var cellAttrib = cellDictionary[grid.GridCode+row.RowCode+col.ColCode];
-                            double numval;
-                            var valParsed =  double.TryParse(cellAttrib.Value, out numval);
-                            var span = cellAttrib.ColSpan ?? col.ColSpan;
-                            row.Cells.Add(new CellVm()
-                            {
-                                Class = cellAttrib.Class,
-                                ColCode = col.ColCode,
-                                ColSpan = span,
-                                ColumnHeader = col.DisplayText,
-                                GridCode = grid.GridCode,
-                                Indent = cellAttrib.Indent ?? 0,
-                                IsBlank = cellAttrib.IsBlank ?? false,
-                                IsEditable = (cellAttrib.IsEditable ?? (row.IsEditable || col.IsEditable)) && grid.IsEditable,
-                                IsHidden = cellAttrib.IsHidden ?? false,
-                                RowCode = row.RowCode,
-                                Value = cellAttrib.Value,
-                                NumValue = valParsed ? numval : 0,
-                                Width = (span == 1 ? col.Width : "100%")
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                var x = e;
-            }
-            
-            return grid;
+            return GetGridVmProcess.Process(gridCode);
         }
-
 
         #endregion
 
@@ -255,7 +161,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "RowText",
                 HasHeader = false,
-                Directive = "text",
+                Directive = Literals.Directive.Text,
                 Width = "200px",
                 DisplayText = "RowText",
                 Level = 0,
@@ -267,7 +173,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "PostIt",
                 HasHeader = false,
-                Directive = "postit",
+                Directive = Literals.Directive.Postit,
                 Width = "",
                 DisplayText = "PostIt",
                 Level = 0,
@@ -279,9 +185,9 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "Narrative",
                 HasHeader = false,
-                Directive = "narrative",
+                Directive = Literals.Directive.Narrative,
                 Width = "",
-                DisplayText = "PostIt",
+                DisplayText = "Narrative",
                 Level = 0,
                 DisplayOrder = -2,
                 ColSpan = 1
@@ -291,7 +197,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "DoubleOne",
                 HasHeader = true,
-                Directive = "text",
+                Directive = Literals.Directive.Text,
                 Width = "150px",
                 DisplayText = "D1",
                 Level = 0,
@@ -303,7 +209,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "DoubleTwo",
                 HasHeader = true,
-                Directive = "text",
+                Directive = Literals.Directive.Text,
                 Width = "150px",
                 DisplayText = "D2",
                 Level = 0,
@@ -315,7 +221,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "DropDown",
                 HasHeader = true,
-                Directive = "dropdown",
+                Directive = Literals.Directive.DropDown,
                 Width = "",
                 DisplayText = "DropDown Header with a long string <br/> of text because why not",
                 Level = 0,
@@ -331,7 +237,7 @@ namespace ExhibitGrid.Processes
                     ColCode = "Col_" + col,
                     HasHeader = !_hiddenCols.Contains(col),
                     IsHidden = _hiddenCols.Contains(col),
-                    Directive = "numeric",
+                    Directive = Literals.Directive.Numeric,
                     Width = null,
                     DisplayText = "Level 0 Header " + Convert.ToChar(col + 65),
                     Level = 0,
@@ -373,6 +279,8 @@ namespace ExhibitGrid.Processes
             //}
 
             #region calcs
+
+            //do some fake summing to get the correct initial values in the "total" cells 
             foreach (var row in grid.DataRows)
             {
                 for (int i = 2; i <= row.Cells.Count - 6; i += 3){
@@ -396,6 +304,9 @@ namespace ExhibitGrid.Processes
                     cell.NumValue = sum;
 
                 }
+            
+            //var calcExpandProcess = new CalcExpandProcess(grid, rowCalcOperands);
+            //calcExpandProcess.Process();
             #endregion
             return grid;
         }
@@ -561,12 +472,17 @@ namespace ExhibitGrid.Processes
                     IsEditable = c%3 != 2 && r != _totalRow,
                     IsHidden = _hiddenCols.Contains(c),
                     IsBlank = r % 5 == 0 && c == 0 ? true : false,
-                    Width = col.ColSpan == 1 ? col.Width : "100%"
+                    Width = col.ColSpan == 1 ? col.Width : "100%",
+                    Calcs  = new List<CalcExpressionVm>()
                 };
                 dataRow.Cells.Add(cell);
             }
             return dataRow;
         }
+
+
+
+
         #endregion
         
         #region MiniOp5
