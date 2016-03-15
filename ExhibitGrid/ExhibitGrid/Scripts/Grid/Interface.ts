@@ -15,6 +15,19 @@ declare module ExhibitGrid.ViewModel {
         Indent: number;
         IsHidden: boolean;
         IsBlank: boolean;
+        Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
+    }
+    interface ICalcExpressionVm {
+        TargetGridCode: string;
+        TargetRowCode: string;
+        TargetColCode: string;
+        Expression: string;
+        Operands: ExhibitGrid.ViewModel.ICalcOperandVm[];
+    }
+    interface ICalcOperandVm {
+        GridCode: string;
+        RowCode: string;
+        ColCode: string;
     }
     interface IGridVm {
         GridCode: string;

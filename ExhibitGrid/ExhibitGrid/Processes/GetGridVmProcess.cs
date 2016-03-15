@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ExhibitGrid.EntityDataModel;
+using ExhibitGrid.Globals;
 using ExhibitGrid.ViewModel;
 
 namespace ExhibitGrid.Processes
@@ -22,6 +23,26 @@ namespace ExhibitGrid.Processes
 
                 using (var db = new DEV_AF())
                 {
+                    var calcs = db.GetCalcs(gridCode).ToList();
+                    List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
+                    List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
+                    List<GetCalcs_Result> cellCalcResults = new List<GetCalcs_Result>();
+                    foreach (var calc in calcs)
+                    {
+                        if (string.IsNullOrEmpty(calc.TargetColCode))
+                        {
+                            rowCalcResults.Add(calc);
+                        }
+                        else if (string.IsNullOrEmpty(calc.TargetRowCode))
+                        {
+                            colCalcResults.Add(calc);
+                        }
+                        else
+                        {
+                            cellCalcResults.Add(calc);
+                        }
+                    }
+                    
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
                     var cellDictionary = new Dictionary<string, Attributes>();
                     foreach (var attrib in attribs)
@@ -45,6 +66,18 @@ namespace ExhibitGrid.Processes
                                 Width = attrib.Width,
                                 IsEditable = attrib.IsEditable ?? false
                             });
+                            //For Numeric columns expand the row calcs for every column and add to cell calcs
+                            if (attrib.Directive == Literals.Directive.Numeric)
+                            cellCalcResults.AddRange(rowCalcResults.Select(rowCalc => new GetCalcs_Result()
+                            {
+                                TargetGridCode = rowCalc.TargetGridCode, 
+                                TargetRowCode = rowCalc.TargetRowCode, 
+                                TargetColCode = attrib.ColCode, 
+                                Expression = rowCalc.Expression.Split('.').Aggregate((c, n) => c == "" ? c + attrib.ColCode + "." : c + "." + n), 
+                                GridCode = rowCalc.GridCode, 
+                                RowCode = rowCalc.RowCode, 
+                                ColCode = attrib.ColCode
+                            }));
                         }
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
@@ -65,6 +98,16 @@ namespace ExhibitGrid.Processes
                                 RowCode = attrib.RowCode,
                                 IsEditable = attrib.IsEditable ?? false
                             });
+                            cellCalcResults.AddRange(colCalcResults.Select(rowCalc => new GetCalcs_Result()
+                            {
+                                TargetGridCode = rowCalc.TargetGridCode,
+                                TargetRowCode = attrib.RowCode,
+                                TargetColCode = rowCalc.TargetColCode,
+                                Expression = rowCalc.Expression.Split('.').Aggregate((c, n) => c == "" ? c + attrib.RowCode + "." : c + "." + n),
+                                GridCode = rowCalc.GridCode,
+                                RowCode = attrib.RowCode,
+                                ColCode = rowCalc.TargetColCode
+                            }));
                         }
                         else
                         {
@@ -72,6 +115,16 @@ namespace ExhibitGrid.Processes
                             grid.DisplayText = attrib.DisplayText;
                         }
                     }
+
+                    var allCellCalscDic = cellCalcResults.GroupBy(r => new { r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression }, (key, group) => new CalcExpressionVm()
+                    {
+                        TargetGridCode = key.TargetGridCode,
+                        TargetRowCode = key.TargetRowCode,
+                        TargetColCode = key.TargetColCode,
+                        Expression = key.Expression,
+                        Operands = group.Select(g => new CalcOperandVm() { GridCode = g.GridCode, RowCode = g.RowCode, ColCode = g.ColCode }).ToList()
+                    }).ToDictionary(ac => ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
+
                     foreach (var row in grid.DataRows)
                     {
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
@@ -82,19 +135,20 @@ namespace ExhibitGrid.Processes
                             var span = cellAttrib.ColSpan ?? col.ColSpan;
                             row.Cells.Add(new CellVm()
                             {
-                                Class = cellAttrib.Class,
+                                GridCode = grid.GridCode,
+                                RowCode = row.RowCode,
                                 ColCode = col.ColCode,
+                                Class = cellAttrib.Class,
                                 ColSpan = span,
                                 ColumnHeader = col.DisplayText,
-                                GridCode = grid.GridCode,
                                 Indent = cellAttrib.Indent ?? 0,
                                 IsBlank = cellAttrib.IsBlank ?? false,
                                 IsEditable = (cellAttrib.IsEditable ?? (row.IsEditable || col.IsEditable)) && grid.IsEditable,
                                 IsHidden = cellAttrib.IsHidden ?? false,
-                                RowCode = row.RowCode,
                                 Value = cellAttrib.Value,
                                 NumValue = valParsed ? numval : 0,
-                                Width = (span == 1 ? col.Width : "100%")
+                                Width = (span == 1 ? col.Width : "100%"),
+                                Calcs = GetCalcsForCell(cellCalcResults, allCellCalscDic, grid.GridCode, row.RowCode, col.ColCode)
                             });
                         }
                     }
@@ -107,5 +161,13 @@ namespace ExhibitGrid.Processes
 
             return grid;
 	    }
+
+        private static List<CalcExpressionVm> GetCalcsForCell(List<GetCalcs_Result> cellCalcs, Dictionary<string, CalcExpressionVm> allCalcExpressions, string gridCode, string rowCode, string colCode)
+        {
+            var thisCellsCalcs = cellCalcs.Where(cc => cc.GridCode == gridCode && cc.RowCode == rowCode && cc.ColCode == colCode).Select(ac => ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
+
+            return allCalcExpressions.Where(dc => thisCellsCalcs.Contains(dc.Key)).Select(dc => dc.Value).ToList();
+        } 
+
 	}
 }

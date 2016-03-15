@@ -37,5 +37,14 @@ namespace ExhibitGrid.EntityDataModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Attributes>("UspGetAttribVal", gridCodeParameter);
         }
+    
+        public virtual ObjectResult<GetCalcs_Result> GetCalcs(string gridCode)
+        {
+            var gridCodeParameter = gridCode != null ?
+                new ObjectParameter("GridCode", gridCode) :
+                new ObjectParameter("GridCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCalcs_Result>("GetCalcs", gridCodeParameter);
+        }
     }
 }

@@ -71,6 +71,7 @@ module app.model {
         ColCode: string;
         ColSpan: number;
         ColumnHeader: string;
+        Width: string;
         IsEditable: boolean;
         Class: string;
         NumValue: number;
@@ -78,12 +79,26 @@ module app.model {
         Indent: number;
         IsHidden: boolean;
         IsBlank: boolean;
-        Width: string;
+        Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
             this.RowCode = RowCode;
             this.ColCode = ColCode;
         }
     }
+    export class CalcExpressionVm implements ExhibitGrid.ViewModel.ICalcExpressionVm {
+        TargetGridCode: string;
+        TargetRowCode: string;
+        TargetColCode: string;
+        Expression: string;
+        Operands: ExhibitGrid.ViewModel.ICalcOperandVm[];
+    }
+
+    export class CalcOperandVm implements ExhibitGrid.ViewModel.ICalcOperandVm{
+        GridCode: string;
+        RowCode: string;
+        ColCode: string;
+    }
+
 
     export class MockModelService implements IModelService {
         exhibitModel: ExhibitVm;

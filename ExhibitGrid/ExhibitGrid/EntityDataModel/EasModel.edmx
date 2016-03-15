@@ -34,6 +34,9 @@
           <Property Name="Indent" Type="int" />
           <Property Name="IsBlank" Type="bit" />
         </EntityType>
+        <Function Name="GetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GridCode" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="varchar" Mode="In" />
         </Function>
@@ -49,6 +52,9 @@
           <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="AttributeDeNorms" EntityType="EasModel.AttributeDeNorm" />
+          <FunctionImport Name="GetCalcs" ReturnType="Collection(EasModel.GetCalcs_Result)">
+          <Parameter Name="GridCode" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Attributes" >
           <Property Type="String" Name="GridCode" Nullable="false" />
@@ -105,6 +111,15 @@
           <Property Name="Indent" Type="Int32" />
           <Property Name="IsBlank" Type="Boolean" />
         </EntityType>
+        <ComplexType Name="GetCalcs_Result">
+          <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TargetRowCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TargetColCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Expression" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="GridCode" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="RowCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ColCode" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -169,6 +184,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetCalcs" FunctionName="EasModel.Store.GetCalcs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.GetCalcs_Result">
+                <ScalarProperty Name="TargetGridCode" ColumnName="TargetGridCode" />
+                <ScalarProperty Name="TargetRowCode" ColumnName="TargetRowCode" />
+                <ScalarProperty Name="TargetColCode" ColumnName="TargetColCode" />
+                <ScalarProperty Name="Expression" ColumnName="Expression" />
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

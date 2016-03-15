@@ -35,6 +35,18 @@ var app;
             return CellVm;
         }());
         model.CellVm = CellVm;
+        var CalcExpressionVm = (function () {
+            function CalcExpressionVm() {
+            }
+            return CalcExpressionVm;
+        }());
+        model.CalcExpressionVm = CalcExpressionVm;
+        var CalcOperandVm = (function () {
+            function CalcOperandVm() {
+            }
+            return CalcOperandVm;
+        }());
+        model.CalcOperandVm = CalcOperandVm;
         var MockModelService = (function () {
             function MockModelService() {
                 this.exhibitModel = new ExhibitVm("Test Exhibit");
