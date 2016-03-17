@@ -17,7 +17,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CalcO
 DROP TABLE [dbo].[CalcOperand]
 GO
 
-
 CREATE TABLE [dbo].[CalcExpression](
 	CalcExpressionId int not null PRIMARY KEY CLUSTERED IDENTITY(1,1),
 	TargetGridCode varchar(100) not null,
@@ -31,7 +30,6 @@ ON [dbo].[CalcExpression](TargetGridCode, TargetRowCode, TargetColCode)
 Include (Expression)
 go
 
-
 Create Table CalcOperand(
 	CalcOperandId int not null PRIMARY KEY CLUSTERED IDENTITY(1,1),
 	GridCode varchar(100) not null,
@@ -43,9 +41,8 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_CalcOperand_GridRowColCode
 ON [dbo].[CalcOperand](GridCode, RowCode, ColCode)
 go
 
-
 Create Table CalcExpressionOperand(
-	CalcExpressionOperandId  int primary key Identity(1,1),
+	CalcExpressionOperandId  int  PRIMARY KEY CLUSTERED IDENTITY(1,1),
 	CalcExpressionId int,
 	CalcOperandId int,
 	CONSTRAINT FK_CalcOperand_CalcOperandId FOREIGN KEY (CalcOperandId) 
@@ -63,7 +60,6 @@ CREATE NONCLUSTERED INDEX IX_CalcExpressionOperand_CalcOperandId
 ON [dbo].[CalcExpressionOperand](CalcOperandId)
 include(CalcExpressionId)
 go
-
 
 insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
 select 'Grid_A','Row_3','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
@@ -94,7 +90,6 @@ select 'Grid_C','Row_1',''
 union all
 select 'Grid_C','Row_2',''
 
-
 insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
 select 1, 1
 union all
@@ -119,8 +114,6 @@ union all
 select 6, 7
 union all
 select 6, 8
-
-
 
 --select * from CalcExpression
 --select * from CalcExpressionOperand

@@ -58,5 +58,6 @@ namespace ExhibitGrid.EntityDataModel
         public Nullable<bool> IsBlank { get; set; }
         public string Value { get; set; }
         public string HoverText { get; set; }
+        public string ParentRowCode { get; set; }
     }
 }

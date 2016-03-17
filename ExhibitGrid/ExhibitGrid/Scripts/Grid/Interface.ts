@@ -1,10 +1,15 @@
 ﻿
 
+
+
+
+
 declare module ExhibitGrid.ViewModel {
     interface ICellVm {
         GridCode: string;
         RowCode: string;
         ColCode: string;
+        ParentRowCode: string;
         ColSpan: number;
         ColumnHeader: string;
         Width: string;
@@ -52,6 +57,7 @@ declare module ExhibitGrid.ViewModel {
     interface IRowVm {
         GridCode: string;
         RowCode: string;
+        ParentRowCode: string;
         DisplayOrder: number;
         IsHidden: boolean;
         IsCollapsed: boolean;
@@ -63,7 +69,6 @@ declare module ExhibitGrid.ViewModel {
         IsSelected: boolean;
         IsEditable: boolean;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
-        CollapseableChildren: string[];
     }
 }
 

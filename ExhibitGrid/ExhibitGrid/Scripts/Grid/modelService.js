@@ -86,6 +86,27 @@ var app;
                 var cell = _.find(row.Cells, { 'ColCode': colCode });
                 return cell.NumValue;
             };
+            MockModelService.prototype.collapseChildren = function (gridCode, rowCode) {
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+                _.each(_.where(grid.DataRows, { 'ParentRowCode': rowCode }), function (child) {
+                    child.IsCollapsed = !child.IsCollapsed;
+                });
+            };
+            MockModelService.prototype.getParentRowCalcForColumn = function (gridCode, parentRowCode, colCode) {
+                var calc = "";
+                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+                _.each(_.where(grid.DataRows, { 'ParentRowCode': parentRowCode }), function (child) {
+                    var cell = _.find(child.Cells, { 'ColCode': colCode });
+                    calc += cell.NumValue.toString() + "+";
+                });
+                if (calc && calc.length > 2) {
+                    calc.substring(0, calc.length - 2);
+                }
+                else {
+                    calc = "0";
+                }
+                return calc;
+            };
             return MockModelService;
         }());
         model.MockModelService = MockModelService;

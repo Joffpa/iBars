@@ -1,6 +1,6 @@
 ﻿/// <reference path="../typings/angularjs/angular.d.ts" />
 
-'use strict';
+"use strict";
 
 module app {
 
@@ -11,7 +11,7 @@ module app {
 
         constructor(modelService: app.model.IModelService) {
             this.ModelService = modelService;
-            var gridCode = window['gridModel'].gridCode;
+            var gridCode = window["gridModel"].gridCode;
             this.GridVm = this.ModelService.getGridVm(gridCode);
         }
     }
@@ -27,11 +27,7 @@ module app {
         }
 
         collapseChildren() {
-            console.log(this.RowVm.CollapseableChildren);
-            this.RowVm.CollapseableChildren.forEach((val, idx) => {
-                var child = this.ModelService.getRowVm(this.RowVm.GridCode, val);
-                child.IsCollapsed = !child.IsCollapsed;
-            });
+            this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
         }
 
         addRow() {
@@ -75,9 +71,9 @@ module app {
             this.ModelService = modelService;
             this.CalcService = calcService;
 
-            if (this.CalcService.cellHasCalcs(this.CellVm.GridCode, this.CellVm.RowCode, this.CellVm.ColCode)) {
+            if ((this.CellVm.Calcs && this.CellVm.Calcs.length > 0) || this.CellVm.ParentRowCode) {
                 $scope.$watch('cellVm.NumValue', (newVal, oldVal, scope) => {
-                    scope.cellCtrl.CalcService.runCalcsForCell(scope.cellVm.GridCode, scope.cellVm.RowCode, scope.cellVm.ColCode, newVal);
+                    scope.cellCtrl.CalcService.runCellCalcs(this.CellVm, newVal);
                 });
             }
         }

@@ -36,5 +36,6 @@ namespace ExhibitGrid.EntityDataModel
         public Nullable<bool> CanDelete { get; set; }
         public Nullable<int> Indent { get; set; }
         public Nullable<bool> IsBlank { get; set; }
+        public string ParentRowCode { get; set; }
     }
 }

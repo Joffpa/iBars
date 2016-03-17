@@ -13,6 +13,8 @@ module app.model {
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm;
         getCellValue(gridCode: string, rowCode: string, colCode: string): number;
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number): void;
+        collapseChildren(gridCode: string, rowCode: string): void;
+        getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode): string;
     }
 
     export class ExhibitVm {
@@ -46,6 +48,7 @@ module app.model {
     export class RowVm implements ExhibitGrid.ViewModel.IRowVm {
         GridCode: string;
         RowCode: string;
+        ParentRowCode: string;
         DisplayOrder: number;
         IsHidden: boolean;
         IsCollapsed: boolean;
@@ -69,6 +72,7 @@ module app.model {
         GridCode: string;
         RowCode: string;
         ColCode: string;
+        ParentRowCode: string;
         ColSpan: number;
         ColumnHeader: string;
         Width: string;
@@ -142,6 +146,29 @@ module app.model {
             var row = _.find(grid.DataRows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell.NumValue;
+        }
+
+        collapseChildren(gridCode: string, rowCode: string) {
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            _.each(_.where(grid.DataRows, { 'ParentRowCode': rowCode }), child => {
+                child.IsCollapsed = !child.IsCollapsed;
+            });
+
+        }
+
+        getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode) {
+            var calc = "";
+            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            _.each(_.where(grid.DataRows, { 'ParentRowCode': parentRowCode }), child => {
+                var cell = _.find(child.Cells, { 'ColCode': colCode });
+                calc += cell.NumValue.toString() + "+";
+            });
+            if (calc && calc.length > 2) {
+                calc.substring(0, calc.length - 2);
+            } else {
+                calc = "0";
+            }
+            return calc;
         }
         
         constructor() {

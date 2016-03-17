@@ -33,6 +33,7 @@
           <Property Name="CanDelete" Type="bit" />
           <Property Name="Indent" Type="int" />
           <Property Name="IsBlank" Type="bit" />
+          <Property Name="ParentRowCode" Type="varchar" MaxLength="100" />
         </EntityType>
         <Function Name="GetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="varchar" Mode="In" />
@@ -81,6 +82,7 @@
           <Property Type="Boolean" Name="IsBlank" Nullable="true" DefaultValue="false" />
           <Property Type="String" Name="Value" Nullable="true" DefaultValue="" />
           <Property Type="String" Name="HoverText" Nullable="true" />
+          <Property Type="String" Name="ParentRowCode" Nullable="false" />
         </ComplexType>
         <EntityType Name="AttributeDeNorm">
           <Key>
@@ -110,6 +112,7 @@
           <Property Name="CanDelete" Type="Boolean" />
           <Property Name="Indent" Type="Int32" />
           <Property Name="IsBlank" Type="Boolean" />
+          <Property Name="ParentRowCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="GetCalcs_Result">
           <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
@@ -159,6 +162,7 @@
           <EntitySetMapping Name="AttributeDeNorms">
             <EntityTypeMapping TypeName="EasModel.AttributeDeNorm">
               <MappingFragment StoreEntitySet="AttributeDeNorm">
+                <ScalarProperty Name="ParentRowCode" ColumnName="ParentRowCode" />
                 <ScalarProperty Name="IsBlank" ColumnName="IsBlank" />
                 <ScalarProperty Name="Indent" ColumnName="Indent" />
                 <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />

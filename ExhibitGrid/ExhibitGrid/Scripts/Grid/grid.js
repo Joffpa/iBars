@@ -1,11 +1,11 @@
 /// <reference path="../typings/angularjs/angular.d.ts" />
-'use strict';
+"use strict";
 var app;
 (function (app) {
     var GridController = (function () {
         function GridController(modelService) {
             this.ModelService = modelService;
-            var gridCode = window['gridModel'].gridCode;
+            var gridCode = window["gridModel"].gridCode;
             this.GridVm = this.ModelService.getGridVm(gridCode);
         }
         return GridController;
@@ -17,12 +17,7 @@ var app;
             this.ModelService = modelService;
         }
         RowController.prototype.collapseChildren = function () {
-            var _this = this;
-            console.log(this.RowVm.CollapseableChildren);
-            this.RowVm.CollapseableChildren.forEach(function (val, idx) {
-                var child = _this.ModelService.getRowVm(_this.RowVm.GridCode, val);
-                child.IsCollapsed = !child.IsCollapsed;
-            });
+            this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
         };
         RowController.prototype.addRow = function () {
             alert('row added: ' + this.RowVm.RowCode);
@@ -46,13 +41,14 @@ var app;
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
         function NumericCellController($scope, modelService, calcService) {
+            var _this = this;
             //console.log($scope);
             this.CellVm = $scope.cellVm;
             this.ModelService = modelService;
             this.CalcService = calcService;
-            if (this.CalcService.cellHasCalcs(this.CellVm.GridCode, this.CellVm.RowCode, this.CellVm.ColCode)) {
+            if ((this.CellVm.Calcs && this.CellVm.Calcs.length > 0) || this.CellVm.ParentRowCode) {
                 $scope.$watch('cellVm.NumValue', function (newVal, oldVal, scope) {
-                    scope.cellCtrl.CalcService.runCalcsForCell(scope.cellVm.GridCode, scope.cellVm.RowCode, scope.cellVm.ColCode, newVal);
+                    scope.cellCtrl.CalcService.runCellCalcs(_this.CellVm, newVal);
                 });
             }
         }

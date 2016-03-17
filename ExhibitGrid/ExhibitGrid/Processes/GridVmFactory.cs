@@ -360,7 +360,6 @@ namespace ExhibitGrid.Processes
                 IsHidden = false,
                 IsCollapsed = false,
                 Cells = new List<CellVm>(),
-                CollapseableChildren = collapseChildren.Select(c => "Row_" + c).ToList()
             };
 
             var col = grid.Columns.FirstOrDefault(c => c.ColCode == "RowText");
@@ -882,25 +881,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
@@ -1116,25 +1115,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
@@ -1185,8 +1184,7 @@ namespace ExhibitGrid.Processes
                 CanAdd = false,
                 CanDelete = false,
                 IsHidden = false,
-                Cells = new List<CellVm>(),
-                CollapseableChildren = new List<string>() { "Row_1_Child_1_Sub_3" }
+                Cells = new List<CellVm>()
             };
             var cell = new CellVm
             {
@@ -1318,25 +1316,25 @@ namespace ExhibitGrid.Processes
                 Width = "40px"
             };
             dataRow.Cells.Add(cell);
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
@@ -1346,6 +1344,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_1_Sub_3",
+                ParentRowCode = "Row_1_Sub_3",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -1386,6 +1385,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 0,
@@ -1399,6 +1399,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "StubAmt",
                 Class = "data-cell",
                 IsEditable = false,
@@ -1413,6 +1414,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "BY1Prog",
                 Class = "data-cell",
                 IsEditable = false,
@@ -1427,6 +1429,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Mdep",
                 Class = "text-cell",
                 IsEditable = false,
@@ -1442,6 +1445,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Ape",
                 Class = "text-cell",
                 IsEditable = false,
@@ -1457,6 +1461,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Cmd",
                 Class = "text-cell",
                 IsEditable = false,
@@ -1472,6 +1477,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Ftes",
                 Class = "data-cell",
                 IsEditable = false,
@@ -1484,25 +1490,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_3"));
             grid.DataRows.Add(dataRow);
         }
 
@@ -1519,8 +1525,7 @@ namespace ExhibitGrid.Processes
                 CanAdd = false,
                 CanDelete = false,
                 IsHidden = false,
-                Cells = new List<CellVm>(),
-                CollapseableChildren = new List<string>() { "Row_2_Child_1_Sub_3" }
+                Cells = new List<CellVm>()
             };
             var cell = new CellVm
             {
@@ -1652,25 +1657,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
 
             grid.DataRows.Add(dataRow);
         }
@@ -1681,6 +1686,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_2_Child_1_Sub_3",
+                ParentRowCode = "Row_2_Sub_3",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -1721,6 +1727,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 38686,
@@ -1734,6 +1741,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "StubAmt",
                 Class = "data-cell",
                 IsEditable = false,
@@ -1748,6 +1756,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "BY1Prog",
                 Class = "data-cell",
                 IsEditable = false,
@@ -1762,6 +1771,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Mdep",
                 Class = "text-cell",
                 IsEditable = false,
@@ -1777,6 +1787,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Ape",
                 Class = "text-cell",
                 IsEditable = false,
@@ -1792,6 +1803,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Cmd",
                 Class = "text-cell",
                 IsEditable = false,
@@ -1807,6 +1819,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Ftes",
                 Class = "data-cell",
                 IsEditable = false,
@@ -1819,25 +1832,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_2_Sub_3"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_2_Sub_3"));
             grid.DataRows.Add(dataRow);
         }
 
@@ -1984,25 +1997,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
@@ -2052,8 +2065,7 @@ namespace ExhibitGrid.Processes
                 CanAdd = false,
                 CanDelete = false,
                 IsHidden = false,
-                Cells = new List<CellVm>(),
-                CollapseableChildren = new List<string>() { "Row_1_Child_1_Sub_4", "Row_1_Child_2_Sub_4", "Row_1_Child_3_Sub_4" }
+                Cells = new List<CellVm>()
             };
             var cell = new CellVm
             {
@@ -2185,25 +2197,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
@@ -2213,6 +2225,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_1_Sub_4",
+                ParentRowCode = "Row_1_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2253,6 +2266,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 50000,
@@ -2266,6 +2280,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "StubAmt",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2280,6 +2295,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "BY1Prog",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2294,6 +2310,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Mdep",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2309,6 +2326,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ape",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2324,6 +2342,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Cmd",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2339,6 +2358,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ftes",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2351,25 +2371,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_4"));
             grid.DataRows.Add(dataRow);
         }
 
@@ -2379,6 +2399,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_2_Sub_4",
+                ParentRowCode = "Row_1_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2419,6 +2440,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 50000,
@@ -2432,6 +2454,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "StubAmt",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2446,6 +2469,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "BY1Prog",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2460,6 +2484,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Mdep",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2475,6 +2500,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ape",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2490,6 +2516,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Cmd",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2505,6 +2532,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ftes",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2517,25 +2545,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_4"));
             grid.DataRows.Add(dataRow);
         }
 
@@ -2545,6 +2573,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_3_Sub_4",
+                ParentRowCode = "Row_1_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2585,6 +2614,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 72308,
@@ -2598,6 +2628,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "StubAmt",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2612,6 +2643,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "BY1Prog",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2626,6 +2658,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Mdep",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2671,6 +2704,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ftes",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2683,25 +2717,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_4"));
             grid.DataRows.Add(dataRow);
         }
 
@@ -2718,8 +2752,7 @@ namespace ExhibitGrid.Processes
                 CanAdd = false,
                 CanDelete = false,
                 IsHidden = false,
-                Cells = new List<CellVm>(),
-                CollapseableChildren = new List<string>() { "Row_2_Child_1_Sub_4"}
+                Cells = new List<CellVm>()
             };
             var cell = new CellVm
             {
@@ -2850,25 +2883,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
@@ -2878,6 +2911,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_2_Child_1_Sub_4",
+                ParentRowCode =  "Row_2_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2918,6 +2952,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 19708,
@@ -2931,6 +2966,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "StubAmt",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2945,6 +2981,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "BY1Prog",
                 Class = "data-cell",
                 IsEditable = false,
@@ -2959,6 +2996,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Mdep",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2974,6 +3012,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Ape",
                 Class = "text-cell",
                 IsEditable = false,
@@ -2989,6 +3028,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Cmd",
                 Class = "text-cell",
                 IsEditable = false,
@@ -3004,6 +3044,7 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
+                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Ftes",
                 Class = "data-cell",
                 IsEditable = false,
@@ -3016,25 +3057,25 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_2_Sub_4"));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_2_Sub_4"));
             grid.DataRows.Add(dataRow);
         }
 
@@ -3181,34 +3222,35 @@ namespace ExhibitGrid.Processes
             };
             dataRow.Cells.Add(cell);
 
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false));
-            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "Op32Total", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0101", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0103", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0104", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0105", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0106", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0107", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0110", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0111", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0308", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0401", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0402", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0411", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0412", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0414", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0416", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
+            dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
             grid.DataRows.Add(dataRow);
         }
 
-        private CellVm GetOp32Col(string gridCode, string rowCode, string colCode, bool isEditable)
+        private CellVm GetOp32Col(string gridCode, string rowCode, string colCode, bool isEditable, string parentRowCode)
         {
             var cell = new CellVm
             {
                 GridCode = gridCode,
                 RowCode = rowCode,
+                ParentRowCode = parentRowCode,
                 ColCode = colCode,
                 Class = "data-cell",
                 IsEditable = isEditable,

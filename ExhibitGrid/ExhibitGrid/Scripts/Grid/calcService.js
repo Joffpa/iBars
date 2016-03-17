@@ -1,9 +1,10 @@
 /// <reference path="../typings/lodash/lodash.d.ts" />
+/// <reference path="../typings/mathjs/mathjs.d.ts" />
 'use strict';
 var app;
 (function (app) {
     var calc;
-    (function (calc) {
+    (function (calc_1) {
         var CalcService = (function () {
             function CalcService(modelService) {
                 this.ModelService = modelService;
@@ -91,9 +92,37 @@ var app;
                 }
                 //*************************************************************************************************
             };
+            //Actual framework!
+            CalcService.prototype.runCellCalcs = function (cellVm, newVal) {
+                var _this = this;
+                //Run calc of child rows first
+                if (cellVm.ParentRowCode) {
+                    var calc = this.ModelService.getParentRowCalcForColumn(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
+                    var result = math.round(math.eval(calc), 2);
+                    this.ModelService.updateCellValue(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode, result);
+                }
+                if (cellVm.Calcs && cellVm.Calcs.length > 0) {
+                    var thisGridCalcTargets = _.filter(cellVm.Calcs, { 'TargetGridCode': cellVm.GridCode });
+                    _.forEach(thisGridCalcTargets, function (calc) {
+                        var equation = calc.Expression;
+                        _.forEach(calc.Operands, function (operand) {
+                            var coordinate = "{" + operand.GridCode + "." + operand.RowCode + "." + operand.ColCode + ".}";
+                            var val = _this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                            if (val) {
+                                var sVal = val.toString();
+                            }
+                            else {
+                                var sVal = "0";
+                            }
+                            equation = equation.replace(coordinate, sVal);
+                        });
+                        _this.ModelService.updateCellValue(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode, math.round(math.eval(equation), 2));
+                    });
+                }
+            };
             return CalcService;
         }());
-        calc.CalcService = CalcService;
+        calc_1.CalcService = CalcService;
         angular.module('app.calc', ['app.model'])
             .service('calcService', ['modelService', CalcService]);
     })(calc = app.calc || (app.calc = {}));

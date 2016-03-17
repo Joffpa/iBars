@@ -9,6 +9,7 @@ namespace ExhibitGrid.ViewModel
     {
         public string GridCode { get; set; }
         public string RowCode { get; set; }
+        public string ParentRowCode { get; set; }
         public int DisplayOrder { get; set; }
         public bool IsHidden { get; set; }
         public bool IsCollapsed { get; set; }
@@ -23,7 +24,6 @@ namespace ExhibitGrid.ViewModel
         //hovertext
 
         public List<CellVm> Cells { get; set; }
-        public List<string> CollapseableChildren { get; set; } 
 
     }
 }
