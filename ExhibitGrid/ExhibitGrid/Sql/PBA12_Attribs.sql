@@ -3,9 +3,9 @@
 
 --select * from Zo_pba12_ProgData1
 
-select * from AttributeDeNorm
+--select * from AttributeDeNorm
 
-select * from AttributeCol
+--select * from AttributeCol
 
 --UspGetAttribVal 'PBA12_ProgData1'
 

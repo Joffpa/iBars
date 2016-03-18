@@ -17,6 +17,13 @@ namespace ExhibitGrid.Controllers
             var gridVm = new GridVmFactory().GetGridVm(id);
             return View(gridVm);
         }
+
+
+        public ActionResult GridV2(string id)
+        {
+            var gridVm = new GridVmFactory().GetGridVm(id);
+            return View(gridVm);
+        }
         
         [HttpGet]
         public JsonResult GetDdOptions(string rowCode, string colCode)
