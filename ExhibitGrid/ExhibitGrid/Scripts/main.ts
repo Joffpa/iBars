@@ -1,8 +1,7 @@
-﻿/// <reference path="app.component.ts" />
-
+﻿
+//import {AppComponent} from 'appComponent'
 import {bootstrap} from 'angular2/platform/browser'
 
-import {AppComponent} from './app.component'
-    
+var app = require('app.component');
 
-bootstrap(AppComponent);
+bootstrap(app.AppComponent); 

@@ -121,7 +121,7 @@ var app;
                 }
             };
             return CalcService;
-        })();
+        }());
         calc_1.CalcService = CalcService;
         angular.module('app.calc', ['app.model'])
             .service('calcService', ['modelService', CalcService]);

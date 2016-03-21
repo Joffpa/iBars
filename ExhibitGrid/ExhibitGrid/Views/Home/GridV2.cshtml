@@ -14,19 +14,14 @@
 <script>
     System.paths = {
         'main': '/Scripts/main.js',
-        'app.component': '/Scripts/app.component.js'
+        'app.component': '/Scripts/app.component.js',
+        'exhibit-grid.component': '/Scripts/exhibit-grid.component.js',
+
     };
-    System.config({
-        defaultJSExtension: true,
-        meta: {
-            'traceur': {
-                format: 'global'
-            },
-            'rx': {
-                format: 'cjs'
-            }
-        }
-    });
+    //System.config({
+    //    defaultJSExtensions: true,
+    //    baseUrl: './Scripts'
+    //});
     System.import('main');
 </script>
 
