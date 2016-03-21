@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ExhibitGrid.ViewModel;
-using ExhibitGrid.EntityDataModel;
+//using ExhibitGrid.ViewModel;
+//using ExhibitGrid.EntityDataModel;
 using System.Data.Entity.Infrastructure;
 
 namespace ProtoTests

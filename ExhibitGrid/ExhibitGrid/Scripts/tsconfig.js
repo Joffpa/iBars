@@ -1,0 +1,27 @@
+{
+    "compilerOptions";
+    {
+        "emitDecoratorMetadata";
+        true,
+            "experimentalDecorators";
+        true,
+            "module";
+        "commonjs",
+            "noEmitOnError";
+        true,
+            "noImplicitAny";
+        false,
+            "outDir";
+        "../wwwroot/appScripts/",
+            "removeComments";
+        false,
+            "sourceMap";
+        true,
+            "target";
+        "es5";
+    }
+    "exclude";
+    [
+        "node_modules"
+    ];
+}

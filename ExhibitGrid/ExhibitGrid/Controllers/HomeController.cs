@@ -21,14 +21,12 @@ namespace ExhibitGrid.Controllers
 
         public ActionResult GridV2(string id)
         {
-            var gridVm = new GridVmFactory().GetGridVm(id);
-            return View(gridVm);
+            return View();
         }
         
         [HttpGet]
         public JsonResult GetDdOptions(string rowCode, string colCode)
-        {
-            var options = new List<SelectListItem>();
+        {        var options = new List<SelectListItem>();
             options.Add(new SelectListItem()
             {
                 Text = "Option 1",

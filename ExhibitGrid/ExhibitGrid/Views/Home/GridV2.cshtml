@@ -2,27 +2,32 @@
 @{
     ViewBag.Title = "GridV2";
 }
-
-<script src="~/Scripts/es6-shim.min.js"></script>
+<script src="~/Scripts/angular2-polyfills.js"></script>
+@*<script src="~/Scripts/es6-shim.min.js"></script>*@
 <script src="~/Scripts/system-polyfills.js"></script>
 <script src="~/Scripts/shims_for_IE.js"></script>
-<script src="~/Scripts/angular2-polyfills.js"></script>
 <script src="~/Scripts/system.js"></script>
 <script src="~/Scripts/Rx.js"></script>
 <script src="~/Scripts/angular2.dev.js"></script>
 
 
 <script>
+    System.paths = {
+        'main': '/Scripts/main.js',
+        'app.component': '/Scripts/app.component.js'
+    };
     System.config({
-        packages: {
-            app: {
-                format: 'register',
-                defaultExtension: 'js'
+        defaultJSExtension: true,
+        meta: {
+            'traceur': {
+                format: 'global'
+            },
+            'rx': {
+                format: 'cjs'
             }
         }
     });
-    System.import('app/main')
-          .then(null, console.error.bind(console));
+    System.import('main');
 </script>
 
-<my-app>Loading...</my-app>
+<my-app>Loading...</my-app>   

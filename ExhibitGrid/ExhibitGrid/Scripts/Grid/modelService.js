@@ -10,14 +10,14 @@ var app;
                 this.Grids = new Array();
             }
             return ExhibitVm;
-        }());
+        })();
         model.ExhibitVm = ExhibitVm;
         var GridVm = (function () {
             function GridVm(GridCode) {
                 this.GridCode = GridCode;
             }
             return GridVm;
-        }());
+        })();
         model.GridVm = GridVm;
         var RowVm = (function () {
             function RowVm(RowCode, Class, Text, CanCollapse, CanSelect, IsSelected) {
@@ -25,7 +25,7 @@ var app;
                 this.Class = Class;
             }
             return RowVm;
-        }());
+        })();
         model.RowVm = RowVm;
         var CellVm = (function () {
             function CellVm(Order, Type, RowCode, ColCode, CanAddNarrative, HasNarrative) {
@@ -33,19 +33,19 @@ var app;
                 this.ColCode = ColCode;
             }
             return CellVm;
-        }());
+        })();
         model.CellVm = CellVm;
         var CalcExpressionVm = (function () {
             function CalcExpressionVm() {
             }
             return CalcExpressionVm;
-        }());
+        })();
         model.CalcExpressionVm = CalcExpressionVm;
         var CalcOperandVm = (function () {
             function CalcOperandVm() {
             }
             return CalcOperandVm;
-        }());
+        })();
         model.CalcOperandVm = CalcOperandVm;
         var MockModelService = (function () {
             function MockModelService() {
@@ -108,7 +108,7 @@ var app;
                 return calc;
             };
             return MockModelService;
-        }());
+        })();
         model.MockModelService = MockModelService;
         var service = angular
             .module('app.model', [])

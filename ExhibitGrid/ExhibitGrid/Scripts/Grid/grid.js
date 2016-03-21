@@ -9,7 +9,7 @@ var app;
             this.GridVm = this.ModelService.getGridVm(gridCode);
         }
         return GridController;
-    }());
+    })();
     app.GridController = GridController;
     var RowController = (function () {
         function RowController($scope, modelService) {
@@ -26,7 +26,7 @@ var app;
             alert('row deleted: ' + this.RowVm.RowCode);
         };
         return RowController;
-    }());
+    })();
     app.RowController = RowController;
     var TextCellController = (function () {
         function TextCellController($scope, modelService) {
@@ -37,7 +37,7 @@ var app;
             return { 'width': this.CellVm.Width };
         };
         return TextCellController;
-    }());
+    })();
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
         function NumericCellController($scope, modelService, calcService) {
@@ -59,7 +59,7 @@ var app;
             return { 'width': '110px' };
         };
         return NumericCellController;
-    }());
+    })();
     app.NumericCellController = NumericCellController;
     var PostItCellController = (function () {
         function PostItCellController($scope, modelService) {
@@ -70,7 +70,7 @@ var app;
             alert("Post it for cell: " + this.CellVm.RowCode + " " + this.CellVm.ColCode);
         };
         return PostItCellController;
-    }());
+    })();
     app.PostItCellController = PostItCellController;
     var NarrativeCellController = (function () {
         function NarrativeCellController($scope, modelService) {
@@ -82,7 +82,7 @@ var app;
             alert(this.CellVm.Value);
         };
         return NarrativeCellController;
-    }());
+    })();
     app.NarrativeCellController = NarrativeCellController;
     var DropdownCellController = (function () {
         function DropdownCellController($scope, modelService) {
@@ -90,7 +90,7 @@ var app;
             this.ModelService = modelService;
         }
         return DropdownCellController;
-    }());
+    })();
     app.DropdownCellController = DropdownCellController;
     // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
