@@ -7,8 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 //import '.exhibit-grid.component.d.ts'
 var core_1 = require('angular2/core');
-//import {ExhibitGridComponent} from './exhibit-grid.component'
-var grid = require('exhibit-grid.component');
+var exhibit_grid_component_1 = require('./exhibit-grid.component');
+//var grid = require('exhibit-grid.component');
 var AppComponent = (function () {
     function AppComponent() {
     }
@@ -16,7 +16,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'my-app',
             template: "\n        <h1>My First Angular 2 App</h1>\n        <exhibit-grid></exhibit-grid>\n        ",
-            directives: [grid.ExhibitGridComponent]
+            directives: [exhibit_grid_component_1.ExhibitGridComponent]
         })
     ], AppComponent);
     return AppComponent;
