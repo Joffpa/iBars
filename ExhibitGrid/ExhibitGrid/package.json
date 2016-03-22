@@ -1,8 +1,8 @@
 {
   "name": "ExhibitGrid",
   "version": "1.0.0",
-    "license": "ISC",
-    "typings":  "/Scripts/exhibit-grid.components.d.ts",
+  "license": "ISC",
+  "typings":  "/Scripts/exhibit-grid.components.d.ts",
   "scripts": {
     "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",    
     "tsc": "tsc",

@@ -1,11 +1,10 @@
 ﻿
-
 //import '.exhibit-grid.component.d.ts'
 import {Component} from 'angular2/core'
-import {ExhibitGridComponent} from 'exhibit-grid.component'
+//import {ExhibitGridComponent} from './exhibit-grid.component'
 var grid = require('exhibit-grid.component');
 
-
+ 
 @Component({
     selector: 'my-app',
     template:`
@@ -16,6 +15,5 @@ var grid = require('exhibit-grid.component');
 })
 export class AppComponent {
     testprop: string;
-
 }
 

@@ -1,7 +1,6 @@
 ﻿
-//import {AppComponent} from 'appComponent'
+import {AppComponent} from './app.component'
 import {bootstrap} from 'angular2/platform/browser'
+//var AppComponent = require('app.component').AppComponent; 
 
-var app = require('app.component');
-
-bootstrap(app.AppComponent); 
+bootstrap(AppComponent); 

@@ -564,10 +564,6 @@
     <None Include=".bin\bower.cmd" />
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
     <Content Include="Content\kendo\2014.2.716\images\kendoui.ttf" />
     <Content Include="Content\kendo\2014.2.716\images\kendoui.woff" />
     <Content Include="Content\kendo\2015.1.429\kendo.common.css.map" />
@@ -586,6 +582,7 @@
     <Content Include="EntityDataModel\EasModel.edmx.diagram">
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Scripts\system-config.js" />
     <Content Include="Scripts\es6-shim.min.js" />
     <Content Include="Scripts\exhibit-grid.component.js" />
     <Content Include="Scripts\main.js" />
@@ -793,7 +790,6 @@
     <Content Include="Scripts\system.js.map" />
     <Content Include="Views\Home\GridV2.cshtml" />
     <Content Include="typings.json" />
-    <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -848,11 +844,14 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
-    <TypeScriptOutFile />
+    <TypeScriptOutFile>
+    </TypeScriptOutFile>
     <TypeScriptOutDir />
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
     <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

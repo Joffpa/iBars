@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 //import '.exhibit-grid.component.d.ts'
 var core_1 = require('angular2/core');
-//import {ExhibitGridComponent} from 'exhibit-grid.component'
+//import {ExhibitGridComponent} from './exhibit-grid.component'
 var grid = require('exhibit-grid.component');
 var AppComponent = (function () {
     function AppComponent() {
