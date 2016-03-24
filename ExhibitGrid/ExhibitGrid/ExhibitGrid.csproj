@@ -557,7 +557,6 @@
     <Content Include="Scripts\angular2-polyfills.js" />
     <Content Include="Scripts\angular2.dev.js" />
     <Content Include="Scripts\angular2.min.js" />
-    <Content Include="Scripts\app.component.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\angular.min.js.map" />
@@ -582,10 +581,8 @@
     <Content Include="EntityDataModel\EasModel.edmx.diagram">
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Scripts\system-config.js" />
+    <Content Include="Scripts\GridV2\system-config.js" />
     <Content Include="Scripts\es6-shim.min.js" />
-    <Content Include="Scripts\exhibit-grid.component.js" />
-    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\Grid\calcService.js" />
     <Content Include="Scripts\Grid\commonUI.js" />
     <Content Include="Scripts\Grid\directives.js" />
@@ -709,9 +706,6 @@
     <Content Include="Sql\create new zo tables.sql" />
     <None Include="Properties\PublishProfiles\Easapps Publish.pubxml" />
     <Content Include="Scripts\Grid\commonUI.js.map" />
-    <Content Include="Scripts\main.js.map" />
-    <Content Include="Scripts\app.component.js.map" />
-    <Content Include="Scripts\exhibit-grid.component.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -804,9 +798,9 @@
     <TypeScriptCompile Include="Scripts\Enums.ts">
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\app.component.ts" />
-    <TypeScriptCompile Include="Scripts\exhibit-grid.component.ts" />
-    <TypeScriptCompile Include="Scripts\main.ts" />
+    <TypeScriptCompile Include="Scripts\GridV2\app.component.ts" />
+    <TypeScriptCompile Include="Scripts\GridV2\exhibit-grid.component.ts" />
+    <TypeScriptCompile Include="Scripts\GridV2\main.ts" />
     <TypeScriptCompile Include="Scripts\Grid\calcService.ts" />
     <TypeScriptCompile Include="Scripts\Grid\commonUI.ts" />
     <TypeScriptCompile Include="Scripts\Grid\directives.ts" />
