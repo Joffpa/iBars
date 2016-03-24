@@ -11,4 +11,4 @@ System.config({
     }
 });
 
-System.import('/Scripts/main.js');
+System.import('/Scripts/GridV2/main.js');

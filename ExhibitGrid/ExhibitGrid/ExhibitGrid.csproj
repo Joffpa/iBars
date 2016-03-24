@@ -581,6 +581,9 @@
     <Content Include="EntityDataModel\EasModel.edmx.diagram">
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Scripts\GridV2\app.component.js" />
+    <Content Include="Scripts\GridV2\exhibit-grid.component.js" />
+    <Content Include="Scripts\GridV2\main.js" />
     <Content Include="Scripts\GridV2\system-config.js" />
     <Content Include="Scripts\es6-shim.min.js" />
     <Content Include="Scripts\Grid\calcService.js" />
@@ -706,6 +709,9 @@
     <Content Include="Sql\create new zo tables.sql" />
     <None Include="Properties\PublishProfiles\Easapps Publish.pubxml" />
     <Content Include="Scripts\Grid\commonUI.js.map" />
+    <Content Include="Scripts\GridV2\app.component.js.map" />
+    <Content Include="Scripts\GridV2\exhibit-grid.component.js.map" />
+    <Content Include="Scripts\GridV2\main.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
