@@ -11,29 +11,28 @@
             <PropertyRef Name="RowCode" />
             <PropertyRef Name="ColCode" />
           </Key>
-          <Property Name="GridCode" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="RowCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="ColCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Class" Type="varchar" MaxLength="20" />
+          <Property Name="GridCode" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="RowCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ColCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Class" Type="nvarchar" MaxLength="20" />
           <Property Name="CanCollapse" Type="bit" />
           <Property Name="CanSelect" Type="bit" />
-          <Property Name="DisplayOrder" Type="int" />
           <Property Name="IsEditable" Type="bit" />
           <Property Name="IsHidden" Type="bit" />
-          <Property Name="HeaderText" Type="varchar" MaxLength="200" />
-          <Property Name="HoverBase" Type="varchar" MaxLength="1000" />
-          <Property Name="HoverAddition" Type="varchar" MaxLength="200" />
-          <Property Name="DisplayText" Type="varchar" MaxLength="1000" />
-          <Property Name="Width" Type="varchar" MaxLength="10" />
+          <Property Name="HeaderText" Type="nvarchar" MaxLength="200" />
+          <Property Name="HoverBase" Type="nvarchar" MaxLength="1000" />
+          <Property Name="HoverAddition" Type="nvarchar" MaxLength="200" />
+          <Property Name="DisplayText" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Width" Type="nvarchar" MaxLength="10" />
           <Property Name="HasHeader" Type="bit" />
-          <Property Name="Directive" Type="varchar" MaxLength="100" />
+          <Property Name="Directive" Type="nvarchar" MaxLength="100" />
           <Property Name="ColSpan" Type="int" />
           <Property Name="Level" Type="int" />
           <Property Name="CanAdd" Type="bit" />
           <Property Name="CanDelete" Type="bit" />
           <Property Name="Indent" Type="int" />
           <Property Name="IsBlank" Type="bit" />
-          <Property Name="ParentRowCode" Type="varchar" MaxLength="100" />
+          <Property Name="ParentRowCode" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Function Name="GetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="varchar" Mode="In" />
@@ -64,7 +63,7 @@
           <Property Type="String" Name="Class" Nullable="true" DefaultValue="" />
           <Property Type="Boolean" Name="CanCollapse" Nullable="true" DefaultValue="false" />
           <Property Type="Boolean" Name="CanSelect" DefaultValue="false" Nullable="true" />
-          <Property Type="Int32" Name="DisplayOrder" Nullable="true" DefaultValue="0" />
+          <Property Type="Decimal" Name="DisplayOrder" Nullable="true" />
           <Property Type="Boolean" Name="IsEditable" Nullable="true" DefaultValue="false" />
           <Property Type="Boolean" Name="IsHidden" Nullable="true" DefaultValue="false" />
           <Property Type="String" Name="HeaderText" Nullable="true" />
@@ -90,29 +89,28 @@
             <PropertyRef Name="RowCode" />
             <PropertyRef Name="ColCode" />
           </Key>
-          <Property Name="GridCode" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="RowCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ColCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Class" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GridCode" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="RowCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ColCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Class" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CanCollapse" Type="Boolean" />
           <Property Name="CanSelect" Type="Boolean" />
-          <Property Name="DisplayOrder" Type="Int32" />
           <Property Name="IsEditable" Type="Boolean" />
           <Property Name="IsHidden" Type="Boolean" />
-          <Property Name="HeaderText" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="HoverBase" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="HoverAddition" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="DisplayText" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="Width" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="HeaderText" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HoverBase" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="HoverAddition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Width" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="HasHeader" Type="Boolean" />
-          <Property Name="Directive" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Directive" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ColSpan" Type="Int32" />
           <Property Name="Level" Type="Int32" />
           <Property Name="CanAdd" Type="Boolean" />
           <Property Name="CanDelete" Type="Boolean" />
           <Property Name="Indent" Type="Int32" />
           <Property Name="IsBlank" Type="Boolean" />
-          <Property Name="ParentRowCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParentRowCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="GetCalcs_Result">
           <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
@@ -178,7 +176,6 @@
                 <ScalarProperty Name="HeaderText" ColumnName="HeaderText" />
                 <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
                 <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
-                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
                 <ScalarProperty Name="CanCollapse" ColumnName="CanCollapse" />
                 <ScalarProperty Name="Class" ColumnName="Class" />

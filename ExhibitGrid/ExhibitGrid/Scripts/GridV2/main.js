@@ -1,6 +1,6 @@
 "use strict";
-var app_component_1 = require('./app.component');
+var eas_app_component_1 = require('./eas-app.component');
 var browser_1 = require('angular2/platform/browser');
 //var AppComponent = require('app.component').AppComponent; 
-browser_1.bootstrap(app_component_1.AppComponent);
+browser_1.bootstrap(eas_app_component_1.EasAppComponent);
 //# sourceMappingURL=main.js.map

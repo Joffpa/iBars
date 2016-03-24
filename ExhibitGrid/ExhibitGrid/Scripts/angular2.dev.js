@@ -22699,7 +22699,7 @@ System.register("angular2/src/compiler/html_parser", ["angular2/src/facade/lang"
       }
       var tagDef = html_tags_1.getHtmlTagDefinition(el.name);
       var parentEl = this._getParentElement();
-      if (tagDef.requireExtraParent(lang_1.isPresent(parentEl) ? parentEl.name : null)) {
+      if (lang_1.isPresent(parentEl) && tagDef.requireExtraParent(parentEl.name)) {
         var newParent = new html_ast_1.HtmlElementAst(tagDef.parentToAdd, [], [el], el.sourceSpan);
         this._addToParent(newParent);
         this.elementStack.push(newParent);

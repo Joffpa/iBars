@@ -20,7 +20,6 @@ namespace ExhibitGrid.EntityDataModel
         public string Class { get; set; }
         public Nullable<bool> CanCollapse { get; set; }
         public Nullable<bool> CanSelect { get; set; }
-        public Nullable<int> DisplayOrder { get; set; }
         public Nullable<bool> IsEditable { get; set; }
         public Nullable<bool> IsHidden { get; set; }
         public string HeaderText { get; set; }

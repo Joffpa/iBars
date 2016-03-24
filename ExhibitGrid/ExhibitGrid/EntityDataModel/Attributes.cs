@@ -18,7 +18,6 @@ namespace ExhibitGrid.EntityDataModel
             this.Class = "";
             this.CanCollapse = false;
             this.CanSelect = false;
-            this.DisplayOrder = 0;
             this.IsEditable = false;
             this.IsHidden = false;
             this.DisplayText = "";
@@ -40,7 +39,7 @@ namespace ExhibitGrid.EntityDataModel
         public string Class { get; set; }
         public Nullable<bool> CanCollapse { get; set; }
         public Nullable<bool> CanSelect { get; set; }
-        public Nullable<int> DisplayOrder { get; set; }
+        public Nullable<decimal> DisplayOrder { get; set; }
         public Nullable<bool> IsEditable { get; set; }
         public Nullable<bool> IsHidden { get; set; }
         public string HeaderText { get; set; }

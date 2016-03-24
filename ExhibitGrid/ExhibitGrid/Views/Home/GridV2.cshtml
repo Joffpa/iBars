@@ -1,16 +1,81 @@
-﻿
-@{
-    ViewBag.Title = "GridV2";
-}
+﻿@model ExhibitGrid.ViewModel.GridVm
+
 <script src="~/Scripts/angular2-polyfills.js"></script>
-@*<script src="~/Scripts/es6-shim.min.js"></script>*@
+<script src="~/Scripts/es6-shim.min.js"></script>
 <script src="~/Scripts/system-polyfills.js"></script>
 <script src="~/Scripts/shims_for_IE.js"></script>
 <script src="~/Scripts/system.js"></script>
 <script src="~/Scripts/Rx.js"></script>
 <script src="~/Scripts/angular2.dev.js"></script>
+<link href="~/Content/gridTable.min.css" rel="stylesheet" />
+<script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
+<link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
+<link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
+
+<script>
+    (function (dynamicRow) {
+        dynamicRow.Template = "<td>one</td><td>two</td>";
+    }(window.dynamicRow = window.dynamicRow || {}))
+</script>
+
 <script src="~/Scripts/GridV2/system-config.js"></script>
 
+@{
+    var headerLevels = Model.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
+    var firstRow = true;
+    var headerLevelZero = Model.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder);
+    var numExtraCols = 0;
+    var hasSelect = false;
+    var hasCollapse = false;
+    var hasAdd = false;
+    var hasDelete = false;
+    if (Model.DataRows.Any(r => r.CanSelect))
+    {
+        numExtraCols++;
+        hasSelect = true;
+    }
+    if (Model.DataRows.Any(r => r.CanCollapse))
+    {
+        numExtraCols++;
+        hasCollapse = true;
+    }
+    if (Model.DataRows.Any(r => r.CanAdd))
+    {
+        numExtraCols++;
+        hasAdd = true;
+    }
+    if (Model.DataRows.Any(r => r.CanDelete))
+    {
+        numExtraCols++;
+        hasDelete = true;
+    }
+}
+<table class="table table-bordered exhibit-table">
+    <thead>
+        @foreach (var level in headerLevels)
+        {
+            <tr>
+                @if (firstRow)
+                {
+                    <th class="grid-name" colspan="@(numExtraCols + headerLevelZero.Count(h => !h.HasHeader && !h.IsHidden))" rowspan="@headerLevels.Count()">
+                        @Model.DisplayText
+                    </th>
+                }
+                @{
+                var thisLevel = level;
+                }
+                @foreach (var column in Model.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder))
+                {
+                    <th scope="col" colspan="@(column.ColSpan)">
+                        @Html.Raw(column.DisplayText)
+                    </th>
+                }
+                @{ firstRow = false; }
+            </tr>
+        }
+    </thead>
+    <tbody easApp>
+    </tbody>
+</table>
 
 
-<my-app>Loading...</my-app>   

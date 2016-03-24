@@ -21,7 +21,8 @@ namespace ExhibitGrid.Controllers
 
         public ActionResult GridV2(string id)
         {
-            return View();
+            var gridVm = new GridVmFactory().GetGridVm(id);
+            return View(gridVm);
         }
         
         [HttpGet]
