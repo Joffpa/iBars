@@ -42,7 +42,6 @@ namespace ExhibitGrid.EntityDataModel
         public Nullable<decimal> DisplayOrder { get; set; }
         public Nullable<bool> IsEditable { get; set; }
         public Nullable<bool> IsHidden { get; set; }
-        public string HeaderText { get; set; }
         public string HoverBase { get; set; }
         public string HoverAddition { get; set; }
         public string DisplayText { get; set; }

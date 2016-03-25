@@ -11,7 +11,65 @@
 
 --UspDropAttribCol 'Class'
 
---UspAddNewAttribCol 'ParentRowCode', 'VARCHAR(100)'
+--UspPopAttributeDeNormRecs 'PBA12_ProgData1'
+
+--UspInsAttributeDeNormRecs 'PBA12_ProgData1', '', ''
+
+--*******************ADD ATTRIB COLS*******************
+--UspAddNewAttribCol 'DisplayText', 'NVARCHAR(500)'
+--go
+--UspAddNewAttribCol 'IsEditable', 'BIT'
+--go
+--UspAddNewAttribCol 'HasHeader', 'BIT'
+--go
+--UspAddNewAttribCol 'IsHidden', 'BIT'
+--go
+--UspAddNewAttribCol 'Directive', 'NVARCHAR(100)'
+--go
+--UspAddNewAttribCol 'Width', 'NVARCHAR(100)'
+--go
+--UspAddNewAttribCol 'ColSpan', 'INTEGER'
+--go
+--UspAddNewAttribCol 'Level', 'INTEGER'
+--go
+--UspAddNewAttribCol 'Class', 'NVARCHAR(100)'
+--go
+--UspAddNewAttribCol 'CanSelect', 'BIT'
+--go
+--UspAddNewAttribCol 'CanCollapse', 'BIT'
+--go
+--UspAddNewAttribCol 'CanAdd', 'BIT'
+--go
+--UspAddNewAttribCol 'CanDelete', 'BIT'
+--go
+--UspAddNewAttribCol 'Indent', 'INTEGER'
+--go
+--UspAddNewAttribCol 'IsBlank', 'BIT'
+--go
+--UspAddNewAttribCol 'HoverBase', 'NVARCHAR(1000)'
+--go
+--UspAddNewAttribCol 'HoverAddition', 'NVARCHAR(300)'
+--go
+--UspAddNewAttribCol 'ParentRowCode', 'NVARCHAR(255)'
+--go
+
+
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , '' ,'' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CommunHdr' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CommunSustBase' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CommunLongHaul' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CommunDeplMobl' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CmdCntrlHdr' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CmdCntrlNatnl' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CmdCntrlOpera' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_CmdCntrlTact' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_C3RelHdr' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_C3RelNavig' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_C3RelMetrlgy' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_C3RelCombID' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_C3RelInfoAssur' ,'RowText' 
+--exec UspInsAttributeDeNormRecs 'PBA12_ProgData1' , 'PBA12_ProgData_TOTAL' ,'RowText' 
+
 
 -- SELECT * FROM AttributeCol
 
@@ -20,34 +78,34 @@ exec UspUpdAttribVal 'PBA12_ProgData1', '', '',  'DisplayText=''PBA-12'',IsEdita
 
 
 --COLUMNS
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'RowText',  'IsEditable=0,HasHeader=0,IsHidden=0,Directive=''text'',Width=''300px'',DisplayText=null,ColSpan=1,Level=0,DisplayOrder=1', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Py',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{PY}'',ColSpan=1,Level=0,DisplayOrder=2', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Pyprice',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{PY} Price'',ColSpan=1,Level=0,DisplayOrder=3', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Pyprog',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{PY} Prog'',ColSpan=1,Level=0,DisplayOrder=4', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Cy',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{CY}'',ColSpan=1,Level=0,DisplayOrder=5', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Cyprice',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{CY} Price'',ColSpan=1,Level=0,DisplayOrder=6', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Cyprog',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{CY} Prog'',ColSpan=1,Level=0,DisplayOrder=7', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By1',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY1}'',ColSpan=1,Level=0,DisplayOrder=8', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By1price',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY1} Price'',ColSpan=1,Level=0,DisplayOrder=9', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By1prog',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY1} Prog'',ColSpan=1,Level=0,DisplayOrder=10', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By2',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY2}'',ColSpan=1,Level=0,DisplayOrder=11', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'RowText',  'IsEditable=0,HasHeader=0,IsHidden=0,Directive=''text'',Width=''300px'',DisplayText=null,ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Py',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{PY}'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Pyprice',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{PY} Price'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Pyprog',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{PY} Prog'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Cy',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{CY}'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Cyprice',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{CY} Price'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_Cyprog',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{CY} Prog'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By1',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY1}'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By1price',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY1} Price'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By1prog',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY1} Prog'',ColSpan=1,Level=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', '', 'PBA12_ProgData_By2',  'IsEditable=1,HasHeader=1,IsHidden=0,Directive=''numeric'',Width=null,DisplayText=''{BY2}'',ColSpan=1,Level=0', ''
 
 
 --Rows
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunHdr', '',  'IsEditable=0,Class=''sub-header-row'',DisplayOrder=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunSustBase', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=2,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunLongHaul', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=3,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunDeplMobl', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=4,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlHdr', '',  'IsEditable=0,Class=''sub-header-row'',DisplayOrder=5,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlNatnl', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=6,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlOpera', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=7,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlTact', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=8,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelHdr', '',  'IsEditable=0,Class=''sub-header-row'',DisplayOrder=9,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelNavig', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=10,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelMetrlgy', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=11,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelCombID', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=12,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelInfoAssur', '',  'IsEditable=0,Class=''data-row'',DisplayOrder=13,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_TOTAL', '',  'IsEditable=0,Class=''total-row'',DisplayOrder=14,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunHdr', '',  'IsEditable=0,Class=''sub-header-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunSustBase', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunLongHaul', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CommunDeplMobl', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlHdr', '',  'IsEditable=0,Class=''sub-header-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlNatnl', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlOpera', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_CmdCntrlTact', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelHdr', '',  'IsEditable=0,Class=''sub-header-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelNavig', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelMetrlgy', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelCombID', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_C3RelInfoAssur', '',  'IsEditable=1,Class=''data-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA12_ProgData1', 'PBA12_ProgData_TOTAL', '',  'IsEditable=0,Class=''total-row'',IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 
 
 --Cells

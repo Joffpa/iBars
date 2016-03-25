@@ -110,7 +110,7 @@
                         }
                         else
                         {
-                            <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}"  >
+                            <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
                                 <div @(col.Directive + "-cell") cell-vm="row.Cells[@i]" class="@(col.Directive + "-td")">
                                 </div>
                             </td>
@@ -129,6 +129,7 @@
 
         gridModel.grid = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
         gridModel.gridCode = '@Model.GridCode';
+
 
     }(window.gridModel = window.gridModel || {} ));
 

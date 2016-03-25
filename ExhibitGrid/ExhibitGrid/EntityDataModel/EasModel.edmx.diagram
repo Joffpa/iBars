@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3b1e1b0ee772438da337c4583f04e47b" Name="Diagram1" ZoomLevel="72">
-        <EntityTypeShape EntityType="EasModel.AttributeDeNorm" Width="1.5" PointX="1.25" PointY="0.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,8 +5,7 @@ var app;
     var model;
     (function (model) {
         var ExhibitVm = (function () {
-            function ExhibitVm(ExhibitCode) {
-                this.ExhibitCode = ExhibitCode;
+            function ExhibitVm() {
                 this.Grids = new Array();
             }
             return ExhibitVm;
@@ -49,7 +48,7 @@ var app;
         model.CalcOperandVm = CalcOperandVm;
         var MockModelService = (function () {
             function MockModelService() {
-                this.exhibitModel = new ExhibitVm("Test Exhibit");
+                this.exhibitModel = new ExhibitVm();
                 this.addGridVm(window['gridModel'].grid);
             }
             MockModelService.prototype.addGridVm = function (gridVm) {

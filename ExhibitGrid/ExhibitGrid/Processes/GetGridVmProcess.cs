@@ -44,6 +44,13 @@ namespace ExhibitGrid.Processes
                     
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
                     var cellDictionary = new Dictionary<string, Attributes>();
+                    //TODO: Clean this up
+                    var hasSelect = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanSelect ?? false));
+                    var hasCollapse = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanCollapse ?? false));
+                    var hasAdd = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanAdd ?? false));
+                    var hasDelete = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanDelete ?? false));
+
+
                     foreach (var attrib in attribs)
                     {
                         if (!string.IsNullOrEmpty(attrib.RowCode) && !string.IsNullOrEmpty(attrib.ColCode))
@@ -85,10 +92,14 @@ namespace ExhibitGrid.Processes
                                 GridCode = attrib.GridCode,
                                 RowCode = attrib.RowCode,
                                 ParentRowCode = attrib.ParentRowCode,
-                                CanAdd = attrib.CanAdd ?? false,
-                                CanCollapse = attrib.CanCollapse ?? false,
-                                CanDelete = attrib.CanDelete ?? false,
+                                HasSelectCol = hasSelect, 
                                 CanSelect = attrib.CanSelect ?? false,
+                                HasCollapseCol = hasCollapse,
+                                CanCollapse = attrib.CanCollapse ?? false,
+                                HasAddCol = hasAdd,
+                                CanAdd = attrib.CanAdd ?? false,
+                                HasDeleteCol = hasDelete,
+                                CanDelete = attrib.CanDelete ?? false,
                                 Cells = new List<CellVm>(),
                                 Class = attrib.Class,
                                 DisplayOrder = attrib.DisplayOrder.HasValue ?  attrib.DisplayOrder.Value : 0,
@@ -143,7 +154,7 @@ namespace ExhibitGrid.Processes
                                 ColumnHeader = col.DisplayText,
                                 Indent = cellAttrib.Indent ?? 0,
                                 IsBlank = cellAttrib.IsBlank ?? false,
-                                IsEditable = (cellAttrib.IsEditable ?? (row.IsEditable || col.IsEditable)) && grid.IsEditable,
+                                IsEditable = (cellAttrib.IsEditable ?? false) && row.IsEditable && col.IsEditable && grid.IsEditable,
                                 IsHidden = cellAttrib.IsHidden ?? false,
                                 Value = cellAttrib.Value,
                                 NumValue = valParsed ? numval : 0,

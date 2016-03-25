@@ -5,43 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AttributeDeNorm">
-          <Key>
-            <PropertyRef Name="GridCode" />
-            <PropertyRef Name="RowCode" />
-            <PropertyRef Name="ColCode" />
-          </Key>
-          <Property Name="GridCode" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="RowCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ColCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Class" Type="nvarchar" MaxLength="20" />
-          <Property Name="CanCollapse" Type="bit" />
-          <Property Name="CanSelect" Type="bit" />
-          <Property Name="IsEditable" Type="bit" />
-          <Property Name="IsHidden" Type="bit" />
-          <Property Name="HeaderText" Type="nvarchar" MaxLength="200" />
-          <Property Name="HoverBase" Type="nvarchar" MaxLength="1000" />
-          <Property Name="HoverAddition" Type="nvarchar" MaxLength="200" />
-          <Property Name="DisplayText" Type="nvarchar" MaxLength="1000" />
-          <Property Name="Width" Type="nvarchar" MaxLength="10" />
-          <Property Name="HasHeader" Type="bit" />
-          <Property Name="Directive" Type="nvarchar" MaxLength="100" />
-          <Property Name="ColSpan" Type="int" />
-          <Property Name="Level" Type="int" />
-          <Property Name="CanAdd" Type="bit" />
-          <Property Name="CanDelete" Type="bit" />
-          <Property Name="Indent" Type="int" />
-          <Property Name="IsBlank" Type="bit" />
-          <Property Name="ParentRowCode" Type="nvarchar" MaxLength="100" />
-        </EntityType>
         <Function Name="GetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="varchar" Mode="In" />
         </Function>
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="GridCode" Type="varchar" Mode="In" />
+          <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="EasModelStoreContainer">
-          <EntitySet Name="AttributeDeNorm" EntityType="Self.AttributeDeNorm" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -51,7 +21,6 @@
           <FunctionImport Name="UspGetAttribVal" ReturnType="Collection(EasModel.Attributes)">
           <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="AttributeDeNorms" EntityType="EasModel.AttributeDeNorm" />
           <FunctionImport Name="GetCalcs" ReturnType="Collection(EasModel.GetCalcs_Result)">
           <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
@@ -66,7 +35,6 @@
           <Property Type="Decimal" Name="DisplayOrder" Nullable="true" />
           <Property Type="Boolean" Name="IsEditable" Nullable="true" DefaultValue="false" />
           <Property Type="Boolean" Name="IsHidden" Nullable="true" DefaultValue="false" />
-          <Property Type="String" Name="HeaderText" Nullable="true" />
           <Property Type="String" Name="HoverBase" Nullable="true" />
           <Property Type="String" Name="HoverAddition" Nullable="true" />
           <Property Type="String" Name="DisplayText" Nullable="true" DefaultValue="" />
@@ -83,35 +51,6 @@
           <Property Type="String" Name="HoverText" Nullable="true" />
           <Property Type="String" Name="ParentRowCode" Nullable="false" />
         </ComplexType>
-        <EntityType Name="AttributeDeNorm">
-          <Key>
-            <PropertyRef Name="GridCode" />
-            <PropertyRef Name="RowCode" />
-            <PropertyRef Name="ColCode" />
-          </Key>
-          <Property Name="GridCode" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="RowCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ColCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Class" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CanCollapse" Type="Boolean" />
-          <Property Name="CanSelect" Type="Boolean" />
-          <Property Name="IsEditable" Type="Boolean" />
-          <Property Name="IsHidden" Type="Boolean" />
-          <Property Name="HeaderText" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="HoverBase" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="HoverAddition" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="DisplayText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Width" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="HasHeader" Type="Boolean" />
-          <Property Name="Directive" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ColSpan" Type="Int32" />
-          <Property Name="Level" Type="Int32" />
-          <Property Name="CanAdd" Type="Boolean" />
-          <Property Name="CanDelete" Type="Boolean" />
-          <Property Name="Indent" Type="Int32" />
-          <Property Name="IsBlank" Type="Boolean" />
-          <Property Name="ParentRowCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         <ComplexType Name="GetCalcs_Result">
           <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="TargetRowCode" Nullable="true" MaxLength="100" />
@@ -139,7 +78,6 @@
                 <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
-                <ScalarProperty Name="HeaderText" ColumnName="HeaderText" />
                 <ScalarProperty Name="HoverBase" ColumnName="HoverBase" />
                 <ScalarProperty Name="HoverAddition" ColumnName="HoverAddition" />
                 <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
@@ -157,34 +95,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="AttributeDeNorms">
-            <EntityTypeMapping TypeName="EasModel.AttributeDeNorm">
-              <MappingFragment StoreEntitySet="AttributeDeNorm">
-                <ScalarProperty Name="ParentRowCode" ColumnName="ParentRowCode" />
-                <ScalarProperty Name="IsBlank" ColumnName="IsBlank" />
-                <ScalarProperty Name="Indent" ColumnName="Indent" />
-                <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
-                <ScalarProperty Name="CanAdd" ColumnName="CanAdd" />
-                <ScalarProperty Name="Level" ColumnName="Level" />
-                <ScalarProperty Name="ColSpan" ColumnName="ColSpan" />
-                <ScalarProperty Name="Directive" ColumnName="Directive" />
-                <ScalarProperty Name="HasHeader" ColumnName="HasHeader" />
-                <ScalarProperty Name="Width" ColumnName="Width" />
-                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
-                <ScalarProperty Name="HoverAddition" ColumnName="HoverAddition" />
-                <ScalarProperty Name="HoverBase" ColumnName="HoverBase" />
-                <ScalarProperty Name="HeaderText" ColumnName="HeaderText" />
-                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
-                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
-                <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
-                <ScalarProperty Name="CanCollapse" ColumnName="CanCollapse" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
-                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
-                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetCalcs" FunctionName="EasModel.Store.GetCalcs">
             <ResultMapping>
               <ComplexTypeMapping TypeName="EasModel.GetCalcs_Result">

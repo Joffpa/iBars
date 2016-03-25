@@ -27,10 +27,10 @@ AllCalcs AS
 		Inner Join AllCalcs a on a.TargetGridCode = o2.GridCode and a.TargetRowCode = o2.RowCode and a.TargetColCode = o2.ColCode
 		where o2.GridCode != @GridCode
 	)
-	 --MAX RECURSION
 	Select distinct a.TargetGridCode, a.TargetRowCode, a.TargetColCode, a.Expression, o.GridCode, o.RowCode, o.ColCode 
 	from AllCalcs a
 	join CalcExpressionOperand eo on a.CalcExpressionId = eo.CalcExpressionId
 	join CalcOperand o on eo.CalcOperandId = o.CalcOperandId
+	OPTION(MAXRECURSION 100)
 	--order by TargetGridCode, TargetRowCode
 	go

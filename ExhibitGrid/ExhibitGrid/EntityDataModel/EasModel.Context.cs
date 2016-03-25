@@ -27,7 +27,6 @@ namespace ExhibitGrid.EntityDataModel
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AttributeDeNorm> AttributeDeNorms { get; set; }
     
         public virtual ObjectResult<Attributes> UspGetAttribVal(string gridCode)
         {

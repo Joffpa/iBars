@@ -18,11 +18,8 @@ module app.model {
     }
 
     export class ExhibitVm {
-        ExhibitCode: string;
         Grids: ExhibitGrid.ViewModel.IGridVm[];
-
-        constructor(ExhibitCode: string) {
-            this.ExhibitCode = ExhibitCode;
+        constructor() {
             this.Grids = new Array<ExhibitGrid.ViewModel.IGridVm>();
         }        
     }
@@ -172,7 +169,7 @@ module app.model {
         }
         
         constructor() {
-            this.exhibitModel = new ExhibitVm("Test Exhibit");
+            this.exhibitModel = new ExhibitVm();
             this.addGridVm(window['gridModel'].grid);
         }
     }

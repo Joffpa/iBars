@@ -161,9 +161,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="EntityDataModel\AttributeDeNorm.cs">
-      <DependentUpon>EasModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntityDataModel\Attributes.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
@@ -554,6 +551,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular2-all.umd.js" />
     <Content Include="Scripts\angular2-polyfills.js" />
     <Content Include="Scripts\angular2.dev.js" />
     <Content Include="Scripts\angular2.min.js" />
@@ -581,9 +579,12 @@
     <Content Include="EntityDataModel\EasModel.edmx.diagram">
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Scripts\GridV2\angular2-polyfills.min.js" />
     <Content Include="Scripts\GridV2\eas-app.component.js" />
     <Content Include="Scripts\GridV2\eas-row.component.js" />
+    <Content Include="Scripts\GridV2\grid-model.service.js" />
     <Content Include="Scripts\GridV2\main.js" />
+    <Content Include="Scripts\GridV2\Rx.umd.min.js" />
     <Content Include="Scripts\GridV2\system-config.js" />
     <Content Include="Scripts\es6-shim.min.js" />
     <Content Include="Scripts\Grid\calcService.js" />
@@ -700,6 +701,8 @@
       <DependentUpon>gridTable.css</DependentUpon>
     </Content>
     <Content Include="package.json" />
+    <Content Include="Scripts\r.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\Rx.js" />
     <Content Include="Scripts\shims_for_IE.js" />
     <Content Include="Scripts\system-polyfills.js" />
@@ -712,6 +715,8 @@
     <Content Include="Scripts\GridV2\main.js.map" />
     <Content Include="Scripts\GridV2\eas-row.component.js.map" />
     <Content Include="Scripts\GridV2\eas-app.component.js.map" />
+    <Content Include="Scripts\GridV2\angular2-all.umd.min.js" />
+    <Content Include="Scripts\GridV2\grid-model.service.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -747,9 +752,7 @@
     </Content>
     <Content Include="Scripts\_references.js" />
     <Content Include="Sql\EF Version of Calc.sql" />
-    <Content Include="Sql\Non EF version of calc.sql" />
     <Content Include="Sql\GetCalcs.sql" />
-    <Content Include="Sql\multiple result set sp.sql" />
     <Content Include="Sql\PBA12_Attribs.sql" />
     <Content Include="templates\blankCell.html" />
     <Content Include="templates\dropdownCell.html" />
@@ -806,6 +809,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\GridV2\eas-app.component.ts" />
     <TypeScriptCompile Include="Scripts\GridV2\eas-row.component.ts" />
+    <TypeScriptCompile Include="Scripts\GridV2\grid-model.service.ts" />
     <TypeScriptCompile Include="Scripts\GridV2\main.ts" />
     <TypeScriptCompile Include="Scripts\Grid\calcService.ts" />
     <TypeScriptCompile Include="Scripts\Grid\commonUI.ts" />

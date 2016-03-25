@@ -61,59 +61,59 @@ ON [dbo].[CalcExpressionOperand](CalcOperandId)
 include(CalcExpressionId)
 go
 
-insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
-select 'Grid_A','Row_3','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
-union all
-select 'Grid_A','Row_5','','{Grid_A.Row_3..} + {Grid_A.Row_4..}'
-union all
-select 'Grid_B','Row_1','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
-union all
-select 'Grid_B','Row_3','','{Grid_B.Row_1..} + {Grid_B.Row_2..}'
-union all
-select 'Grid_A','Row_6','','{Grid_A.Row_1..} + {Grid_B.Row_1..}'
-union all
-select 'Grid_C','Row_6','','{Grid_C.Row_1..} + {Grid_C.Row_2..}'
-insert into CalcOperand (GridCode, RowCode, ColCode)
-select 'Grid_A','Row_1',''
-union all
-select 'Grid_A','Row_2',''
-union all
-select 'Grid_A','Row_3',''
-union all
-select 'Grid_A','Row_4',''
-union all
-select 'Grid_B','Row_1',''
-union all
-select 'Grid_B','Row_2',''
-union all
-select 'Grid_C','Row_1',''
-union all
-select 'Grid_C','Row_2',''
+--insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
+--select 'Grid_A','Row_3','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
+--union all
+--select 'Grid_A','Row_5','','{Grid_A.Row_3..} + {Grid_A.Row_4..}'
+--union all
+--select 'Grid_B','Row_1','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
+--union all
+--select 'Grid_B','Row_3','','{Grid_B.Row_1..} + {Grid_B.Row_2..}'
+--union all
+--select 'Grid_A','Row_6','','{Grid_A.Row_1..} + {Grid_B.Row_1..}'
+--union all
+--select 'Grid_C','Row_6','','{Grid_C.Row_1..} + {Grid_C.Row_2..}'
+--insert into CalcOperand (GridCode, RowCode, ColCode)
+--select 'Grid_A','Row_1',''
+--union all
+--select 'Grid_A','Row_2',''
+--union all
+--select 'Grid_A','Row_3',''
+--union all
+--select 'Grid_A','Row_4',''
+--union all
+--select 'Grid_B','Row_1',''
+--union all
+--select 'Grid_B','Row_2',''
+--union all
+--select 'Grid_C','Row_1',''
+--union all
+--select 'Grid_C','Row_2',''
 
-insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
-select 1, 1
-union all
-select 1, 2
-union all
-select 2, 3
-union all
-select 2, 4
-union all
-select 3, 1
-union all
-select 3, 2
-union all
-select 4, 5
-union all
-select 4, 6
-union all
-select 5, 1
-union all
-select 5, 5
-union all
-select 6, 7
-union all
-select 6, 8
+--insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
+--select 1, 1
+--union all
+--select 1, 2
+--union all
+--select 2, 3
+--union all
+--select 2, 4
+--union all
+--select 3, 1
+--union all
+--select 3, 2
+--union all
+--select 4, 5
+--union all
+--select 4, 6
+--union all
+--select 5, 1
+--union all
+--select 5, 5
+--union all
+--select 6, 7
+--union all
+--select 6, 8
 
 --select * from CalcExpression
 --select * from CalcExpressionOperand

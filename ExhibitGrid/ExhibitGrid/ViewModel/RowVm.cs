@@ -14,10 +14,14 @@ namespace ExhibitGrid.ViewModel
         public bool IsHidden { get; set; }
         public bool IsCollapsed { get; set; }
         public string Class { get; set; }
+        public bool HasCollapseCol { get; set; }
         public bool CanCollapse { get; set; }
-        public bool CanSelect { get; set; }
+        public bool HasAddCol { get; set; }
         public bool CanAdd { get; set; }
+        public bool HasDeleteCol { get; set; }
         public bool CanDelete { get; set; }
+        public bool HasSelectCol { get; set; }
+        public bool CanSelect { get; set; }
         public bool IsSelected { get; set; }
         public bool IsEditable { get; set; }
         //alignment

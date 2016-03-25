@@ -125,8 +125,7 @@ module app {
 
     // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
-        .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])    
+        .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])
         .controller('gridController', ['modelService', GridController])
         .controller('rowController', ['$scope', 'modelService', RowController]);
-
 }
