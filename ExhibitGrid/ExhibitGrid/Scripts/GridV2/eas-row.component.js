@@ -12,7 +12,7 @@ var EasRowComponent = (function () {
     EasRowComponent = __decorate([
         core_1.Component({
             selector: '[easRow]',
-            template: " <td> one</td>\n                <td> two</td>\n                <td> three</td>"
+            template: " "
         })
     ], EasRowComponent);
     return EasRowComponent;

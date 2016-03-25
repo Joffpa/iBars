@@ -12,14 +12,6 @@
 <link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
 <link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
 
-<script>
-    (function (dynamicRow) {
-        dynamicRow.Template = "<td>one</td><td>two</td>";
-    }(window.dynamicRow = window.dynamicRow || {}))
-</script>
-
-<script src="~/Scripts/GridV2/system-config.js"></script>
-
 @{
     var headerLevels = Model.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
     var firstRow = true;
@@ -50,6 +42,28 @@
         hasDelete = true;
     }
 }
+@{ 
+    var rowTemplate = " <tr [hero]='selectedHero'>";
+    if (hasSelect)
+    {
+        rowTemplate += "<td colspan='1'> <input type='checkbox' ng-if='::row.CanSelect' ng-model='row.IsSelected'> </td>"
+    }
+
+}
+
+<script>
+    (function (easGrid) {
+        easGrid.rowTemplate = "<tr><td>one</td><td>two</td></tr>";
+        
+
+        easGrid.gridVm = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        easGrid.gridCode = '@Model.GridCode';
+
+    }(window.easGrid = window.easGrid || {}))
+</script>
+
+<script src="~/Scripts/GridV2/system-config.js"></script>
+
 <table class="table table-bordered exhibit-table">
     <thead>
         @foreach (var level in headerLevels)
