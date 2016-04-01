@@ -131,7 +131,7 @@ namespace ExhibitGrid.Processes
                     var allExpandedCellCalcs = cellCalcResults;
 
 
-                    allExpandedCellCalcs.AddRange(cellCalcsExpandedFromRowCalcs.Where(rc => rc.TargetGridCode));
+                    //allExpandedCellCalcs.AddRange(cellCalcsExpandedFromRowCalcs.Where(rc => rc.TargetGridCode));
 
                     var calcGroups = cellCalcResults.GroupBy(r => new {r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
                             (key, group) => new CalcExpressionVm()
