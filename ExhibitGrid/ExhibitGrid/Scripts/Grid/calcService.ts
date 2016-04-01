@@ -8,7 +8,7 @@ module app.calc{
     export interface ICalcService {
         cellHasCalcs(gridCode: string, rowCode: string, colCode: string): boolean; 
         runCalcsForCell(gridCode: string, rowCode: string, colCode: string, newVal: number): void;
-        runCellCalcs(cellVm: ExhibitGrid.ViewModel.ICellVm, newVal: number): void;               
+        runCellCalcs(cellVm: ExhibitGrid.ViewModel.ICellVm): void;               
     }
 
     export class CalcService implements ICalcService {
@@ -111,7 +111,7 @@ module app.calc{
         }
         
         //Actual framework!
-        runCellCalcs(cellVm: ExhibitGrid.ViewModel.ICellVm, newVal: number) {
+        runCellCalcs(cellVm: ExhibitGrid.ViewModel.ICellVm) {
             //Run calc of child rows first
             if (cellVm.ParentRowCode) {
                 var calc = this.ModelService.getParentRowCalcForColumn(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
@@ -125,14 +125,21 @@ module app.calc{
                     var equation = calc.Expression;
                     _.forEach(calc.Operands, operand => {
                         var coordinate = "{" + operand.GridCode + "." + operand.RowCode + "." + operand.ColCode + ".}";
-                        var val = this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                        var val = null;
+                        if (operand.GridCode === cellVm.GridCode && operand.RowCode === cellVm.RowCode && operand.ColCode === cellVm.ColCode){
+                            val = cellVm.NumValue;
+                        }
+                        else {
+                            val = this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                        }
                         if (val) {
-                            var sVal = val.toString();
+                            var sVal = <string>val.toString();
                         } else {
                             var sVal = "0";
                         }
                         equation = equation.replace(coordinate, sVal);
                     });
+
                     this.ModelService.updateCellValue(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode, <number>math.round(math.eval(equation), 2));
                 });
             }

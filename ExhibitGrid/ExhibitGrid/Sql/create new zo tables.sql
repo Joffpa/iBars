@@ -2,7 +2,6 @@
 EXEC CreateZgridTbls 'PBA12_ProgData1'
 
 --select * from ColMap
-
 -- demo add ZGrid Rows
 DECLARE @Rows GridRows
 INSERT INTO @Rows ( RowCode, RowText, RowOrd, RowType )

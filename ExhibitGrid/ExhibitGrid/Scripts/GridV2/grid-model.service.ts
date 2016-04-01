@@ -1,13 +1,120 @@
-﻿module Services {
-    export class GridModelService {
+﻿/// <reference path="../typings/lodash/lodash.d.ts" />
 
-        exhibitModel: app.model.ExhibitVm;
+module Service {
+
+    export interface IModelService {
+        exhibitModel: ExhibitVm;
+        addGridVm(gridVm: ExhibitGrid.ViewModel.IGridVm);
+        getExhibitVm(): ExhibitVm;
+        getGridVm(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
+        getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
+        getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm;
+        getCellValue(gridCode: string, rowCode: string, colCode: string): number;
+        updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number): void;
+        collapseChildren(gridCode: string, rowCode: string): void;
+        getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode): string;
+    }
+
+    export class ExhibitVm {
+        Grids: ExhibitGrid.ViewModel.IGridVm[];
+        constructor() {
+            console.log("creating exhibitvm");
+            this.Grids = new Array<ExhibitGrid.ViewModel.IGridVm>();
+        }
+    }
+
+    export class GridVm implements ExhibitGrid.ViewModel.IGridVm {
+
+        GridCode: string;
+        DisplayText: string;
+        IsEditable: boolean;
+        Width: number;
+        HasCollapseColumn: boolean;
+        HasSelectColumn: boolean;
+        HasAddColumn: boolean;
+        HasDeleteColumn: boolean;
+        NumColumns: number;
+        Columns: ExhibitGrid.ViewModel.IColumnVm[];
+        DataRows: ExhibitGrid.ViewModel.IRowVm[];
+        constructor(GridCode: string) {
+            this.GridCode = GridCode;
+        }
+    }
+
+    export class RowVm implements ExhibitGrid.ViewModel.IRowVm {
+        GridCode: string;
+        RowCode: string;
+        ParentRowCode: string;
+        DisplayOrder: number;
+        IsHidden: boolean;
+        IsCollapsed: boolean;
+        Class: string;
+        CanCollapse: boolean;
+        CanSelect: boolean;
+        CanAdd: boolean;
+        CanDelete: boolean;
+        IsSelected: boolean;
+        IsEditable: boolean;
+        Cells: ExhibitGrid.ViewModel.ICellVm[];
+        CollapseableChildren: string[];
+        constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
+            this.RowCode = RowCode;
+            this.Class = Class;
+        }
+
+    }
+
+    export class CellVm implements ExhibitGrid.ViewModel.ICellVm {
+        GridCode: string;
+        RowCode: string;
+        ColCode: string;
+        ParentRowCode: string;
+        ColSpan: number;
+        ColumnHeader: string;
+        Width: string;
+        IsEditable: boolean;
+        Class: string;
+        NumValue: number;
+        Value: string;
+        Indent: number;
+        IsHidden: boolean;
+        IsBlank: boolean;
+        Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
+        constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
+            this.RowCode = RowCode;
+            this.ColCode = ColCode;
+        }
+    }
+    export class CalcExpressionVm implements ExhibitGrid.ViewModel.ICalcExpressionVm {
+        TargetGridCode: string;
+        TargetRowCode: string;
+        TargetColCode: string;
+        Expression: string;
+        Operands: ExhibitGrid.ViewModel.ICalcOperandVm[];
+    }
+
+    export class CalcOperandVm implements ExhibitGrid.ViewModel.ICalcOperandVm {
+        GridCode: string;
+        RowCode: string;
+        ColCode: string;
+    }
+
+
+
+    export class GridModelService implements IModelService{
+
+        public exhibitModel: ExhibitVm;
+
+        constructor() {
+            console.log("creating service");
+            this.exhibitModel = new ExhibitVm();
+        }
 
         addGridVm(gridVm: ExhibitGrid.ViewModel.IGridVm) {
             this.exhibitModel.Grids.push(gridVm);
         }
 
-        getExhibitVm() {
+        getExhibitVm() {  
             return this.exhibitModel;
         }
 
@@ -66,10 +173,6 @@
             }
             return calc;
         }
-
-        constructor() {
-            this.exhibitModel = new app.model.ExhibitVm();
-            this.addGridVm(window['easGrid'].gridVm);
-        }
     }
+
 }

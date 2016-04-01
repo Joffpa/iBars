@@ -17,6 +17,9 @@ namespace ExhibitGrid.ViewModel
         public int Level { get; set; }
         public decimal DisplayOrder { get; set; } //col #
         public bool IsEditable { get; set; }
+
+        public string Alignment { get; set; }
+        public string Class { get; set; }
         //alignment
         //hovertext
         //header css class

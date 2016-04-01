@@ -1,21 +1,31 @@
 ﻿@model ExhibitGrid.ViewModel.GridVm
 
 <script src="~/Scripts/system-polyfills.js"></script>
-@*<script src="~/Scripts/system.js"></script>*@
-@*<script src="~/Scripts/Rx.js"></script>*@
+
+<script src="~/Scripts/system.js"></script>
+<script src="~/Scripts/Rx.js"></script>
 @*<script src="~/Scripts/angular2.dev.js"></script>*@
+
 <script src="~/Scripts/GridV2/angular2-polyfills.min.js"></script>
 <script src="~/Scripts/es6-shim.min.js"></script>
 <script src="~/Scripts/shims_for_IE.js"></script>
+
 <script src="~/Scripts/GridV2/Rx.umd.min.js"></script>
 <script src="~/Scripts/GridV2/angular2-all.umd.min.js"></script>
+@*<script src="~/Scripts/GridV2/angular2-all.umd.dev.js"></script>*@
+
 <script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
 <link href="~/Content/gridTable.min.css" rel="stylesheet" />
 <link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
 <link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
+
+@*<link href="~/Content/gridTable.css" rel="stylesheet" />*@
+
 @*<script src="~/Scripts/GridV2/system-config.js"></script>*@
+
+<script src="~/Scripts/GridV2/eas-cell.component.js"></script>
 @*<script src="~/Scripts/Grid/modelService.js"></script>*@
-<script src="~/Scripts/GridV2/grid-model.service.js"></script>
+
 
 @{
     var headerLevels = Model.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i);
@@ -50,45 +60,83 @@
 
 <script>
     (function () {
-        Services.GridModelService.addGridVm(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)));
-        
-        //var rowComponent = ng.core
-        //.Component({
 
-        //})
-        //.Class({
+        var components = new Eas.Component(ng);
 
-        //});
-        
+        var rowComponent = ng.core
+            .Component({
+                selector: "[@(Model.GridCode + "Row")]",
+                template: "<td colspan='1' [RowVm]='row' easSelectCell></td> <td [CellVm]='RowVm.Cells[0]' easTextCell></td> <td [CellVm]='RowVm.Cells[1]' easNumericCell></td>",
+                inputs: ['RowVm'],
+                directives:[
+                    components.SelectCell,
+                    components.TextCell,
+                    components.NumericCell,
+                    ng.common.CORE_DIRECTIVES,
+                    ng.common.FORM_DIRECTIVES
+                ]
+            })
+            .Class({
+                constructor: function () {
+                    this.RowVm;
+                },
+            });
+
         var gridApp = ng.core
-        .Component({
-            selector: "[@(Model.GridCode + "App")]",
-            template: "<tr *ngfor='#row of GridVm.DataRows' ><td>cell 1</td></tr>",
-            directives: [
-              ng.common.CORE_DIRECTIVES,
-              ng.common.FORM_DIRECTIVES
-            ]
-        })
-       .Class({
-           constructor: function () {
-               this.GridVm = Services.GridModelService.getGridVm("@Model.GridCode");
-           },
-           updateIncomplete: function () {
-               return this.todos.filter(function (item) {
-                   return !item.complete;
-               }).length;
-           }
-       });
-        
+            .Component({
+                selector: "[@(Model.GridCode + "App")]",
+                template: "<div style='display:table-row' *ngFor='#row of GridVm.DataRows' [RowVm]='row' @(Model.GridCode + "Row")></div>",
+                directives: [
+                    ng.common.CORE_DIRECTIVES,
+                    ng.common.FORM_DIRECTIVES,
+                    rowComponent
+                ]
+            })
+            .Class({
+                constructor: function () {
+                    this.GridVm = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+                },
+                customFunc: function () {
+                }
+            });
+
+
         document.addEventListener('DOMContentLoaded', function () {
-            ng.platform.browser.bootstrap(gridApp, [GridModelService, ng.core.provide("gridModelService")]);
+            ng.platform.browser.bootstrap(gridApp);
         });
-
     }());
-
-
 </script>
 
+
+
+@*<script>
+    window.require = System.amdRequire;
+    window.appSelector = "[easApp]";
+    window.appTemplate = "<tr> <td> one </td> </tr>";
+
+    System.config({
+        defaultJSExtensions: true,
+        packages: {
+            'angular2': {
+                defaultExtension: false
+            },
+            'rxjs': {
+                defaultExtension: false
+            }
+        }
+    });
+
+
+    var promise = System.import('/Scripts/GridV2/main.js');
+
+    promise.then(function () {
+        console.log("bootstrap 2");
+        window.appSelector = "[easApp2]";
+        window.appTemplate = "<tr> <td> two </td> </tr>";
+        var mod = System.get("http://localhost:61205/Scripts/GridV2/eas-app.component.js");
+        ng.platform.browser.bootstrap(mod.EasAppComponent);
+    });
+</script>*@
 
 <table class="table table-bordered exhibit-table">
     <thead>
@@ -102,7 +150,7 @@
                     </th>
                 }
                 @{
-                var thisLevel = level;
+            var thisLevel = level;
                 }
                 @foreach (var column in Model.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder))
                 {
@@ -114,6 +162,5 @@
             </tr>
         }
     </thead>
-    <tbody @(Model.GridCode + "App")  gridcode="@Model.GridCode">
-    </tbody>
+    <tbody @(Model.GridCode + "App") gridcode="@Model.GridCode"></tbody>
 </table>

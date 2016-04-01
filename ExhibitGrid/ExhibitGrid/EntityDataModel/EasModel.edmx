@@ -50,6 +50,7 @@
           <Property Type="String" Name="Value" Nullable="true" DefaultValue="" />
           <Property Type="String" Name="HoverText" Nullable="true" />
           <Property Type="String" Name="ParentRowCode" Nullable="false" />
+          <Property Type="String" Name="Alignment" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GetCalcs_Result">
           <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />

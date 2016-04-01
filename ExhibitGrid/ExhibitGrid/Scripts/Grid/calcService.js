@@ -93,7 +93,7 @@ var app;
                 //*************************************************************************************************
             };
             //Actual framework!
-            CalcService.prototype.runCellCalcs = function (cellVm, newVal) {
+            CalcService.prototype.runCellCalcs = function (cellVm) {
                 var _this = this;
                 //Run calc of child rows first
                 if (cellVm.ParentRowCode) {
@@ -107,7 +107,13 @@ var app;
                         var equation = calc.Expression;
                         _.forEach(calc.Operands, function (operand) {
                             var coordinate = "{" + operand.GridCode + "." + operand.RowCode + "." + operand.ColCode + ".}";
-                            var val = _this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                            var val = null;
+                            if (operand.GridCode === cellVm.GridCode && operand.RowCode === cellVm.RowCode && operand.ColCode === cellVm.ColCode) {
+                                val = cellVm.NumValue;
+                            }
+                            else {
+                                val = _this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                            }
                             if (val) {
                                 var sVal = val.toString();
                             }

@@ -10,6 +10,5 @@ namespace ExhibitGrid.ViewModel
         public string GridCode { get; set; }
         public string RowCode { get; set; }
         public string ColCode { get; set; }
-        //public List<CalcExpressionVm> Expressions { get; set; }
     }
 }

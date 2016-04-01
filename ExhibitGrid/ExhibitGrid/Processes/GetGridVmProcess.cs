@@ -16,17 +16,25 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = gridCode,
                 Columns = new List<ColumnVm>(),
-                DataRows = new List<RowVm>()
+                DataRows = new List<RowVm>(),
+                IsEditable = true,
+                HasSelectCol =  false,
+                HasCollapseCol = false,
+                HasAddCol = false,
+                HasDeleteCol = false
             };
             try
             {
                 using (var db = new DEV_AF())
                 {
                     var calcs = db.GetCalcs(gridCode).ToList();
+                    var thisGridsCalcs = calcs.Where(c => c.TargetGridCode == gridCode);
                     List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
+                    List<GetCalcs_Result> cellCalcsExpandedFromRowCalcs = new List<GetCalcs_Result>();
                     List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
+                    List<GetCalcs_Result> cellCalcsExpandedFromColCalcs = new List<GetCalcs_Result>();
                     List<GetCalcs_Result> cellCalcResults = new List<GetCalcs_Result>();
-                    foreach (var calc in calcs)
+                    foreach (var calc in thisGridsCalcs)
                     {
                         if (string.IsNullOrEmpty(calc.TargetColCode))
                         {
@@ -44,13 +52,6 @@ namespace ExhibitGrid.Processes
                     
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
                     var cellDictionary = new Dictionary<string, Attributes>();
-                    //TODO: Clean this up
-                    var hasSelect = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanSelect ?? false));
-                    var hasCollapse = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanCollapse ?? false));
-                    var hasAdd = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanAdd ?? false));
-                    var hasDelete = attribs.Any(a => !string.IsNullOrEmpty(a.RowCode) && string.IsNullOrEmpty(a.ColCode) && (a.CanDelete ?? false));
-
-
                     foreach (var attrib in attribs)
                     {
                         if (!string.IsNullOrEmpty(attrib.RowCode) && !string.IsNullOrEmpty(attrib.ColCode))
@@ -64,17 +65,19 @@ namespace ExhibitGrid.Processes
                                 ColCode = attrib.ColCode,
                                 ColSpan = attrib.ColSpan ?? 1,
                                 Directive = attrib.Directive,
-                                DisplayOrder = attrib.DisplayOrder.HasValue ? attrib.DisplayOrder.Value : 1,
+                                DisplayOrder = attrib.DisplayOrder ?? 1,
                                 DisplayText = attrib.DisplayText,
                                 HasHeader = attrib.HasHeader ?? true,
                                 IsHidden = attrib.IsHidden ?? false,
                                 Level = attrib.Level ?? 0,
                                 Width = attrib.Width,
-                                IsEditable = attrib.IsEditable ?? false
+                                IsEditable = attrib.IsEditable ?? false,
+                                Class = attrib.Class,
+                                Alignment = attrib.Alignment
                             });
                             //For Numeric columns expand the row calcs for every column and add to cell calcs
                             if (attrib.Directive == Literals.Directive.Numeric)
-                            cellCalcResults.AddRange(rowCalcResults.Select(rowCalc => new GetCalcs_Result()
+                            cellCalcsExpandedFromRowCalcs.AddRange(rowCalcResults.Select(rowCalc => new GetCalcs_Result()
                             {
                                 TargetGridCode = rowCalc.TargetGridCode, 
                                 TargetRowCode = rowCalc.TargetRowCode, 
@@ -87,28 +90,28 @@ namespace ExhibitGrid.Processes
                         }
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
+                            grid.HasSelectCol = (attrib.CanSelect ?? false) || grid.HasSelectCol;
+                            grid.HasCollapseCol = (attrib.CanCollapse ?? false) || grid.HasCollapseCol;
+                            grid.HasAddCol = (attrib.CanAdd ?? false) || grid.HasAddCol;
+                            grid.HasDeleteCol = (attrib.CanDelete ?? false) || grid.HasDeleteCol;
                             grid.DataRows.Add(new RowVm()
                             {
                                 GridCode = attrib.GridCode,
                                 RowCode = attrib.RowCode,
                                 ParentRowCode = attrib.ParentRowCode,
-                                HasSelectCol = hasSelect, 
                                 CanSelect = attrib.CanSelect ?? false,
-                                HasCollapseCol = hasCollapse,
                                 CanCollapse = attrib.CanCollapse ?? false,
-                                HasAddCol = hasAdd,
                                 CanAdd = attrib.CanAdd ?? false,
-                                HasDeleteCol = hasDelete,
                                 CanDelete = attrib.CanDelete ?? false,
                                 Cells = new List<CellVm>(),
                                 Class = attrib.Class,
-                                DisplayOrder = attrib.DisplayOrder.HasValue ?  attrib.DisplayOrder.Value : 0,
+                                DisplayOrder = attrib.DisplayOrder ?? 0,
                                 IsSelected = false,
                                 IsCollapsed = false,
                                 IsHidden = attrib.IsHidden ?? false,
                                 IsEditable = attrib.IsEditable ?? false
                             });
-                            cellCalcResults.AddRange(colCalcResults.Select(colCalc => new GetCalcs_Result()
+                            cellCalcsExpandedFromColCalcs.AddRange(colCalcResults.Select(colCalc => new GetCalcs_Result()
                             {
                                 TargetGridCode = colCalc.TargetGridCode,
                                 TargetRowCode = attrib.RowCode,
@@ -116,25 +119,77 @@ namespace ExhibitGrid.Processes
                                 Expression = colCalc.Expression.Split('.').Aggregate((c, n) => n == "" ? c + "." + attrib.RowCode + n : c + "." + n),
                                 GridCode = colCalc.GridCode,
                                 RowCode = attrib.RowCode,
-                                ColCode = colCalc.TargetColCode
+                                ColCode = colCalc.ColCode
                             }));
                         }
                         else
                         {
-                            grid.IsEditable = attrib.IsEditable ?? true;
+                            //grid.IsEditable = attrib.IsEditable ?? true;   TODO - add this back in later
                             grid.DisplayText = attrib.DisplayText;
                         }
                     }
+                    var allExpandedCellCalcs = cellCalcResults;
 
-                    var allCellCalscDic = cellCalcResults.GroupBy(r => new { r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression }, (key, group) => new CalcExpressionVm()
-                    {
-                        TargetGridCode = key.TargetGridCode,
-                        TargetRowCode = key.TargetRowCode,
-                        TargetColCode = key.TargetColCode,
-                        Expression = key.Expression,
-                        Operands = group.Select(g => new CalcOperandVm() { GridCode = g.GridCode, RowCode = g.RowCode, ColCode = g.ColCode }).ToList()
-                    }).ToDictionary(ac => ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
 
+                    allExpandedCellCalcs.AddRange(cellCalcsExpandedFromRowCalcs.Where(rc => rc.TargetGridCode));
+
+                    var calcGroups = cellCalcResults.GroupBy(r => new {r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
+                            (key, group) => new CalcExpressionVm()
+                            {
+                                TargetGridCode = key.TargetGridCode,
+                                TargetRowCode = key.TargetRowCode,
+                                TargetColCode = key.TargetColCode,
+                                Expression = key.Expression,
+                                Operands =
+                                    group.Select(
+                                        g =>
+                                            new CalcOperandVm()
+                                            {
+                                                GridCode = g.GridCode,
+                                                RowCode = g.RowCode,
+                                                ColCode = g.ColCode
+                                            }).ToList()
+                            }).ToList();
+
+
+                    calcGroups.AddRange(cellCalcsExpandedFromColCalcs.Where(cc => !calcGroups.Any(cg => cg.TargetGridCode == cc.TargetGridCode && cg.TargetRowCode == cc.TargetRowCode && cg.TargetColCode == cc.TargetColCode)).GroupBy(
+                            r => new { r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression },
+                            (key, group) => new CalcExpressionVm()
+                            {
+                                TargetGridCode = key.TargetGridCode,
+                                TargetRowCode = key.TargetRowCode,
+                                TargetColCode = key.TargetColCode,
+                                Expression = key.Expression,
+                                Operands =
+                                    group.Select(
+                                        g =>
+                                            new CalcOperandVm()
+                                            {
+                                                GridCode = g.GridCode,
+                                                RowCode = g.RowCode,
+                                                ColCode = g.ColCode
+                                            }).ToList()
+                            }));
+                    calcGroups.AddRange(cellCalcsExpandedFromRowCalcs.Where(rc => !calcGroups.Any(cg => cg.TargetGridCode == rc.TargetGridCode && cg.TargetRowCode == rc.TargetRowCode && cg.TargetColCode == rc.TargetColCode)).GroupBy(
+                            r => new { r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression },
+                            (key, group) => new CalcExpressionVm()
+                            {
+                                TargetGridCode = key.TargetGridCode,
+                                TargetRowCode = key.TargetRowCode,
+                                TargetColCode = key.TargetColCode,
+                                Expression = key.Expression,
+                                Operands =
+                                    group.Select(
+                                        g =>
+                                            new CalcOperandVm()
+                                            {
+                                                GridCode = g.GridCode,
+                                                RowCode = g.RowCode,
+                                                ColCode = g.ColCode
+                                            }).ToList()
+                            }));
+
+                    var cellCalcDic = calcGroups.ToDictionary(ac => ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
                     foreach (var row in grid.DataRows)
                     {
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
@@ -159,7 +214,7 @@ namespace ExhibitGrid.Processes
                                 Value = cellAttrib.Value,
                                 NumValue = valParsed ? numval : 0,
                                 Width = (span == 1 ? col.Width : "100%"),
-                                Calcs = col.Directive == Literals.Directive.Numeric ? GetCalcsForCell(cellCalcResults, allCellCalscDic, grid.GridCode, row.RowCode, col.ColCode) : null
+                                Calcs = col.Directive == Literals.Directive.Numeric ? GetCalcsForCell(cellCalcResults, cellCalcDic, grid.GridCode, row.RowCode, col.ColCode) : null
                             });
                         }
                     }

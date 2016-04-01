@@ -12,9 +12,10 @@ var app;
     }());
     app.GridController = GridController;
     var RowController = (function () {
-        function RowController($scope, modelService) {
+        function RowController($scope, modelService, calcService) {
             this.RowVm = $scope.row;
             this.ModelService = modelService;
+            this.CalcService = calcService;
         }
         RowController.prototype.collapseChildren = function () {
             this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
@@ -25,69 +26,81 @@ var app;
         RowController.prototype.deleteRow = function () {
             alert('row deleted: ' + this.RowVm.RowCode);
         };
+        RowController.prototype.update = function (val) {
+            console.log("updated");
+        };
         return RowController;
     }());
     app.RowController = RowController;
     var TextCellController = (function () {
-        function TextCellController($scope, modelService) {
-            this.CellVm = $scope.cellVm;
-            this.ModelService = modelService;
+        function TextCellController() {
         }
         TextCellController.prototype.getStyle = function () {
-            return { 'width': this.CellVm.Width };
+            if (this.cellvm.Width) {
+                return { 'width': this.cellvm.Width };
+            }
+            return { 'width': '100%' };
         };
         return TextCellController;
     }());
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
-        function NumericCellController($scope, modelService, calcService) {
-            var _this = this;
-            //console.log($scope);
-            this.CellVm = $scope.cellVm;
+        function NumericCellController(modelService, calcService) {
+            this.onChange = function () {
+                this.CalcService.runCellCalcs(this.cellvm);
+            };
             this.ModelService = modelService;
             this.CalcService = calcService;
-            if ((this.CellVm.Calcs && this.CellVm.Calcs.length > 0) || this.CellVm.ParentRowCode) {
-                $scope.$watch('cellVm.NumValue', function (newVal, oldVal, scope) {
-                    scope.cellCtrl.CalcService.runCellCalcs(_this.CellVm, newVal);
-                });
-            }
         }
         NumericCellController.prototype.getStyle = function () {
-            if (this.CellVm.Width) {
-                return { 'width': this.CellVm.Width };
+            if (this.cellvm.Width) {
+                return { 'width': this.cellvm.Width };
             }
             return { 'width': '110px' };
+        };
+        NumericCellController.prototype.onBlur = function () {
         };
         return NumericCellController;
     }());
     app.NumericCellController = NumericCellController;
     var PostItCellController = (function () {
-        function PostItCellController($scope, modelService) {
-            this.CellVm = $scope.cellVm;
-            this.ModelService = modelService;
+        function PostItCellController() {
         }
         PostItCellController.prototype.editPostIt = function () {
-            alert("Post it for cell: " + this.CellVm.RowCode + " " + this.CellVm.ColCode);
+            alert("Post it for cell: " + this.cellvm.RowCode + " " + this.cellvm.ColCode);
         };
         return PostItCellController;
     }());
     app.PostItCellController = PostItCellController;
     var NarrativeCellController = (function () {
-        function NarrativeCellController($scope, modelService) {
-            this.CellVm = $scope.cellVm;
-            this.ModelService = modelService;
-            //console.log($scope.cellVm);
+        function NarrativeCellController() {
         }
         NarrativeCellController.prototype.editNarrative = function () {
-            alert(this.CellVm.Value);
+            alert(this.cellvm.Value);
         };
         return NarrativeCellController;
     }());
     app.NarrativeCellController = NarrativeCellController;
     var DropdownCellController = (function () {
-        function DropdownCellController($scope, modelService) {
-            this.CellVm = $scope.cellVm;
-            this.ModelService = modelService;
+        function DropdownCellController($element) {
+            this.$postLink = function () {
+                if (!this.cellvm.IsBlank) {
+                    this.element.kendoDropDownList({
+                        dataTextField: "Text",
+                        dataValueField: "Value",
+                        enable: true,
+                        dataSource: {
+                            transport: {
+                                read: {
+                                    url: commonUI.getWebRoot() + "Home/GetDdOptions",
+                                    dataType: "json"
+                                }
+                            }
+                        }
+                    });
+                }
+            };
+            this.element = $element;
         }
         return DropdownCellController;
     }());
@@ -95,7 +108,47 @@ var app;
     // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
         .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])
+        .component('textCell', {
+        template: "\n                <div ng-switch=\"cellCtrl.cellvm.IsEditable\" class=\"indent-{{cellCtrl.cellvm.Indent}} {{cellCtrl.cellvm.Class}} text-cell-th\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\">\n                    <input type=\"text\" class=\"k-textbox\" ng-switch-when=\"true\" ng-model=\"cellCtrl.cellvm.Value\" style=\"text-align:left\" />\n                    <div ng-switch-when=\"false\" style=\"text-align:left\">\n                        {{cellCtrl.cellvm.Value}}\n                    </div>\n                </div>\n                ",
+        controllerAs: 'cellCtrl',
+        controller: TextCellController,
+        bindings: {
+            cellvm: '='
+        }
+    })
+        .component('numericCell', {
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:20px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.NumValue | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
+        controllerAs: 'cellCtrl',
+        controller: NumericCellController,
+        bindings: {
+            cellvm: '<'
+        }
+    })
+        .component('postitCell', {
+        template: "\n                    <div ng-if=\"!cellctrl.cellvm.IsBlank\">\n                        <i class=\"fa fa-map-pin fa-lg\" style=\"cursor:pointer\" ng-click=\"cellCtrl.editPostIt()\"></i>\n                    </div>\n                    ",
+        controllerAs: 'cellCtrl',
+        controller: PostItCellController,
+        bindings: {
+            cellvm: '<'
+        }
+    })
+        .component('narrativeCell', {
+        template: "\n                    <div ng-if=\"!cellCtrl.cellvm.IsBlank\">\n                        <i class=\"fa fa-sticky-note fa-lg\" style=\"cursor:pointer\" ng-click=\"cellCtrl.editNarrative()\"></i>\n                    </div>\n                    ",
+        controllerAs: 'cellCtrl',
+        controller: NarrativeCellController,
+        bindings: {
+            cellvm: '<'
+        }
+    })
+        .component('dropdownCell', {
+        template: "\n                    <div ng-if=\"!cellCtrl.cellvm.IsBlank\">\n                        <input id=\"{{cellCtrl.cellvm.GridCode + '_' + cellCtrl.cellvm.RowCode + '_' + cellCtrl.cellvm.ColCode}}\" ng-model=\"cellCtrl.cellvm.Text\"/>\n                    </div>\n                    ",
+        controllerAs: 'cellCtrl',
+        controller: DropdownCellController,
+        bindings: {
+            cellvm: '<'
+        }
+    })
         .controller('gridController', ['modelService', GridController])
-        .controller('rowController', ['$scope', 'modelService', RowController]);
+        .controller('rowController', ['$scope', 'modelService', 'calcService', RowController]);
 })(app || (app = {}));
 //# sourceMappingURL=grid.js.map

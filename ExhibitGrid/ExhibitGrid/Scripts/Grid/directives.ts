@@ -3,7 +3,7 @@
 module app.directives {
 
     'use strict'
-    
+
     var directives = angular.module('app.directives', ['app.model', 'app.calc'])
         .directive('textCell', ['modelService', function (modelService) {
             return {
@@ -82,6 +82,5 @@ module app.directives {
                     }
                 }
             }
-        }])
-        ;
+        }]);
 }

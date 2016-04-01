@@ -10,24 +10,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 //import '.exhibit-grid.component.d.ts'
 var core_1 = require('angular2/core');
-var eas_row_component_1 = require('./eas-row.component');
-var grid_model_service_1 = require('./grid-model.service');
+//import {EasRowComponent} from './eas-row.component'
+//import {GridModelService} from './grid-model.service'
 //var grid = require('exhibit-grid.component');
+//import {TemplateService} from './eas-template.service'
+var appSelector = window['appSelector'];
+var appTemplate = window['appTemplate'];
 var EasAppComponent = (function () {
     function EasAppComponent(elementRef) {
         var native = elementRef.nativeElement;
         this.gridCode = native.getAttribute("gridCode");
-        console.log(this.gridCode);
     }
+    __decorate([
+        core_1.Input()
+    ], EasAppComponent.prototype, "gridCode", void 0);
     EasAppComponent = __decorate([
         core_1.Component({
-            selector: '[easApp]',
-            providers: [grid_model_service_1.GridModelService],
+            selector: appSelector,
+            //providers: [GridModelService],
             inputs: ['gridCode']
         }),
         core_1.View({
-            template: "<tr><td>one</td><td>two</td></tr>",
-            directives: [eas_row_component_1.EasRowComponent]
+            template: appTemplate,
         }),
         __param(0, core_1.Inject(core_1.ElementRef))
     ], EasAppComponent);

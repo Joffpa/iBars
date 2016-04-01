@@ -1,4 +1,4 @@
-﻿//Testing various configs
+﻿
 System.config({
     defaultJSExtensions: true,
     packages: {

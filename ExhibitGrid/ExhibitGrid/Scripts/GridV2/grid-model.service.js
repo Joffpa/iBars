@@ -1,9 +1,53 @@
-var Services;
-(function (Services) {
+/// <reference path="../typings/lodash/lodash.d.ts" />
+var Service;
+(function (Service) {
+    var ExhibitVm = (function () {
+        function ExhibitVm() {
+            console.log("creating exhibitvm");
+            this.Grids = new Array();
+        }
+        return ExhibitVm;
+    }());
+    Service.ExhibitVm = ExhibitVm;
+    var GridVm = (function () {
+        function GridVm(GridCode) {
+            this.GridCode = GridCode;
+        }
+        return GridVm;
+    }());
+    Service.GridVm = GridVm;
+    var RowVm = (function () {
+        function RowVm(RowCode, Class, Text, CanCollapse, CanSelect, IsSelected) {
+            this.RowCode = RowCode;
+            this.Class = Class;
+        }
+        return RowVm;
+    }());
+    Service.RowVm = RowVm;
+    var CellVm = (function () {
+        function CellVm(Order, Type, RowCode, ColCode, CanAddNarrative, HasNarrative) {
+            this.RowCode = RowCode;
+            this.ColCode = ColCode;
+        }
+        return CellVm;
+    }());
+    Service.CellVm = CellVm;
+    var CalcExpressionVm = (function () {
+        function CalcExpressionVm() {
+        }
+        return CalcExpressionVm;
+    }());
+    Service.CalcExpressionVm = CalcExpressionVm;
+    var CalcOperandVm = (function () {
+        function CalcOperandVm() {
+        }
+        return CalcOperandVm;
+    }());
+    Service.CalcOperandVm = CalcOperandVm;
     var GridModelService = (function () {
         function GridModelService() {
-            this.exhibitModel = new app.model.ExhibitVm();
-            this.addGridVm(window['easGrid'].gridVm);
+            console.log("creating service");
+            this.exhibitModel = new ExhibitVm();
         }
         GridModelService.prototype.addGridVm = function (gridVm) {
             this.exhibitModel.Grids.push(gridVm);
@@ -62,6 +106,6 @@ var Services;
         };
         return GridModelService;
     }());
-    Services.GridModelService = GridModelService;
-})(Services || (Services = {}));
+    Service.GridModelService = GridModelService;
+})(Service || (Service = {}));
 //# sourceMappingURL=grid-model.service.js.map

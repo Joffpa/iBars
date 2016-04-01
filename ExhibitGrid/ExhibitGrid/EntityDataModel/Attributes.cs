@@ -57,5 +57,6 @@ namespace ExhibitGrid.EntityDataModel
         public string Value { get; set; }
         public string HoverText { get; set; }
         public string ParentRowCode { get; set; }
+        public string Alignment { get; set; }
     }
 }
