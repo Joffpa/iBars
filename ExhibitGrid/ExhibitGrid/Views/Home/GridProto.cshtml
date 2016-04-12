@@ -1,4 +1,5 @@
-﻿@model ExhibitGrid.ViewModel.GridVm
+﻿@using Newtonsoft.Json
+@model ExhibitGrid.ViewModel.GridVm
 
 <script src="~/Scripts/angular.min.js"></script>
 @*<script src="~/Scripts/angular-route.min.js"></script>*@
@@ -31,7 +32,7 @@
                         }
                         @foreach (var column in thisLevelsColumns)
                         {
-                            <th scope="col" colspan="@(column.ColSpan + (firstHeader ? extraCols : 0))" class="@(column.Class)" style="text-align:@(column.Alignment)">
+                            <th scope="col" colspan="@(column.ColSpan + (firstHeader ? extraCols : 0))" style="text-align:@(column.Alignment)">
                                 @Html.Raw(column.DisplayText)
                             </th>
                             firstHeader = false;
@@ -40,7 +41,7 @@
                 }
             </thead>
             <tbody>
-                <tr ng-repeat="row in gridCtrl.GridVm.DataRows | filter:{IsHidden: false, IsCollapsed: false} | orderBy:'DisplayOrder' track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class" on-update="rowctrl.update(value)" ng-model-options="{ updateOn: 'default blur' }">
+                <tr ng-repeat="row in gridCtrl.GridVm.Rows | filter:{IsHidden: false, IsCollapsed: false} | orderBy:'DisplayOrder' track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class" on-update="rowctrl.update(value)" ng-model-options="{ updateOn: 'default blur' }">
                     @if (Model.HasSelectCol)
                     {
                         <td colspan="1">
@@ -83,7 +84,7 @@
                         }
                         else
                         {
-                            var directive = col.Directive + "-cell";
+                            var directive = col.Type + "-cell";
                             <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
                                 @Html.Raw("<" + directive + " cellvm='row.Cells[" + i + "]'></" + directive + ">")
                             </td>
@@ -97,7 +98,7 @@
 
 <script>
     (function (gridModel) {
-        gridModel.grid = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        gridModel.grid = @Html.Raw(JsonConvert.SerializeObject(Model));
         gridModel.gridCode = '@Model.GridCode';
     }(window.gridModel = window.gridModel || {} ));
 </script>

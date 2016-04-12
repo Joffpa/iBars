@@ -62,37 +62,37 @@ var Service;
         GridModelService.prototype.getRowVm = function (gridCode, rowCode) {
             console.log(gridCode);
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             return row;
         };
         GridModelService.prototype.getCellVm = function (gridCode, rowCode, colCode) {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell;
         };
         GridModelService.prototype.updateCellValue = function (gridCode, rowCode, colCode, value) {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             cell.NumValue = value;
         };
         GridModelService.prototype.getCellValue = function (gridCode, rowCode, colCode) {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell.NumValue;
         };
         GridModelService.prototype.collapseChildren = function (gridCode, rowCode) {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            _.each(_.where(grid.DataRows, { 'ParentRowCode': rowCode }), function (child) {
+            _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), function (child) {
                 child.IsCollapsed = !child.IsCollapsed;
             });
         };
         GridModelService.prototype.getParentRowCalcForColumn = function (gridCode, parentRowCode, colCode) {
             var calc = "";
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            _.each(_.where(grid.DataRows, { 'ParentRowCode': parentRowCode }), function (child) {
+            _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), function (child) {
                 var cell = _.find(child.Cells, { 'ColCode': colCode });
                 calc += cell.NumValue.toString() + "+";
             });

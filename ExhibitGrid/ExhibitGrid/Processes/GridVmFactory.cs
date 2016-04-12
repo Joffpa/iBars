@@ -48,7 +48,7 @@ namespace ExhibitGrid.Processes
 
         private GridVm GetGridFromDb(string gridCode)
         {
-            return GetGridVmProcess.Process(gridCode);
+            return GetGridVmProcess.GetVmWithCalcs(gridCode);
         }
 
         #endregion
@@ -161,7 +161,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "RowText",
                 HasHeader = false,
-                Directive = Literals.Directive.Text,
+                Type = Literals.ColCellType.Text,
                 Width = "200px",
                 DisplayText = "RowText",
                 Level = 0,
@@ -173,7 +173,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "PostIt",
                 HasHeader = false,
-                Directive = Literals.Directive.Postit,
+                Type = Literals.ColCellType.Postit,
                 Width = "",
                 DisplayText = "PostIt",
                 Level = 0,
@@ -185,7 +185,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "Narrative",
                 HasHeader = false,
-                Directive = Literals.Directive.Narrative,
+                Type = Literals.ColCellType.Narrative,
                 Width = "",
                 DisplayText = "Narrative",
                 Level = 0,
@@ -197,7 +197,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "DoubleOne",
                 HasHeader = true,
-                Directive = Literals.Directive.Text,
+                Type = Literals.ColCellType.Text,
                 Width = "150px",
                 DisplayText = "D1",
                 Level = 0,
@@ -209,7 +209,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "DoubleTwo",
                 HasHeader = true,
-                Directive = Literals.Directive.Text,
+                Type = Literals.ColCellType.Text,
                 Width = "150px",
                 DisplayText = "D2",
                 Level = 0,
@@ -221,7 +221,7 @@ namespace ExhibitGrid.Processes
             {
                 ColCode = "DropDown",
                 HasHeader = true,
-                Directive = Literals.Directive.DropDown,
+                Type = Literals.ColCellType.Dropdown,
                 Width = "",
                 DisplayText = "DropDown Header with a long string <br/> of text because why not",
                 Level = 0,
@@ -237,7 +237,7 @@ namespace ExhibitGrid.Processes
                     ColCode = "Col_" + col,
                     HasHeader = !_hiddenCols.Contains(col),
                     IsHidden = _hiddenCols.Contains(col),
-                    Directive = Literals.Directive.Numeric,
+                    Type = Literals.ColCellType.Numeric,
                     Width = null,
                     DisplayText = "Level 0 Header " + Convert.ToChar(col + 65),
                     Level = 0,
@@ -248,7 +248,7 @@ namespace ExhibitGrid.Processes
             }
             
             //Add Rows
-            grid.DataRows = new List<RowVm>
+            grid.Rows = new List<RowVm>
             {
                 CreateSubHeaderRowMockGrid(0, 0),
                 CreateDataRowMockGrid(grid,1, 50, false, false, false, false, 0, new int[0]), //total row
@@ -281,7 +281,7 @@ namespace ExhibitGrid.Processes
             #region calcs
 
             //do some fake summing to get the correct initial values in the "total" cells 
-            foreach (var row in grid.DataRows)
+            foreach (var row in grid.Rows)
             {
                 for (int i = 2; i <= row.Cells.Count - 6; i += 3){
 
@@ -292,12 +292,12 @@ namespace ExhibitGrid.Processes
                 }
             }
 
-            var totalRowVm = grid.DataRows.FirstOrDefault(r => r.RowCode == "Row_" + _totalRow);
+            var totalRowVm = grid.Rows.FirstOrDefault(r => r.RowCode == "Row_" + _totalRow);
 
             if (totalRowVm != null)
                 foreach(var cell in totalRowVm.Cells.Where(c => c.ColCode.Substring(0, 3) == "Col"  ))
                 {
-                    var sum = (from row in grid.DataRows.Where(r => r.RowCode != totalRowVm.RowCode) 
+                    var sum = (from row in grid.Rows.Where(r => r.RowCode != totalRowVm.RowCode) 
                         let cl = row.Cells.FirstOrDefault(c => c.ColCode == cell.ColCode) 
                         where cl != null 
                         select cl.NumValue).Sum();
@@ -465,7 +465,7 @@ namespace ExhibitGrid.Processes
                     GridCode = Mockgrid,
                     RowCode = dataRow.RowCode,
                     ColCode = "Col_" + c,
-                    Class = "data-cell",
+                    
                     ColSpan = 1,
                     NumValue = 5*c,
                     IsEditable = c%3 != 2 && r != _totalRow,
@@ -487,7 +487,7 @@ namespace ExhibitGrid.Processes
         #region MiniOp5
         private GridVm GetMiniOp5Vm()
         {
-            var grid = new GridVm {GridCode = MiniOp5, DisplayText = "SAG 122", Columns = new List<ColumnVm>()};
+            var grid = new GridVm { GridCode = MiniOp5, DisplayText = "SAG 122", Columns = new List<ColumnVm>(), HasCollapseCol = true };
 
             #region Headers
             //Top level headers
@@ -498,7 +498,7 @@ namespace ExhibitGrid.Processes
                 DisplayText = "OP-5",
                 Level = 1,
                 DisplayOrder = 0,
-                ColSpan = 7
+                ColSpan = 9
             };
             grid.Columns.Add(colHeader);
             colHeader = new ColumnVm
@@ -516,14 +516,14 @@ namespace ExhibitGrid.Processes
             colHeader = new ColumnVm
             {
                 ColCode = "RowText",
-                HasHeader = false,
+                HasHeader = true,
                 IsHidden = false,
-                Directive = "text",
+                Type = "text",
                 Width = "400px",
-                DisplayText = "row text",
+                DisplayText = "",
                 Level = 0,
                 DisplayOrder = -2,
-                ColSpan = 1
+                ColSpan = 2
             };
             grid.Columns.Add(colHeader);
             colHeader = new ColumnVm
@@ -531,7 +531,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "Description",
                 HasHeader = false,
                 IsHidden = false,
-                Directive = "narrative",
+                Type = "narrative",
                 Width = "",
                 DisplayText = "Desc",
                 Level = 0,
@@ -544,7 +544,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "CyBaseline",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "numeric",
+                Type = "numeric",
                 Width = "",
                 DisplayText = "FY 2016 Baseline",
                 Level = 0,
@@ -557,7 +557,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "StubAmt",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "numeric",
+                Type = "numeric",
                 Width = "",
                 DisplayText = "Stub Amount",
                 Level = 0,
@@ -570,7 +570,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "BY1Prog",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "numeric",
+                Type = "numeric",
                 Width = "",
                 DisplayText = "FY 2017 Program",
                 Level = 0,
@@ -583,7 +583,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "Mdep",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "text",
+                Type = "text",
                 Width = "",
                 DisplayText = "MDEP",
                 Level = 0,
@@ -596,7 +596,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "Ape",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "text",
+                Type = "text",
                 Width = "",
                 DisplayText = "APE",
                 Level = 0,
@@ -609,7 +609,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "Cmd",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "text",
+                Type = "text",
                 Width = "",
                 DisplayText = "CMD",
                 Level = 0,
@@ -622,7 +622,7 @@ namespace ExhibitGrid.Processes
                 ColCode = "Ftes",
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "numeric",
+                Type = "numeric",
                 Width = "",
                 DisplayText = "FTEs",
                 Level = 0,
@@ -653,7 +653,7 @@ namespace ExhibitGrid.Processes
             grid.Columns.Add(GetOp32ColHeader("0423", 25));
             #endregion
 
-            grid.DataRows = new List<RowVm>();
+            grid.Rows = new List<RowVm>();
 
             AddSubHeader1(grid);
             AddTotalRowSub1(grid);
@@ -693,7 +693,7 @@ namespace ExhibitGrid.Processes
                 ColCode = colCode,
                 HasHeader = true,
                 IsHidden = false,
-                Directive = "numeric",
+                Type = "numeric",
                 Width = "",
                 DisplayText = colCode,
                 Level = 0,
@@ -734,7 +734,7 @@ namespace ExhibitGrid.Processes
             };
             subHeaderRow.Cells.Add(rowText);
 
-            grid.DataRows.Add(subHeaderRow);
+            grid.Rows.Add(subHeaderRow);
         }
 
         private void AddTotalRowSub1(GridVm grid)
@@ -797,7 +797,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -811,7 +811,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -825,7 +825,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -840,7 +840,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -855,7 +855,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -870,7 +870,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -900,7 +900,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddBlankRow(GridVm grid, string rowCode)
@@ -934,7 +934,7 @@ namespace ExhibitGrid.Processes
             };
             subHeaderRow.Cells.Add(rowText);
 
-            grid.DataRows.Add(subHeaderRow);
+            grid.Rows.Add(subHeaderRow);
         }
 
         private void AddSubHeader2(GridVm grid)
@@ -968,7 +968,7 @@ namespace ExhibitGrid.Processes
             };
             subHeaderRow.Cells.Add(rowText);
 
-            grid.DataRows.Add(subHeaderRow);
+            grid.Rows.Add(subHeaderRow);
         }
 
         private void AddTotalRowSub2(GridVm grid)
@@ -1031,7 +1031,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1045,7 +1045,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1059,7 +1059,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1074,7 +1074,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1089,7 +1089,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1104,7 +1104,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1134,7 +1134,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddSubHeader3(GridVm grid)
@@ -1168,7 +1168,7 @@ namespace ExhibitGrid.Processes
             };
             subHeaderRow.Cells.Add(rowText);
 
-            grid.DataRows.Add(subHeaderRow);
+            grid.Rows.Add(subHeaderRow);
         }
 
         private void AddRow1Sub3(GridVm grid)
@@ -1233,7 +1233,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 2044,
                 Indent = 0,
@@ -1247,7 +1247,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = true,
                 NumValue = 2044,
                 Indent = 0,
@@ -1261,7 +1261,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1276,7 +1276,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1291,7 +1291,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1306,7 +1306,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1335,7 +1335,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow1Child1Sub3(GridVm grid)
@@ -1344,7 +1344,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_1_Sub_3",
-                ParentRowCode = "Row_1_Sub_3",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -1385,7 +1384,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 0,
@@ -1399,9 +1397,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 2044,
                 Indent = 0,
@@ -1414,9 +1411,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 2044,
                 Indent = 0,
@@ -1429,9 +1425,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "FPDP",
                 Indent = 0,
@@ -1445,9 +1440,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "122011",
                 Indent = 0,
@@ -1461,9 +1455,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "5D0",
                 Indent = 0,
@@ -1477,9 +1470,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_3",
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1509,7 +1501,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_3"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_3"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_3"));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow2Sub3(GridVm grid)
@@ -1573,7 +1565,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 10430,
                 Indent = 0,
@@ -1587,7 +1579,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = true,
                 NumValue = 49116,
                 Indent = 0,
@@ -1601,7 +1593,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1616,7 +1608,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1631,7 +1623,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1646,7 +1638,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1677,7 +1669,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
 
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow2Child1Sub3(GridVm grid)
@@ -1686,7 +1678,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_2_Child_1_Sub_3",
-                ParentRowCode = "Row_2_Sub_3",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -1727,7 +1718,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 38686,
@@ -1741,9 +1731,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 10430,
                 Indent = 0,
@@ -1756,9 +1745,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 49116,
                 Indent = 0,
@@ -1771,9 +1759,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "FL8D",
                 Indent = 0,
@@ -1787,9 +1774,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "122011",
                 Indent = 0,
@@ -1803,9 +1789,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "740",
                 Indent = 0,
@@ -1819,9 +1804,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_3",
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -1851,7 +1835,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_2_Sub_3"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_2_Sub_3"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_2_Sub_3"));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddTotalRowSub3(GridVm grid)
@@ -1913,7 +1897,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 12474,
                 Indent = 0,
@@ -1927,7 +1911,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 51160,
                 Indent = 0,
@@ -1941,7 +1925,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1956,7 +1940,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1971,7 +1955,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -1986,7 +1970,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -2016,7 +2000,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddSubHeader4(GridVm grid)
@@ -2049,7 +2033,7 @@ namespace ExhibitGrid.Processes
             };
             subHeaderRow.Cells.Add(rowText);
 
-            grid.DataRows.Add(subHeaderRow);
+            grid.Rows.Add(subHeaderRow);
         }
 
         private void AddRow1Sub4(GridVm grid)
@@ -2113,7 +2097,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -3996,
                 Indent = 0,
@@ -2127,7 +2111,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = true,
                 NumValue = 168384,
                 Indent = 0,
@@ -2141,7 +2125,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -2156,7 +2140,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -2171,7 +2155,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -2186,7 +2170,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -2216,7 +2200,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow1Child1Sub4(GridVm grid)
@@ -2225,7 +2209,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_1_Sub_4",
-                ParentRowCode = "Row_1_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2266,7 +2249,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 50000,
@@ -2280,9 +2262,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -2295,9 +2276,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 50000,
                 Indent = 0,
@@ -2310,9 +2290,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "HSMR",
                 Indent = 0,
@@ -2326,9 +2305,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "122018",
                 Indent = 0,
@@ -2342,9 +2320,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "740",
                 Indent = 0,
@@ -2358,9 +2335,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -2,
                 Indent = 0,
@@ -2390,7 +2366,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_4"));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow1Child2Sub4(GridVm grid)
@@ -2399,7 +2375,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_2_Sub_4",
-                ParentRowCode = "Row_1_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2440,7 +2415,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 50000,
@@ -2454,9 +2428,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -2469,9 +2442,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 50000,
                 Indent = 0,
@@ -2484,9 +2456,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "VTRD",
                 Indent = 0,
@@ -2500,9 +2471,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "122018",
                 Indent = 0,
@@ -2516,9 +2486,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "570",
                 Indent = 0,
@@ -2532,9 +2501,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -26,
                 Indent = 0,
@@ -2564,7 +2532,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_4"));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow1Child3Sub4(GridVm grid)
@@ -2573,7 +2541,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_1_Child_3_Sub_4",
-                ParentRowCode = "Row_1_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2614,7 +2581,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 72308,
@@ -2628,9 +2594,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -3996,
                 Indent = 0,
@@ -2643,9 +2608,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 68384,
                 Indent = 0,
@@ -2658,9 +2622,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "WSCC",
                 Indent = 0,
@@ -2675,7 +2638,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "122152",
                 Indent = 0,
@@ -2690,7 +2653,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "890",
                 Indent = 0,
@@ -2704,9 +2667,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_1_Sub_4",
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -2,
                 Indent = 0,
@@ -2736,7 +2698,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_1_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_1_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_1_Sub_4"));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow2Sub4(GridVm grid)
@@ -2799,7 +2761,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -2511,
                 Indent = 0,
@@ -2813,7 +2775,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = true,
                 NumValue = 17197,
                 Indent = 0,
@@ -2827,7 +2789,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -2842,7 +2804,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -2857,7 +2819,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -2872,7 +2834,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -2902,7 +2864,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddRow2Child1Sub4(GridVm grid)
@@ -2911,7 +2873,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = "Row_2_Child_1_Sub_4",
-                ParentRowCode =  "Row_2_Sub_4",
                 Class = "data-row",
                 CanCollapse = false,
                 CanSelect = false,
@@ -2952,7 +2913,6 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "CyBaseline",
                 IsEditable = false,
                 NumValue = 19708,
@@ -2966,9 +2926,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -2511,
                 Indent = 0,
@@ -2981,9 +2940,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 17197,
                 Indent = 0,
@@ -2996,9 +2954,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "WSCC",
                 Indent = 0,
@@ -3012,9 +2969,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "122152",
                 Indent = 0,
@@ -3028,9 +2984,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "740",
                 Indent = 0,
@@ -3044,9 +2999,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
-                ParentRowCode = "Row_2_Sub_4",
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 0,
                 Indent = 0,
@@ -3076,7 +3030,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", true, "Row_2_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", true, "Row_2_Sub_4"));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", true, "Row_2_Sub_4"));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private void AddTotalRowSub4(GridVm grid)
@@ -3138,7 +3092,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "StubAmt",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -6507,
                 Indent = 0,
@@ -3152,7 +3106,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "BY1Prog",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = 185581,
                 Indent = 0,
@@ -3166,7 +3120,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Mdep",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -3181,7 +3135,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ape",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -3196,7 +3150,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Cmd",
-                Class = "text-cell",
+                
                 IsEditable = false,
                 Value = "",
                 Indent = 0,
@@ -3211,7 +3165,7 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = dataRow.RowCode,
                 ColCode = "Ftes",
-                Class = "data-cell",
+                
                 IsEditable = false,
                 NumValue = -30,
                 Indent = 0,
@@ -3241,7 +3195,7 @@ namespace ExhibitGrid.Processes
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0417", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0422", false,null));
             dataRow.Cells.Add(GetOp32Col(grid.GridCode, dataRow.RowCode, "0423", false,null));
-            grid.DataRows.Add(dataRow);
+            grid.Rows.Add(dataRow);
         }
 
         private CellVm GetOp32Col(string gridCode, string rowCode, string colCode, bool isEditable, string parentRowCode)
@@ -3250,9 +3204,8 @@ namespace ExhibitGrid.Processes
             {
                 GridCode = gridCode,
                 RowCode = rowCode,
-                ParentRowCode = parentRowCode,
                 ColCode = colCode,
-                Class = "data-cell",
+                
                 IsEditable = isEditable,
                 NumValue = 0,
                 Indent = 0,

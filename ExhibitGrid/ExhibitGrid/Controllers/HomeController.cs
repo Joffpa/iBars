@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ExhibitGrid.EntityDataModel;
 using ExhibitGrid.ViewModel;
 using ExhibitGrid.Processes;
+using Newtonsoft.Json;
 
 namespace ExhibitGrid.Controllers
 {
@@ -57,5 +58,20 @@ namespace ExhibitGrid.Controllers
             return View();
         }
 
+        public ActionResult RunCalcs()
+        {
+            var vm = new RunCalcVm();
+            return View(vm);
+        }
+
+        [HttpPost]
+        public JsonResult RunCalcs(RunCalcVm vm)
+        {
+
+            var proc = new CalcGridProcess();
+            proc.Process(vm.ExhibitToCalc);
+
+            return Json(vm, JsonRequestBehavior.AllowGet);
+        }
     }
 }

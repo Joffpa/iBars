@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace ExhibitGrid.ViewModel
 {
@@ -17,6 +18,12 @@ namespace ExhibitGrid.ViewModel
         public bool HasDeleteCol { get; set; }
 
         public List<ColumnVm> Columns { get; set; }
-        public List<RowVm> DataRows { get; set; }
+        public List<RowVm> Rows { get; set; }
+
+        [JsonIgnore]
+        public List<CellVm> Cells { get; set; }
+        [JsonIgnore]
+        public List<CellVm> ExternalDependantCells { get; set; }
+
     }
 }

@@ -13,15 +13,25 @@
 .main-content .exhibit-table thead tr th {
   /*white-space: nowrap;*/
 }
-.main-content .exhibit-table tbody tr.sub-header-row {
+.main-content .exhibit-table tbody tr.header-row {
   background-color: lightgrey;
 }
-.main-content .exhibit-table tbody tr.sub-header-row th {
+.main-content .exhibit-table tbody tr.header-row th {
   font-weight: bold;
+}
+.main-content .exhibit-table tbody tr.subtotal-row {
+  background-color: lightblue;
+}
+.main-content .exhibit-table tbody tr.subtotal-row th {
+  font-weight: bold;
+}
+.main-content .exhibit-table tbody tr.total-row {
+  background-color: cornflowerblue;
 }
 .main-content .exhibit-table tbody tr.total-row td,
 .main-content .exhibit-table tbody tr.total-row th {
   font-weight: bold;
+  text-decoration: underline;
 }
 .main-content .exhibit-table tbody tr.grand-total-row td,
 .main-content .exhibit-table tbody tr.grand-total-row th {

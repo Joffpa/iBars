@@ -4,24 +4,25 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <Function Name="GetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="varchar" Mode="In" />
         </Function>
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
         </Function>
-        <EntityContainer Name="EasModelStoreContainer">
-        </EntityContainer>
+        <Function Name="UspGetCellVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="EasModelStoreContainer" />
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DEV_AF" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="UspGetAttribVal" ReturnType="Collection(EasModel.Attributes)">
+          <FunctionImport Name="GetCalcs" ReturnType="Collection(EasModel.GetCalcs_Result)">
           <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetCalcs" ReturnType="Collection(EasModel.GetCalcs_Result)">
+          <FunctionImport Name="UspGetCellVal" />
+          <FunctionImport Name="UspGetAttribVal" ReturnType="Collection(EasModel.Attributes)">
           <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
@@ -29,7 +30,6 @@
           <Property Type="String" Name="GridCode" Nullable="false" />
           <Property Type="String" Name="RowCode" Nullable="false" />
           <Property Type="String" Name="ColCode" Nullable="false" />
-          <Property Type="String" Name="Class" Nullable="true" DefaultValue="" />
           <Property Type="Boolean" Name="CanCollapse" Nullable="true" DefaultValue="false" />
           <Property Type="Boolean" Name="CanSelect" DefaultValue="false" Nullable="true" />
           <Property Type="Decimal" Name="DisplayOrder" Nullable="true" />
@@ -40,17 +40,15 @@
           <Property Type="String" Name="DisplayText" Nullable="true" DefaultValue="" />
           <Property Type="String" Name="Width" Nullable="true" DefaultValue="" />
           <Property Type="Boolean" Name="HasHeader" Nullable="true" DefaultValue="false" />
-          <Property Type="String" Name="Directive" Nullable="true" DefaultValue="" />
           <Property Type="Int32" Name="ColSpan" Nullable="true" DefaultValue="1" />
           <Property Type="Int32" Name="Level" Nullable="true" DefaultValue="0" />
           <Property Type="Boolean" Name="CanAdd" Nullable="true" DefaultValue="false" />
           <Property Type="Boolean" Name="CanDelete" Nullable="true" DefaultValue="false" />
           <Property Type="Int32" Name="Indent" Nullable="true" DefaultValue="0" />
-          <Property Type="Boolean" Name="IsBlank" Nullable="true" DefaultValue="false" />
           <Property Type="String" Name="Value" Nullable="true" DefaultValue="" />
           <Property Type="String" Name="HoverText" Nullable="true" />
-          <Property Type="String" Name="ParentRowCode" Nullable="false" />
           <Property Type="String" Name="Alignment" Nullable="false" />
+          <Property Type="String" Name="Type" Nullable="false" />
         </ComplexType>
         <ComplexType Name="GetCalcs_Result">
           <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
@@ -61,41 +59,18 @@
           <Property Type="String" Name="RowCode" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="ColCode" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <ComplexType Name="CellValue" >
+          <Property Type="String" Name="GridCode" Nullable="false" />
+          <Property Type="String" Name="RowCode" Nullable="false" />
+          <Property Type="String" Name="ColCode" Nullable="false" />
+          <Property Type="String" Name="Val" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EasModelStoreContainer" CdmEntityContainer="DEV_AF">
-          <FunctionImportMapping FunctionImportName="UspGetAttribVal" FunctionName="EasModel.Store.UspGetAttribVal" >
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EasModel.Attributes">
-                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
-                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
-                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="CanCollapse" ColumnName="CanCollapse" />
-                <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
-                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
-                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
-                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
-                <ScalarProperty Name="HoverBase" ColumnName="HoverBase" />
-                <ScalarProperty Name="HoverAddition" ColumnName="HoverAddition" />
-                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
-                <ScalarProperty Name="Width" ColumnName="Width" />
-                <ScalarProperty Name="HasHeader" ColumnName="HasHeader" />
-                <ScalarProperty Name="Directive" ColumnName="Directive" />
-                <ScalarProperty Name="ColSpan" ColumnName="ColSpan" />
-                <ScalarProperty Name="Level" ColumnName="Level" />
-                <ScalarProperty Name="CanAdd" ColumnName="CanAdd" />
-                <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
-                <ScalarProperty Name="Indent" ColumnName="Indent" />
-                <ScalarProperty Name="IsBlank" ColumnName="IsBlank" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="HoverText" ColumnName="HoverText" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetCalcs" FunctionName="EasModel.Store.GetCalcs">
             <ResultMapping>
               <ComplexTypeMapping TypeName="EasModel.GetCalcs_Result">
@@ -106,6 +81,34 @@
                 <ScalarProperty Name="GridCode" ColumnName="GridCode" />
                 <ScalarProperty Name="RowCode" ColumnName="RowCode" />
                 <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspGetCellVal" FunctionName="EasModel.Store.UspGetCellVal" />
+          <FunctionImportMapping FunctionImportName="UspGetAttribVal" FunctionName="EasModel.Store.UspGetAttribVal" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.Attributes">
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+                <ScalarProperty Name="CanCollapse" ColumnName="CanCollapse" />
+                <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
+                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
+                <ScalarProperty Name="HoverBase" ColumnName="HoverBase" />
+                <ScalarProperty Name="HoverAddition" ColumnName="HoverAddition" />
+                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="HasHeader" ColumnName="HasHeader" />
+                <ScalarProperty Name="ColSpan" ColumnName="ColSpan" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="CanAdd" ColumnName="CanAdd" />
+                <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
+                <ScalarProperty Name="Indent" ColumnName="Indent" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="HoverText" ColumnName="HoverText" />
+                <ScalarProperty Name="Alignment" ColumnName="Alignment" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

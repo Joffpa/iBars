@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace ExhibitGrid.ViewModel
 {
@@ -10,18 +11,18 @@ namespace ExhibitGrid.ViewModel
         public string ColCode { get; set; }
         public bool HasHeader { get; set; } 
         public bool IsHidden { get; set; }
-        public string Directive { get; set; } //datatype
+        public string Type { get; set; } //datatype
         public string Width { get; set; }
         public string DisplayText { get; set; }
         public int ColSpan { get; set; }
         public int Level { get; set; }
         public decimal DisplayOrder { get; set; } //col #
         public bool IsEditable { get; set; }
-
         public string Alignment { get; set; }
-        public string Class { get; set; }
         //alignment
         //hovertext
         //header css class
+        [JsonIgnore]
+        public List<CellVm> Cells { get; set; }
     }
 }

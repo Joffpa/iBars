@@ -41,7 +41,6 @@ module app {
         }
 
         update(val) {
-            console.log("updated");
         }
 
     }
@@ -74,7 +73,7 @@ module app {
             return { 'width': '110px' };
         }
 
-        onChange = function () {
+        onChange() {
             this.CalcService.runCellCalcs(this.cellvm);
         }
 
@@ -83,8 +82,13 @@ module app {
         }
 
         constructor(modelService: app.model.IModelService, calcService: app.calc.ICalcService) {
-            this.ModelService = modelService;
-            this.CalcService = calcService;
+            var ctrl = this;
+            ctrl.ModelService = modelService;
+            ctrl.CalcService = calcService;
+
+            //$scope.$watch('cellvm.NumValue', function (newValue, oldValue) {
+            //    ctrl.CalcService.runCellCalcs(ctrl.cellvm);
+            //});
         }
     }
     
@@ -122,8 +126,7 @@ module app {
             this.element = $element;
         }
 
-        $postLink = function () {
-
+        $postLink() {
             if (!this.cellvm.IsBlank) {
                 this.element.kendoDropDownList({
                     dataTextField: "Text",
@@ -157,7 +160,7 @@ module app {
                 controllerAs: 'cellCtrl',
                 controller: TextCellController,
                 bindings: {
-                    cellvm: '='
+                    cellvm: '<'
                 }
             })
         .component('numericCell', {

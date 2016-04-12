@@ -27,7 +27,6 @@ var app;
             alert('row deleted: ' + this.RowVm.RowCode);
         };
         RowController.prototype.update = function (val) {
-            console.log("updated");
         };
         return RowController;
     }());
@@ -46,17 +45,21 @@ var app;
     app.TextCellController = TextCellController;
     var NumericCellController = (function () {
         function NumericCellController(modelService, calcService) {
-            this.onChange = function () {
-                this.CalcService.runCellCalcs(this.cellvm);
-            };
-            this.ModelService = modelService;
-            this.CalcService = calcService;
+            var ctrl = this;
+            ctrl.ModelService = modelService;
+            ctrl.CalcService = calcService;
+            //$scope.$watch('cellvm.NumValue', function (newValue, oldValue) {
+            //    ctrl.CalcService.runCellCalcs(ctrl.cellvm);
+            //});
         }
         NumericCellController.prototype.getStyle = function () {
             if (this.cellvm.Width) {
                 return { 'width': this.cellvm.Width };
             }
             return { 'width': '110px' };
+        };
+        NumericCellController.prototype.onChange = function () {
+            this.CalcService.runCellCalcs(this.cellvm);
         };
         NumericCellController.prototype.onBlur = function () {
         };
@@ -83,25 +86,25 @@ var app;
     app.NarrativeCellController = NarrativeCellController;
     var DropdownCellController = (function () {
         function DropdownCellController($element) {
-            this.$postLink = function () {
-                if (!this.cellvm.IsBlank) {
-                    this.element.kendoDropDownList({
-                        dataTextField: "Text",
-                        dataValueField: "Value",
-                        enable: true,
-                        dataSource: {
-                            transport: {
-                                read: {
-                                    url: commonUI.getWebRoot() + "Home/GetDdOptions",
-                                    dataType: "json"
-                                }
-                            }
-                        }
-                    });
-                }
-            };
             this.element = $element;
         }
+        DropdownCellController.prototype.$postLink = function () {
+            if (!this.cellvm.IsBlank) {
+                this.element.kendoDropDownList({
+                    dataTextField: "Text",
+                    dataValueField: "Value",
+                    enable: true,
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: commonUI.getWebRoot() + "Home/GetDdOptions",
+                                dataType: "json"
+                            }
+                        }
+                    }
+                });
+            }
+        };
         return DropdownCellController;
     }());
     app.DropdownCellController = DropdownCellController;
@@ -113,7 +116,7 @@ var app;
         controllerAs: 'cellCtrl',
         controller: TextCellController,
         bindings: {
-            cellvm: '='
+            cellvm: '<'
         }
     })
         .component('numericCell', {

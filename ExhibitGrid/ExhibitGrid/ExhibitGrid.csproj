@@ -59,9 +59,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ciloci.Flee, Version=0.9.26.0, Culture=neutral, PublicKeyToken=c8526a021ef298ed, processorArchitecture=MSIL">
+    <Reference Include="CalcEngine, Version=1.0.0.2, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>3rd party\Ciloci.Flee.dll</HintPath>
+      <HintPath>3rd party\CalcEngine.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -80,6 +80,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
@@ -154,16 +158,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="EntityDataModel\Attributes.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\CellValue.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityDataModel\EasModel.Context.cs">
@@ -200,8 +202,10 @@
     <Compile Include="ViewModel\GetCalcResultVm.cs" />
     <Compile Include="ViewModel\GridVm.cs" />
     <Compile Include="ViewModel\RowVm.cs" />
+    <Compile Include="ViewModel\RunCalcVm.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="3rd party\CalcEngine.dll" />
     <Content Include="3rd party\Ciloci.Flee.dll" />
     <Content Include="3rd party\Ciloci.Flee.xml" />
     <Content Include="3rd party\Kendo.Mvc.dll" />
@@ -1476,6 +1480,8 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\Rx.js" />
@@ -1541,6 +1547,7 @@
       <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
     </Content>
     <Content Include="Scripts\_references.js" />
+    <Content Include="Sql\CreatePBA10.sql" />
     <Content Include="Sql\EF Version of Calc.sql" />
     <Content Include="Sql\GetCalcs.sql" />
     <Content Include="Sql\PBA12_Attribs.sql" />
@@ -1584,6 +1591,7 @@
     <Content Include="Views\Home\GridV2.cshtml" />
     <Content Include="typings.json" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Home\RunCalcs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

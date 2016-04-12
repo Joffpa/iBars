@@ -29,13 +29,13 @@ module Service {
         DisplayText: string;
         IsEditable: boolean;
         Width: number;
-        HasCollapseColumn: boolean;
-        HasSelectColumn: boolean;
-        HasAddColumn: boolean;
-        HasDeleteColumn: boolean;
+        HasSelectCol: boolean;
+        HasCollapseCol: boolean;
+        HasAddCol: boolean;
+        HasDeleteCol: boolean;
         NumColumns: number;
         Columns: ExhibitGrid.ViewModel.IColumnVm[];
-        DataRows: ExhibitGrid.ViewModel.IRowVm[];
+        Rows: ExhibitGrid.ViewModel.IRowVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
@@ -79,6 +79,7 @@ module Service {
         Indent: number;
         IsHidden: boolean;
         IsBlank: boolean;
+        Alignment: string;
         Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
             this.RowCode = RowCode;
@@ -126,34 +127,34 @@ module Service {
         getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm {
             console.log(gridCode);
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             return row;
         }
 
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell;
         }
 
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number) {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             cell.NumValue = value;
         }
 
         getCellValue(gridCode: string, rowCode: string, colCode: string): number {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.DataRows, { 'RowCode': rowCode });
+            var row = _.find(grid.Rows, { 'RowCode': rowCode });
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell.NumValue;
         }
 
         collapseChildren(gridCode: string, rowCode: string) {
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            _.each(_.where(grid.DataRows, { 'ParentRowCode': rowCode }), child => {
+            _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), child => {
                 child.IsCollapsed = !child.IsCollapsed;
             });
 
@@ -162,7 +163,7 @@ module Service {
         getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode) {
             var calc = "";
             var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            _.each(_.where(grid.DataRows, { 'ParentRowCode': parentRowCode }), child => {
+            _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), child => {
                 var cell = _.find(child.Cells, { 'ColCode': colCode });
                 calc += cell.NumValue.toString() + "+";
             });

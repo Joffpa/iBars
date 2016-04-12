@@ -15,7 +15,6 @@ namespace ExhibitGrid.EntityDataModel
     {
         public Attributes()
         {
-            this.Class = "";
             this.CanCollapse = false;
             this.CanSelect = false;
             this.IsEditable = false;
@@ -23,20 +22,17 @@ namespace ExhibitGrid.EntityDataModel
             this.DisplayText = "";
             this.Width = "";
             this.HasHeader = false;
-            this.Directive = "";
             this.ColSpan = 1;
             this.Level = 0;
             this.CanAdd = false;
             this.CanDelete = false;
             this.Indent = 0;
-            this.IsBlank = false;
             this.Value = "";
         }
     
         public string GridCode { get; set; }
         public string RowCode { get; set; }
         public string ColCode { get; set; }
-        public string Class { get; set; }
         public Nullable<bool> CanCollapse { get; set; }
         public Nullable<bool> CanSelect { get; set; }
         public Nullable<decimal> DisplayOrder { get; set; }
@@ -47,16 +43,14 @@ namespace ExhibitGrid.EntityDataModel
         public string DisplayText { get; set; }
         public string Width { get; set; }
         public Nullable<bool> HasHeader { get; set; }
-        public string Directive { get; set; }
         public Nullable<int> ColSpan { get; set; }
         public Nullable<int> Level { get; set; }
         public Nullable<bool> CanAdd { get; set; }
         public Nullable<bool> CanDelete { get; set; }
         public Nullable<int> Indent { get; set; }
-        public Nullable<bool> IsBlank { get; set; }
         public string Value { get; set; }
         public string HoverText { get; set; }
-        public string ParentRowCode { get; set; }
         public string Alignment { get; set; }
+        public string Type { get; set; }
     }
 }
