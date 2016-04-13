@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using ExhibitGrid.EntityDataModel;
+using ExhibitGrid.Extensions;
 using ExhibitGrid.Globals;
 using ExhibitGrid.ViewModel;
 using WebGrease.Css.Extensions;
@@ -29,13 +30,13 @@ namespace ExhibitGrid.Processes
                         }
                         else if (string.IsNullOrEmpty(attrib.RowCode) && !string.IsNullOrEmpty(attrib.ColCode))
                         {
-                            grid.Columns.Add(BuildColVm(attrib));
+                            grid.Columns.Add(BuildColVmFromAttributes(attrib));
                         }
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
                             AddVirtualColsFromRowAttribs(grid, attrib);
 
-                            grid.Rows.Add(BuildRowVm(attrib));
+                            grid.Rows.Add(BuildRowVmFromAttributes(attrib));
                         }
                         else
                         {
@@ -48,7 +49,7 @@ namespace ExhibitGrid.Processes
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
                         {
                             var cellAttrib = cellDictionary[grid.GridCode + row.RowCode + col.ColCode];
-                            var cell = BuildCellVm(grid, row, col, cellAttrib);
+                            var cell = BuildCellVmFromAttributes(grid, row, col, cellAttrib);
                             
                             row.Cells.Add(cell);
                             col.Cells.Add(cell);
@@ -64,9 +65,10 @@ namespace ExhibitGrid.Processes
             return grid;
         }
         
-        public static GridVm GetVmWithCalcs(string gridCode)
+        public static GridVm GetVmWithCalcs(ExhibitVm exhibit, string gridCode)
         {
             var grid = InitializeNewGrid(gridCode);
+            exhibit.Grids.Add(grid);
             try
             {
                 using (var db = new DEV_AF())
@@ -135,9 +137,8 @@ namespace ExhibitGrid.Processes
                                             }).ToList()
                             }).ToList());
 					
-
-                    grid.ExternalDependantCells = externalDependantCells;
-
+                    GetExternalCells(exhibit, externalDependantCells, db);
+                    
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
                     var cellDictionary = new Dictionary<string, Attributes>();
                     foreach (var attrib in attribs)
@@ -148,7 +149,7 @@ namespace ExhibitGrid.Processes
                         }
                         else if (string.IsNullOrEmpty(attrib.RowCode) && !string.IsNullOrEmpty(attrib.ColCode))
                         {
-                            grid.Columns.Add(BuildColVm(attrib));
+                            grid.Columns.Add(BuildColVmFromAttributes(attrib));
 
                             //For Numeric columns expand the row calcs for every column and add to cell calcs
                             if (attrib.Type == Literals.ColCellType.Numeric)
@@ -165,13 +166,15 @@ namespace ExhibitGrid.Processes
                                         GridCode = rowCalc.GridCode,
                                         RowCode = rowCalc.RowCode,
                                         ColCode = attrib.ColCode
-                                    }));
+                                    })
+                                    .Where(rc => !cellCalcResults.Any(cc => cc.TargetGridCode == rc.TargetGridCode && cc.TargetRowCode == rc.TargetRowCode && cc.TargetColCode == rc.TargetColCode))
+);
                         }
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
                             AddVirtualColsFromRowAttribs(grid, attrib);
 
-                            grid.Rows.Add(BuildRowVm(attrib));
+                            grid.Rows.Add(BuildRowVmFromAttributes(attrib));
 
                             cellCalcsExpandedFromColCalcs.AddRange(
                                 colCalcResults.Select(colCalc => new GetCalcs_Result()
@@ -185,7 +188,8 @@ namespace ExhibitGrid.Processes
                                     GridCode = colCalc.GridCode,
                                     RowCode = attrib.RowCode,
                                     ColCode = colCalc.ColCode
-                                }));
+                                })
+                                .Where(rc => !cellCalcResults.Any(cc => cc.TargetGridCode == rc.TargetGridCode && cc.TargetRowCode == rc.TargetRowCode && cc.TargetColCode == rc.TargetColCode)));
                         }
                         else
                         {
@@ -242,13 +246,15 @@ namespace ExhibitGrid.Processes
                     allExpandedCalcs.AddRange(cellCalcResults);
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromRowCalcs);
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromColCalcs);
-
+                    
+                    //Convert all calcs into dictionaries for easy lookup when building individual cells
                     var cellCalcDic = calcExpressions.ToDictionary(calc => calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
                     var colCalcDic = colCalcExpressions.ToDictionary(calc => calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
                     var rowCalcDic = rowCalcExpressions.ToDictionary(calc => calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
 
-                    colCalcDic = colCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
-                    rowCalcDic = rowCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
+                    //remove expanded row and col calcs that target the same cell as a cell calc
+                    //colCalcDic = colCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
+                    //rowCalcDic = rowCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
 
                     foreach (var row in grid.Rows)
                     {
@@ -256,7 +262,7 @@ namespace ExhibitGrid.Processes
                         {
                             var cellAttrib = cellDictionary[grid.GridCode + row.RowCode + col.ColCode];
 
-                            var cell = BuildCellVm(grid, row, col, cellAttrib);
+                            var cell = BuildCellVmFromAttributes(grid, row, col, cellAttrib);
 
                             cell.Calcs = col.Type == Literals.ColCellType.Numeric
                                 ? GetCalcsForCell(allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic,
@@ -287,7 +293,6 @@ namespace ExhibitGrid.Processes
                 Columns = new List<ColumnVm>(),
                 Rows = new List<RowVm>(),
                 Cells = new List<CellVm>(),
-                ExternalDependantCells = new List<CellVm>(),
                 IsEditable = true,
                 HasSelectCol = false,
                 HasCollapseCol = false,
@@ -296,7 +301,7 @@ namespace ExhibitGrid.Processes
             };
         }
 
-        private static ColumnVm BuildColVm(Attributes attrib)
+        private static ColumnVm BuildColVmFromAttributes(Attributes attrib)
         {
             return new ColumnVm()
             {
@@ -315,7 +320,7 @@ namespace ExhibitGrid.Processes
             };
         }
 
-        private static RowVm BuildRowVm(Attributes attrib)
+        private static RowVm BuildRowVmFromAttributes(Attributes attrib)
         {
             return new RowVm()
             {
@@ -336,7 +341,7 @@ namespace ExhibitGrid.Processes
             };
         }
 
-        private static CellVm BuildCellVm(GridVm grid, RowVm row, ColumnVm col, Attributes cellAttrib)
+        private static CellVm BuildCellVmFromAttributes(GridVm grid, RowVm row, ColumnVm col, Attributes cellAttrib)
         {
             double numval;
             var cellVal = "";
@@ -399,6 +404,76 @@ namespace ExhibitGrid.Processes
             var span = grid.Columns.Count(c => c.Level == 0 && !c.IsHidden);
             span += (grid.HasSelectCol ? 1 : 0) + (grid.HasCollapseCol ? 1 : 0) + (grid.HasAddCol ? 1 : 0) + (grid.HasDeleteCol ? 1 : 0);
             return span;
+        }
+
+        private static void GetExternalCells(ExhibitVm exhibit, List<CellVm> cells, DEV_AF db)
+        {
+            try
+            {
+                var cellParms = cells.Select(cell => new CellValue()
+                {
+                    GridCode = cell.GridCode,
+                    RowCode = cell.RowCode,
+                    ColCode = cell.ColCode
+                }).ToList();
+                var result = db.UspGetCellVal(cellParms);
+                foreach (var cellResult in result)
+                {
+                    var grid = exhibit.Grids.FirstOrDefault(g => g.GridCode == cellResult.GridCode);
+                    if (grid == null)
+                    {
+                        grid = InitializeNewGrid(cellResult.GridCode);
+                        exhibit.Grids.Add(grid);
+                    }
+                    var row = grid.Rows.FirstOrDefault(r => r.RowCode == cellResult.RowCode);
+                    if (row == null)
+                    {
+                        row = BuildRowVmForExternalGrid(cellResult.GridCode, cellResult.RowCode);
+                        grid.Rows.Add(row);
+                    }
+                    var cellvm = row.Cells.FirstOrDefault(r => r.ColCode == cellResult.ColCode);
+                    if (cellvm == null)
+                    {
+                        cellvm = BuildCellVmForExternalGrid(cellResult.GridCode, cellResult.RowCode, cellResult.ColCode,
+                            cellResult.Val);
+                        row.Cells.Add(cellvm);
+                        grid.Cells.Add(cellvm);
+                    }
+                    else
+                    {
+                        double parseResult;
+                        cellvm.Value = cellResult.Val;
+                        cellvm.NumValue = double.TryParse(cellResult.Val, out parseResult) ? parseResult : 0;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public static CellVm BuildCellVmForExternalGrid(string gridCode, string rowCode, string colCode, string value)
+        {
+            double parseResult;
+            return new CellVm()
+            {
+                GridCode = gridCode,
+                RowCode = rowCode,
+                ColCode = colCode,
+                Value = value,
+                NumValue = double.TryParse(value, out parseResult) ? parseResult : 0
+            };
+        }
+
+        public static RowVm BuildRowVmForExternalGrid(string gridCode, string rowCode)
+        {
+            return new RowVm()
+            {
+                GridCode = gridCode,
+                RowCode = rowCode,
+                Cells = new List<CellVm>()
+            };
         }
         #endregion
 

@@ -37,6 +37,8 @@ module app.model {
         NumColumns: number;
         Columns: ExhibitGrid.ViewModel.IColumnVm[];
         Rows: ExhibitGrid.ViewModel.IRowVm[];
+        Cells: ExhibitGrid.ViewModel.ICellVm[];
+        ExternalDependantCells: ExhibitGrid.ViewModel.ICellVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }

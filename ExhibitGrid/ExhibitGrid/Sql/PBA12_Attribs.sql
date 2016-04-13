@@ -374,8 +374,6 @@ union all
 select 'PBA12_ProgData1','','PyPrice'
 
 
-
-
 insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
 select @totExprId, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_CommunSustBase' and ColCode = '')
 union all

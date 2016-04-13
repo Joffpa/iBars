@@ -22,8 +22,5 @@ namespace ExhibitGrid.ViewModel
 
         [JsonIgnore]
         public List<CellVm> Cells { get; set; }
-        [JsonIgnore]
-        public List<CellVm> ExternalDependantCells { get; set; }
-
     }
 }

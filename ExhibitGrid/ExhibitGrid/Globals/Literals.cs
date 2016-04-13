@@ -25,6 +25,7 @@ namespace ExhibitGrid.Globals
         {
             public static readonly string Text = "text";
             public static readonly string Numeric = "numeric";
+            public static readonly string Percent = "percent";
             public static readonly string Dropdown = "dropdown";
             public static readonly string Postit = "postit";
             public static readonly string Narrative = "narrative";

@@ -186,6 +186,7 @@
     <Compile Include="EntityDataModel\GetCalcs_Result.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="Filters\AuthFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -199,6 +200,7 @@
     <Compile Include="ViewModel\CalcExpressionVm.cs" />
     <Compile Include="ViewModel\CellVm.cs" />
     <Compile Include="ViewModel\ColumnVm.cs" />
+    <Compile Include="ViewModel\ExhibitVm.cs" />
     <Compile Include="ViewModel\GetCalcResultVm.cs" />
     <Compile Include="ViewModel\GridVm.cs" />
     <Compile Include="ViewModel\RowVm.cs" />

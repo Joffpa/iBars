@@ -2,6 +2,37 @@
 EXEC CreateZgridTbls 'PBA10_PersonnelData'
 
 select * from zo_PBA10_PersonnelData
+
+--update zo_PBA10_PersonnelData
+--	set Py = 10, Cy = 50, By1 = 100
+--	where RowCode = 'ActFor_Officer'
+--	and OutType = 'UI'
+--update zo_PBA10_PersonnelData
+--	set Py = 20, Cy = 60, By1 = 110
+--	where RowCode = 'ActFor_Enlisted'
+--	and OutType = 'UI'
+--update zo_PBA10_PersonnelData
+--	set Py = 30, Cy = 70, By1 = 120
+--	where RowCode = 'ResGuard_Officer'
+--	and OutType = 'UI'
+--update zo_PBA10_PersonnelData
+--	set Py = 40, Cy = 80, By1 = 130
+--	where RowCode = 'ResGuard_Enlisted'
+--	and OutType = 'UI'
+--update zo_PBA10_PersonnelData
+--	set Py = 50, Cy = 90, By1 = 140
+--	where RowCode = 'Civ_UsDirect'
+--	and OutType = 'UI'
+--update zo_PBA10_PersonnelData
+--	set Py = 60, Cy = 100, By1 = 150
+--	where RowCode = 'Civ_ForNatDirect'
+--	and OutType = 'UI'
+--update zo_PBA10_PersonnelData
+--	set Py = 70, Cy = 110, By1 = 160
+--	where RowCode = 'Civ_ForNatInDir'
+--	and OutType = 'UI'
+
+
 select * from ColMap 
 
 --insert into ColMap (GridCode, ColCode, ColOrd, OutColType, StgColType, tableSpecific, CellType, col_code)
@@ -86,7 +117,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'By1',  'ColSpan=1,
 
 
 --ActFor_Officer Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Cy',  'ColSpan=1,IsEditable=0,Indent=1', ''
@@ -94,7 +125,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'CyBy1Change',  'C
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --ActFor_Enlisted Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -126,7 +157,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'CyBy1Change',  '
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --ResGuard_Officer Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -134,7 +165,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'CyBy1Change',  
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --ResGuard_Enlisted Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -165,14 +196,14 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'Cy',  'ColSpan=1,IsEd
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 --Civ_UsDirect Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 --Civ_ForNatDirect Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -180,7 +211,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'CyBy1Change',  
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --Civ_TotalDirect Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=2', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -188,7 +219,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'CyBy1Change',  '
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --Civ_ForNatInDir Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -218,8 +249,16 @@ where CalcExpressionOperandId in(
 delete from CalcOperand where GridCode = 'PBA10_PersonnelData'	
 delete from CalcExpression where TargetGridCode = 'PBA10_PersonnelData'	
 
+delete from CalcExpressionOperand 
+where CalcExpressionOperandId in(
+	select CalcExpressionOperandId from CalcExpressionOperand eo
+	Join CalcExpression o on eo.CalcExpressionId = o.CalcExpressionId
+	where o.TargetGridCode = 'PBA12_ProgData1' and o.TargetRowCode = 'PBA12_ProgData_CommunSustBase' and o.TargetColCode = 'Py'
+)
+delete from CalcOperand where GridCode = 'PBA12_ProgData1'	and RowCode = 'PBA12_ProgData_CommunSustBase' and ColCode = 'Py'
 
-DECLARE @ActTotal int, @ResTotal int, @DirHireTotal int, @CivTotal int, @PyCyChange int, @CyBy1Change int
+
+DECLARE @ActTotal int, @ResTotal int, @DirHireTotal int, @CivTotal int, @PyCyChange int, @CyBy1Change int, @CrossGrid int
 insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
 select 'PBA10_PersonnelData','ActFor_Total','','{PBA10_PersonnelData.ActFor_Officer..} + {PBA10_PersonnelData.ActFor_Enlisted..} '
 SET @ActTotal = @@IDENTITY
@@ -238,6 +277,9 @@ SET @PyCyChange = @@IDENTITY
 insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
 select 'PBA10_PersonnelData','','CyBy1Change','{PBA10_PersonnelData..By1.} - {PBA10_PersonnelData..Cy.}'
 SET @CyBy1Change = @@IDENTITY
+insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
+select 'PBA10_PersonnelData','ActFor_Total','Py','{PBA10_PersonnelData.ActFor_Enlisted.Py.} * {PBA12_ProgData1.PBA12_ProgData_CommunSustBase.Py.}'
+SET @CrossGrid = @@IDENTITY
 
 
 insert into CalcOperand (GridCode, RowCode, ColCode)
@@ -260,6 +302,10 @@ union all
 select 'PBA10_PersonnelData','','Cy'
 union all
 select 'PBA10_PersonnelData','','By1'
+union all
+select 'PBA10_PersonnelData','ActFor_Enlisted','Py'
+union all
+select 'PBA12_ProgData1','PBA12_ProgData_CommunSustBase','Py'
 
 
 insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
@@ -288,6 +334,10 @@ union all
 select @CyBy1Change, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = '' and ColCode = 'Cy')
 union all
 select @CyBy1Change, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = '' and ColCode = 'By1')
+union all
+select @CrossGrid, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Enlisted' and ColCode = 'Py')
+union all
+select @CrossGrid, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_CommunSustBase' and ColCode = 'Py')
 
 
 
