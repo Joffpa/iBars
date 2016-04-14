@@ -3,9 +3,10 @@
 var app;
 (function (app) {
     var GridController = (function () {
-        function GridController(modelService) {
+        function GridController($attrs, modelService) {
+            console.log($attrs.gridCode);
             this.ModelService = modelService;
-            var gridCode = window["gridModel"].gridCode;
+            var gridCode = $attrs.gridcode;
             this.GridVm = this.ModelService.getGridVm(gridCode);
         }
         return GridController;
@@ -18,7 +19,7 @@ var app;
             this.CalcService = calcService;
         }
         RowController.prototype.collapseChildren = function () {
-            this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
+            //this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
         };
         RowController.prototype.addRow = function () {
             alert('row added: ' + this.RowVm.RowCode);
@@ -48,9 +49,6 @@ var app;
             var ctrl = this;
             ctrl.ModelService = modelService;
             ctrl.CalcService = calcService;
-            //$scope.$watch('cellvm.NumValue', function (newValue, oldValue) {
-            //    ctrl.CalcService.runCellCalcs(ctrl.cellvm);
-            //});
         }
         NumericCellController.prototype.getStyle = function () {
             if (this.cellvm.Width) {
@@ -66,6 +64,27 @@ var app;
         return NumericCellController;
     }());
     app.NumericCellController = NumericCellController;
+    var PercentCellController = (function () {
+        function PercentCellController(modelService, calcService) {
+            var ctrl = this;
+            ctrl.ModelService = modelService;
+            ctrl.CalcService = calcService;
+        }
+        PercentCellController.prototype.getStyle = function () {
+            if (this.cellvm.Width) {
+                return { 'width': this.cellvm.Width };
+            }
+            return { 'width': '110px' };
+        };
+        PercentCellController.prototype.onChange = function () {
+            console.log("change");
+            this.CalcService.runCellCalcs(this.cellvm);
+        };
+        PercentCellController.prototype.onBlur = function () {
+        };
+        return PercentCellController;
+    }());
+    app.PercentCellController = PercentCellController;
     var PostItCellController = (function () {
         function PostItCellController() {
         }
@@ -120,9 +139,17 @@ var app;
         }
     })
         .component('numericCell', {
-        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:20px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.NumValue | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox numeric\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:20px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
         controllerAs: 'cellCtrl',
         controller: NumericCellController,
+        bindings: {
+            cellvm: '<'
+        }
+    })
+        .component('percentCell', {
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <div ng-switch-when=\"true\" style=\"width:100%\">\n                            <input type=\"number\" class=\"k-textbox percent\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/> %\n                        </div>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:20px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}} %\n                        </div>\n                    </div>\n                    ",
+        controllerAs: 'cellCtrl',
+        controller: PercentCellController,
         bindings: {
             cellvm: '<'
         }
@@ -151,7 +178,7 @@ var app;
             cellvm: '<'
         }
     })
-        .controller('gridController', ['modelService', GridController])
+        .controller('gridController', ['$attrs', 'modelService', GridController])
         .controller('rowController', ['$scope', 'modelService', 'calcService', RowController]);
 })(app || (app = {}));
 //# sourceMappingURL=grid.js.map

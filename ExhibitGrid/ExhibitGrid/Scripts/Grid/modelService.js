@@ -46,72 +46,73 @@ var app;
             return CalcOperandVm;
         }());
         model.CalcOperandVm = CalcOperandVm;
-        var MockModelService = (function () {
-            function MockModelService() {
-                this.exhibitModel = new ExhibitVm();
-                this.addGridVm(window['gridModel'].grid);
+        var ModelService = (function () {
+            //collapseChildren(gridCode: string, rowCode: string) {
+            //    var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            //    _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), child => {
+            //        child.IsCollapsed = !child.IsCollapsed;
+            //    });
+            //}
+            //getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode) {
+            //    var calc = "";
+            //    var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            //    _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), child => {
+            //        var cell = _.find(child.Cells, { 'ColCode': colCode });
+            //        calc += cell.NumValue.toString() + "+";
+            //    });
+            //    if (calc && calc.length > 2) {
+            //        calc.substring(0, calc.length - 2);
+            //    } else {
+            //        calc = "0";
+            //    }
+            //    return calc;
+            //}
+            function ModelService() {
+                this.exhibitModel = window['gridModel'].exhibit;
             }
-            MockModelService.prototype.addGridVm = function (gridVm) {
+            ModelService.prototype.addGridVm = function (gridVm) {
                 this.exhibitModel.Grids.push(gridVm);
             };
-            MockModelService.prototype.getExhibitVm = function () {
+            ModelService.prototype.getExhibitVm = function () {
                 return this.exhibitModel;
             };
-            MockModelService.prototype.getGridVm = function (gridCode) {
+            ModelService.prototype.getGridVm = function (gridCode) {
                 var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
                 return grid;
             };
-            MockModelService.prototype.getRowVm = function (gridCode, rowCode) {
-                console.log(gridCode);
-                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            ModelService.prototype.getRowVm = function (gridCode, rowCode) {
+                var grid = this.getGridVm(gridCode);
                 var row = _.find(grid.Rows, { 'RowCode': rowCode });
                 return row;
             };
-            MockModelService.prototype.getCellVm = function (gridCode, rowCode, colCode) {
-                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-                var row = _.find(grid.Rows, { 'RowCode': rowCode });
+            ModelService.prototype.getCellVm = function (gridCode, rowCode, colCode) {
+                var row = this.getRowVm(gridCode, rowCode);
                 var cell = _.find(row.Cells, { 'ColCode': colCode });
                 return cell;
             };
-            MockModelService.prototype.updateCellValue = function (gridCode, rowCode, colCode, value) {
-                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-                var row = _.find(grid.Rows, { 'RowCode': rowCode });
-                var cell = _.find(row.Cells, { 'ColCode': colCode });
+            ModelService.prototype.updateCellValue = function (gridCode, rowCode, colCode, value) {
+                var cell = this.getCellVm(gridCode, rowCode, colCode);
                 cell.NumValue = value;
+                cell.Value = value.toString();
             };
-            MockModelService.prototype.getCellValue = function (gridCode, rowCode, colCode) {
-                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-                var row = _.find(grid.Rows, { 'RowCode': rowCode });
-                var cell = _.find(row.Cells, { 'ColCode': colCode });
+            ModelService.prototype.setCellValueNA = function (gridCode, rowCode, colCode) {
+                var cell = this.getCellVm(gridCode, rowCode, colCode);
+                cell.Value = "N/A";
+                cell.NumValue = 0;
+            };
+            ModelService.prototype.getCellValueForCalc = function (gridCode, rowCode, colCode) {
+                var cell = this.getCellVm(gridCode, rowCode, colCode);
+                if (cell.Type == 'percent') {
+                    return cell.NumValue / 100;
+                }
                 return cell.NumValue;
             };
-            MockModelService.prototype.collapseChildren = function (gridCode, rowCode) {
-                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-                _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), function (child) {
-                    child.IsCollapsed = !child.IsCollapsed;
-                });
-            };
-            MockModelService.prototype.getParentRowCalcForColumn = function (gridCode, parentRowCode, colCode) {
-                var calc = "";
-                var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-                _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), function (child) {
-                    var cell = _.find(child.Cells, { 'ColCode': colCode });
-                    calc += cell.NumValue.toString() + "+";
-                });
-                if (calc && calc.length > 2) {
-                    calc.substring(0, calc.length - 2);
-                }
-                else {
-                    calc = "0";
-                }
-                return calc;
-            };
-            return MockModelService;
+            return ModelService;
         }());
-        model.MockModelService = MockModelService;
+        model.ModelService = ModelService;
         var service = angular
             .module('app.model', [])
-            .service('modelService', MockModelService);
+            .service('modelService', ModelService);
     })(model = app.model || (app.model = {}));
 })(app || (app = {}));
 //# sourceMappingURL=modelService.js.map

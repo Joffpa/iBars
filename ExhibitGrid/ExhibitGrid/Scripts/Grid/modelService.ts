@@ -11,10 +11,11 @@ module app.model {
         getGridVm(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
         getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm;
-        getCellValue(gridCode: string, rowCode: string, colCode: string): number;
+        getCellValueForCalc(gridCode: string, rowCode: string, colCode: string): number;
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number): void;
-        collapseChildren(gridCode: string, rowCode: string): void;
-        getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode): string;
+        setCellValueNA(gridCode: string, rowCode: string, colCode: string): void;
+        //collapseChildren(gridCode: string, rowCode: string): void;
+        //getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode): string;
     }
 
     export class ExhibitVm {
@@ -58,8 +59,8 @@ module app.model {
         CanDelete: boolean;
         IsSelected: boolean;
         IsEditable: boolean;
+        Type: string;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
-        CollapseableChildren: string[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
             this.Class = Class;
@@ -83,6 +84,7 @@ module app.model {
         IsHidden: boolean;
         IsBlank: boolean;
         Alignment: string;
+        Type: string;
         Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
             this.RowCode = RowCode;
@@ -104,7 +106,7 @@ module app.model {
     }
 
 
-    export class MockModelService implements IModelService {
+    export class ModelService implements IModelService {
         exhibitModel: ExhibitVm;
 
         addGridVm(gridVm: ExhibitGrid.ViewModel.IGridVm) {
@@ -121,65 +123,68 @@ module app.model {
         }
 
         getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm {
-            console.log(gridCode);
-            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+            var grid = this.getGridVm(gridCode);
             var row = _.find(grid.Rows, { 'RowCode': rowCode });
             return row;
         }
         
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm {
-            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.Rows, { 'RowCode': rowCode });
+            var row = this.getRowVm(gridCode, rowCode); 
             var cell = _.find(row.Cells, { 'ColCode': colCode });
             return cell;
         }
 
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number) {
-            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.Rows, { 'RowCode': rowCode });
-            var cell = _.find(row.Cells, { 'ColCode': colCode });
+            var cell = this.getCellVm(gridCode, rowCode, colCode);
             cell.NumValue = value;
+            cell.Value = value.toString();
         }
 
-        getCellValue(gridCode: string, rowCode: string, colCode: string): number {
-            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            var row = _.find(grid.Rows, { 'RowCode': rowCode });
-            var cell = _.find(row.Cells, { 'ColCode': colCode });
+        setCellValueNA(gridCode: string, rowCode: string, colCode: string) {
+            var cell = this.getCellVm(gridCode, rowCode, colCode);
+            cell.Value = "N/A";
+            cell.NumValue = 0;
+        }
+
+        getCellValueForCalc(gridCode: string, rowCode: string, colCode: string): number {
+            var cell = this.getCellVm(gridCode, rowCode, colCode);
+            if (cell.Type == 'percent') {
+                return cell.NumValue / 100;
+            }
             return cell.NumValue;
         }
 
-        collapseChildren(gridCode: string, rowCode: string) {
-            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), child => {
-                child.IsCollapsed = !child.IsCollapsed;
-            });
+        //collapseChildren(gridCode: string, rowCode: string) {
+        //    var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+        //    _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), child => {
+        //        child.IsCollapsed = !child.IsCollapsed;
+        //    });
+        //}
 
-        }
-
-        getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode) {
-            var calc = "";
-            var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), child => {
-                var cell = _.find(child.Cells, { 'ColCode': colCode });
-                calc += cell.NumValue.toString() + "+";
-            });
-            if (calc && calc.length > 2) {
-                calc.substring(0, calc.length - 2);
-            } else {
-                calc = "0";
-            }
-            return calc;
-        }
+        //getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode) {
+        //    var calc = "";
+        //    var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
+        //    _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), child => {
+        //        var cell = _.find(child.Cells, { 'ColCode': colCode });
+        //        calc += cell.NumValue.toString() + "+";
+        //    });
+        //    if (calc && calc.length > 2) {
+        //        calc.substring(0, calc.length - 2);
+        //    } else {
+        //        calc = "0";
+        //    }
+        //    return calc;
+        //}
         
         constructor() {
-            this.exhibitModel = new ExhibitVm();
-            this.addGridVm(window['gridModel'].grid);
+
+            this.exhibitModel = window['gridModel'].exhibit;
         }
     }
 
     var service = angular
         .module('app.model', [])
-        .service('modelService',  MockModelService);
+        .service('modelService', ModelService);
 }
 
 

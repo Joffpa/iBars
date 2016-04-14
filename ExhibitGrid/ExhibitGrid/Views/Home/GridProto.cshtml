@@ -1,5 +1,5 @@
 ﻿@using Newtonsoft.Json
-@model ExhibitGrid.ViewModel.GridVm
+@model ExhibitGrid.ViewModel.ExhibitVm
 
 <script src="~/Scripts/angular.min.js"></script>
 @*<script src="~/Scripts/angular-route.min.js"></script>*@
@@ -14,21 +14,22 @@
 <script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
 <link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
 <link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
+@{
+    var thisGrid = Model.Grids.FirstOrDefault(g => g.GridCode == Model.PrimaryGridCode);
 
+    var extraCols = (thisGrid.HasSelectCol ? 1 : 0) + (thisGrid.HasCollapseCol ? 1 : 0) + (thisGrid.HasAddCol ? 1 : 0) + (thisGrid.HasDeleteCol ? 1 : 0);
+}
 <div ng-app="app">
-    <div ng-controller="gridController as gridCtrl">
+    <div ng-controller="gridController as gridCtrl" gridcode="@thisGrid.GridCode">
         <table class="table table-bordered exhibit-table" ngcloak>
             <thead>
-                @{
-                    var extraCols = (Model.HasSelectCol ? 1 : 0) + (Model.HasCollapseCol ? 1 : 0) + (Model.HasAddCol ? 1 : 0) + (Model.HasDeleteCol ? 1 : 0);
-                }
-                @foreach (var level in Model.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i))
+                @foreach (var level in thisGrid.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i))
                 {
                     <tr>
                         @{
-                        var thisLevel = level;
-                        var thisLevelsColumns = Model.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder);
-                        var firstHeader = true;
+                    var thisLevel = level;
+                    var thisLevelsColumns = thisGrid.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder);
+                    var firstHeader = true;
                         }
                         @foreach (var column in thisLevelsColumns)
                         {
@@ -41,33 +42,33 @@
                 }
             </thead>
             <tbody>
-                <tr ng-repeat="row in gridCtrl.GridVm.Rows | filter:{IsHidden: false, IsCollapsed: false} | orderBy:'DisplayOrder' track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class" on-update="rowctrl.update(value)" ng-model-options="{ updateOn: 'default blur' }">
-                    @if (Model.HasSelectCol)
+                <tr ng-repeat="row in gridCtrl.GridVm.Rows | filter:{IsHidden: false, IsCollapsed: false} | orderBy:'DisplayOrder' track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class" ng-model-options="{ updateOn: 'default blur' }">
+                    @if (thisGrid.HasSelectCol)
                     {
                         <td colspan="1">
                             <input type="checkbox" ng-if="::row.CanSelect" ng-model="row.IsSelected">
                         </td>
                     }
-                    @if (Model.HasCollapseCol)
+                    @if (thisGrid.HasCollapseCol)
                     {
                         <td colspan="1">
                             <i class="fa fa-plus fa-lg" ng-if="::row.CanCollapse" style="cursor: pointer" ng-click="rowCtrl.collapseChildren()"></i>
                         </td>
                     }
-                    @if (Model.HasAddCol)
+                    @if (thisGrid.HasAddCol)
                     {
                         <td colspan="1">
                             <i class="fa fa-user-plus fa-lg" ng-if="::row.CanAdd" style="cursor: pointer" ng-click="rowCtrl.addRow()"></i>
                         </td>
                     }
-                    @if (Model.HasDeleteCol)
+                    @if (thisGrid.HasDeleteCol)
                     {
                         <td colspan="1">
                             <i class="fa fa-trash fa-lg" ng-if="::row.CanDelete" style="cursor: pointer" ng-click="rowCtrl.deleteRow()"></i>
                         </td>
                     }
                     @{
-                        var headerLevelZero = Model.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder);
+                        var headerLevelZero = thisGrid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder);
                     }
                     @for (var i = 0; i < headerLevelZero.Count(); i++)
                     {
@@ -94,11 +95,12 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 <script>
     (function (gridModel) {
-        gridModel.grid = @Html.Raw(JsonConvert.SerializeObject(Model));
-        gridModel.gridCode = '@Model.GridCode';
+        gridModel.exhibit = @Html.Raw(JsonConvert.SerializeObject(Model));
+        gridModel.gridCode = '@thisGrid.GridCode';
     }(window.gridModel = window.gridModel || {} ));
 </script>

@@ -47,17 +47,16 @@ module app.calc{
         runCellCalcs(cellVm: ExhibitGrid.ViewModel.ICellVm) {
             //Run calc of child rows first
             var calcTargets = [];
-            if (cellVm.ParentRowCode) {
-                var calc = this.ModelService.getParentRowCalcForColumn(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
-                var result = <number>math.round(math.eval(calc), 2);
-                this.ModelService.updateCellValue(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode, result);
+            //if (cellVm.ParentRowCode) {
+            //    var calc = this.ModelService.getParentRowCalcForColumn(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
+            //    var result = <number>math.round(math.eval(calc), 2);
+            //    this.ModelService.updateCellValue(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode, result);
 
-                var targetCell = this.ModelService.getCellVm(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
-                if (targetCell.Calcs && targetCell.Calcs.length > 0) {
-                    calcTargets.push(targetCell);
-                }
-            }
-
+            //    var targetCell = this.ModelService.getCellVm(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
+            //    if (targetCell.Calcs && targetCell.Calcs.length > 0) {
+            //        calcTargets.push(targetCell);
+            //    }
+            //}
             if (cellVm.Calcs && cellVm.Calcs.length > 0) {
                 var thisGridCalcTargets = <ExhibitGrid.ViewModel.ICalcExpressionVm[]>_.filter(cellVm.Calcs, { 'TargetGridCode': cellVm.GridCode });
                 _.forEach(thisGridCalcTargets, calc => {
@@ -65,11 +64,15 @@ module app.calc{
                     _.forEach(calc.Operands, operand => {
                         var coordinate = "{" + operand.GridCode + "." + operand.RowCode + "." + operand.ColCode + ".}";
                         var val = null;
-                        if (operand.GridCode === cellVm.GridCode && operand.RowCode === cellVm.RowCode && operand.ColCode === cellVm.ColCode){
-                            val = cellVm.NumValue;
+                        if (operand.GridCode === cellVm.GridCode && operand.RowCode === cellVm.RowCode && operand.ColCode === cellVm.ColCode) {
+                            if (cellVm.Type == 'percent') {
+                                val = cellVm.NumValue / 100;
+                            } else {
+                                val = cellVm.NumValue;
+                            }
                         }
                         else {
-                            val = this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                            val = this.ModelService.getCellValueForCalc(operand.GridCode, operand.RowCode, operand.ColCode);
                         }
                         if (val) {
                             var sVal = <string>val.toString();
@@ -78,9 +81,13 @@ module app.calc{
                         }
                         equation = equation.replace(coordinate, sVal);
                     });
-
-                    this.ModelService.updateCellValue(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode, <number>math.round(math.eval(equation), 2));
-
+                    var result;
+                    try {
+                        result = <number>math.round(math.eval(equation), 2)
+                        this.ModelService.updateCellValue(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode, result);
+                    } catch (err) {
+                        this.ModelService.setCellValueNA(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode);
+                    } 
                     var targetCell = this.ModelService.getCellVm(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode);
                     if (targetCell.Calcs && targetCell.Calcs.length > 0) {
                         calcTargets.push(targetCell);

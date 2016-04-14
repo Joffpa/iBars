@@ -9,9 +9,10 @@ module app {
         GridVm: ExhibitGrid.ViewModel.IGridVm;
         ModelService: app.model.IModelService;
 
-        constructor(modelService: app.model.IModelService) {
+        constructor($attrs, modelService: app.model.IModelService) {
+            console.log($attrs.gridCode);
             this.ModelService = modelService;
-            var gridCode = window["gridModel"].gridCode;
+            var gridCode = $attrs.gridcode;
             this.GridVm = this.ModelService.getGridVm(gridCode);
         }
     }
@@ -30,7 +31,7 @@ module app {
         }
 
         collapseChildren() {
-            this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
+            //this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
         }
 
         addRow() {
@@ -58,7 +59,7 @@ module app {
 
         constructor() {
         }
-    } 
+    }
 
     export class NumericCellController {
 
@@ -85,10 +86,35 @@ module app {
             var ctrl = this;
             ctrl.ModelService = modelService;
             ctrl.CalcService = calcService;
+        }
+    }
 
-            //$scope.$watch('cellvm.NumValue', function (newValue, oldValue) {
-            //    ctrl.CalcService.runCellCalcs(ctrl.cellvm);
-            //});
+    export class PercentCellController {
+
+        cellvm: ExhibitGrid.ViewModel.ICellVm;
+        ModelService: app.model.IModelService;
+        CalcService: app.calc.ICalcService;
+
+        getStyle() {
+            if (this.cellvm.Width) {
+                return { 'width': this.cellvm.Width };
+            }
+            return { 'width': '110px' };
+        }
+
+        onChange() {
+            console.log("change");
+            this.CalcService.runCellCalcs(this.cellvm);
+        }
+
+        onBlur() {
+
+        }
+
+        constructor(modelService: app.model.IModelService, calcService: app.calc.ICalcService) {
+            var ctrl = this;
+            ctrl.ModelService = modelService;
+            ctrl.CalcService = calcService;
         }
     }
     
@@ -166,14 +192,31 @@ module app {
         .component('numericCell', {
             template: `
                     <div ng-switch="cellCtrl.cellvm.IsEditable" ng-if="!cellCtrl.cellvm.IsBlank" ng-style="cellCtrl.getStyle()" class="numeric-cell-td">
-                        <input ng-switch-when="true" type="number" class="k-textbox" ng-model="cellCtrl.cellvm.NumValue" style="text-align:right" ng-change="cellCtrl.onChange()" ng-blur="cellCtrl.onBlur()"/>
+                        <input ng-switch-when="true" type="number" class="k-textbox numeric" ng-model="cellCtrl.cellvm.NumValue" style="text-align:right" ng-change="cellCtrl.onChange()" ng-blur="cellCtrl.onBlur()"/>
                         <div ng-switch-when="false" style="text-align:right; padding-right:20px" maxlength="8" ng-class="cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'">
-                            {{cellCtrl.cellvm.NumValue | negativeInParens}}
+                            {{cellCtrl.cellvm.Value | negativeInParens}}
                         </div>
                     </div>
                     `,
             controllerAs: 'cellCtrl',
             controller: NumericCellController,
+            bindings: {
+                cellvm: '<'
+            }
+        })
+        .component('percentCell', {
+            template: `
+                    <div ng-switch="cellCtrl.cellvm.IsEditable" ng-if="!cellCtrl.cellvm.IsBlank" ng-style="cellCtrl.getStyle()" class="numeric-cell-td">
+                        <div ng-switch-when="true" style="width:100%">
+                            <input type="number" class="k-textbox percent" ng-model="cellCtrl.cellvm.NumValue" style="text-align:right" ng-change="cellCtrl.onChange()" ng-blur="cellCtrl.onBlur()"/> %
+                        </div>
+                        <div ng-switch-when="false" style="text-align:right; padding-right:20px" maxlength="8" ng-class="cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'">
+                            {{cellCtrl.cellvm.Value | negativeInParens}} %
+                        </div>
+                    </div>
+                    `,
+            controllerAs: 'cellCtrl',
+            controller: PercentCellController,
             bindings: {
                 cellvm: '<'
             }
@@ -214,6 +257,6 @@ module app {
                 cellvm: '<'
             }
         })
-        .controller('gridController', ['modelService', GridController])
+        .controller('gridController', ['$attrs', 'modelService', GridController])
         .controller('rowController', ['$scope', 'modelService', 'calcService', RowController]);
 }

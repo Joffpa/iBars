@@ -13,30 +13,33 @@
 .main-content .exhibit-table thead tr th {
   /*white-space: nowrap;*/
 }
+.main-content .exhibit-table tbody {
+  /*tr.grand-total-row {
+                td, th {
+                    text-decoration: underline;
+                    font-weight: bold;
+                }
+            }*/
+}
 .main-content .exhibit-table tbody tr.header-row {
-  background-color: lightgrey;
+  background-color: #6696ff;
 }
 .main-content .exhibit-table tbody tr.header-row th {
   font-weight: bold;
 }
 .main-content .exhibit-table tbody tr.subtotal-row {
-  background-color: lightblue;
+  background-color: #e6eeff;
 }
 .main-content .exhibit-table tbody tr.subtotal-row th {
   font-weight: bold;
 }
 .main-content .exhibit-table tbody tr.total-row {
-  background-color: cornflowerblue;
+  background-color: #b3cbff;
 }
 .main-content .exhibit-table tbody tr.total-row td,
 .main-content .exhibit-table tbody tr.total-row th {
   font-weight: bold;
   text-decoration: underline;
-}
-.main-content .exhibit-table tbody tr.grand-total-row td,
-.main-content .exhibit-table tbody tr.grand-total-row th {
-  text-decoration: underline;
-  font-weight: bold;
 }
 .main-content .exhibit-table tbody tr {
   /*white-space: nowrap;*/
@@ -62,9 +65,13 @@
 .main-content .exhibit-table tbody tr th input[type="text"] {
   width: 100%;
 }
-.main-content .exhibit-table tbody tr td input[type="number"],
-.main-content .exhibit-table tbody tr th input[type="number"] {
+.main-content .exhibit-table tbody tr td input.numeric,
+.main-content .exhibit-table tbody tr th input.numeric {
   width: 100%;
+}
+.main-content .exhibit-table tbody tr td input.percent,
+.main-content .exhibit-table tbody tr th input.percent {
+  width: 75%;
 }
 .main-content .exhibit-table tbody tr td .indent-1,
 .main-content .exhibit-table tbody tr th .indent-1 {

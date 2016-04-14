@@ -22,7 +22,7 @@
         tbody {
 
             tr.header-row {
-                background-color: lightgrey;
+                background-color: #6696ff;
 
                 th {
                     font-weight: bold;
@@ -30,14 +30,14 @@
             }
             
             tr.subtotal-row {
-                background-color: lightblue;
+                background-color: #e6eeff;
 
                 th {
                     font-weight: bold;
                 }
             }
             tr.total-row {
-                background-color: cornflowerblue;
+                background-color: #b3cbff;
 
                 td, th {
                     font-weight: bold;
@@ -45,12 +45,12 @@
                 }
             }
 
-            tr.grand-total-row {
+            /*tr.grand-total-row {
                 td, th {
                     text-decoration: underline;
                     font-weight: bold;
                 }
-            }
+            }*/
 
             tr.data-row {
             }
@@ -88,8 +88,11 @@
                         width: 100%;
                     }
 
-                    input[type="number"] {
+                    input.numeric {
                         width: 100%;
+                    }
+                    input.percent {
+                        width: 75%;
                     }
 
                     .indent-1 {

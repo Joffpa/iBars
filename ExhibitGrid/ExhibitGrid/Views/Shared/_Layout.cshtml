@@ -23,8 +23,9 @@
         <div class="container">
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Grid Prototype", "GridProto", "Home", new { id = "PBA12_ProgData1" }, null)</li>
-                    <li>@Html.ActionLink("Mini OP-5 Prototype", "GridProto", "Home", new { id = "MiniOp5" }, null)</li>
+                    <li>@Html.ActionLink("PBA 12", "GridProto", "Home", new { gridCode = "PBA12_ProgData1" }, null)</li>
+                    <li>@Html.ActionLink("PBA 10", "GridProto", "Home", new { gridCode = "PBA10_PersonnelData" }, null)</li>
+                    <li>@Html.ActionLink("Mini OP-5 Prototype", "GridProto", "Home", new { gridCode = "MiniOp5" }, null)</li>
                     <li>@Html.ActionLink("Calc Testing", "RunCalcs", "Home")</li>
                 </ul>
             </div>

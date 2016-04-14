@@ -25,31 +25,69 @@ namespace ExhibitGrid.Processes
 {
     public class CalcGridProcess
     {
-        public void Process(string gridCode)
+        public static void Process(string gridCode)
         {
-
             using (var db = new DEV_AF())
             {
-                var gridVm = GetGridVmProcess.GetVmWithoutCalcs(gridCode);
-                RunCalcs(db, gridVm);
-                SaveAllCellValues(db, gridVm);
-                foreach (var row in gridVm.Rows)
+                var exhibitVm = ExhibitVmProcess.GetExhibitVmWithoutCalcs(gridCode);
+                RunCalcs(db, exhibitVm, gridCode);
+                //SaveAllCellValues(db, gridVm);
+                foreach (var gridVm in exhibitVm.Grids)
                 {
-                    foreach (var cell in row.Cells)
+                    Debug.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Debug.WriteLine("Grid: " + gridVm.GridCode);
+                    Debug.WriteLine("");
+                    foreach (var row in gridVm.Rows)
                     {
-                        Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
+                        Debug.WriteLine("Row: " + row.RowCode);
+                        foreach (var cell in row.Cells)
+                        {
+                            Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
+                        }
+                        Debug.WriteLine("");
                     }
+                    Debug.WriteLine("");
+                    Debug.WriteLine("");
+                    Debug.WriteLine("");
                 }
             }
         }
 
-        private void RunCalcs(DEV_AF db, GridVm grid)
+        public static void Process(ExhibitVm exhibitVm, string gridCode)
         {
+            using (var db = new DEV_AF())
+            {
+                RunCalcs(db, exhibitVm, gridCode);
+                //SaveAllCellValues(db, gridVm);
+                foreach (var gridVm in exhibitVm.Grids)
+                {
+                    Debug.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Debug.WriteLine("Grid: " + gridVm.GridCode);
+                    Debug.WriteLine("");
+                    foreach (var row in gridVm.Rows)
+                    {
+                        Debug.WriteLine("Row: " + row.RowCode);
+                        foreach (var cell in row.Cells)
+                        {
+                            Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
+                        }
+                        Debug.WriteLine("");
+                    }
+                    Debug.WriteLine("");
+                    Debug.WriteLine("");
+                    Debug.WriteLine("");
+                }
+            }
+        }
+        
+        private static void RunCalcs(DEV_AF db, ExhibitVm exhibit, string gridCode)
+        {
+            var grid = exhibit.Grids.FirstOrDefault(g => g.GridCode == gridCode);
             var calcs = db.GetCalcs(grid.GridCode);
             List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
             List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
             List<GetCalcs_Result> cellCalcResults = new List<GetCalcs_Result>();
-
+            var externalDependantCells = new List<CellVm>(); 
             //Separate ColCalcs, RowCalcs, and CellCalcs
             foreach (var calc in calcs)
             {
@@ -66,9 +104,9 @@ namespace ExhibitGrid.Processes
                     cellCalcResults.Add(calc);
                 }
                 //identify external cells
-                if (calc.TargetGridCode != grid.GridCode && !grid.ExternalDependantCells.Any(ec => ec.GridCode == calc.TargetGridCode && ec.RowCode == calc.TargetRowCode && ec.ColCode == calc.TargetColCode))
+                if (calc.TargetGridCode != grid.GridCode && !externalDependantCells.Any(ec => ec.GridCode == calc.TargetGridCode && ec.RowCode == calc.TargetRowCode && ec.ColCode == calc.TargetColCode))
                 {
-                    grid.ExternalDependantCells.Add(new CellVm()
+                    externalDependantCells.Add(new CellVm()
                     {
                         GridCode = calc.TargetGridCode,
                         RowCode = calc.TargetRowCode,
@@ -76,9 +114,9 @@ namespace ExhibitGrid.Processes
                     });
                 }
                 //Both target and operand may be external
-                if (calc.GridCode != grid.GridCode && !grid.ExternalDependantCells.Any(ec => ec.GridCode == calc.GridCode && ec.RowCode == calc.RowCode && ec.ColCode == calc.ColCode))
+                if (calc.GridCode != grid.GridCode && !externalDependantCells.Any(ec => ec.GridCode == calc.GridCode && ec.RowCode == calc.RowCode && ec.ColCode == calc.ColCode))
                 {
-                    grid.ExternalDependantCells.Add(new CellVm()
+                    externalDependantCells.Add(new CellVm()
                     {
                         GridCode = calc.GridCode,
                         RowCode = calc.RowCode,
@@ -87,8 +125,8 @@ namespace ExhibitGrid.Processes
                 }
             }
 
-            GetExternalCells(grid, db);
-
+            ExhibitVmProcess.GetExternalCells(exhibit, externalDependantCells, db);
+            
             if (rowCalcResults.Any())
             {
                 //Take the list of GetCalcs_Results and transform into a list of CalcExpressionVm
@@ -101,7 +139,7 @@ namespace ExhibitGrid.Processes
                 foreach (var calc in startingRowCalcs)
                 {
                     //run calcs
-                    foreach (var col in grid.Columns.Where(c => c.Level == 0 && c.Type == Literals.ColCellType.Numeric))
+                    foreach (var col in grid.Columns.Where(c => c.Level == 0 && (c.Type == Literals.ColCellType.Numeric || c.Type == Literals.ColCellType.Percent)))
                     {
                         RunRowCalcCascade(calc, rowCalcs, col);
                     }
@@ -136,7 +174,7 @@ namespace ExhibitGrid.Processes
 
                 foreach (var calc in startingCellCalcs)
                 {
-                    RunCellCalcCascade(calc, cellCalcs, grid);
+                    RunCellCalcCascade(calc, cellCalcs, exhibit);
                 }
             }
         }
@@ -259,24 +297,21 @@ namespace ExhibitGrid.Processes
             }
         }
 
-        private static void RunCellCalcCascade(CalcExpressionVm calcToRun, List<CalcExpressionVm> allCellCalcs, GridVm grid)
+        private static void RunCellCalcCascade(CalcExpressionVm calcToRun, List<CalcExpressionVm> allCellCalcs, ExhibitVm exhibit)
         {
             try
             {
                 foreach (var operand in calcToRun.Operands)
                 {
-                    var cell = operand.GridCode == grid.GridCode
-                        ? grid.Cells.FirstOrDefault(c => c.GridCode == operand.GridCode && c.RowCode == operand.RowCode && c.ColCode == operand.ColCode)
-                        : grid.ExternalDependantCells.FirstOrDefault(c => c.GridCode == operand.GridCode && c.RowCode == operand.RowCode && c.ColCode == operand.ColCode);
-
+                    var grid = exhibit.Grids.FirstOrDefault(g => g.GridCode == operand.GridCode);
+                    var cell = grid.Cells.FirstOrDefault(c => c.GridCode == operand.GridCode && c.RowCode == operand.RowCode && c.ColCode == operand.ColCode);
                     var cellValue = GetCellValue(cell);
                     var operandToken = GetCellToken(operand.GridCode, operand.RowCode, operand.ColCode);
                     calcToRun.Expression = calcToRun.Expression.Replace(operandToken, cellValue.ToString());
                 }
 
-                var targetCell = calcToRun.TargetGridCode == grid.GridCode 
-                    ? grid.Cells.FirstOrDefault(c => c.GridCode == calcToRun.TargetGridCode && c.RowCode == calcToRun.TargetRowCode && c.ColCode == calcToRun.TargetColCode) 
-                    : grid.ExternalDependantCells.FirstOrDefault(c => c.GridCode == calcToRun.TargetGridCode && c.RowCode == calcToRun.TargetRowCode && c.ColCode == calcToRun.TargetColCode);
+                var targetGrid = exhibit.Grids.FirstOrDefault(g => g.GridCode == calcToRun.TargetGridCode);
+                var targetCell = targetGrid.Cells.FirstOrDefault(c => c.GridCode == calcToRun.TargetGridCode && c.RowCode == calcToRun.TargetRowCode && c.ColCode == calcToRun.TargetColCode);
 
                 if (targetCell != null)
                 {
@@ -286,7 +321,7 @@ namespace ExhibitGrid.Processes
                     {
                         cascadedColCalcs.ForEach(cc =>
                         {
-                            RunCellCalcCascade(cc, allCellCalcs, grid);
+                            RunCellCalcCascade(cc, allCellCalcs, exhibit);
                         });
                     } 
                 }
@@ -330,35 +365,7 @@ namespace ExhibitGrid.Processes
             targetCell.NumValue = result;
             targetCell.Value = result.ToString(CultureInfo.CurrentCulture);
         }
-
-        private static void GetExternalCells(GridVm grid, DEV_AF db)
-        {
-            try
-            {
-                var cellParms = grid.ExternalDependantCells.Select(cell => new CellValue()
-                    {
-                        GridCode = cell.GridCode, 
-                        RowCode = cell.RowCode, 
-                        ColCode = cell.ColCode
-                    }).ToList();  
-                var result = db.UspGetCellVal(cellParms);
-                foreach (var cell in result)
-                {
-                    var externalCell = grid.ExternalDependantCells.FirstOrDefault(c => c.GridCode == cell.GridCode && c.RowCode == cell.RowCode && c.ColCode == cell.ColCode);
-                    if (externalCell != null)
-                    {
-                        externalCell.Value = cell.Val;
-                        double parseResult;
-                        externalCell.NumValue = double.TryParse(cell.Val, out parseResult) ? parseResult : 0;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                
-            }
-        }
-
+        
         private static void SaveAllCellValues(DEV_AF db, GridVm grid)
         {
             //TODO: save cells

@@ -12,18 +12,11 @@ namespace ExhibitGrid.Controllers
 {
     public class HomeController : Controller
     {
-        
-        public ActionResult GridProto(string id)
+        public ActionResult GridProto(string gridCode)
         {
-            var gridVm = new GridVmFactory().GetGridVm(id);
-            return View(gridVm);
-        }
-
-
-        public ActionResult GridV2(string id)
-        {
-            var gridVm = new GridVmFactory().GetGridVm(id);
-            return View(gridVm);
+            ExhibitVm exhibitVm = new ExhibitVmFactory().GetExhibitVm(gridCode);
+            CalcGridProcess.Process(exhibitVm, gridCode);
+            return View(exhibitVm);
         }
         
         [HttpGet]
@@ -68,9 +61,7 @@ namespace ExhibitGrid.Controllers
         public JsonResult RunCalcs(RunCalcVm vm)
         {
 
-            var proc = new CalcGridProcess();
-            proc.Process(vm.ExhibitToCalc);
-
+            CalcGridProcess.Process(vm.ExhibitToCalc);
             return Json(vm, JsonRequestBehavior.AllowGet);
         }
     }

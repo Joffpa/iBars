@@ -14,6 +14,12 @@ namespace ExhibitGrid
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "GridProto",
+                url: "{controller}/{action}/{gridCode}",
+                defaults: new { controller = "Home", action = "GridProto"}
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

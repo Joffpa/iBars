@@ -37,15 +37,15 @@ var app;
                 var _this = this;
                 //Run calc of child rows first
                 var calcTargets = [];
-                if (cellVm.ParentRowCode) {
-                    var calc = this.ModelService.getParentRowCalcForColumn(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
-                    var result = math.round(math.eval(calc), 2);
-                    this.ModelService.updateCellValue(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode, result);
-                    var targetCell = this.ModelService.getCellVm(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
-                    if (targetCell.Calcs && targetCell.Calcs.length > 0) {
-                        calcTargets.push(targetCell);
-                    }
-                }
+                //if (cellVm.ParentRowCode) {
+                //    var calc = this.ModelService.getParentRowCalcForColumn(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
+                //    var result = <number>math.round(math.eval(calc), 2);
+                //    this.ModelService.updateCellValue(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode, result);
+                //    var targetCell = this.ModelService.getCellVm(cellVm.GridCode, cellVm.ParentRowCode, cellVm.ColCode);
+                //    if (targetCell.Calcs && targetCell.Calcs.length > 0) {
+                //        calcTargets.push(targetCell);
+                //    }
+                //}
                 if (cellVm.Calcs && cellVm.Calcs.length > 0) {
                     var thisGridCalcTargets = _.filter(cellVm.Calcs, { 'TargetGridCode': cellVm.GridCode });
                     _.forEach(thisGridCalcTargets, function (calc) {
@@ -54,10 +54,15 @@ var app;
                             var coordinate = "{" + operand.GridCode + "." + operand.RowCode + "." + operand.ColCode + ".}";
                             var val = null;
                             if (operand.GridCode === cellVm.GridCode && operand.RowCode === cellVm.RowCode && operand.ColCode === cellVm.ColCode) {
-                                val = cellVm.NumValue;
+                                if (cellVm.Type == 'percent') {
+                                    val = cellVm.NumValue / 100;
+                                }
+                                else {
+                                    val = cellVm.NumValue;
+                                }
                             }
                             else {
-                                val = _this.ModelService.getCellValue(operand.GridCode, operand.RowCode, operand.ColCode);
+                                val = _this.ModelService.getCellValueForCalc(operand.GridCode, operand.RowCode, operand.ColCode);
                             }
                             if (val) {
                                 var sVal = val.toString();
@@ -67,7 +72,14 @@ var app;
                             }
                             equation = equation.replace(coordinate, sVal);
                         });
-                        _this.ModelService.updateCellValue(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode, math.round(math.eval(equation), 2));
+                        var result;
+                        try {
+                            result = math.round(math.eval(equation), 2);
+                            _this.ModelService.updateCellValue(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode, result);
+                        }
+                        catch (err) {
+                            _this.ModelService.setCellValueNA(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode);
+                        }
                         var targetCell = _this.ModelService.getCellVm(calc.TargetGridCode, calc.TargetRowCode, calc.TargetColCode);
                         if (targetCell.Calcs && targetCell.Calcs.length > 0) {
                             calcTargets.push(targetCell);
