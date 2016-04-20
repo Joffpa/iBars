@@ -186,6 +186,9 @@
     <Compile Include="EntityDataModel\GetCalcs_Result.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityDataModel\UspGetRowRelationship_Result.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="Filters\AuthFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -613,8 +616,8 @@
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\es6-shim.min.js" />
-    <Content Include="Scripts\Grid\app.component.js" />
     <Content Include="Scripts\Grid\calcService.js" />
+    <Content Include="Scripts\Grid\CellBasedGrid.js" />
     <Content Include="Scripts\Grid\commonUI.js" />
     <Content Include="Scripts\Grid\directives.js" />
     <Content Include="Scripts\Grid\filters.js" />
@@ -1485,7 +1488,6 @@
     <Content Include="Sql\create new zo tables.sql" />
     <None Include="Properties\PublishProfiles\Easapps Publish.pubxml" />
     <Content Include="Scripts\Grid\commonUI.js.map" />
-    <Content Include="Scripts\Grid\app.component.js.map" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1498,6 +1500,7 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\Grid\CellBasedGrid.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -1532,6 +1535,7 @@
       <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
     </Content>
     <Content Include="Scripts\_references.js" />
+    <Content Include="Sql\CreateMiniOp-5.sql" />
     <Content Include="Sql\CreatePBA10.sql" />
     <Content Include="Sql\EF Version of Calc.sql" />
     <Content Include="Sql\GetCalcs.sql" />
@@ -1580,6 +1584,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Sql to submit\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -1590,8 +1595,8 @@
     <TypeScriptCompile Include="Scripts\Enums.ts">
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\Grid\app.component.ts" />
     <TypeScriptCompile Include="Scripts\Grid\calcService.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\CellBasedGrid.ts" />
     <TypeScriptCompile Include="Scripts\Grid\commonUI.ts" />
     <TypeScriptCompile Include="Scripts\Grid\directives.ts" />
     <TypeScriptCompile Include="Scripts\Grid\filters.ts" />

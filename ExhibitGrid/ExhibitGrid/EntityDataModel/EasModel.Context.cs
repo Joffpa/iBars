@@ -45,5 +45,18 @@ namespace ExhibitGrid.EntityDataModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Attributes>("UspGetAttribVal", gridCodeParameter);
         }
+    
+        public virtual ObjectResult<UspGetRowRelationship_Result> UspGetRowRelationship(string parGridCode, string chGridCode)
+        {
+            var parGridCodeParameter = parGridCode != null ?
+                new ObjectParameter("ParGridCode", parGridCode) :
+                new ObjectParameter("ParGridCode", typeof(string));
+    
+            var chGridCodeParameter = chGridCode != null ?
+                new ObjectParameter("ChGridCode", chGridCode) :
+                new ObjectParameter("ChGridCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetRowRelationship_Result>("UspGetRowRelationship", parGridCodeParameter, chGridCodeParameter);
+        }
     }
 }

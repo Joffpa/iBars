@@ -11,15 +11,13 @@ namespace ExhibitGrid.EntityDataModel
 {
     using System;
     
-    public partial class GetCalcs_Result
+    public partial class UspGetRowRelationship_Result
     {
-        public string TargetGridCode { get; set; }
-        public string TargetRowCode { get; set; }
-        public string TargetColCode { get; set; }
-        public string Expression { get; set; }
-        public string GridCode { get; set; }
-        public string RowCode { get; set; }
-        public string ColCode { get; set; }
-        public int CalcExpressionId { get; set; }
+        public int RowRelationshipId { get; set; }
+        public string ParGridCode { get; set; }
+        public string ParRowCode { get; set; }
+        public string ChGridCode { get; set; }
+        public string ChRowCode { get; set; }
+        public string Context { get; set; }
     }
 }

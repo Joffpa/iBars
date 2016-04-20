@@ -3,9 +3,9 @@
 
 <script src="~/Scripts/angular.min.js"></script>
 @*<script src="~/Scripts/angular-route.min.js"></script>*@
-<script src="~/Scripts/Grid/grid.js"></script>
+@*<script src="~/Scripts/Grid/grid.js"></script>*@
+<script src="~/Scripts/Grid/CellBasedGrid.js"></script>
 <script src="~/Scripts/Grid/directives.js"></script>
-<script src="~/Scripts/Grid/app.component.js"></script>
 <script src="~/Scripts/Grid/modelService.js"></script>
 <script src="~/Scripts/Grid/calcService.js"></script>
 <script src="~/Scripts/Grid/filters.js"></script>
@@ -80,14 +80,13 @@
                         if (col.ColCode == "RowText")
                         {
                             <th colspan="{{::row.Cells[@i].ColSpan}}">
-                                <text-cell cellvm="row.Cells[@i]"></text-cell>
+                                <eas-cell cellvm="row.Cells[@i]"></eas-cell>
                             </th>
                         }
                         else
                         {
-                            var directive = col.Type + "-cell";
                             <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
-                                @Html.Raw("<" + directive + " cellvm='row.Cells[" + i + "]'></" + directive + ">")
+                                @Html.Raw("<eas-cell cellvm='row.Cells[" + i + "]'></eas-cell>")
                             </td>
                         }
                     }

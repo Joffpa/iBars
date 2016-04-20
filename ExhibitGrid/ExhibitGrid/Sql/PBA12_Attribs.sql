@@ -52,6 +52,8 @@
 --go
 --UspAddNewAttribCol 'Type', 'NVARCHAR(100)'
 --go
+--UspAddNewAttribCol 'DisplayOrder', 'decimal(8,2)'
+--go
 
 
 --UspDropAttribCol 'IsBlank'

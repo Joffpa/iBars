@@ -31,5 +31,11 @@ namespace ExhibitGrid.Globals
             public static readonly string Narrative = "narrative";
             public static readonly string Blank = "blank";
         }
+
+        public static class RowRelationshipContext
+        {
+            public static readonly string Total = "total";
+            public static readonly string Collapse = "collapse";
+        }
     }
 }

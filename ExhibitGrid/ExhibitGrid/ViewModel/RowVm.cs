@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace ExhibitGrid.ViewModel
 {
@@ -20,10 +21,17 @@ namespace ExhibitGrid.ViewModel
         public bool IsSelected { get; set; }
         public bool IsEditable { get; set; }
         public string Type { get; set; }
+        public string CollapseParent { get; set; }
+        public string TotalParentRowCode{ get; set; }
+
+
         //alignment
         //hovertext
 
         public List<CellVm> Cells { get; set; }
+        public List<string> CollapseableChildren { get; set; }
+        public List<string> TotalChildrenRowCodes{ get; set; }
+
 
     }
 }

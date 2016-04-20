@@ -108,7 +108,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', '',  'Type=''total'',Is
 
 --Cells
 --ActFor_Header Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''right''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -117,7 +117,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'By1',  'ColSpan=1,
 
 
 --ActFor_Officer Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''right''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Cy',  'ColSpan=1,IsEditable=1,Indent=1', ''
@@ -240,6 +240,18 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'By1',  'ColSpan=1,IsEd
 
 
 
+select * from RowRelationship
+
+UspGetRowRelationship 'PBA10_PersonnelData', null
+
+delete from RowRelationship where ParGridCode = 'PBA10_PersonnelData'
+
+insert into RowRelationship (ParGridCode,ParRowCode, ChGridCode, ChRowCode, Context)
+select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Officer','total'
+union all
+select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Enlisted','total'
+
+
 delete from CalcExpressionOperand 
 where CalcExpressionOperandId in(
 	select CalcExpressionOperandId from CalcExpressionOperand eo
@@ -258,10 +270,13 @@ where CalcExpressionOperandId in(
 delete from CalcOperand where GridCode = 'PBA12_ProgData1'	and RowCode = 'PBA12_ProgData_CommunSustBase' and ColCode = 'Py'
 
 
+
+
+
 DECLARE @ActTotal int, @ResTotal int, @DirHireTotal int, @CivTotal int, @PyCyChange int, @CyBy1Change int, @CrossGrid int
-insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
-select 'PBA10_PersonnelData','ActFor_Total','','{PBA10_PersonnelData.ActFor_Officer..} + {PBA10_PersonnelData.ActFor_Enlisted..} '
-SET @ActTotal = @@IDENTITY
+--insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
+--select 'PBA10_PersonnelData','ActFor_Total','','{PBA10_PersonnelData.ActFor_Officer..} + {PBA10_PersonnelData.ActFor_Enlisted..} '
+--SET @ActTotal = @@IDENTITY
 insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
 select 'PBA10_PersonnelData','ResGuard_Total','','{PBA10_PersonnelData.ResGuard_Officer..} + {PBA10_PersonnelData.ResGuard_Enlisted..} '
 SET @ResTotal = @@IDENTITY
@@ -275,18 +290,15 @@ insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expres
 select 'PBA10_PersonnelData','','PyCyChange','{PBA10_PersonnelData..Cy.} - {PBA10_PersonnelData..Py.}'
 SET @PyCyChange = @@IDENTITY
 insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
-select 'PBA10_PersonnelData','','CyBy1Change','{PBA10_PersonnelData..By1.} / {PBA10_PersonnelData..Cy.}'
+select 'PBA10_PersonnelData','','CyBy1Change','{PBA10_PersonnelData..By1.} - {PBA10_PersonnelData..Cy.}'
 SET @CyBy1Change = @@IDENTITY
---insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
---select 'PBA10_PersonnelData','ActFor_Total','Py','{PBA10_PersonnelData.ActFor_Enlisted.Py.} * {PBA12_ProgData1.PBA12_ProgData_CommunSustBase.Py.}'
---SET @CrossGrid = @@IDENTITY
 
 
 insert into CalcOperand (GridCode, RowCode, ColCode)
-select 'PBA10_PersonnelData','ActFor_Officer',''
-union all
-select 'PBA10_PersonnelData','ActFor_Enlisted',''
-union all
+--select 'PBA10_PersonnelData','ActFor_Officer',''
+--union all
+--select 'PBA10_PersonnelData','ActFor_Enlisted',''
+--union all
 select 'PBA10_PersonnelData','ResGuard_Officer',''
 union all
 select 'PBA10_PersonnelData','ResGuard_Enlisted',''
@@ -302,17 +314,13 @@ union all
 select 'PBA10_PersonnelData','','Cy'
 union all
 select 'PBA10_PersonnelData','','By1'
---union all
---select 'PBA10_PersonnelData','ActFor_Enlisted','Py'
---union all
---select 'PBA12_ProgData1','PBA12_ProgData_CommunSustBase','Py'
 
 
 insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
-select @ActTotal, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Officer' and ColCode = '')
-union all
-select @ActTotal, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Enlisted' and ColCode = '')
-union all
+--select @ActTotal, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Officer' and ColCode = '')
+--union all
+--select @ActTotal, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Enlisted' and ColCode = '')
+--union all
 select @ResTotal, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ResGuard_Officer' and ColCode = '')
 union all
 select @ResTotal, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ResGuard_Enlisted' and ColCode = '')
@@ -334,10 +342,9 @@ union all
 select @CyBy1Change, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = '' and ColCode = 'Cy')
 union all
 select @CyBy1Change, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = '' and ColCode = 'By1')
---union all
---select @CrossGrid, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Enlisted' and ColCode = 'Py')
---union all
---select @CrossGrid, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_CommunSustBase' and ColCode = 'Py')
+
+
+
 
 
 
@@ -354,6 +361,4 @@ select @CyBy1Change, (Select top 1 CalcOperandId from CalcOperand where GridCode
 -- select * from DATA_ROW where section_id_fk   = 223
 
 --select * from DEF_SECTION where element_id_fk = 513 --223
-
-
 

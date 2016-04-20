@@ -47,26 +47,6 @@ var app;
         }());
         model.CalcOperandVm = CalcOperandVm;
         var ModelService = (function () {
-            //collapseChildren(gridCode: string, rowCode: string) {
-            //    var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            //    _.each(_.where(grid.Rows, { 'ParentRowCode': rowCode }), child => {
-            //        child.IsCollapsed = !child.IsCollapsed;
-            //    });
-            //}
-            //getParentRowCalcForColumn(gridCode: string, parentRowCode: string, colCode) {
-            //    var calc = "";
-            //    var grid = _.find(this.exhibitModel.Grids, { 'GridCode': gridCode });
-            //    _.each(_.where(grid.Rows, { 'ParentRowCode': parentRowCode }), child => {
-            //        var cell = _.find(child.Cells, { 'ColCode': colCode });
-            //        calc += cell.NumValue.toString() + "+";
-            //    });
-            //    if (calc && calc.length > 2) {
-            //        calc.substring(0, calc.length - 2);
-            //    } else {
-            //        calc = "0";
-            //    }
-            //    return calc;
-            //}
             function ModelService() {
                 this.exhibitModel = window['gridModel'].exhibit;
             }
@@ -85,6 +65,10 @@ var app;
                 var row = _.find(grid.Rows, { 'RowCode': rowCode });
                 return row;
             };
+            ModelService.prototype.getRowVms = function (gridCode, rowCodes) {
+                var grid = this.getGridVm(gridCode);
+                return _.filter(grid.Rows, function (r) { return _.includes(rowCodes, r.RowCode); });
+            };
             ModelService.prototype.getCellVm = function (gridCode, rowCode, colCode) {
                 var row = this.getRowVm(gridCode, rowCode);
                 var cell = _.find(row.Cells, { 'ColCode': colCode });
@@ -92,20 +76,33 @@ var app;
             };
             ModelService.prototype.updateCellValue = function (gridCode, rowCode, colCode, value) {
                 var cell = this.getCellVm(gridCode, rowCode, colCode);
+                this.updateCellVmValue(cell, value);
+            };
+            ModelService.prototype.updateCellVmValue = function (cell, value) {
                 cell.NumValue = value;
                 cell.Value = value.toString();
             };
-            ModelService.prototype.setCellValueNA = function (gridCode, rowCode, colCode) {
-                var cell = this.getCellVm(gridCode, rowCode, colCode);
+            ModelService.prototype.setCellVmValueNA = function (cell) {
                 cell.Value = "N/A";
                 cell.NumValue = 0;
             };
             ModelService.prototype.getCellValueForCalc = function (gridCode, rowCode, colCode) {
                 var cell = this.getCellVm(gridCode, rowCode, colCode);
+                return this.getCellValueForCalcFromVm(cell);
+            };
+            ModelService.prototype.getCellValueForCalcFromVm = function (cell) {
                 if (cell.Type == 'percent') {
                     return cell.NumValue / 100;
                 }
                 return cell.NumValue;
+            };
+            ModelService.prototype.collapseChildren = function (gridCode, rowCode) {
+                var _this = this;
+                var row = this.getRowVm(gridCode, rowCode);
+                row.CollapseableChildren.forEach(function (childRowCode) {
+                    var childRow = _this.getRowVm(gridCode, childRowCode);
+                    childRow.IsCollapsed = !childRow.IsCollapsed;
+                });
             };
             return ModelService;
         }());

@@ -19,7 +19,7 @@ var app;
             this.CalcService = calcService;
         }
         RowController.prototype.collapseChildren = function () {
-            //this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
+            this.ModelService.collapseChildren(this.RowVm.GridCode, this.RowVm.RowCode);
         };
         RowController.prototype.addRow = function () {
             alert('row added: ' + this.RowVm.RowCode);
@@ -36,10 +36,22 @@ var app;
         function TextCellController() {
         }
         TextCellController.prototype.getStyle = function () {
+            var style = {};
+            style['text-align'] = this.cellvm.Alignment;
             if (this.cellvm.Width) {
-                return { 'width': this.cellvm.Width };
+                style['width'] = this.cellvm.Width;
             }
-            return { 'width': '100%' };
+            else {
+                style['width'] = '100%';
+            }
+            return style;
+        };
+        TextCellController.prototype.getCssClasses = function () {
+            var classes = "text-cell-th ";
+            if (this.cellvm.Alignment) {
+            }
+            if (this.cellvm.Indent) {
+            }
         };
         return TextCellController;
     }());
@@ -57,6 +69,8 @@ var app;
             return { 'width': '110px' };
         };
         NumericCellController.prototype.onChange = function () {
+            if (this.cellvm.NumValue < 0) {
+            }
             this.CalcService.runCellCalcs(this.cellvm);
         };
         NumericCellController.prototype.onBlur = function () {
@@ -129,9 +143,9 @@ var app;
     app.DropdownCellController = DropdownCellController;
     // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
-        .module('app', ['app.model', 'app.directives', 'app.calc', 'app.filters'])
+        .module('app', ['app.model', 'app.calc', 'app.filters'])
         .component('textCell', {
-        template: "\n                <div ng-switch=\"cellCtrl.cellvm.IsEditable\" class=\"indent-{{cellCtrl.cellvm.Indent}} {{cellCtrl.cellvm.Class}} text-cell-th\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\">\n                    <input type=\"text\" class=\"k-textbox\" ng-switch-when=\"true\" ng-model=\"cellCtrl.cellvm.Value\" style=\"text-align:left\" />\n                    <div ng-switch-when=\"false\" style=\"text-align:left\">\n                        {{cellCtrl.cellvm.Value}}\n                    </div>\n                </div>\n                ",
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-class='cellCtrl.getCssClasses()' ng-style='cellCtrl.getStyle()' class=\"indent-{{cellCtrl.cellvm.Indent}} text-cell-th\" ng-if=\"!cellCtrl.cellvm.IsBlank\">\n                        <input type=\"text\" class='k-textbox' ng-switch-when='true' ng-model='cellCtrl.cellvm.Value'/>\n                        <div ng-switch-when='false'>\n                            {{cellCtrl.cellvm.Value}}\n                        </div>\n                    </div>\n                    ",
         controllerAs: 'cellCtrl',
         controller: TextCellController,
         bindings: {
@@ -139,7 +153,7 @@ var app;
         }
     })
         .component('numericCell', {
-        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox numeric\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:20px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox numeric\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:5px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
         controllerAs: 'cellCtrl',
         controller: NumericCellController,
         bindings: {
@@ -147,7 +161,7 @@ var app;
         }
     })
         .component('percentCell', {
-        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <div ng-switch-when=\"true\" style=\"width:100%\">\n                            <input type=\"number\" class=\"k-textbox percent\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/> %\n                        </div>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:20px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}} %\n                        </div>\n                    </div>\n                    ",
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <div ng-switch-when=\"true\" style=\"width:100%\">\n                            <input type=\"number\" class=\"k-textbox percent\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/> %\n                        </div>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:5px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}} %\n                        </div>\n                    </div>\n                    ",
         controllerAs: 'cellCtrl',
         controller: PercentCellController,
         bindings: {

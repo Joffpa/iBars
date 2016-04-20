@@ -1,4 +1,5 @@
 ﻿
+
 declare module ExhibitGrid.ViewModel {
     interface ICellVm {
         GridCode: string;
@@ -18,6 +19,7 @@ declare module ExhibitGrid.ViewModel {
         Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
     }
     interface ICalcExpressionVm {
+        CalcExpressionId: number;
         TargetGridCode: string;
         TargetRowCode: string;
         TargetColCode: string;
@@ -41,7 +43,6 @@ declare module ExhibitGrid.ViewModel {
         Columns: ExhibitGrid.ViewModel.IColumnVm[];
         Rows: ExhibitGrid.ViewModel.IRowVm[];
         Cells: ExhibitGrid.ViewModel.ICellVm[];
-        ExternalDependantCells: ExhibitGrid.ViewModel.ICellVm[];
     }
     interface IColumnVm {
         ColCode: string;
@@ -71,7 +72,11 @@ declare module ExhibitGrid.ViewModel {
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;
+        CollapseParent: string;
+        TotalParentRowCode: string;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
+        CollapseableChildren: string[];
+        TotalChildrenRowCodes: string[];
     }
 }
 

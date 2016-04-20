@@ -23,6 +23,7 @@ namespace ExhibitGrid.Processes
                 using (var db = new DEV_AF())
                 {
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
+                    var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
                     var cellDictionary = new Dictionary<string, Attributes>();
                     foreach (var attrib in attribs)
                     {
@@ -38,7 +39,7 @@ namespace ExhibitGrid.Processes
                         {
                             AddVirtualColsFromRowAttribs(grid, attrib);
 
-                            grid.Rows.Add(BuildRowVmFromAttributes(attrib));
+                            grid.Rows.Add(BuildRowVmFromAttributes(attrib, rowRelations));
                         }
                         else
                         {
@@ -79,6 +80,7 @@ namespace ExhibitGrid.Processes
                 using (var db = new DEV_AF())
                 {
                     var calcs = db.GetCalcs(gridCode).ToList();
+                    var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
                     List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
                     List<GetCalcs_Result> cellCalcsExpandedFromRowCalcs = new List<GetCalcs_Result>();
                     List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
@@ -125,9 +127,10 @@ namespace ExhibitGrid.Processes
 					var calcExpressions = new List<CalcExpressionVm>();
                     calcExpressions.AddRange(
                         cellCalcResults.GroupBy(
-                            r => new {r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
+                            r => new {r.CalcExpressionId, r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
                             (key, group) => new CalcExpressionVm()
                             {
+                                CalcExpressionId = key.CalcExpressionId,
                                 TargetGridCode = key.TargetGridCode,
                                 TargetRowCode = key.TargetRowCode,
                                 TargetColCode = key.TargetColCode,
@@ -161,6 +164,7 @@ namespace ExhibitGrid.Processes
                                 cellCalcsExpandedFromRowCalcs.AddRange(
                                     rowCalcResults.Select(rowCalc => new GetCalcs_Result()
                                     {
+                                        CalcExpressionId = rowCalc.CalcExpressionId,
                                         TargetGridCode = rowCalc.TargetGridCode,
                                         TargetRowCode = rowCalc.TargetRowCode,
                                         TargetColCode = attrib.ColCode,
@@ -179,22 +183,25 @@ namespace ExhibitGrid.Processes
                         {
                             AddVirtualColsFromRowAttribs(grid, attrib);
 
-                            grid.Rows.Add(BuildRowVmFromAttributes(attrib));
+                            grid.Rows.Add(BuildRowVmFromAttributes(attrib, rowRelations));
 
-                            cellCalcsExpandedFromColCalcs.AddRange(
-                                colCalcResults.Select(colCalc => new GetCalcs_Result()
-                                {
-                                    TargetGridCode = colCalc.TargetGridCode,
-                                    TargetRowCode = attrib.RowCode,
-                                    TargetColCode = colCalc.TargetColCode,
-                                    Expression =
-                                        colCalc.Expression.Split('.')
-                                            .Aggregate((c, n) => n == "" ? c + "." + attrib.RowCode + n : c + "." + n),
-                                    GridCode = colCalc.GridCode,
-                                    RowCode = attrib.RowCode,
-                                    ColCode = colCalc.ColCode
-                                })
-                                .Where(rc => !cellCalcResults.Any(cc => cc.TargetGridCode == rc.TargetGridCode && cc.TargetRowCode == rc.TargetRowCode && cc.TargetColCode == rc.TargetColCode)));
+
+                            if (attrib.Type != Literals.RowType.Header || attrib.Type != Literals.RowType.Blank)
+                                cellCalcsExpandedFromColCalcs.AddRange(
+                                    colCalcResults.Select(colCalc => new GetCalcs_Result()
+                                    {
+                                        CalcExpressionId = colCalc.CalcExpressionId,
+                                        TargetGridCode = colCalc.TargetGridCode,
+                                        TargetRowCode = attrib.RowCode,
+                                        TargetColCode = colCalc.TargetColCode,
+                                        Expression =
+                                            colCalc.Expression.Split('.')
+                                                .Aggregate((c, n) => n == "" ? c + "." + attrib.RowCode + n : c + "." + n),
+                                        GridCode = colCalc.GridCode,
+                                        RowCode = attrib.RowCode,
+                                        ColCode = colCalc.ColCode
+                                    })
+                                    .Where(rc => !cellCalcResults.Any(cc => cc.TargetGridCode == rc.TargetGridCode && cc.TargetRowCode == rc.TargetRowCode && cc.TargetColCode == rc.TargetColCode)));
                         }
                         else
                         {
@@ -208,9 +215,10 @@ namespace ExhibitGrid.Processes
                     var colCalcExpressions = new List<CalcExpressionVm>();
                     colCalcExpressions.AddRange(
                         cellCalcsExpandedFromColCalcs.GroupBy(
-                            r => new {r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
+                            r => new { r.CalcExpressionId, r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression },
                             (key, group) => new CalcExpressionVm()
                             {
+                                CalcExpressionId = key.CalcExpressionId,
                                 TargetGridCode = key.TargetGridCode,
                                 TargetRowCode = key.TargetRowCode,
                                 TargetColCode = key.TargetColCode,
@@ -229,9 +237,10 @@ namespace ExhibitGrid.Processes
                     var rowCalcExpressions = new List<CalcExpressionVm>();
                     rowCalcExpressions.AddRange(
                         cellCalcsExpandedFromRowCalcs.GroupBy(
-                            r => new {r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
+                            r => new { r.CalcExpressionId, r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression },
                             (key, group) => new CalcExpressionVm()
                             {
+                                CalcExpressionId = key.CalcExpressionId,
                                 TargetGridCode = key.TargetGridCode,
                                 TargetRowCode = key.TargetRowCode,
                                 TargetColCode = key.TargetColCode,
@@ -253,9 +262,9 @@ namespace ExhibitGrid.Processes
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromColCalcs);
                     
                     //Convert all calcs into dictionaries for easy lookup when building individual cells
-                    var cellCalcDic = calcExpressions.ToDictionary(calc => calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
-                    var colCalcDic = colCalcExpressions.ToDictionary(calc => calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
-                    var rowCalcDic = rowCalcExpressions.ToDictionary(calc => calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
+                    var cellCalcDic = calcExpressions.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
+                    var colCalcDic = colCalcExpressions.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
+                    var rowCalcDic = rowCalcExpressions.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
 
                     //remove expanded row and col calcs that target the same cell as a cell calc
                     //colCalcDic = colCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
@@ -335,7 +344,6 @@ namespace ExhibitGrid.Processes
         }
 
         #region Build Vms
-
         private static ExhibitVm InitializeNewExhibit(string gridCode)
         {
             return new ExhibitVm()
@@ -368,7 +376,7 @@ namespace ExhibitGrid.Processes
                 ColCode = attrib.ColCode,
                 ColSpan = attrib.ColSpan ?? 1,
                 Type = attrib.Type,
-                DisplayOrder = attrib.DisplayOrder ?? 1,
+                DisplayOrder = attrib.DisplayOrder ?? new decimal(1.0),
                 DisplayText = attrib.DisplayText,
                 HasHeader = attrib.HasHeader ?? true,
                 IsHidden = attrib.IsHidden ?? false,
@@ -380,8 +388,14 @@ namespace ExhibitGrid.Processes
             };
         }
 
-        private static RowVm BuildRowVmFromAttributes(Attributes attrib)
+        private static RowVm BuildRowVmFromAttributes(Attributes attrib, List<UspGetRowRelationship_Result> relations)
         {
+            var parentTotalRowCode = "";
+            var parentTotalRealtion = relations.FirstOrDefault(r => r.ChRowCode == attrib.RowCode && r.Context == Literals.RowRelationshipContext.Total);
+            if (parentTotalRealtion != null)
+            {
+                parentTotalRowCode = parentTotalRealtion.ParRowCode;
+            }
             return new RowVm()
             {
                 GridCode = attrib.GridCode,
@@ -395,9 +409,12 @@ namespace ExhibitGrid.Processes
                 Class = GetRowClassByType(attrib.Type),
                 DisplayOrder = attrib.DisplayOrder ?? 0,
                 IsSelected = false,
-                IsCollapsed = false,
+                IsCollapsed = relations.Any(r => r.ChRowCode ==attrib.RowCode &&  r.Context == Literals.RowRelationshipContext.Collapse),
                 IsHidden = attrib.IsHidden ?? false,
-                IsEditable = attrib.IsEditable ?? false
+                IsEditable = attrib.IsEditable ?? false,
+                CollapseableChildren = relations.Where(r => r.ParRowCode == attrib.RowCode && r.Context == Literals.RowRelationshipContext.Collapse).Select(r => r.ChRowCode).ToList(),
+                TotalChildrenRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && r.Context == Literals.RowRelationshipContext.Total).Select(r => r.ChRowCode).ToList(),
+                TotalParentRowCode = parentTotalRowCode
             };
         }
 
@@ -413,7 +430,8 @@ namespace ExhibitGrid.Processes
                 GridCode = grid.GridCode,
                 RowCode = row.RowCode,
                 ColCode = col.ColCode,
-                Type = !string.IsNullOrEmpty(cellAttrib.Type) ? cellAttrib.Type : col.Type,
+                Type = col.Type, //!string.IsNullOrEmpty(cellAttrib.Type) ? cellAttrib.Type : col.Type,
+                IsBlank = cellAttrib.Type == Literals.ColCellType.Blank,
                 ColSpan = GetCellSpan(grid, row, col, cellAttrib.ColSpan),
                 ColumnHeader = col.DisplayText,
                 Indent = cellAttrib.Indent ?? 0,
@@ -422,6 +440,7 @@ namespace ExhibitGrid.Processes
                 Value = cellVal,
                 NumValue = valParsed ? numval : 0,
                 Width = (span == 1 ? col.Width : "100%"),
+                Alignment = cellAttrib.Alignment,
                 Calcs = null
             };
         }
@@ -489,11 +508,10 @@ namespace ExhibitGrid.Processes
             };
         }
         #endregion
-
-
+        
         private static List<CalcExpressionVm> GetCalcsForCell(List<GetCalcs_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic, string gridCode, string rowCode, string colCode)
         {
-            var thisCellsCalcTargets = allExpandedCalcs.Where(cc => cc.GridCode == gridCode && cc.RowCode == rowCode && cc.ColCode == colCode).Select(ac => ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
+            var thisCellsCalcTargets = allExpandedCalcs.Where(cc => cc.GridCode == gridCode && cc.RowCode == rowCode && cc.ColCode == colCode).Select(ac => ac.CalcExpressionId + "." + ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
             var thisCellsCalcs = new List<CalcExpressionVm>();
             thisCellsCalcs.AddRange(cellCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
             thisCellsCalcs.AddRange(colCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());

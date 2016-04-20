@@ -27,13 +27,13 @@ CalcsFromThisGridsOperands AS
 		Inner Join CalcsFromThisGridsOperands a ON a.TargetGridCode = o2.GridCode and a.TargetRowCode = o2.RowCode and a.TargetColCode = o2.ColCode
 		WHERE o2.GridCode != @GridCode
 	)
-	SELECT DISTINCT a.TargetGridCode, a.TargetRowCode, a.TargetColCode, a.Expression, o.GridCode, o.RowCode, o.ColCode
+	SELECT DISTINCT a.CalcExpressionId, a.TargetGridCode, a.TargetRowCode, a.TargetColCode, a.Expression, o.GridCode, o.RowCode, o.ColCode
 	FROM CalcsFromThisGridsOperands a
 	join CalcExpressionOperand eo ON a.CalcExpressionId = eo.CalcExpressionId
 	join CalcOperand o ON eo.CalcOperandId = o.CalcOperandId
 	UNION
 	--include calcs where the target is in this grid, but all operands come from elsewhere
-	SELECT e.TargetGridCode, e.TargetRowCode, e.TargetColCode, e.Expression, o.GridCode, o.RowCode, o.ColCode
+	SELECT e.CalcExpressionId, e.TargetGridCode, e.TargetRowCode, e.TargetColCode, e.Expression, o.GridCode, o.RowCode, o.ColCode
 	FROM CalcExpression e
 	join CalcExpressionOperand eo ON e.CalcExpressionId = eo.CalcExpressionId
 	join CalcOperand o ON eo.CalcOperandId = o.CalcOperandId

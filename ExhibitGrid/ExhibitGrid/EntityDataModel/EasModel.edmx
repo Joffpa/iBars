@@ -11,6 +11,10 @@
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="UspGetRowRelationship" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ParGridCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="ChGridCode" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="EasModelStoreContainer" />
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -22,6 +26,10 @@
           </FunctionImport>
           <FunctionImport Name="UspGetAttribVal" ReturnType="Collection(EasModel.Attributes)">
           <Parameter Name="GridCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UspGetRowRelationship" ReturnType="Collection(EasModel.UspGetRowRelationship_Result)">
+            <Parameter Name="ParGridCode" Mode="In" Type="String" />
+            <Parameter Name="ChGridCode" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Attributes" >
@@ -56,12 +64,21 @@
           <Property Type="String" Name="GridCode" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="RowCode" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="ColCode" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="CalcExpressionId" Nullable="false" />
         </ComplexType>
         <ComplexType Name="CellValue" >
           <Property Type="String" Name="GridCode" Nullable="false" />
           <Property Type="String" Name="RowCode" Nullable="false" />
           <Property Type="String" Name="ColCode" Nullable="false" />
           <Property Type="String" Name="Val" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="UspGetRowRelationship_Result">
+          <Property Type="Int32" Name="RowRelationshipId" Nullable="false" />
+          <Property Type="String" Name="ParGridCode" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="ParRowCode" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ChGridCode" Nullable="false" MaxLength="64" />
+          <Property Type="String" Name="ChRowCode" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Context" Nullable="false" MaxLength="64" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -79,6 +96,7 @@
                 <ScalarProperty Name="GridCode" ColumnName="GridCode" />
                 <ScalarProperty Name="RowCode" ColumnName="RowCode" />
                 <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+                <ScalarProperty Name="CalcExpressionId" ColumnName="CalcExpressionId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -106,6 +124,18 @@
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="HoverText" ColumnName="HoverText" />
                 <ScalarProperty Name="Alignment" ColumnName="Alignment" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspGetRowRelationship" FunctionName="EasModel.Store.UspGetRowRelationship">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.UspGetRowRelationship_Result">
+                <ScalarProperty Name="RowRelationshipId" ColumnName="RowRelationshipId" />
+                <ScalarProperty Name="ParGridCode" ColumnName="ParGridCode" />
+                <ScalarProperty Name="ParRowCode" ColumnName="ParRowCode" />
+                <ScalarProperty Name="ChGridCode" ColumnName="ChGridCode" />
+                <ScalarProperty Name="ChRowCode" ColumnName="ChRowCode" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
