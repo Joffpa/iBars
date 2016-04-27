@@ -80,11 +80,11 @@ Exec AddZgridRows 'PBA10_PersonnelData', @Rows
 
 --Column attribs
 exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'RowText',  'IsEditable=0,HasHeader=1,IsHidden=0,Type=''text'',Width='''',DisplayText='''',ColSpan=1,Level=0,Alignment=''center''', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'Py',  'IsEditable=1,HasHeader=1,IsHidden=0,Type=''numeric'',Width='''',DisplayText=''FY 2015 Enacted'',ColSpan=1,Level=0,Alignment=''center''', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'PyCyChange',  'IsEditable=0,HasHeader=1,IsHidden=0,Type=''numeric'',Width='''',DisplayText=''Change'',ColSpan=1,Level=0,Alignment=''center''', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'Cy',  'IsEditable=1,HasHeader=1,IsHidden=0,Type=''numeric'',Width='''',DisplayText=''FY 2016 Estimate'',ColSpan=1,Level=0,Alignment=''center''', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'CyBy1Change',  'IsEditable=0,HasHeader=1,IsHidden=0,Type=''numeric'',Width='''',DisplayText=''Change'',ColSpan=1,Level=0,Alignment=''center''', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'By1',  'IsEditable=1,HasHeader=1,IsHidden=0,Type=''numeric'',Width='''',DisplayText=''FY 2017 Estimate'',ColSpan=1,Level=0,Alignment=''center''', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'Py',  'IsEditable=1,HasHeader=1,IsHidden=0,Type=''numeric'',Width=''100px'',DisplayText=''FY 2015 Enacted'',ColSpan=1,Level=0,Alignment=''center'',MaxChars=5,DecimalPlaces=2', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'PyCyChange',  'IsEditable=0,HasHeader=1,IsHidden=0,Type=''numeric'',Width=''100px'',DisplayText=''Change'',ColSpan=1,Level=0,Alignment=''center'',MaxChars=6,DecimalPlaces=2', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'Cy',  'IsEditable=1,HasHeader=1,IsHidden=0,Type=''numeric'',Width=''100px'',DisplayText=''FY 2016 Estimate'',ColSpan=1,Level=0,Alignment=''center'',MaxChars=8,DecimalPlaces=2', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'CyBy1Change',  'IsEditable=0,HasHeader=1,IsHidden=0,Type=''numeric'',Width=''100px'',DisplayText=''Change'',ColSpan=1,Level=0,Alignment=''center'',MaxChars=8,DecimalPlaces=2', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'By1',  'IsEditable=1,HasHeader=1,IsHidden=0,Type=''numeric'',Width=''100px'',DisplayText=''FY 2017 Estimate'',ColSpan=1,Level=0,Alignment=''center'',MaxChars=8,DecimalPlaces=2', ''
 
 --row attribs 
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
@@ -108,7 +108,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', '',  'Type=''total'',Is
 
 --Cells
 --ActFor_Header Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''right''', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -117,15 +117,15 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', 'By1',  'ColSpan=1,
 
 
 --ActFor_Officer Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''right''', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Py',  'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'Cy',  'ColSpan=1,IsEditable=1,Indent=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --ActFor_Enlisted Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -133,7 +133,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'CyBy1Change',  '
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --ActFor_Total Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -141,7 +141,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'CyBy1Change',  'Col
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --ActFor_Blank Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -149,7 +149,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'CyBy1Change',  'Col
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --ResGuard_Header Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -157,7 +157,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'CyBy1Change',  '
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --ResGuard_Officer Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -165,7 +165,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'CyBy1Change',  
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --ResGuard_Enlisted Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -173,7 +173,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'CyBy1Change', 
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Enlisted', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --ResGuard_Total Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -181,7 +181,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'CyBy1Change',  'C
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Total', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --ResGuard_Blank Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -189,21 +189,21 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'CyBy1Change',  'C
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Blank', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --Civ_Header Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Header', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 --Civ_UsDirect Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_UsDirect', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 --Civ_ForNatDirect Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -211,7 +211,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'CyBy1Change',  
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatDirect', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --Civ_TotalDirect Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=2', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'RowText',  'ColSpan=1,IsEditable=0,Indent=2,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
@@ -219,7 +219,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'CyBy1Change',  '
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_TotalDirect', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --Civ_ForNatInDir Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'RowText',  'ColSpan=1,IsEditable=0,Indent=1,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'Py',  'ColSpan=1,IsEditable=1,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'Cy',  'ColSpan=1,IsEditable=1,Indent=0', ''
@@ -227,7 +227,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'CyBy1Change',  '
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_ForNatInDir', 'By1',  'ColSpan=1,IsEditable=1,Indent=0', ''
 
 --Civ_Total Row
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'RowText',  'ColSpan=1,IsEditable=0,Indent=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'Py',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''

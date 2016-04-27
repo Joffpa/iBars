@@ -14,22 +14,35 @@
 <script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
 <link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
 <link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
+<script src="~/Scripts/hashtable.js"></script>
+<script src="~/Scripts/jquery.numberformatter-1.2.4.jsmin.js"></script>
 @{
     var thisGrid = Model.Grids.FirstOrDefault(g => g.GridCode == Model.PrimaryGridCode);
-
     var extraCols = (thisGrid.HasSelectCol ? 1 : 0) + (thisGrid.HasCollapseCol ? 1 : 0) + (thisGrid.HasAddCol ? 1 : 0) + (thisGrid.HasDeleteCol ? 1 : 0);
 }
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1">
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <input type="button" class="k-button" value="Save" style="width:100px"/>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+
 <div ng-app="app">
     <div ng-controller="gridController as gridCtrl" gridcode="@thisGrid.GridCode">
-        <table class="table table-bordered exhibit-table" ngcloak>
-            <thead>
+        <table class="table table-bordered exhibit-grid-table" ngcloak>
+            <thead class="exhibit-grid-head">
                 @foreach (var level in thisGrid.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i))
                 {
                     <tr>
                         @{
-                    var thisLevel = level;
-                    var thisLevelsColumns = thisGrid.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder);
-                    var firstHeader = true;
+                        var thisLevel = level;
+                        var thisLevelsColumns = thisGrid.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder);
+                        var firstHeader = true;
                         }
                         @foreach (var column in thisLevelsColumns)
                         {
@@ -86,7 +99,7 @@
                         else
                         {
                             <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
-                                @Html.Raw("<eas-cell cellvm='row.Cells[" + i + "]'></eas-cell>")
+                                <eas-cell cellvm="row.Cells[@i]"></eas-cell>
                             </td>
                         }
                     }
@@ -94,7 +107,6 @@
             </tbody>
         </table>
     </div>
-
 </div>
 
 <script>

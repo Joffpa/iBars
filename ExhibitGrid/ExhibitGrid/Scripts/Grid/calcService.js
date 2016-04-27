@@ -15,14 +15,13 @@ var app;
                 var calcTargets = [];
                 var thisRow = this.ModelService.getRowVm(cellVm.GridCode, cellVm.RowCode);
                 if (thisRow.TotalParentRowCode) {
-                    console.log(thisRow.TotalParentRowCode);
                     var parentRow = this.ModelService.getRowVm(cellVm.GridCode, thisRow.TotalParentRowCode);
                     var childRows = this.ModelService.getRowVms(cellVm.GridCode, parentRow.TotalChildrenRowCodes);
                     var equation = "";
                     _.each(childRows, function (childrow) {
                         var cell = _.find(childrow.Cells, { 'ColCode': cellVm.ColCode });
-                        if (cell.NumValue) {
-                            equation += cell.NumValue.toString() + "+";
+                        if (cell) {
+                            equation += _this.ModelService.getCellValueForCalcFromVm(cell).toString() + "+";
                         }
                     });
                     if (equation && equation.length > 1) {
@@ -72,7 +71,10 @@ var app;
             CalcService.prototype.evaluateCalc = function (targetCell, equation) {
                 var result;
                 try {
-                    result = math.round(math.eval(equation), 2);
+                    result = math.eval(equation);
+                    if (targetCell.DecimalPlaces) {
+                        result = math.round(result, targetCell.DecimalPlaces);
+                    }
                     this.ModelService.updateCellVmValue(targetCell, result);
                 }
                 catch (err) {

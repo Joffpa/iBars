@@ -52,5 +52,8 @@ namespace ExhibitGrid.EntityDataModel
         public string HoverText { get; set; }
         public string Alignment { get; set; }
         public string Type { get; set; }
+        public Nullable<int> MaxChars { get; set; }
+        public Nullable<int> DecimalPlaces { get; set; }
+        public Nullable<bool> OverrideColSettings { get; set; }
     }
 }

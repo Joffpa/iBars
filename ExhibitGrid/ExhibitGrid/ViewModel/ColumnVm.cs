@@ -9,17 +9,19 @@ namespace ExhibitGrid.ViewModel
     public class ColumnVm
     {
         public string ColCode { get; set; }
-        public bool HasHeader { get; set; } 
+        public bool HasHeader { get; set; }
+        public string DisplayText { get; set; }
+        public string Alignment { get; set; }
+        public int Level { get; set; }
         public bool IsHidden { get; set; }
         public string Type { get; set; } //datatype
         public string Width { get; set; }
-        public string DisplayText { get; set; }
         public int ColSpan { get; set; }
-        public int Level { get; set; }
         public decimal DisplayOrder { get; set; } //col #
         public bool IsEditable { get; set; }
-        public string Alignment { get; set; }
-        //alignment
+        public int? MaxChars { get; set; }
+        public int? DecimalPlaces { get; set; }
+
         //hovertext
         //header css class
         [JsonIgnore]

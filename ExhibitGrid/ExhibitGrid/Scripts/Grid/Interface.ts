@@ -10,12 +10,12 @@ declare module ExhibitGrid.ViewModel {
         Width: string;
         IsEditable: boolean;
         Type: string;
-        NumValue: number;
         Value: string;
         Indent: number;
         IsHidden: boolean;
-        IsBlank: boolean;
         Alignment: string;
+        MaxChars: number;
+        DecimalPlaces: number;
         Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
     }
     interface ICalcExpressionVm {
@@ -42,20 +42,21 @@ declare module ExhibitGrid.ViewModel {
         HasDeleteCol: boolean;
         Columns: ExhibitGrid.ViewModel.IColumnVm[];
         Rows: ExhibitGrid.ViewModel.IRowVm[];
-        Cells: ExhibitGrid.ViewModel.ICellVm[];
     }
     interface IColumnVm {
         ColCode: string;
         HasHeader: boolean;
+        DisplayText: string;
+        Alignment: string;
+        Level: number;
         IsHidden: boolean;
         Type: string;
         Width: string;
-        DisplayText: string;
         ColSpan: number;
-        Level: number;
         DisplayOrder: number;
         IsEditable: boolean;
-        Alignment: string;
+        MaxChars: number;
+        DecimalPlaces: number;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
     }
     interface IRowVm {

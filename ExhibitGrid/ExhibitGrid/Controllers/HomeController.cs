@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,8 +15,33 @@ namespace ExhibitGrid.Controllers
     {
         public ActionResult GridProto(string gridCode)
         {
-            ExhibitVm exhibitVm = new ExhibitVmFactory().GetExhibitVm(gridCode);
+            var exhibit = new ExhibitVm()
+            {
+                Grids = new List<GridVm>(),
+                PrimaryGridCode = gridCode
+            };
+
+            var exhibitVm = ExhibitVmProcess.GetExhibitVmWithCalcs(gridCode, exhibit);
             CalcGridProcess.Process(exhibitVm, gridCode);
+
+            foreach (var gridVm in exhibitVm.Grids)
+            {
+                Debug.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                Debug.WriteLine("Grid: " + gridVm.GridCode);
+                Debug.WriteLine("");
+                foreach (var row in gridVm.Rows)
+                {
+                    Debug.WriteLine("Row: " + row.RowCode);
+                    foreach (var cell in row.Cells)
+                    {
+                        Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
+                    }
+                    Debug.WriteLine("");
+                }
+                Debug.WriteLine("");
+                Debug.WriteLine("");
+                Debug.WriteLine("");
+            }
             return View(exhibitVm);
         }
         

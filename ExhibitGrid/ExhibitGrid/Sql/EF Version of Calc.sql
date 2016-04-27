@@ -19,10 +19,11 @@ GO
 
 CREATE TABLE [dbo].[CalcExpression](
 	CalcExpressionId int not null PRIMARY KEY CLUSTERED IDENTITY(1,1),
-	TargetGridCode varchar(100) not null,
-	TargetRowCode varchar(100) null,
-	TargetColCode varchar(100) null,
-	Expression varchar(1000) not null
+	TargetGridCode nvarchar(100) not null,
+	TargetRowCode nvarchar(100) null,
+	TargetColCode nvarchar(100) null,
+	Expression nvarchar(1000) not null,
+	UpdateContext nvarchar(100) not null
 )
 go
 CREATE UNIQUE NONCLUSTERED INDEX IX_CalcExpression_TargetGridRowColCode
@@ -32,9 +33,9 @@ go
 
 Create Table CalcOperand(
 	CalcOperandId int not null PRIMARY KEY CLUSTERED IDENTITY(1,1),
-	GridCode varchar(100) not null,
-	RowCode varchar(100) null,
-	ColCode varchar(100) null
+	GridCode nvarchar(100) not null,
+	RowCode nvarchar(100) null,
+	ColCode nvarchar(100) null
 )
 
 CREATE UNIQUE NONCLUSTERED INDEX IX_CalcOperand_GridRowColCode
@@ -42,79 +43,22 @@ ON [dbo].[CalcOperand](GridCode, RowCode, ColCode)
 go
 
 Create Table CalcExpressionOperand(
-	CalcExpressionOperandId  int  PRIMARY KEY CLUSTERED IDENTITY(1,1),
+	--CalcExpressionOperandId  int  PRIMARY KEY CLUSTERED IDENTITY(1,1),
 	CalcExpressionId int,
-	CalcOperandId int,
+	CalcOperandId int
+	PRIMARY KEY CLUSTERED (CalcExpressionId, CalcOperandId),
 	CONSTRAINT FK_CalcOperand_CalcOperandId FOREIGN KEY (CalcOperandId) 
     REFERENCES CalcOperand(CalcOperandId) ,
 	CONSTRAINT FK_CalcExpression_CalcExpressionId FOREIGN KEY (CalcExpressionId) 
     REFERENCES CalcExpression(CalcExpressionId) 
 )
 
-CREATE NONCLUSTERED INDEX IX_CalcExpressionOperand_CalcExpressionId
-ON [dbo].[CalcExpressionOperand](CalcExpressionId)
-include(CalcOperandId)
-go
+--CREATE NONCLUSTERED INDEX IX_CalcExpressionOperand_CalcExpressionId
+--ON [dbo].[CalcExpressionOperand](CalcExpressionId)
+--include(CalcOperandId)
+--go
 
 CREATE NONCLUSTERED INDEX IX_CalcExpressionOperand_CalcOperandId
 ON [dbo].[CalcExpressionOperand](CalcOperandId)
 include(CalcExpressionId)
 go
-
---insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
---select 'Grid_A','Row_3','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
---union all
---select 'Grid_A','Row_5','','{Grid_A.Row_3..} + {Grid_A.Row_4..}'
---union all
---select 'Grid_B','Row_1','','{Grid_A.Row_1..} + {Grid_A.Row_2..}'
---union all
---select 'Grid_B','Row_3','','{Grid_B.Row_1..} + {Grid_B.Row_2..}'
---union all
---select 'Grid_A','Row_6','','{Grid_A.Row_1..} + {Grid_B.Row_1..}'
---union all
---select 'Grid_C','Row_6','','{Grid_C.Row_1..} + {Grid_C.Row_2..}'
---insert into CalcOperand (GridCode, RowCode, ColCode)
---select 'Grid_A','Row_1',''
---union all
---select 'Grid_A','Row_2',''
---union all
---select 'Grid_A','Row_3',''
---union all
---select 'Grid_A','Row_4',''
---union all
---select 'Grid_B','Row_1',''
---union all
---select 'Grid_B','Row_2',''
---union all
---select 'Grid_C','Row_1',''
---union all
---select 'Grid_C','Row_2',''
-
---insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
---select 1, 1
---union all
---select 1, 2
---union all
---select 2, 3
---union all
---select 2, 4
---union all
---select 3, 1
---union all
---select 3, 2
---union all
---select 4, 5
---union all
---select 4, 6
---union all
---select 5, 1
---union all
---select 5, 5
---union all
---select 6, 7
---union all
---select 6, 8
-
---select * from CalcExpression
---select * from CalcExpressionOperand
---select * from CalcOperand

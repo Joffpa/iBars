@@ -78,23 +78,30 @@ var app;
                 var cell = this.getCellVm(gridCode, rowCode, colCode);
                 this.updateCellVmValue(cell, value);
             };
-            ModelService.prototype.updateCellVmValue = function (cell, value) {
-                cell.NumValue = value;
-                cell.Value = value.toString();
+            ModelService.prototype.updateCellVmValue = function (cellVm, value) {
+                cellVm.Value = $.formatNumber(value.toString(), { format: "#,###.00", locale: "us" });
             };
-            ModelService.prototype.setCellVmValueNA = function (cell) {
-                cell.Value = "N/A";
-                cell.NumValue = 0;
+            ModelService.prototype.setCellVmValueNA = function (cellVm) {
+                cellVm.Value = "N/A";
             };
             ModelService.prototype.getCellValueForCalc = function (gridCode, rowCode, colCode) {
-                var cell = this.getCellVm(gridCode, rowCode, colCode);
-                return this.getCellValueForCalcFromVm(cell);
+                var cellVm = this.getCellVm(gridCode, rowCode, colCode);
+                return this.getCellValueForCalcFromVm(cellVm);
             };
-            ModelService.prototype.getCellValueForCalcFromVm = function (cell) {
-                if (cell.Type == 'percent') {
-                    return cell.NumValue / 100;
+            ModelService.prototype.getCellValueForCalcFromVm = function (cellVm) {
+                //remove  comma formatting 
+                var value = $.parseNumber(cellVm.Value, { format: "#,###.00", locale: "us" });
+                var numValue = parseFloat(value);
+                if (numValue === NaN) {
+                    return NaN;
                 }
-                return cell.NumValue;
+                if (cellVm.DecimalPlaces) {
+                    numValue = math.round(numValue, cellVm.DecimalPlaces);
+                }
+                if (cellVm.Type == 'percent') {
+                    return numValue / 100;
+                }
+                return numValue;
             };
             ModelService.prototype.collapseChildren = function (gridCode, rowCode) {
                 var _this = this;
@@ -103,6 +110,58 @@ var app;
                     var childRow = _this.getRowVm(gridCode, childRowCode);
                     childRow.IsCollapsed = !childRow.IsCollapsed;
                 });
+            };
+            ModelService.prototype.getCellStyle = function (cellVm) {
+                var style = {};
+                style['text-align'] = cellVm.Alignment;
+                if (cellVm.Width) {
+                    style['width'] = cellVm.Width;
+                }
+                else {
+                    style['width'] = '100%';
+                }
+                return style;
+            };
+            ModelService.prototype.formatCellNumber = function (cellVm) {
+                var value = cellVm.Value;
+                //remove  comma formatting 
+                value = $.parseNumber(cellVm.Value, { format: "#,###.00", locale: "us" });
+                //conver to float
+                var numValue = parseFloat(value);
+                //if it is not a valid number, return without affecting any formatting
+                if (numValue === NaN) {
+                    return;
+                }
+                //Round decimals as neccesary
+                if (cellVm.DecimalPlaces) {
+                    numValue = math.round(numValue, cellVm.DecimalPlaces);
+                }
+                //re-apply comma formatting
+                cellVm.Value = $.formatNumber(numValue.toString(), { format: "#,###.00", locale: "us" });
+                if (cellVm.Value.charAt(0) === '.') {
+                    cellVm.Value = "0" + cellVm.Value;
+                }
+            };
+            ModelService.prototype.unformatCellNumber = function (cellVm) {
+                if (cellVm.Value.match(/[a-z]/i)) {
+                    // alphabet letters found, dont try to parse as a number
+                    return;
+                }
+                var value = cellVm.Value;
+                //remove comma formatting
+                value = $.parseNumber(cellVm.Value, { format: "#,###.00000000", locale: "us" });
+                //conver to float
+                var numValue = parseFloat(value);
+                //if it is not a valid number, return without affecting any formatting
+                if (numValue === NaN) {
+                    return;
+                }
+                //Round decimals as neccesary
+                if (cellVm.DecimalPlaces) {
+                    numValue = math.round(numValue, cellVm.DecimalPlaces);
+                }
+                //re-apply comma formatting
+                cellVm.Value = numValue.toString();
             };
             return ModelService;
         }());

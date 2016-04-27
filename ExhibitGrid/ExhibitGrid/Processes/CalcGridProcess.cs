@@ -59,25 +59,6 @@ namespace ExhibitGrid.Processes
             using (var db = new DEV_AF())
             {
                 RunCalcs(db, exhibitVm, gridCode);
-                //SaveAllCellValues(db, gridVm);
-                foreach (var gridVm in exhibitVm.Grids)
-                {
-                    Debug.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    Debug.WriteLine("Grid: " + gridVm.GridCode);
-                    Debug.WriteLine("");
-                    foreach (var row in gridVm.Rows)
-                    {
-                        Debug.WriteLine("Row: " + row.RowCode);
-                        foreach (var cell in row.Cells)
-                        {
-                            Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
-                        }
-                        Debug.WriteLine("");
-                    }
-                    Debug.WriteLine("");
-                    Debug.WriteLine("");
-                    Debug.WriteLine("");
-                }
             }
         }
         
@@ -85,10 +66,10 @@ namespace ExhibitGrid.Processes
         {
             var grid = exhibit.Grids.FirstOrDefault(g => g.GridCode == gridCode);
             if (grid == null) return;
-            var calcs = db.GetCalcs(grid.GridCode);
-            List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
-            List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
-            List<GetCalcs_Result> cellCalcResults = new List<GetCalcs_Result>();
+            var calcs = db.UspGetCalcsAllContexts(grid.GridCode);
+            List<UspGetCalcsAllContexts_Result> rowCalcResults = new List<UspGetCalcsAllContexts_Result>();
+            List<UspGetCalcsAllContexts_Result> colCalcResults = new List<UspGetCalcsAllContexts_Result>();
+            List<UspGetCalcsAllContexts_Result> cellCalcResults = new List<UspGetCalcsAllContexts_Result>();
             var externalDependantCells = new List<CellVm>(); 
             //Separate ColCalcs, RowCalcs, and CellCalcs
             foreach (var calc in calcs)
@@ -149,7 +130,7 @@ namespace ExhibitGrid.Processes
                 foreach (var calc in startingRowCalcs)
                 {
                     //run calcs
-                    foreach (var col in grid.Columns.Where(c => c.Level == 0 && (c.Type == Literals.ColCellType.Numeric || c.Type == Literals.ColCellType.Percent)))
+                    foreach (var col in grid.Columns.Where(c => c.Level == 0 && (c.Type == Literals.Attribute.ColCellType.Numeric || c.Type == Literals.Attribute.ColCellType.Percent)))
                     {
                         RunRowCalcRecursive(calc, rowCalcs, col);
                     }
@@ -189,7 +170,7 @@ namespace ExhibitGrid.Processes
             }
         }
 
-        private static List<CalcExpressionVm> GroupCalcResultsIntoVm(List<GetCalcs_Result> calcResults)
+        private static List<CalcExpressionVm> GroupCalcResultsIntoVm(List<UspGetCalcsAllContexts_Result> calcResults)
         {
             return calcResults.GroupBy(
                             source => new { source.TargetGridCode, source.TargetRowCode, source.TargetColCode, source.Expression },
@@ -218,7 +199,7 @@ namespace ExhibitGrid.Processes
                 {
                     var operandRow = grid.Rows.FirstOrDefault(r => r.RowCode == operandRowCode);
                     if (operandRow == null) continue;
-                    foreach (var cell in operandRow.Cells.Where(c => c.Type == Literals.ColCellType.Numeric || c.Type == Literals.ColCellType.Percent))
+                    foreach (var cell in operandRow.Cells.Where(c => c.Type == Literals.Attribute.ColCellType.Numeric || c.Type == Literals.Attribute.ColCellType.Percent))
                     {
                         if (resultDic.ContainsKey(cell.ColCode))
                         {
@@ -231,18 +212,9 @@ namespace ExhibitGrid.Processes
                     }
                 }
 
-                foreach (var cell in targetRow.Cells.Where(c => c.Type == Literals.ColCellType.Numeric || c.Type == Literals.ColCellType.Percent))
+                foreach (var cell in targetRow.Cells.Where(c => c.Type == Literals.Attribute.ColCellType.Numeric || c.Type == Literals.Attribute.ColCellType.Percent))
                 {
-                    if (resultDic.ContainsKey(cell.ColCode))
-                    {
-                        cell.NumValue = resultDic[cell.ColCode];
-                        cell.Value = resultDic[cell.ColCode].ToString(CultureInfo.CurrentCulture);
-                    }
-                    else
-                    {
-                        cell.NumValue = 0;
-                        cell.Value = "0";
-                    }
+                    cell.Value = resultDic.ContainsKey(cell.ColCode) ? FormatCellValue(resultDic[cell.ColCode], cell) : "0";
                 }
 
                 if (!string.IsNullOrEmpty(targetRow.TotalParentRowCode))
@@ -288,17 +260,15 @@ namespace ExhibitGrid.Processes
                     expandedRowCalc.Expression = expandedRowCalc.Expression.Replace(operandToken, cellValue.ToString());
                 }
                 var targetCell = col.Cells.FirstOrDefault(c => c.GridCode == expandedRowCalc.TargetGridCode && c.RowCode == expandedRowCalc.TargetRowCode && c.ColCode == expandedRowCalc.TargetColCode);
-                if (targetCell != null)
+                if (targetCell == null) return;
+                EvaluateExpressionAndAssign(expandedRowCalc.Expression, targetCell);
+                var cascadedRowCalcs = allRowCalcs.Where(c => c.Operands.Any(o => o.GridCode == targetCell.GridCode && o.RowCode == targetCell.RowCode)).ToList();
+                if (cascadedRowCalcs.Any())
                 {
-                    EvaluateExpressionAndAssign(expandedRowCalc.Expression, targetCell);
-                    var cascadedRowCalcs = allRowCalcs.Where(c => c.Operands.Any(o => o.GridCode == targetCell.GridCode && o.RowCode == targetCell.RowCode)).ToList();
-                    if (cascadedRowCalcs.Any())
+                    cascadedRowCalcs.ForEach(cc =>
                     {
-                        cascadedRowCalcs.ForEach(cc =>
-                        {
-                            RunRowCalcRecursive(cc, allRowCalcs, col);
-                        });
-                    }
+                        RunRowCalcRecursive(cc, allRowCalcs, col);
+                    });
                 }
             }
             catch (NullReferenceException e)
@@ -335,20 +305,18 @@ namespace ExhibitGrid.Processes
                     var cell = row.Cells.FirstOrDefault(c => c.GridCode == operand.GridCode && c.RowCode == operand.RowCode && c.ColCode == operand.ColCode);
                     var cellValue = GetCellValue(cell);
                     var operandToken = GetCellToken(operand.GridCode, operand.RowCode, operand.ColCode);
-                    expandedColCalc.Expression = expandedColCalc.Expression.Replace(operandToken, cellValue.ToString());
+                    expandedColCalc.Expression = expandedColCalc.Expression.Replace(operandToken, cellValue.ToString(CultureInfo.CurrentCulture));
                 }
                 var targetCell = row.Cells.FirstOrDefault(c => c.GridCode == expandedColCalc.TargetGridCode && c.RowCode == expandedColCalc.TargetRowCode && c.ColCode == expandedColCalc.TargetColCode);
-                if (targetCell != null)
+                if (targetCell == null) return;
+                EvaluateExpressionAndAssign(expandedColCalc.Expression, targetCell);
+                var cascadedColCalcs = allColCalcs.Where(c => c.Operands.Any(o => o.GridCode == targetCell.GridCode && o.ColCode == targetCell.ColCode)).ToList();
+                if (cascadedColCalcs.Any())
                 {
-                    EvaluateExpressionAndAssign(expandedColCalc.Expression, targetCell);
-                    var cascadedColCalcs = allColCalcs.Where(c => c.Operands.Any(o => o.GridCode == targetCell.GridCode && o.ColCode == targetCell.ColCode)).ToList();
-                    if (cascadedColCalcs.Any())
+                    cascadedColCalcs.ForEach(cc =>
                     {
-                        cascadedColCalcs.ForEach(cc =>
-                        {
-                            RunColCalcRecursive(cc, allColCalcs, row);
-                        });
-                    }
+                        RunColCalcRecursive(cc, allColCalcs, row);
+                    });
                 }
             }
             catch (NullReferenceException e)
@@ -367,23 +335,21 @@ namespace ExhibitGrid.Processes
                     var cell = grid.Cells.FirstOrDefault(c => c.GridCode == operand.GridCode && c.RowCode == operand.RowCode && c.ColCode == operand.ColCode);
                     var cellValue = GetCellValue(cell);
                     var operandToken = GetCellToken(operand.GridCode, operand.RowCode, operand.ColCode);
-                    calcToRun.Expression = calcToRun.Expression.Replace(operandToken, cellValue.ToString());
+                    calcToRun.Expression = calcToRun.Expression.Replace(operandToken, cellValue.ToString(CultureInfo.CurrentCulture));
                 }
 
                 var targetGrid = exhibit.Grids.FirstOrDefault(g => g.GridCode == calcToRun.TargetGridCode);
                 var targetCell = targetGrid.Cells.FirstOrDefault(c => c.GridCode == calcToRun.TargetGridCode && c.RowCode == calcToRun.TargetRowCode && c.ColCode == calcToRun.TargetColCode);
 
-                if (targetCell != null)
+                if (targetCell == null) return;
+                EvaluateExpressionAndAssign(calcToRun.Expression, targetCell);
+                var cascadedColCalcs = allCellCalcs.Where(c => c.Operands.Any(o => o.GridCode == targetCell.GridCode && o.RowCode == targetCell.RowCode && o.ColCode == targetCell.ColCode)).ToList();
+                if (cascadedColCalcs.Any())
                 {
-                    EvaluateExpressionAndAssign(calcToRun.Expression, targetCell);
-                    var cascadedColCalcs = allCellCalcs.Where(c => c.Operands.Any(o => o.GridCode == targetCell.GridCode && o.RowCode == targetCell.RowCode && o.ColCode == targetCell.ColCode)).ToList();
-                    if (cascadedColCalcs.Any())
+                    cascadedColCalcs.ForEach(cc =>
                     {
-                        cascadedColCalcs.ForEach(cc =>
-                        {
-                            RunCellCalcRecursive(cc, allCellCalcs, exhibit);
-                        });
-                    } 
+                        RunCellCalcRecursive(cc, allCellCalcs, exhibit);
+                    });
                 }
             }
             catch (NullReferenceException e)
@@ -394,21 +360,13 @@ namespace ExhibitGrid.Processes
 
         private static double GetCellValue(CellVm cell)
         {
+            if (cell == null) return 0;
             double cellValue;
-            if (cell != null)
+            var parsed = double.TryParse(cell.Value, out cellValue);
+            if (!parsed) return 0;
+            if (cell.Type == Literals.Attribute.ColCellType.Percent)
             {
-                if (cell.Type == Literals.ColCellType.Percent)
-                {
-                    cellValue = cell.NumValue / 100;
-                }
-                else
-                {
-                    cellValue = cell.NumValue;
-                }
-            }
-            else
-            {
-                cellValue = 0;
+                cellValue = cellValue / 100;
             }
             return cellValue;
         }
@@ -422,10 +380,14 @@ namespace ExhibitGrid.Processes
         {
             var expr = new CalcEngine.CalcEngine();
             var result = (double)expr.Evaluate(expression);
-            targetCell.NumValue = result;
-            targetCell.Value = result.ToString(CultureInfo.CurrentCulture);
+            targetCell.Value = FormatCellValue(result, targetCell);
         }
-        
+
+        private static string FormatCellValue(double value, CellVm cellVm)
+        {
+            return cellVm.DecimalPlaces != null ? String.Format("{0:n" + cellVm.DecimalPlaces + "}", value) : String.Format("{0:n0}", value);
+        }
+
         private static void SaveAllCellValues(DEV_AF db, GridVm grid)
         {
             //TODO: save cells

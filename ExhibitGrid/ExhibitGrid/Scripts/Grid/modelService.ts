@@ -15,9 +15,12 @@ module app.model {
         getCellValueForCalc(gridCode: string, rowCode: string, colCode: string): number;
         getCellValueForCalcFromVm(cell: ExhibitGrid.ViewModel.ICellVm): number;
         updateCellValue(gridCode: string, rowCode: string, colCode: string, value: number): void;
-        updateCellVmValue(cell:ExhibitGrid.ViewModel.ICellVm, value: number): void;
-        setCellVmValueNA(cell: ExhibitGrid.ViewModel.ICellVm): void;
+        updateCellVmValue(cellVm:ExhibitGrid.ViewModel.ICellVm, value: number): void;
+        setCellVmValueNA(cellVm: ExhibitGrid.ViewModel.ICellVm): void;
         collapseChildren(gridCode: string, rowCode: string): void;
+        getCellStyle(cell: ExhibitGrid.ViewModel.ICellVm): any;
+        formatCellNumber(cell: ExhibitGrid.ViewModel.ICellVm): void;
+        unformatCellNumber(cell: ExhibitGrid.ViewModel.ICellVm): void;
     }
 
     export class ExhibitVm {
@@ -28,7 +31,6 @@ module app.model {
     }
 
     export class GridVm implements ExhibitGrid.ViewModel.IGridVm {
-
         GridCode: string;
         DisplayText: string;
         IsEditable: boolean;
@@ -37,11 +39,8 @@ module app.model {
         HasCollapseCol: boolean;
         HasAddCol: boolean;
         HasDeleteCol: boolean;
-        NumColumns: number;
         Columns: ExhibitGrid.ViewModel.IColumnVm[];
         Rows: ExhibitGrid.ViewModel.IRowVm[];
-        Cells: ExhibitGrid.ViewModel.ICellVm[];
-        ExternalDependantCells: ExhibitGrid.ViewModel.ICellVm[];
         constructor(GridCode: string) {
             this.GridCode = GridCode;
         }
@@ -50,22 +49,21 @@ module app.model {
     export class RowVm implements ExhibitGrid.ViewModel.IRowVm {
         GridCode: string;
         RowCode: string;
-        ParentRowCode: string;
         DisplayOrder: number;
         IsHidden: boolean;
         IsCollapsed: boolean;
         Class: string;
         CanCollapse: boolean;
-        CanSelect: boolean;
         CanAdd: boolean;
         CanDelete: boolean;
+        CanSelect: boolean;
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;
-        Cells: ExhibitGrid.ViewModel.ICellVm[];
         CollapseParent: string;
-        CollapseableChildren: string[];
         TotalParentRowCode: string;
+        Cells: ExhibitGrid.ViewModel.ICellVm[];
+        CollapseableChildren: string[];
         TotalChildrenRowCodes: string[];
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
@@ -78,19 +76,17 @@ module app.model {
         GridCode: string;
         RowCode: string;
         ColCode: string;
-        ParentRowCode: string;
         ColSpan: number;
         ColumnHeader: string;
         Width: string;
         IsEditable: boolean;
-        Class: string;
-        NumValue: number;
+        Type: string;
         Value: string;
         Indent: number;
         IsHidden: boolean;
-        IsBlank: boolean;
         Alignment: string;
-        Type: string;
+        MaxChars: number;
+        DecimalPlaces: number;
         Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
         constructor(Order: number, Type: string, RowCode: string, ColCode: string, CanAddNarrative: boolean, HasNarrative: boolean) {
             this.RowCode = RowCode;
@@ -151,26 +147,33 @@ module app.model {
             this.updateCellVmValue(cell, value);
         }
 
-        updateCellVmValue(cell: ExhibitGrid.ViewModel.ICellVm, value: number) {
-            cell.NumValue = value;
-            cell.Value = value.toString();
+        updateCellVmValue(cellVm: ExhibitGrid.ViewModel.ICellVm, value: number) {
+            cellVm.Value = $.formatNumber(value.toString(), { format: "#,###.00", locale: "us" });
         }
-
-        setCellVmValueNA(cell: ExhibitGrid.ViewModel.ICellVm) {
-            cell.Value = "N/A";
-            cell.NumValue = 0;
+        
+        setCellVmValueNA(cellVm: ExhibitGrid.ViewModel.ICellVm) {
+            cellVm.Value = "N/A";
         }
 
         getCellValueForCalc(gridCode: string, rowCode: string, colCode: string): number {
-            var cell = this.getCellVm(gridCode, rowCode, colCode);
-            return this.getCellValueForCalcFromVm(cell);
+            var cellVm = this.getCellVm(gridCode, rowCode, colCode);
+            return this.getCellValueForCalcFromVm(cellVm);
         }
 
-        getCellValueForCalcFromVm(cell: ExhibitGrid.ViewModel.ICellVm): number {
-            if (cell.Type == 'percent') {
-                return cell.NumValue / 100;
+        getCellValueForCalcFromVm(cellVm: ExhibitGrid.ViewModel.ICellVm): number {
+            //remove  comma formatting 
+            var value = $.parseNumber(cellVm.Value, { format: "#,###.00", locale: "us" });
+            var numValue = parseFloat(value);
+            if (numValue === NaN) {
+                return NaN;
             }
-            return cell.NumValue;
+            if (cellVm.DecimalPlaces) {
+                numValue = <number>math.round(numValue, cellVm.DecimalPlaces);
+            }
+            if (cellVm.Type == 'percent') {
+                return numValue / 100;
+            }
+            return numValue;
         }
 
         collapseChildren(gridCode: string, rowCode: string) {
@@ -179,6 +182,60 @@ module app.model {
                 var childRow = this.getRowVm(gridCode, childRowCode);
                 childRow.IsCollapsed = !childRow.IsCollapsed
             });
+        }
+
+        getCellStyle(cellVm: ExhibitGrid.ViewModel.ICellVm) {
+            var style = {};
+            style['text-align'] = cellVm.Alignment;
+            if (cellVm.Width) {
+                style['width'] = cellVm.Width;
+            } else {
+                style['width'] = '100%';
+            }
+            return style;
+        }
+        
+        formatCellNumber(cellVm: ExhibitGrid.ViewModel.ICellVm) {
+            var value = cellVm.Value;
+            //remove  comma formatting 
+            value = $.parseNumber(cellVm.Value, { format: "#,###.00", locale: "us" });
+            //conver to float
+            var numValue = parseFloat(value);
+            //if it is not a valid number, return without affecting any formatting
+            if (numValue === NaN) {
+                return;
+            }
+            //Round decimals as neccesary
+            if (cellVm.DecimalPlaces) {
+                numValue = <number>math.round(numValue, cellVm.DecimalPlaces);
+            }
+            //re-apply comma formatting
+            cellVm.Value = $.formatNumber(numValue.toString(), { format: "#,###.00", locale: "us" });
+            if (cellVm.Value.charAt(0) === '.') {
+                cellVm.Value = "0" + cellVm.Value;
+            }
+        }
+
+        unformatCellNumber(cellVm: ExhibitGrid.ViewModel.ICellVm) {
+            if (cellVm.Value.match(/[a-z]/i)) {
+                // alphabet letters found, dont try to parse as a number
+                return;
+            }
+            var value = cellVm.Value;
+            //remove comma formatting
+            value = $.parseNumber(cellVm.Value, { format: "#,###.00000000", locale: "us" });
+            //conver to float
+            var numValue = parseFloat(value);
+            //if it is not a valid number, return without affecting any formatting
+            if (numValue === NaN) {
+                return;
+            }
+            //Round decimals as neccesary
+            if (cellVm.DecimalPlaces) {
+                numValue = <number>math.round(numValue, cellVm.DecimalPlaces);
+            }
+            //re-apply comma formatting
+            cellVm.Value = numValue.toString();
         }
 
         constructor() {

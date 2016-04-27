@@ -22,15 +22,14 @@ module app.calc{
             var calcTargets = [];
             var thisRow = this.ModelService.getRowVm(cellVm.GridCode, cellVm.RowCode);
             if (thisRow.TotalParentRowCode) {
-                console.log(thisRow.TotalParentRowCode);
                 var parentRow = this.ModelService.getRowVm(cellVm.GridCode, thisRow.TotalParentRowCode);
                 var childRows = this.ModelService.getRowVms(cellVm.GridCode, parentRow.TotalChildrenRowCodes);
 
                 var equation = "";
                 _.each(childRows, childrow => {
                     var cell = _.find(childrow.Cells, { 'ColCode': cellVm.ColCode });
-                    if (cell.NumValue) {
-                        equation += cell.NumValue.toString() + "+";
+                    if (cell) {
+                        equation += this.ModelService.getCellValueForCalcFromVm(cell).toString() + "+";
                     }
                 });
                 if (equation && equation.length > 1) {
@@ -71,16 +70,18 @@ module app.calc{
                     }
                 });
             }
-
             if (calcTargets.length > 0) {
                 _.forEach(calcTargets, c => { this.runCellCalcs(c) });
             }
         }
 
-        evaluateCalc(targetCell, equation) {
+        evaluateCalc(targetCell: ExhibitGrid.ViewModel.ICellVm, equation: string) {
             var result;
             try {
-                result = <number>math.round(math.eval(equation), 2);
+                result = math.eval(equation);
+                if (targetCell.DecimalPlaces) {
+                    result = <number>math.round(result, targetCell.DecimalPlaces);
+                }
                 this.ModelService.updateCellVmValue(targetCell, result);
             } catch (err) {
                 this.ModelService.setCellVmValueNA(targetCell);

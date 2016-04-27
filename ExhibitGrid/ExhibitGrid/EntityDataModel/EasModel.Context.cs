@@ -28,15 +28,6 @@ namespace ExhibitGrid.EntityDataModel
         }
     
     
-        public virtual ObjectResult<GetCalcs_Result> GetCalcs(string gridCode)
-        {
-            var gridCodeParameter = gridCode != null ?
-                new ObjectParameter("GridCode", gridCode) :
-                new ObjectParameter("GridCode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCalcs_Result>("GetCalcs", gridCodeParameter);
-        }
-    
         public virtual ObjectResult<Attributes> UspGetAttribVal(string gridCode)
         {
             var gridCodeParameter = gridCode != null ?
@@ -57,6 +48,15 @@ namespace ExhibitGrid.EntityDataModel
                 new ObjectParameter("ChGridCode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetRowRelationship_Result>("UspGetRowRelationship", parGridCodeParameter, chGridCodeParameter);
+        }
+    
+        public virtual ObjectResult<UspGetCalcsAllContexts_Result> UspGetCalcsAllContexts(string gridCode)
+        {
+            var gridCodeParameter = gridCode != null ?
+                new ObjectParameter("GridCode", gridCode) :
+                new ObjectParameter("GridCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetCalcsAllContexts_Result>("UspGetCalcsAllContexts", gridCodeParameter);
         }
     }
 }

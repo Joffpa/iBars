@@ -3,17 +3,15 @@
     display: inline-block;
     padding: 20px 50px 10px 50px;
 
-    .exhibit-table {
+    .exhibit-grid-table {
         table-layout: auto;
         /*width:2000px;*/
-        thead {
+        thead.exhibit-grid-head {
 
             tr {
-                th.grid-name {
-                    font-weight: bolder;
-                }
-
                 td, th {
+                    padding: 2px;
+                    border: 1px solid rgb(128, 128, 128);
                     /*white-space: nowrap;*/
                 }
             }
@@ -28,7 +26,7 @@
                     font-weight: bold;
                 }
             }
-            
+
             tr.subtotal-row {
                 background-color: #e6eeff;
 
@@ -36,33 +34,26 @@
                     font-weight: bold;
                 }
             }
+
             tr.total-row {
                 background-color: #b3cbff;
 
                 td, th {
                     font-weight: bold;
-                    text-decoration:underline;
+                    text-decoration: underline;
                 }
             }
-
-            /*tr.grand-total-row {
-                td, th {
-                    text-decoration: underline;
-                    font-weight: bold;
-                }
-            }*/
 
             tr.data-row {
             }
 
             tr {
 
-                /*white-space: nowrap;*/
                 .text-th {
                     /*white-space: nowrap;*/
                 }
 
-                .numeric-td {
+                div.numeric-cell {
                     white-space: nowrap;
                     /*width:110px;*/
                 }
@@ -79,32 +70,60 @@
                 }
 
                 td, th {
+                    border-color: rgb(128, 128, 128);
+                    padding: 2px;
+
+                    input {
+                        text-align: inherit;
+                    }
+
+                    .k-textbox {
+                        border-color: #003099;
+                    }
 
                     .negative-val {
                         color: red;
                     }
 
-                    input[type="text"] {
-                        width: 100%;
+                    div.numeric-cell {
+                        white-space: nowrap;
+                        /*width:110px;*/
                     }
-
+                    
+                    div.percent-cell {
+                        white-space: nowrap;
+                        /*width:110px;*/
+                    }
                     input.numeric {
-                        width: 100%;
+                        width: inherit;
                     }
+
                     input.percent {
-                        width: 75%;
+                        width: 90%;
                     }
 
-                    .indent-1 {
-                        margin-left: 20px;
+                    .indent-left-1 {
+                        padding-left: 20px;
                     }
 
-                    .indent-2 {
-                        margin-left: 40px;
+                    .indent-left-2 {
+                        padding-left: 40px;
                     }
 
-                    .indent-3 {
-                        margin-left: 60px;
+                    .indent-left-3 {
+                        padding-left: 60px;
+                    }
+
+                    .indent-right-1 {
+                        padding-right: 20px;
+                    }
+
+                    .indent-right-2 {
+                        padding-right: 40px;
+                    }
+
+                    .indent-right-3 {
+                        padding-right: 60px;
                     }
                 }
             }

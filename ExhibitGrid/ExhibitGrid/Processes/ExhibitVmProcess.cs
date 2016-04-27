@@ -79,13 +79,13 @@ namespace ExhibitGrid.Processes
             {
                 using (var db = new DEV_AF())
                 {
-                    var calcs = db.GetCalcs(gridCode).ToList();
+                    var calcs = db.UspGetCalcsAllContexts(gridCode).ToList();
                     var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
-                    List<GetCalcs_Result> rowCalcResults = new List<GetCalcs_Result>();
-                    List<GetCalcs_Result> cellCalcsExpandedFromRowCalcs = new List<GetCalcs_Result>();
-                    List<GetCalcs_Result> colCalcResults = new List<GetCalcs_Result>();
-                    List<GetCalcs_Result> cellCalcsExpandedFromColCalcs = new List<GetCalcs_Result>();
-                    List<GetCalcs_Result> cellCalcResults = new List<GetCalcs_Result>();
+                    List<UspGetCalcsAllContexts_Result> rowCalcResults = new List<UspGetCalcsAllContexts_Result>();
+                    List<UspGetCalcsAllContexts_Result> cellCalcsExpandedFromRowCalcs = new List<UspGetCalcsAllContexts_Result>();
+                    List<UspGetCalcsAllContexts_Result> colCalcResults = new List<UspGetCalcsAllContexts_Result>();
+                    List<UspGetCalcsAllContexts_Result> cellCalcsExpandedFromColCalcs = new List<UspGetCalcsAllContexts_Result>();
+                    List<UspGetCalcsAllContexts_Result> cellCalcResults = new List<UspGetCalcsAllContexts_Result>();
                     var externalDependantCells = new List<CellVm>(); 
                     foreach (var calc in calcs)
                     {
@@ -160,9 +160,9 @@ namespace ExhibitGrid.Processes
                             grid.Columns.Add(BuildColVmFromAttributes(attrib));
 
                             //For Numeric columns expand the row calcs for every column and add to cell calcs
-                            if (attrib.Type == Literals.ColCellType.Numeric || attrib.Type == Literals.ColCellType.Percent)
+                            if (attrib.Type == Literals.Attribute.ColCellType.Numeric || attrib.Type == Literals.Attribute.ColCellType.Percent)
                                 cellCalcsExpandedFromRowCalcs.AddRange(
-                                    rowCalcResults.Select(rowCalc => new GetCalcs_Result()
+                                    rowCalcResults.Select(rowCalc => new UspGetCalcsAllContexts_Result()
                                     {
                                         CalcExpressionId = rowCalc.CalcExpressionId,
                                         TargetGridCode = rowCalc.TargetGridCode,
@@ -186,9 +186,9 @@ namespace ExhibitGrid.Processes
                             grid.Rows.Add(BuildRowVmFromAttributes(attrib, rowRelations));
 
 
-                            if (attrib.Type != Literals.RowType.Header || attrib.Type != Literals.RowType.Blank)
+                            if (attrib.Type != Literals.Attribute.RowType.Header || attrib.Type != Literals.Attribute.RowType.Blank)
                                 cellCalcsExpandedFromColCalcs.AddRange(
-                                    colCalcResults.Select(colCalc => new GetCalcs_Result()
+                                    colCalcResults.Select(colCalc => new UspGetCalcsAllContexts_Result()
                                     {
                                         CalcExpressionId = colCalc.CalcExpressionId,
                                         TargetGridCode = colCalc.TargetGridCode,
@@ -256,7 +256,7 @@ namespace ExhibitGrid.Processes
                                             }).ToList()
                             }));
 
-                    var allExpandedCalcs = new List<GetCalcs_Result>();
+                    var allExpandedCalcs = new List<UspGetCalcsAllContexts_Result>();
                     allExpandedCalcs.AddRange(cellCalcResults);
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromRowCalcs);
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromColCalcs);
@@ -278,7 +278,7 @@ namespace ExhibitGrid.Processes
 
                             var cell = BuildCellVmFromAttributes(grid, row, col, cellAttrib);
 
-                            cell.Calcs = col.Type == Literals.ColCellType.Numeric || col.Type == Literals.ColCellType.Percent
+                            cell.Calcs = col.Type == Literals.Attribute.ColCellType.Numeric || col.Type == Literals.Attribute.ColCellType.Percent
                                 ? GetCalcsForCell(allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic,
                                     grid.GridCode, row.RowCode,
                                     col.ColCode)
@@ -333,7 +333,7 @@ namespace ExhibitGrid.Processes
                     {
                         double parseResult;
                         cellvm.Value = cellResult.Val;
-                        cellvm.NumValue = double.TryParse(cellResult.Val, out parseResult) ? parseResult : 0;
+                        //cellvm.NumValue = double.TryParse(cellResult.Val, out parseResult) ? parseResult : 0;
                     }
                 }
             }
@@ -376,6 +376,8 @@ namespace ExhibitGrid.Processes
                 ColCode = attrib.ColCode,
                 ColSpan = attrib.ColSpan ?? 1,
                 Type = attrib.Type,
+                MaxChars = attrib.MaxChars,
+                DecimalPlaces = attrib.DecimalPlaces,
                 DisplayOrder = attrib.DisplayOrder ?? new decimal(1.0),
                 DisplayText = attrib.DisplayText,
                 HasHeader = attrib.HasHeader ?? true,
@@ -420,27 +422,37 @@ namespace ExhibitGrid.Processes
 
         private static CellVm BuildCellVmFromAttributes(GridVm grid, RowVm row, ColumnVm col, Attributes cellAttrib)
         {
-            double numval;
-            var cellVal = "";
-            if (row.Type != Literals.RowType.Blank) cellVal = cellAttrib.Value;
-            var valParsed = double.TryParse(cellVal, out numval);
+            //double numval;
+            var overrideColSettings = cellAttrib.OverrideColSettings ?? false;
+            var cellType = overrideColSettings ? cellAttrib.Type            : col.Type;
+            var decimals = overrideColSettings ? cellAttrib.DecimalPlaces   : col.DecimalPlaces;
+            var maxChars = overrideColSettings ? cellAttrib.MaxChars        : col.MaxChars;
+            var cellVal = cellAttrib.Value;
+            if (row.Type != Literals.Attribute.RowType.Blank && (cellType == Literals.Attribute.ColCellType.Numeric || cellType == Literals.Attribute.ColCellType.Percent))
+            {
+                double parsedNum;
+                var parsed = double.TryParse(cellAttrib.Value, out parsedNum);
+                if (parsed) cellVal = String.Format("{0:n" + decimals + "}", parsedNum);
+            }
+            //var valParsed = double.TryParse(cellVal, out numval);
             var span = cellAttrib.ColSpan ?? col.ColSpan;
             return new CellVm()
             {
                 GridCode = grid.GridCode,
                 RowCode = row.RowCode,
                 ColCode = col.ColCode,
-                Type = col.Type, //!string.IsNullOrEmpty(cellAttrib.Type) ? cellAttrib.Type : col.Type,
-                IsBlank = cellAttrib.Type == Literals.ColCellType.Blank,
+                Type = cellType,
+                MaxChars = maxChars,
+                DecimalPlaces = decimals,
                 ColSpan = GetCellSpan(grid, row, col, cellAttrib.ColSpan),
                 ColumnHeader = col.DisplayText,
                 Indent = cellAttrib.Indent ?? 0,
                 IsEditable = (cellAttrib.IsEditable ?? false) && row.IsEditable && col.IsEditable && grid.IsEditable,
                 IsHidden = cellAttrib.IsHidden ?? false,
                 Value = cellVal,
-                NumValue = valParsed ? numval : 0,
+                //NumValue = valParsed ? numval : 0,
                 Width = (span == 1 ? col.Width : "100%"),
-                Alignment = cellAttrib.Alignment,
+                Alignment = cellAttrib.Alignment ?? "right",
                 Calcs = null
             };
         }
@@ -459,15 +471,15 @@ namespace ExhibitGrid.Processes
         {
             switch (rowType)
             {
-                case Literals.RowType.Header:
+                case Literals.Attribute.RowType.Header:
                     return "header-row";
-                case Literals.RowType.Data:
+                case Literals.Attribute.RowType.Data:
                     return "data-row";
-                case Literals.RowType.Total:
+                case Literals.Attribute.RowType.Total:
                     return "total-row";
-                case Literals.RowType.Subtotal:
+                case Literals.Attribute.RowType.Subtotal:
                     return "subtotal-row";
-                case Literals.RowType.Blank:
+                case Literals.Attribute.RowType.Blank:
                     return "blank-row";
                 default :
                     return "default-row";
@@ -476,7 +488,7 @@ namespace ExhibitGrid.Processes
 
         private static int GetCellSpan(GridVm grid, RowVm row, ColumnVm col, int? cellSpanAttrib)
         {
-            if (row.Type != Literals.RowType.Header && row.Type != Literals.RowType.Blank) return cellSpanAttrib ?? col.ColSpan;
+            if (row.Type != Literals.Attribute.RowType.Header && row.Type != Literals.Attribute.RowType.Blank) return cellSpanAttrib ?? col.ColSpan;
 
             if (col.ColCode != Literals.UniversalColCode.RowText) return 0;
 
@@ -487,14 +499,12 @@ namespace ExhibitGrid.Processes
 
         private static CellVm BuildCellVmForExternalGrid(string gridCode, string rowCode, string colCode, string value)
         {
-            double parseResult;
             return new CellVm()
             {
                 GridCode = gridCode,
                 RowCode = rowCode,
                 ColCode = colCode,
-                Value = value,
-                NumValue = double.TryParse(value, out parseResult) ? parseResult : 0
+                Value = value
             };
         }
 
@@ -508,8 +518,8 @@ namespace ExhibitGrid.Processes
             };
         }
         #endregion
-        
-        private static List<CalcExpressionVm> GetCalcsForCell(List<GetCalcs_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic, string gridCode, string rowCode, string colCode)
+
+        private static List<CalcExpressionVm> GetCalcsForCell(List<UspGetCalcsAllContexts_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic, string gridCode, string rowCode, string colCode)
         {
             var thisCellsCalcTargets = allExpandedCalcs.Where(cc => cc.GridCode == gridCode && cc.RowCode == rowCode && cc.ColCode == colCode).Select(ac => ac.CalcExpressionId + "." + ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
             var thisCellsCalcs = new List<CalcExpressionVm>();

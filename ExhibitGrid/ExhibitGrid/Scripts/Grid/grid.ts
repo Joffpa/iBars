@@ -90,10 +90,6 @@ module app {
         }
 
         onChange() {
-            if (this.cellvm.NumValue < 0) {
-
-            }
-
             this.CalcService.runCellCalcs(this.cellvm);
         }
 
@@ -172,21 +168,19 @@ module app {
         }
 
         $postLink() {
-            if (!this.cellvm.IsBlank) {
-                this.element.kendoDropDownList({
-                    dataTextField: "Text",
-                    dataValueField: "Value",
-                    enable: true,
-                    dataSource: {
-                        transport: {
-                            read: {
-                                url: commonUI.getWebRoot() + "Home/GetDdOptions",
-                                dataType: "json"
-                            }
+            this.element.kendoDropDownList({
+                dataTextField: "Text",
+                dataValueField: "Value",
+                enable: true,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: commonUI.getWebRoot() + "Home/GetDdOptions",
+                            dataType: "json"
                         }
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -211,7 +205,7 @@ module app {
         .component('numericCell', {
             template: `
                     <div ng-switch="cellCtrl.cellvm.IsEditable" ng-if="!cellCtrl.cellvm.IsBlank" ng-style="cellCtrl.getStyle()" class="numeric-cell-td">
-                        <input ng-switch-when="true" type="number" class="k-textbox numeric" ng-model="cellCtrl.cellvm.NumValue" style="text-align:right" ng-change="cellCtrl.onChange()" ng-blur="cellCtrl.onBlur()"/>
+                        <input ng-switch-when="true" type="number" class="k-textbox numeric" ng-model="cellCtrl.cellvm.NumValue" style="text-align:right" ng-change="cellCtrl.onChange()" ng-blur="cellCtrl.onBlur()" />
                         <div ng-switch-when="false" style="text-align:right; padding-right:5px" maxlength="8" ng-class="cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'">
                             {{cellCtrl.cellvm.Value | negativeInParens}}
                         </div>

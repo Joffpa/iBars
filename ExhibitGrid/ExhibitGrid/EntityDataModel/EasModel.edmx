@@ -5,11 +5,11 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <Function Name="GetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="GridCode" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UspGetCalcsAllContexts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GridCode" Type="varchar" Mode="In" />
         </Function>
         <Function Name="UspGetRowRelationship" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ParGridCode" Type="nvarchar" Mode="In" />
@@ -21,15 +21,15 @@
     <edmx:ConceptualModels>
       <Schema Namespace="EasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DEV_AF" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="GetCalcs" ReturnType="Collection(EasModel.GetCalcs_Result)">
-          <Parameter Name="GridCode" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="UspGetAttribVal" ReturnType="Collection(EasModel.Attributes)">
           <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="UspGetRowRelationship" ReturnType="Collection(EasModel.UspGetRowRelationship_Result)">
             <Parameter Name="ParGridCode" Mode="In" Type="String" />
             <Parameter Name="ChGridCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UspGetCalcsAllContexts" ReturnType="Collection(EasModel.UspGetCalcsAllContexts_Result)">
+            <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Attributes" >
@@ -55,16 +55,9 @@
           <Property Type="String" Name="HoverText" Nullable="true" />
           <Property Type="String" Name="Alignment" Nullable="false" />
           <Property Type="String" Name="Type" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GetCalcs_Result">
-          <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="TargetRowCode" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="TargetColCode" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Expression" Nullable="true" MaxLength="1000" />
-          <Property Type="String" Name="GridCode" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="RowCode" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ColCode" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="CalcExpressionId" Nullable="false" />
+          <Property Type="Int32" Name="MaxChars" Nullable="true" />
+          <Property Type="Int32" Name="DecimalPlaces" Nullable="true" />
+          <Property Type="Boolean" Name="OverrideColSettings" Nullable="true" />
         </ComplexType>
         <ComplexType Name="CellValue" >
           <Property Type="String" Name="GridCode" Nullable="false" />
@@ -80,26 +73,23 @@
           <Property Type="String" Name="ChRowCode" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Context" Nullable="false" MaxLength="64" />
         </ComplexType>
+        <ComplexType Name="UspGetCalcsAllContexts_Result">
+          <Property Type="Int32" Name="CalcExpressionId" Nullable="false" />
+          <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TargetRowCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TargetColCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Expression" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="UpdateContext" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="GridCode" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="RowCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ColCode" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EasModelStoreContainer" CdmEntityContainer="DEV_AF">
-          <FunctionImportMapping FunctionImportName="GetCalcs" FunctionName="EasModel.Store.GetCalcs">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="EasModel.GetCalcs_Result">
-                <ScalarProperty Name="TargetGridCode" ColumnName="TargetGridCode" />
-                <ScalarProperty Name="TargetRowCode" ColumnName="TargetRowCode" />
-                <ScalarProperty Name="TargetColCode" ColumnName="TargetColCode" />
-                <ScalarProperty Name="Expression" ColumnName="Expression" />
-                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
-                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
-                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
-                <ScalarProperty Name="CalcExpressionId" ColumnName="CalcExpressionId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="UspGetAttribVal" FunctionName="EasModel.Store.UspGetAttribVal" >
             <ResultMapping>
               <ComplexTypeMapping TypeName="EasModel.Attributes">
@@ -136,6 +126,21 @@
                 <ScalarProperty Name="ChGridCode" ColumnName="ChGridCode" />
                 <ScalarProperty Name="ChRowCode" ColumnName="ChRowCode" />
                 <ScalarProperty Name="Context" ColumnName="Context" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UspGetCalcsAllContexts" FunctionName="EasModel.Store.UspGetCalcsAllContexts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.UspGetCalcsAllContexts_Result">
+                <ScalarProperty Name="CalcExpressionId" ColumnName="CalcExpressionId" />
+                <ScalarProperty Name="TargetGridCode" ColumnName="TargetGridCode" />
+                <ScalarProperty Name="TargetRowCode" ColumnName="TargetRowCode" />
+                <ScalarProperty Name="TargetColCode" ColumnName="TargetColCode" />
+                <ScalarProperty Name="Expression" ColumnName="Expression" />
+                <ScalarProperty Name="UpdateContext" ColumnName="UpdateContext" />
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -69,8 +69,6 @@ var app;
             return { 'width': '110px' };
         };
         NumericCellController.prototype.onChange = function () {
-            if (this.cellvm.NumValue < 0) {
-            }
             this.CalcService.runCellCalcs(this.cellvm);
         };
         NumericCellController.prototype.onBlur = function () {
@@ -122,21 +120,19 @@ var app;
             this.element = $element;
         }
         DropdownCellController.prototype.$postLink = function () {
-            if (!this.cellvm.IsBlank) {
-                this.element.kendoDropDownList({
-                    dataTextField: "Text",
-                    dataValueField: "Value",
-                    enable: true,
-                    dataSource: {
-                        transport: {
-                            read: {
-                                url: commonUI.getWebRoot() + "Home/GetDdOptions",
-                                dataType: "json"
-                            }
+            this.element.kendoDropDownList({
+                dataTextField: "Text",
+                dataValueField: "Value",
+                enable: true,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: commonUI.getWebRoot() + "Home/GetDdOptions",
+                            dataType: "json"
                         }
                     }
-                });
-            }
+                }
+            });
         };
         return DropdownCellController;
     }());
@@ -153,7 +149,7 @@ var app;
         }
     })
         .component('numericCell', {
-        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox numeric\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\"/>\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:5px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
+        template: "\n                    <div ng-switch=\"cellCtrl.cellvm.IsEditable\" ng-if=\"!cellCtrl.cellvm.IsBlank\" ng-style=\"cellCtrl.getStyle()\" class=\"numeric-cell-td\">\n                        <input ng-switch-when=\"true\" type=\"number\" class=\"k-textbox numeric\" ng-model=\"cellCtrl.cellvm.NumValue\" style=\"text-align:right\" ng-change=\"cellCtrl.onChange()\" ng-blur=\"cellCtrl.onBlur()\" />\n                        <div ng-switch-when=\"false\" style=\"text-align:right; padding-right:5px\" maxlength=\"8\" ng-class=\"cellCtrl.cellvm.NumValue < 0 ? 'negative-val' : 'positive-val'\">\n                            {{cellCtrl.cellvm.Value | negativeInParens}}\n                        </div>\n                    </div>\n                    ",
         controllerAs: 'cellCtrl',
         controller: NumericCellController,
         bindings: {
