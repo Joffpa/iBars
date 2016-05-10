@@ -34,7 +34,7 @@ namespace ExhibitGrid.Controllers
                     Debug.WriteLine("Row: " + row.RowCode);
                     foreach (var cell in row.Cells)
                     {
-                        Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
+                        Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    Value=" + cell.Value +";       HoverAddition: " + cell.HoverAddition);
                     }
                     Debug.WriteLine("");
                 }

@@ -10,10 +10,12 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/lodash.min.js"></script>
     <script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
+    <script src="~/Scripts/Grid/commonUI.js"></script>
+
     <link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
     <link href="~/Content/kendo/2016.1.112/kendo.uniform.min.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet"/>
-    <script src="~/Scripts/Grid/commonUI.js"></script>
+
     <script>
         commonUI.setWebRoot('@Url.Content("~")');
     </script>
@@ -26,7 +28,8 @@
                     <li>@Html.ActionLink("PBA 12", "GridProto", "Home", new { gridCode = "PBA12_ProgData1" }, null)</li>
                     <li>@Html.ActionLink("PBA 10", "GridProto", "Home", new { gridCode = "PBA10_PersonnelData" }, null)</li>
                     <li>@Html.ActionLink("Mini OP-5 Prototype", "GridProto", "Home", new { gridCode = "MiniOp5" }, null)</li>
-                    <li>@Html.ActionLink("Calc Testing", "RunCalcs", "Home")</li>
+                    <li>@Html.ActionLink("Calc Testing", "GridProto", "Home", new { gridCode = "CalcGrid1" }, null)</li>
+                    <li>@Html.ActionLink("Add Row Test Grid", "GridProto", "Home", new { gridCode = "TestGrid" }, null)</li>
                 </ul>
             </div>
         </div>

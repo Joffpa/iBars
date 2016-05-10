@@ -1,19 +1,222 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
 using ExhibitGrid.EntityDataModel;
 using ExhibitGrid.Extensions;
 using ExhibitGrid.Globals;
 using ExhibitGrid.ViewModel;
-using WebGrease.Css.Extensions;
 
 namespace ExhibitGrid.Processes
 {
     public class ExhibitVmProcess
     {
-        public static ExhibitVm GetExhibitVmWithoutCalcs(string gridCode)
+        public static List<Attributes> GetMockAttributes()
+        {
+            var attribs = new List<Attributes>
+            {
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = null,
+                    Level = null,
+                    CanSelect = false,
+                    CanCollapse = false,
+                    CanAdd =false,
+                    CanDelete =true,
+                    Indent = null,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = null,
+                    Type = "data",
+                    MaxChars = null,
+                    DecimalPlaces = null,
+                    OverrideColSettings = null,
+                    Value = "",
+                    HoverText = "",
+                    DisplayOrder = 1
+                },
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "RowText",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = 1,
+                    Level = null,
+                    CanSelect = null,
+                    CanCollapse = null,
+                    CanAdd =null,
+                    CanDelete =null,
+                    Indent = 1,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = "left",
+                    Type = null,
+                    MaxChars = 200,
+                    DecimalPlaces = null,
+                    OverrideColSettings = null,
+                    Value = "",
+                    HoverText = "",
+                    DisplayOrder = null
+                },
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "ColOne",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = 1,
+                    Level = null,
+                    CanSelect = null,
+                    CanCollapse = null,
+                    CanAdd =null,
+                    CanDelete =null,
+                    Indent = 0,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = "right",
+                    Type = null,
+                    MaxChars = 8,
+                    DecimalPlaces = 2,
+                    OverrideColSettings = null,
+                    Value = "0",
+                    HoverText = "",
+                    DisplayOrder = null
+                },
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "ColTwo",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = 1,
+                    Level = null,
+                    CanSelect = null,
+                    CanCollapse = null,
+                    CanAdd =null,
+                    CanDelete =null,
+                    Indent = 0,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = "right",
+                    Type = null,
+                    MaxChars = 8,
+                    DecimalPlaces = 2,
+                    OverrideColSettings = null,
+                    Value = "0",
+                    HoverText = "",
+                    DisplayOrder = null
+                },
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "ColThree",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = 1,
+                    Level = null,
+                    CanSelect = null,
+                    CanCollapse = null,
+                    CanAdd =null,
+                    CanDelete =null,
+                    Indent = 0,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = "right",
+                    Type = null,
+                    MaxChars = 8,
+                    DecimalPlaces = 2,
+                    OverrideColSettings = null,
+                    Value = "0",
+                    HoverText = "",
+                    DisplayOrder = null
+                },
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "ColFour",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = 1,
+                    Level = null,
+                    CanSelect = null,
+                    CanCollapse = null,
+                    CanAdd =null,
+                    CanDelete =null,
+                    Indent = 0,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = "right",
+                    Type = null,
+                    MaxChars = 8,
+                    DecimalPlaces = 2,
+                    OverrideColSettings = null,
+                    Value = "0",
+                    HoverText = "",
+                    DisplayOrder = null
+                },
+                new Attributes()
+                {
+                    GridCode = "TestGrid",
+                    RowCode = "TemplateRowB",
+                    ColCode = "ColFive",
+                    DisplayText = null,
+                    IsEditable = true,
+                    HasHeader = null,
+                    IsHidden = false,
+                    Width = null,
+                    ColSpan = 1,
+                    Level = null,
+                    CanSelect = null,
+                    CanCollapse = null,
+                    CanAdd =null,
+                    CanDelete =null,
+                    Indent = 0,
+                    HoverBase = null,
+                    HoverAddition = null,
+                    Alignment = "right",
+                    Type = null,
+                    MaxChars = 8,
+                    DecimalPlaces = 2,
+                    OverrideColSettings = null,
+                    Value = "0",
+                    HoverText = "",
+                    DisplayOrder = null
+                }
+            };
+
+
+            return attribs;
+        }
+
+        public static ExhibitVm GetExhibitVmWithoutCalcsOrTemplates(string gridCode)
         {
             var exhibit = InitializeNewExhibit(gridCode);
             var grid = InitializeNewGrid(gridCode);
@@ -24,6 +227,12 @@ namespace ExhibitGrid.Processes
                 {
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
                     var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
+                    var templateRowCodes = new List<string>();
+                    var templateRowRelations = rowRelations.Where(IsTemplateRelationContext).ToList();
+                    if (templateRowRelations.Any())
+                    {
+                        templateRowCodes = templateRowRelations.Select(tr => tr.ChRowCode).ToList();
+                    }
                     var cellDictionary = new Dictionary<string, Attributes>();
                     foreach (var attrib in attribs)
                     {
@@ -37,16 +246,22 @@ namespace ExhibitGrid.Processes
                         }
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
-                            AddVirtualColsFromRowAttribs(grid, attrib);
+                            SetGridAttribsFromRowAttribs(grid, attrib);
 
-                            grid.Rows.Add(BuildRowVmFromAttributes(attrib, rowRelations));
+                            var row = BuildRowVmFromAttributes(attrib, rowRelations);
+                            var isTemplateRow = templateRowCodes.Contains(row.RowCode);
+                            if (!isTemplateRow)
+                            {
+                                grid.Rows.Add(row);
+                            }
                         }
                         else
                         {
                             //grid.IsEditable = attrib.IsEditable ?? true;   TODO - add this back in later
-                            grid.DisplayText = attrib.DisplayText;
+                            //grid.DisplayText = attrib.DisplayText;
                         }
                     }
+
                     foreach (var row in grid.Rows)
                     {
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
@@ -56,7 +271,6 @@ namespace ExhibitGrid.Processes
                             
                             row.Cells.Add(cell);
                             col.Cells.Add(cell);
-                            grid.Cells.Add(cell);
                         }
                     }
                 }
@@ -66,7 +280,7 @@ namespace ExhibitGrid.Processes
             }
             return exhibit;
         }
-
+        
         public static ExhibitVm GetExhibitVmWithCalcs(string gridCode, ExhibitVm exhibit = null)
         {
             if (exhibit == null)
@@ -79,14 +293,32 @@ namespace ExhibitGrid.Processes
             {
                 using (var db = new DEV_AF())
                 {
-                    var calcs = db.UspGetCalcsAllContexts(gridCode).ToList();
+                    //Make calls to DB for attributes
+                    var calcs = db.UspGetCalcs(gridCode).ToList();
                     var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
-                    List<UspGetCalcsAllContexts_Result> rowCalcResults = new List<UspGetCalcsAllContexts_Result>();
-                    List<UspGetCalcsAllContexts_Result> cellCalcsExpandedFromRowCalcs = new List<UspGetCalcsAllContexts_Result>();
-                    List<UspGetCalcsAllContexts_Result> colCalcResults = new List<UspGetCalcsAllContexts_Result>();
-                    List<UspGetCalcsAllContexts_Result> cellCalcsExpandedFromColCalcs = new List<UspGetCalcsAllContexts_Result>();
-                    List<UspGetCalcsAllContexts_Result> cellCalcResults = new List<UspGetCalcsAllContexts_Result>();
-                    var externalDependantCells = new List<CellVm>(); 
+                    var attribs = db.UspGetAttribVal(gridCode).ToList();
+                    //TODO: create parm for negative numbers
+                    var showNegativeInParen = false;
+                    var negativeParm = db.LOAD_PARAMETERS.FirstOrDefault(p => p.parm_name == "ShowNegativeInParensInUI");
+                    if (negativeParm != null)
+                    {
+                        showNegativeInParen = negativeParm.parm_value == "Y";
+                    }
+                    grid.ShowNegativeNumsInParens = showNegativeInParen;
+
+                    //TODO: remove this when terry adds template rows to datamodel
+                    if (gridCode == "TestGrid")
+                    {
+                        attribs.AddRange(GetMockAttributes());
+                    }
+                    //Initalize calc objects
+                    List<UspGetCalcs_Result> rowCalcResults = new List<UspGetCalcs_Result>();
+                    List<UspGetCalcs_Result> cellCalcsExpandedFromRowCalcs = new List<UspGetCalcs_Result>();
+                    List<UspGetCalcs_Result> colCalcResults = new List<UspGetCalcs_Result>();
+                    List<UspGetCalcs_Result> cellCalcsExpandedFromColCalcs = new List<UspGetCalcs_Result>();
+                    List<UspGetCalcs_Result> cellCalcResults = new List<UspGetCalcs_Result>();
+                    //Initalize model for storing cells outside the current grid
+                    var externalDependantCells = new List<CellVm>();
                     foreach (var calc in calcs)
                     {
                         if (string.IsNullOrEmpty(calc.TargetColCode) && calc.TargetGridCode == grid.GridCode)
@@ -102,7 +334,7 @@ namespace ExhibitGrid.Processes
                             cellCalcResults.Add(calc);
                         }
                         //identify external cells
-                        if (calc.TargetGridCode != grid.GridCode && !externalDependantCells.Any(ec => ec.GridCode == calc.TargetGridCode && ec.RowCode == calc.TargetRowCode && ec.ColCode == calc.TargetColCode))
+                        if (calc.TargetGridCode != grid.GridCode && !externalDependantCells.Any(externalCell => CellIsTargetOfCalc(externalCell, calc)))
                         {
                             externalDependantCells.Add(new CellVm()
                             {
@@ -112,7 +344,7 @@ namespace ExhibitGrid.Processes
                             });
                         }
                         //Both target and operand may be external
-                        if (calc.GridCode != grid.GridCode && !externalDependantCells.Any(ec => ec.GridCode == calc.GridCode && ec.RowCode == calc.RowCode && ec.ColCode == calc.ColCode))
+                        if (calc.GridCode != grid.GridCode && !externalDependantCells.Any(externalCell => CellIsOperandOfCalc(externalCell, calc)))
                         {
                             externalDependantCells.Add(new CellVm()
                             {
@@ -122,32 +354,19 @@ namespace ExhibitGrid.Processes
                             });
                         }
                     }
-                    GetExternalCells(exhibit, externalDependantCells, db);
 
-					var calcExpressions = new List<CalcExpressionVm>();
-                    calcExpressions.AddRange(
-                        cellCalcResults.GroupBy(
-                            r => new {r.CalcExpressionId, r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression},
-                            (key, group) => new CalcExpressionVm()
-                            {
-                                CalcExpressionId = key.CalcExpressionId,
-                                TargetGridCode = key.TargetGridCode,
-                                TargetRowCode = key.TargetRowCode,
-                                TargetColCode = key.TargetColCode,
-                                Expression = key.Expression,
-                                Operands =
-                                    group.Select(
-                                        g =>
-                                            new CalcOperandVm()
-                                            {
-                                                GridCode = g.GridCode,
-                                                RowCode = g.RowCode,
-                                                ColCode = g.ColCode
-                                            }).ToList()
-                            }).ToList());
-					
-                    
-                    var attribs = db.UspGetAttribVal(gridCode).ToList();
+                    //ColCalcs will need to be expanded in UI when a user adds a row, save the unexpanded col calcs in the grid Vm
+                    grid.ColCalcs.AddRange(GroupCalcResultsIntoExpressionVm(colCalcResults));
+
+                    var calcExpressions = new List<CalcExpressionVm>();
+                    calcExpressions.AddRange(GroupCalcResultsIntoExpressionVm(cellCalcResults));
+
+                    var templateRowCodes = new List<string>();
+                    var templateRowRelations = rowRelations.Where(IsTemplateRelationContext).ToList();
+                    if (templateRowRelations.Any())
+                    {
+                        templateRowCodes = templateRowRelations.Select(tr => tr.ChRowCode).ToList();
+                    }
                     var cellDictionary = new Dictionary<string, Attributes>();
                     foreach (var attrib in attribs)
                     {
@@ -160,14 +379,15 @@ namespace ExhibitGrid.Processes
                             grid.Columns.Add(BuildColVmFromAttributes(attrib));
 
                             //For Numeric columns expand the row calcs for every column and add to cell calcs
-                            if (attrib.Type == Literals.Attribute.ColCellType.Numeric || attrib.Type == Literals.Attribute.ColCellType.Percent)
+                            if (IsNumericOrPercentType(attrib.Type))
                                 cellCalcsExpandedFromRowCalcs.AddRange(
-                                    rowCalcResults.Select(rowCalc => new UspGetCalcsAllContexts_Result()
+                                    rowCalcResults.Select(rowCalc => new UspGetCalcs_Result()
                                     {
                                         CalcExpressionId = rowCalc.CalcExpressionId,
                                         TargetGridCode = rowCalc.TargetGridCode,
                                         TargetRowCode = rowCalc.TargetRowCode,
                                         TargetColCode = attrib.ColCode,
+                                        UpdateContext = rowCalc.UpdateContext,
                                         Expression =
                                             rowCalc.Expression.Split('.')
                                                 .Aggregate(
@@ -176,112 +396,92 @@ namespace ExhibitGrid.Processes
                                         RowCode = rowCalc.RowCode,
                                         ColCode = attrib.ColCode
                                     })
-                                    .Where(rc => !cellCalcResults.Any(cc => cc.TargetGridCode == rc.TargetGridCode && cc.TargetRowCode == rc.TargetRowCode && cc.TargetColCode == rc.TargetColCode))
-);
+                                    .Where(rowCalc => !cellCalcResults.Any(cellCalc => CalcsHaveMatchingTargets(cellCalc, rowCalc) && CalcUpdatesCellValue(cellCalc))));
                         }
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
-                            AddVirtualColsFromRowAttribs(grid, attrib);
+                            var row = BuildRowVmFromAttributes(attrib, rowRelations);
+                            var isTemplateRow = templateRowCodes.Contains(row.RowCode);
+                            if (isTemplateRow)
+                            {
+                                grid.TemplateRows.Add(row);
+                            }
+                            else
+                            {
+                                grid.Rows.Add(row);
+                            }
 
-                            grid.Rows.Add(BuildRowVmFromAttributes(attrib, rowRelations));
-
-
-                            if (attrib.Type != Literals.Attribute.RowType.Header || attrib.Type != Literals.Attribute.RowType.Blank)
-                                cellCalcsExpandedFromColCalcs.AddRange(
-                                    colCalcResults.Select(colCalc => new UspGetCalcsAllContexts_Result()
+                            SetGridAttribsFromRowAttribs(grid, attrib);
+                            if (attrib.Type == Literals.Attribute.RowType.Header || attrib.Type == Literals.Attribute.RowType.Blank || isTemplateRow) continue;
+                            cellCalcsExpandedFromColCalcs.AddRange(
+                                    colCalcResults.Select(colCalc => new UspGetCalcs_Result()
                                     {
                                         CalcExpressionId = colCalc.CalcExpressionId,
                                         TargetGridCode = colCalc.TargetGridCode,
                                         TargetRowCode = attrib.RowCode,
                                         TargetColCode = colCalc.TargetColCode,
-                                        Expression =
-                                            colCalc.Expression.Split('.')
-                                                .Aggregate((c, n) => n == "" ? c + "." + attrib.RowCode + n : c + "." + n),
+                                        UpdateContext = colCalc.UpdateContext,
+                                        Expression = colCalc.Expression.Split('.').Aggregate((c, n) => n == "" ? c + "." + attrib.RowCode + n : c + "." + n),
                                         GridCode = colCalc.GridCode,
                                         RowCode = attrib.RowCode,
                                         ColCode = colCalc.ColCode
                                     })
-                                    .Where(rc => !cellCalcResults.Any(cc => cc.TargetGridCode == rc.TargetGridCode && cc.TargetRowCode == rc.TargetRowCode && cc.TargetColCode == rc.TargetColCode)));
+                                    .Where(colCalc => !cellCalcResults.Any(cellCalc => CalcsHaveMatchingTargets(cellCalc, colCalc) && CalcUpdatesCellValue(cellCalc)))
+                                );
                         }
                         else
                         {
                             //grid.IsEditable = attrib.IsEditable ?? true;   TODO - add this back in later
-                            grid.DisplayText = attrib.DisplayText;
+                            //grid.DisplayText = attrib.DisplayText;
                         }
                     }
-
-
-
+                    
                     var colCalcExpressions = new List<CalcExpressionVm>();
-                    colCalcExpressions.AddRange(
-                        cellCalcsExpandedFromColCalcs.GroupBy(
-                            r => new { r.CalcExpressionId, r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression },
-                            (key, group) => new CalcExpressionVm()
-                            {
-                                CalcExpressionId = key.CalcExpressionId,
-                                TargetGridCode = key.TargetGridCode,
-                                TargetRowCode = key.TargetRowCode,
-                                TargetColCode = key.TargetColCode,
-                                Expression = key.Expression,
-                                Operands =
-                                    group.Select(
-                                        g =>
-                                            new CalcOperandVm()
-                                            {
-                                                GridCode = g.GridCode,
-                                                RowCode = g.RowCode,
-                                                ColCode = g.ColCode
-                                            }).ToList()
-                            }));
+                    colCalcExpressions.AddRange(GroupCalcResultsIntoExpressionVm(cellCalcsExpandedFromColCalcs));
 
                     var rowCalcExpressions = new List<CalcExpressionVm>();
-                    rowCalcExpressions.AddRange(
-                        cellCalcsExpandedFromRowCalcs.GroupBy(
-                            r => new { r.CalcExpressionId, r.TargetGridCode, r.TargetRowCode, r.TargetColCode, r.Expression },
-                            (key, group) => new CalcExpressionVm()
-                            {
-                                CalcExpressionId = key.CalcExpressionId,
-                                TargetGridCode = key.TargetGridCode,
-                                TargetRowCode = key.TargetRowCode,
-                                TargetColCode = key.TargetColCode,
-                                Expression = key.Expression,
-                                Operands =
-                                    group.Select(
-                                        g =>
-                                            new CalcOperandVm()
-                                            {
-                                                GridCode = g.GridCode,
-                                                RowCode = g.RowCode,
-                                                ColCode = g.ColCode
-                                            }).ToList()
-                            }));
+                    rowCalcExpressions.AddRange(GroupCalcResultsIntoExpressionVm(cellCalcsExpandedFromRowCalcs));
 
-                    var allExpandedCalcs = new List<UspGetCalcsAllContexts_Result>();
+                    var allExpandedCalcs = new List<UspGetCalcs_Result>();
                     allExpandedCalcs.AddRange(cellCalcResults);
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromRowCalcs);
                     allExpandedCalcs.AddRange(cellCalcsExpandedFromColCalcs);
                     
                     //Convert all calcs into dictionaries for easy lookup when building individual cells
-                    var cellCalcDic = calcExpressions.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
-                    var colCalcDic = colCalcExpressions.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
-                    var rowCalcDic = rowCalcExpressions.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
+                    var cellCalcDic = ConvertCalcsToDictionary(calcExpressions);
+                    var colCalcDic = ConvertCalcsToDictionary(colCalcExpressions);
+                    var rowCalcDic = ConvertCalcsToDictionary(rowCalcExpressions);
 
+                    GetExternalCells(exhibit, externalDependantCells, db, allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic);
                     //remove expanded row and col calcs that target the same cell as a cell calc
                     //colCalcDic = colCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
                     //rowCalcDic = rowCalcDic.Where(cc => !cellCalcDic.Keys.Contains(cc.Key)).ToDictionary(source => source.Key, source => source.Value);
-
-                    foreach (var row in grid.Rows)
+                    
+                    //Add Template Rows 
+                    foreach (var templateRow in grid.TemplateRows)
                     {
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
                         {
+                            var cellAttrib = cellDictionary[grid.GridCode + templateRow.RowCode + col.ColCode];
+                            templateRow.Cells.Add(BuildCellVmFromAttributes(grid, templateRow, col, cellAttrib));
+                        }
+                    }
+                    
+                    foreach (var row in grid.Rows)
+                    {
+                        var templateRows = templateRowRelations.Where(rr => rr.ParRowCode == row.RowCode);
+                        if (templateRows.Any())
+                        {
+                            var childTemplateRowCodes = templateRows.Select(tr => tr.ChRowCode);
+                            row.TemplateRows = grid.TemplateRows.Where(r => childTemplateRowCodes.Contains(r.RowCode)).OrderBy(t => t.DisplayOrder).ToList();
+                        }
+
+                        foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
+                        {
                             var cellAttrib = cellDictionary[grid.GridCode + row.RowCode + col.ColCode];
-
                             var cell = BuildCellVmFromAttributes(grid, row, col, cellAttrib);
-
-                            cell.Calcs = col.Type == Literals.Attribute.ColCellType.Numeric || col.Type == Literals.Attribute.ColCellType.Percent
-                                ? GetCalcsForCell(allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic,
-                                    grid.GridCode, row.RowCode,
-                                    col.ColCode)
+                            cell.Calcs = IsNumericOrPercentType(col.Type)
+                                ? GetCalcsForCell(allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic, grid.GridCode, row.RowCode, col.ColCode)
                                 : null;
 
                             row.Cells.Add(cell);
@@ -296,8 +496,8 @@ namespace ExhibitGrid.Processes
             }
             return exhibit;
         }
-
-        public static void GetExternalCells(ExhibitVm exhibit, List<CellVm> cells, DEV_AF db)
+        
+        public static void GetExternalCells(ExhibitVm exhibit, List<CellVm> cells, DEV_AF db, List<UspGetCalcs_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic)
         {
             try
             {
@@ -307,7 +507,7 @@ namespace ExhibitGrid.Processes
                     RowCode = cell.RowCode,
                     ColCode = cell.ColCode
                 }).ToList();
-                var result = db.UspGetCellVal(cellParms);
+                var result = db.UspGetCellVal(cellParms).ToList();
                 foreach (var cellResult in result)
                 {
                     var grid = exhibit.Grids.FirstOrDefault(g => g.GridCode == cellResult.GridCode);
@@ -325,15 +525,12 @@ namespace ExhibitGrid.Processes
                     var cellvm = row.Cells.FirstOrDefault(r => r.ColCode == cellResult.ColCode);
                     if (cellvm == null)
                     {
-                        cellvm = BuildCellVmForExternalGrid(cellResult.GridCode, cellResult.RowCode, cellResult.ColCode, cellResult.Val);
+                        cellvm = BuildCellVmForExternalGrid(allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic, cellResult.GridCode, cellResult.RowCode, cellResult.ColCode, cellResult.Val);
                         row.Cells.Add(cellvm);
-                        grid.Cells.Add(cellvm);
                     }
                     else
                     {
-                        double parseResult;
                         cellvm.Value = cellResult.Val;
-                        //cellvm.NumValue = double.TryParse(cellResult.Val, out parseResult) ? parseResult : 0;
                     }
                 }
             }
@@ -360,12 +557,14 @@ namespace ExhibitGrid.Processes
                 GridCode = gridCode,
                 Columns = new List<ColumnVm>(),
                 Rows = new List<RowVm>(),
-                Cells = new List<CellVm>(),
                 IsEditable = true,
                 HasSelectCol = false,
                 HasCollapseCol = false,
                 HasAddCol = false,
-                HasDeleteCol = false
+                HasDeleteCol = false,
+                ShowNegativeNumsInParens = false,
+                ColCalcs = new List<CalcExpressionVm>(),
+                TemplateRows = new List<RowVm>()
             };
         }
 
@@ -392,11 +591,23 @@ namespace ExhibitGrid.Processes
 
         private static RowVm BuildRowVmFromAttributes(Attributes attrib, List<UspGetRowRelationship_Result> relations)
         {
+            //NOTE: We do not append template rows here, as the template rows may not have been built at this point.
+            //Template Rows are added later in the GetExhibitVmWithCalcs method
+            var thisRowsParentRelations = relations.Where(r => r.ChRowCode == attrib.RowCode).ToList();
+            //Do not include template row codes in the child arrays for collapsing/totaling
+            var templateRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && String.Equals(r.Context, Literals.RowRelationshipContext.Template)).Select(r => r.ChRowCode).ToList();
+            var thisRowsChildRelations = relations.Where(r => r.ParRowCode == attrib.RowCode && !templateRowCodes.Contains(r.ChRowCode)).ToList();
             var parentTotalRowCode = "";
-            var parentTotalRealtion = relations.FirstOrDefault(r => r.ChRowCode == attrib.RowCode && r.Context == Literals.RowRelationshipContext.Total);
+            var parentTotalRealtion = thisRowsParentRelations.FirstOrDefault(IsTotalRelationContext);
             if (parentTotalRealtion != null)
             {
                 parentTotalRowCode = parentTotalRealtion.ParRowCode;
+            }
+            var parentCollapseRowCode = "";
+            var parentCollapseRealtion = thisRowsParentRelations.FirstOrDefault(IsCollapseRelationContext);
+            if (parentCollapseRealtion != null)
+            {
+                parentCollapseRowCode = parentCollapseRealtion.ParRowCode;
             }
             return new RowVm()
             {
@@ -411,28 +622,44 @@ namespace ExhibitGrid.Processes
                 Class = GetRowClassByType(attrib.Type),
                 DisplayOrder = attrib.DisplayOrder ?? 0,
                 IsSelected = false,
-                IsCollapsed = relations.Any(r => r.ChRowCode ==attrib.RowCode &&  r.Context == Literals.RowRelationshipContext.Collapse),
+                IsCollapsed = thisRowsParentRelations.Any(IsCollapseRelationContext),
+                ChildrenAreCollapsed = true,
                 IsHidden = attrib.IsHidden ?? false,
                 IsEditable = attrib.IsEditable ?? false,
-                CollapseableChildren = relations.Where(r => r.ParRowCode == attrib.RowCode && r.Context == Literals.RowRelationshipContext.Collapse).Select(r => r.ChRowCode).ToList(),
-                TotalChildrenRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && r.Context == Literals.RowRelationshipContext.Total).Select(r => r.ChRowCode).ToList(),
+                CollapseParentRowCode = parentCollapseRowCode,
+                CollapseableChildrenRowCodes = thisRowsChildRelations.Where(IsCollapseRelationContext).Select(r => r.ChRowCode).ToList(),
+                TotalChildrenRowCodes = thisRowsChildRelations.Where(IsTotalRelationContext).Select(r => r.ChRowCode).ToList(),
                 TotalParentRowCode = parentTotalRowCode
             };
         }
 
         private static CellVm BuildCellVmFromAttributes(GridVm grid, RowVm row, ColumnVm col, Attributes cellAttrib)
         {
-            //double numval;
             var overrideColSettings = cellAttrib.OverrideColSettings ?? false;
             var cellType = overrideColSettings ? cellAttrib.Type            : col.Type;
             var decimals = overrideColSettings ? cellAttrib.DecimalPlaces   : col.DecimalPlaces;
             var maxChars = overrideColSettings ? cellAttrib.MaxChars        : col.MaxChars;
             var cellVal = cellAttrib.Value;
-            if (row.Type != Literals.Attribute.RowType.Blank && (cellType == Literals.Attribute.ColCellType.Numeric || cellType == Literals.Attribute.ColCellType.Percent))
+            var textColor = "";
+            if (row.Type != Literals.Attribute.RowType.Blank && (IsNumericOrPercentType(cellType)))
             {
                 double parsedNum;
                 var parsed = double.TryParse(cellAttrib.Value, out parsedNum);
-                if (parsed) cellVal = String.Format("{0:n" + decimals + "}", parsedNum);
+                if (parsed)
+                {
+                    cellVal = String.Format("{0:n" + decimals + "}", parsedNum);
+                    //if (parsedNum < 0) textColor = "red";
+                }
+            }
+            if (!string.IsNullOrEmpty(cellAttrib.HoverBase)) textColor = "green";
+            if (!string.IsNullOrEmpty(cellAttrib.HoverAddition))
+            {
+                double parsedHoverAddition;
+                var parsed = double.TryParse(cellAttrib.HoverAddition, out parsedHoverAddition);
+                if (parsed && parsedHoverAddition != 0)
+                {
+                    textColor = "red";
+                }
             }
             //var valParsed = double.TryParse(cellVal, out numval);
             var span = cellAttrib.ColSpan ?? col.ColSpan;
@@ -453,13 +680,86 @@ namespace ExhibitGrid.Processes
                 //NumValue = valParsed ? numval : 0,
                 Width = (span == 1 ? col.Width : "100%"),
                 Alignment = cellAttrib.Alignment ?? "right",
+                HoverBase = cellAttrib.HoverBase,
+                HoverAddition = cellAttrib.HoverAddition,
+                TextColor = textColor,
                 Calcs = null
             };
         }
+                
+        private static CellVm BuildCellVmForExternalGrid(List<UspGetCalcs_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic, string gridCode, string rowCode, string colCode, string value)
+        {
+            return new CellVm
+            {
+                GridCode = gridCode,
+                RowCode = rowCode,
+                ColCode = colCode,
+                Value = value,
+                Calcs = GetCalcsForCell(allExpandedCalcs, cellCalcDic, colCalcDic, rowCalcDic, gridCode, rowCode, colCode)
+            };
+        }
+
+        private static RowVm BuildRowVmForExternalGrid(string gridCode, string rowCode)
+        {
+            return new RowVm()
+            {
+                GridCode = gridCode,
+                RowCode = rowCode,
+                Cells = new List<CellVm>()
+            };
+        }
+
+        private static List<CalcExpressionVm> GroupCalcResultsIntoExpressionVm(List<UspGetCalcs_Result> calcResults)
+        {
+            return calcResults.GroupBy(
+                r =>
+                    new
+                    {
+                        r.CalcExpressionId,
+                        r.TargetGridCode,
+                        r.TargetRowCode,
+                        r.TargetColCode,
+                        r.Expression,
+                        r.UpdateContext
+                    },
+                (key, group) => new CalcExpressionVm()
+                {
+                    CalcExpressionId = key.CalcExpressionId,
+                    TargetGridCode = key.TargetGridCode,
+                    TargetRowCode = key.TargetRowCode,
+                    TargetColCode = key.TargetColCode,
+                    Expression = key.Expression,
+                    UpdateContext = key.UpdateContext,
+                    Operands =
+                        group.Select(
+                            g =>
+                                new CalcOperandVm()
+                                {
+                                    GridCode = g.GridCode,
+                                    RowCode = g.RowCode,
+                                    ColCode = g.ColCode
+                                }).ToList()
+                }).ToList();
+        }
+        
+        public static Dictionary<string, CalcExpressionVm> ConvertCalcsToDictionary(List<CalcExpressionVm> calcs)
+        {
+            return calcs.ToDictionary(calc => calc.CalcExpressionId + "." + calc.TargetGridCode + "." + calc.TargetRowCode + "." + calc.TargetColCode, source => source);
+        } 
+
+        private static List<CalcExpressionVm> GetCalcsForCell(List<UspGetCalcs_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic, string gridCode, string rowCode, string colCode)
+        {
+            var thisCellsCalcTargets = allExpandedCalcs.Where(cc => cc.GridCode == gridCode && cc.RowCode == rowCode && cc.ColCode == colCode).Select(ac => ac.CalcExpressionId + "." + ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
+            var thisCellsCalcs = new List<CalcExpressionVm>();
+            thisCellsCalcs.AddRange(cellCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
+            thisCellsCalcs.AddRange(colCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
+            thisCellsCalcs.AddRange(rowCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
+            return thisCellsCalcs;
+        }
         #endregion
 
-        #region Additional Attibute processing
-        private static void AddVirtualColsFromRowAttribs(GridVm grid, Attributes rowAttrib)
+        #region Programatically derive attributes that are not stored in DB 
+        private static void SetGridAttribsFromRowAttribs(GridVm grid, Attributes rowAttrib)
         {
             grid.HasSelectCol = (rowAttrib.CanSelect ?? false) || grid.HasSelectCol;
             grid.HasCollapseCol = (rowAttrib.CanCollapse ?? false) || grid.HasCollapseCol;
@@ -496,37 +796,51 @@ namespace ExhibitGrid.Processes
             span += (grid.HasSelectCol ? 1 : 0) + (grid.HasCollapseCol ? 1 : 0) + (grid.HasAddCol ? 1 : 0) + (grid.HasDeleteCol ? 1 : 0);
             return span;
         }
-
-        private static CellVm BuildCellVmForExternalGrid(string gridCode, string rowCode, string colCode, string value)
+        #endregion
+        
+        #region Predicates
+        private static bool IsTotalRelationContext(UspGetRowRelationship_Result relation)
         {
-            return new CellVm()
-            {
-                GridCode = gridCode,
-                RowCode = rowCode,
-                ColCode = colCode,
-                Value = value
-            };
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.Total, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        private static RowVm BuildRowVmForExternalGrid(string gridCode, string rowCode)
+        private static bool IsCollapseRelationContext(UspGetRowRelationship_Result relation)
         {
-            return new RowVm()
-            {
-                GridCode = gridCode,
-                RowCode = rowCode,
-                Cells = new List<CellVm>()
-            };
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.Collapse, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        private static bool IsTemplateRelationContext(UspGetRowRelationship_Result relation)
+        {
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.Template, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        private static bool IsNumericOrPercentType(string type)
+        {
+            return String.Equals(type, Literals.Attribute.ColCellType.Numeric, StringComparison.CurrentCultureIgnoreCase) ||
+                String.Equals(type, Literals.Attribute.ColCellType.Percent, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        private static bool CellIsTargetOfCalc(CellVm cell, UspGetCalcs_Result calcResult)
+        {
+            return cell.GridCode == calcResult.TargetGridCode && cell.RowCode == calcResult.TargetRowCode && cell.ColCode == calcResult.TargetColCode;
+        }
+
+        private static bool CellIsOperandOfCalc(CellVm cell, UspGetCalcs_Result calcResult)
+        {
+            return cell.GridCode == calcResult.GridCode && cell.RowCode == calcResult.RowCode && cell.ColCode == calcResult.ColCode;
+        }
+
+        private static bool CalcsHaveMatchingTargets(UspGetCalcs_Result calcResult1, UspGetCalcs_Result calcResult2)
+        {
+            return calcResult1.TargetGridCode == calcResult2.TargetGridCode &&
+                   calcResult1.TargetRowCode == calcResult2.TargetRowCode &&
+                   calcResult1.TargetColCode == calcResult2.TargetColCode;
+        }
+
+        private static bool CalcUpdatesCellValue(UspGetCalcs_Result calc)
+        {
+            return String.Equals(calc.UpdateContext, Literals.CalcUpdateContext.CellValue, StringComparison.CurrentCultureIgnoreCase);
         }
         #endregion
-
-        private static List<CalcExpressionVm> GetCalcsForCell(List<UspGetCalcsAllContexts_Result> allExpandedCalcs, Dictionary<string, CalcExpressionVm> cellCalcDic, Dictionary<string, CalcExpressionVm> colCalcDic, Dictionary<string, CalcExpressionVm> rowCalcDic, string gridCode, string rowCode, string colCode)
-        {
-            var thisCellsCalcTargets = allExpandedCalcs.Where(cc => cc.GridCode == gridCode && cc.RowCode == rowCode && cc.ColCode == colCode).Select(ac => ac.CalcExpressionId + "." + ac.TargetGridCode + "." + ac.TargetRowCode + "." + ac.TargetColCode);
-            var thisCellsCalcs = new List<CalcExpressionVm>();
-            thisCellsCalcs.AddRange(cellCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
-            thisCellsCalcs.AddRange(colCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
-            thisCellsCalcs.AddRange(rowCalcDic.Where(dc => thisCellsCalcTargets.Contains(dc.Key)).Select(dc => dc.Value).ToList());
-            return thisCellsCalcs;
-        }
     }
 }

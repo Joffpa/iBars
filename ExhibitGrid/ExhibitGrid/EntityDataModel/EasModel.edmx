@@ -4,18 +4,218 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LOAD_PARAMETERS">
+          <Key>
+            <PropertyRef Name="parameter_id_pk" />
+          </Key>
+          <Property Name="parameter_id_pk" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="parm_name" Type="varchar" MaxLength="50" />
+          <Property Name="parm_value" Type="varchar" MaxLength="4000" />
+          <Property Name="parm_type" Type="varchar" MaxLength="25" />
+          <Property Name="parm_label" Type="varchar" MaxLength="75" />
+          <Property Name="parm_order" Type="int" />
+          <Property Name="last_modified_date" Type="datetime" />
+          <Property Name="parm_page" Type="varchar" MaxLength="15" />
+          <Property Name="interface_element" Type="varchar" MaxLength="25" />
+          <Property Name="dropdown_value" Type="varchar" MaxLength="255" />
+          <Property Name="visible" Type="bit" />
+          <Property Name="parm_block_fk" Type="int" />
+          <Property Name="HoverText" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Widget">
+          <Key>
+            <PropertyRef Name="WidgetId" />
+          </Key>
+          <Property Name="WidgetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" />
+          <Property Name="WidgetTypeId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="DataSourceReadAction" Type="varchar" MaxLength="255" />
+          <Property Name="TextMask" Type="varchar" MaxLength="50" />
+          <Property Name="NumFormat" Type="varchar" MaxLength="50" />
+          <Property Name="Decimals" Type="int" />
+          <Property Name="MaxVal" Type="int" />
+          <Property Name="MinVal" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetContext' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="WidgetContext">
+          <Key>
+            <PropertyRef Name="WidgetId" />
+            <PropertyRef Name="ContextId" />
+            <PropertyRef Name="ContextType" />
+          </Key>
+          <Property Name="WidgetId" Type="int" Nullable="false" />
+          <Property Name="ContextId" Type="int" Nullable="false" />
+          <Property Name="ContextType" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WidgetSelection">
+          <Key>
+            <PropertyRef Name="WidgetSelectionId" />
+          </Key>
+          <Property Name="WidgetSelectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="varchar" MaxLength="250" />
+          <Property Name="Value" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="WidgetSelectionWidget">
+          <Key>
+            <PropertyRef Name="WidgetSelectionId" />
+            <PropertyRef Name="WidgetId" />
+          </Key>
+          <Property Name="WidgetSelectionId" Type="int" Nullable="false" />
+          <Property Name="WidgetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WidgetType">
+          <Key>
+            <PropertyRef Name="WidgetTypeId" />
+          </Key>
+          <Property Name="WidgetTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EditorType" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="dbo_Widget_dbo_WidgetType_WidgetTypeId">
+          <End Role="WidgetType" Type="Self.WidgetType" Multiplicity="1" />
+          <End Role="Widget" Type="Self.Widget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WidgetType">
+              <PropertyRef Name="WidgetTypeId" />
+            </Principal>
+            <Dependent Role="Widget">
+              <PropertyRef Name="WidgetTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="dbo_WidgetSelectionWidget_dbo_Widget_WidgetId">
+          <End Role="Widget" Type="Self.Widget" Multiplicity="1" />
+          <End Role="WidgetSelectionWidget" Type="Self.WidgetSelectionWidget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Widget">
+              <PropertyRef Name="WidgetId" />
+            </Principal>
+            <Dependent Role="WidgetSelectionWidget">
+              <PropertyRef Name="WidgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId">
+          <End Role="WidgetSelection" Type="Self.WidgetSelection" Multiplicity="1" />
+          <End Role="WidgetSelectionWidget" Type="Self.WidgetSelectionWidget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WidgetSelection">
+              <PropertyRef Name="WidgetSelectionId" />
+            </Principal>
+            <Dependent Role="WidgetSelectionWidget">
+              <PropertyRef Name="WidgetSelectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Widget_dbo_WidgetType_WidgetTypeId">
+          <End Role="WidgetType" Type="Self.WidgetType" Multiplicity="1" />
+          <End Role="Widget" Type="Self.Widget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WidgetType">
+              <PropertyRef Name="WidgetTypeId" />
+            </Principal>
+            <Dependent Role="Widget">
+              <PropertyRef Name="WidgetTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WidgetContext_dbo_Widget_WidgetId">
+          <End Role="Widget" Type="Self.Widget" Multiplicity="1" />
+          <End Role="WidgetContext" Type="Self.WidgetContext" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Widget">
+              <PropertyRef Name="WidgetId" />
+            </Principal>
+            <Dependent Role="WidgetContext">
+              <PropertyRef Name="WidgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WidgetSelectionWidget_dbo_Widget_WidgetId">
+          <End Role="Widget" Type="Self.Widget" Multiplicity="1" />
+          <End Role="WidgetSelectionWidget" Type="Self.WidgetSelectionWidget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Widget">
+              <PropertyRef Name="WidgetId" />
+            </Principal>
+            <Dependent Role="WidgetSelectionWidget">
+              <PropertyRef Name="WidgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId">
+          <End Role="WidgetSelection" Type="Self.WidgetSelection" Multiplicity="1" />
+          <End Role="WidgetSelectionWidget" Type="Self.WidgetSelectionWidget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WidgetSelection">
+              <PropertyRef Name="WidgetSelectionId" />
+            </Principal>
+            <Dependent Role="WidgetSelectionWidget">
+              <PropertyRef Name="WidgetSelectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="UspGetCalcsAllContexts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="GridCode" Type="varchar" Mode="In" />
+        <Function Name="UspGetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="UspGetRowRelationship" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ParGridCode" Type="nvarchar" Mode="In" />
           <Parameter Name="ChGridCode" Type="nvarchar" Mode="In" />
         </Function>
-        <EntityContainer Name="EasModelStoreContainer" />
+        <EntityContainer Name="EasModelStoreContainer">
+          <EntitySet Name="LOAD_PARAMETERS" EntityType="Self.LOAD_PARAMETERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Widget" EntityType="Self.Widget" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WidgetSelection" EntityType="Self.WidgetSelection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WidgetType" EntityType="Self.WidgetType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WidgetContext" EntityType="Self.WidgetContext" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [WidgetContext].[WidgetId] AS [WidgetId], 
+    [WidgetContext].[ContextId] AS [ContextId], 
+    [WidgetContext].[ContextType] AS [ContextType]
+    FROM [dbo].[WidgetContext] AS [WidgetContext]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="WidgetSelectionWidget" EntityType="Self.WidgetSelectionWidget" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [WidgetSelectionWidget].[WidgetSelectionId] AS [WidgetSelectionId], 
+    [WidgetSelectionWidget].[WidgetId] AS [WidgetId]
+    FROM [dbo].[WidgetSelectionWidget] AS [WidgetSelectionWidget]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="dbo_Widget_dbo_WidgetType_WidgetTypeId" Association="Self.dbo_Widget_dbo_WidgetType_WidgetTypeId">
+            <End Role="WidgetType" EntitySet="WidgetType" />
+            <End Role="Widget" EntitySet="Widget" />
+          </AssociationSet>
+          <AssociationSet Name="dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" Association="Self.dbo_WidgetSelectionWidget_dbo_Widget_WidgetId">
+            <End Role="Widget" EntitySet="Widget" />
+            <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidget" />
+          </AssociationSet>
+          <AssociationSet Name="dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" Association="Self.dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId">
+            <End Role="WidgetSelection" EntitySet="WidgetSelection" />
+            <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Widget_dbo_WidgetType_WidgetTypeId" Association="Self.FK_dbo_Widget_dbo_WidgetType_WidgetTypeId">
+            <End Role="WidgetType" EntitySet="WidgetType" />
+            <End Role="Widget" EntitySet="Widget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WidgetContext_dbo_Widget_WidgetId" Association="Self.FK_dbo_WidgetContext_dbo_Widget_WidgetId">
+            <End Role="Widget" EntitySet="Widget" />
+            <End Role="WidgetContext" EntitySet="WidgetContext" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" Association="Self.FK_dbo_WidgetSelectionWidget_dbo_Widget_WidgetId">
+            <End Role="Widget" EntitySet="Widget" />
+            <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" Association="Self.FK_dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId">
+            <End Role="WidgetSelection" EntitySet="WidgetSelection" />
+            <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidget" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -28,9 +228,31 @@
             <Parameter Name="ParGridCode" Mode="In" Type="String" />
             <Parameter Name="ChGridCode" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="UspGetCalcsAllContexts" ReturnType="Collection(EasModel.UspGetCalcsAllContexts_Result)">
-            <Parameter Name="GridCode" Mode="In" Type="String" />
+          <FunctionImport Name="UspGetCalcs" ReturnType="Collection(EasModel.UspGetCalcs_Result)">
+          <Parameter Name="GridCode" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="LOAD_PARAMETERS" EntityType="EasModel.LOAD_PARAMETERS" />
+          <EntitySet Name="Widgets" EntityType="EasModel.Widget" />
+          <EntitySet Name="WidgetSelections" EntityType="EasModel.WidgetSelection" />
+          <EntitySet Name="WidgetTypes" EntityType="EasModel.WidgetType" />
+          <EntitySet Name="WidgetContexts" EntityType="EasModel.WidgetContext" />
+          <EntitySet Name="WidgetSelectionWidgets" EntityType="EasModel.WidgetSelectionWidget" />
+          <AssociationSet Name="dbo_Widget_dbo_WidgetType_WidgetTypeId" Association="EasModel.dbo_Widget_dbo_WidgetType_WidgetTypeId">
+            <End Role="WidgetType" EntitySet="WidgetTypes" />
+            <End Role="Widget" EntitySet="Widgets" />
+          </AssociationSet>
+          <AssociationSet Name="dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" Association="EasModel.dbo_WidgetSelectionWidget_dbo_Widget_WidgetId">
+            <End Role="Widget" EntitySet="Widgets" />
+            <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidgets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WidgetContext_dbo_Widget_WidgetId" Association="EasModel.FK_dbo_WidgetContext_dbo_Widget_WidgetId">
+            <End Role="Widget" EntitySet="Widgets" />
+            <End Role="WidgetContext" EntitySet="WidgetContexts" />
+          </AssociationSet>
+          <AssociationSet Name="dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" Association="EasModel.dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId">
+            <End Role="WidgetSelection" EntitySet="WidgetSelections" />
+            <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidgets" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="Attributes" >
           <Property Type="String" Name="GridCode" Nullable="false" />
@@ -73,7 +295,7 @@
           <Property Type="String" Name="ChRowCode" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Context" Nullable="false" MaxLength="64" />
         </ComplexType>
-        <ComplexType Name="UspGetCalcsAllContexts_Result">
+        <ComplexType Name="UspGetCalcs_Result">
           <Property Type="Int32" Name="CalcExpressionId" Nullable="false" />
           <Property Type="String" Name="TargetGridCode" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="TargetRowCode" Nullable="true" MaxLength="100" />
@@ -84,6 +306,128 @@
           <Property Type="String" Name="RowCode" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="ColCode" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="LOAD_PARAMETERS">
+          <Key>
+            <PropertyRef Name="parameter_id_pk" />
+          </Key>
+          <Property Name="parameter_id_pk" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="parm_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="parm_value" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="parm_type" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="parm_label" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="parm_order" Type="Int32" />
+          <Property Name="last_modified_date" Type="DateTime" Precision="3" />
+          <Property Name="parm_page" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="interface_element" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="dropdown_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="visible" Type="Boolean" />
+          <Property Name="parm_block_fk" Type="Int32" />
+          <Property Name="HoverText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Widget">
+          <Key>
+            <PropertyRef Name="WidgetId" />
+          </Key>
+          <Property Name="WidgetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WidgetTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DataSourceReadAction" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TextMask" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NumFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Decimals" Type="Int32" />
+          <Property Name="MaxVal" Type="Int32" />
+          <Property Name="MinVal" Type="Int32" />
+          <NavigationProperty Name="WidgetType" Relationship="EasModel.dbo_Widget_dbo_WidgetType_WidgetTypeId" FromRole="Widget" ToRole="WidgetType" />
+          <NavigationProperty Name="WidgetSelectionWidgets" Relationship="EasModel.dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" FromRole="Widget" ToRole="WidgetSelectionWidget" />
+          <NavigationProperty Name="WidgetContexts" Relationship="EasModel.FK_dbo_WidgetContext_dbo_Widget_WidgetId" FromRole="Widget" ToRole="WidgetContext" />
+        </EntityType>
+        <EntityType Name="WidgetSelection">
+          <Key>
+            <PropertyRef Name="WidgetSelectionId" />
+          </Key>
+          <Property Name="WidgetSelectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="WidgetSelectionWidgets" Relationship="EasModel.dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" FromRole="WidgetSelection" ToRole="WidgetSelectionWidget" />
+        </EntityType>
+        <EntityType Name="WidgetType">
+          <Key>
+            <PropertyRef Name="WidgetTypeId" />
+          </Key>
+          <Property Name="WidgetTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EditorType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Widgets" Relationship="EasModel.dbo_Widget_dbo_WidgetType_WidgetTypeId" FromRole="WidgetType" ToRole="Widget" />
+        </EntityType>
+        <EntityType Name="WidgetContext">
+          <Key>
+            <PropertyRef Name="WidgetId" />
+            <PropertyRef Name="ContextId" />
+            <PropertyRef Name="ContextType" />
+          </Key>
+          <Property Name="WidgetId" Type="Int32" Nullable="false" />
+          <Property Name="ContextId" Type="Int32" Nullable="false" />
+          <Property Name="ContextType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Widget" Relationship="EasModel.FK_dbo_WidgetContext_dbo_Widget_WidgetId" FromRole="WidgetContext" ToRole="Widget" />
+        </EntityType>
+        <EntityType Name="WidgetSelectionWidget">
+          <Key>
+            <PropertyRef Name="WidgetSelectionId" />
+            <PropertyRef Name="WidgetId" />
+          </Key>
+          <Property Name="WidgetSelectionId" Type="Int32" Nullable="false" />
+          <Property Name="WidgetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Widget" Relationship="EasModel.dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" FromRole="WidgetSelectionWidget" ToRole="Widget" />
+          <NavigationProperty Name="WidgetSelection" Relationship="EasModel.dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" FromRole="WidgetSelectionWidget" ToRole="WidgetSelection" />
+        </EntityType>
+        <Association Name="dbo_Widget_dbo_WidgetType_WidgetTypeId">
+          <End Type="EasModel.WidgetType" Role="WidgetType" Multiplicity="1" />
+          <End Type="EasModel.Widget" Role="Widget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WidgetType">
+              <PropertyRef Name="WidgetTypeId" />
+            </Principal>
+            <Dependent Role="Widget">
+              <PropertyRef Name="WidgetTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="dbo_WidgetSelectionWidget_dbo_Widget_WidgetId">
+          <End Type="EasModel.Widget" Role="Widget" Multiplicity="1" />
+          <End Type="EasModel.WidgetSelectionWidget" Role="WidgetSelectionWidget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Widget">
+              <PropertyRef Name="WidgetId" />
+            </Principal>
+            <Dependent Role="WidgetSelectionWidget">
+              <PropertyRef Name="WidgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WidgetContext_dbo_Widget_WidgetId">
+          <End Type="EasModel.Widget" Role="Widget" Multiplicity="1" />
+          <End Type="EasModel.WidgetContext" Role="WidgetContext" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Widget">
+              <PropertyRef Name="WidgetId" />
+            </Principal>
+            <Dependent Role="WidgetContext">
+              <PropertyRef Name="WidgetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId">
+          <End Type="EasModel.WidgetSelection" Role="WidgetSelection" Multiplicity="1" />
+          <End Type="EasModel.WidgetSelectionWidget" Role="WidgetSelectionWidget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WidgetSelection">
+              <PropertyRef Name="WidgetSelectionId" />
+            </Principal>
+            <Dependent Role="WidgetSelectionWidget">
+              <PropertyRef Name="WidgetSelectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -129,9 +473,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="UspGetCalcsAllContexts" FunctionName="EasModel.Store.UspGetCalcsAllContexts">
+          <FunctionImportMapping FunctionImportName="UspGetCalcs" FunctionName="EasModel.Store.UspGetCalcs">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="EasModel.UspGetCalcsAllContexts_Result">
+              <ComplexTypeMapping TypeName="EasModel.UspGetCalcs_Result">
                 <ScalarProperty Name="CalcExpressionId" ColumnName="CalcExpressionId" />
                 <ScalarProperty Name="TargetGridCode" ColumnName="TargetGridCode" />
                 <ScalarProperty Name="TargetRowCode" ColumnName="TargetRowCode" />
@@ -144,6 +488,75 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="LOAD_PARAMETERS">
+            <EntityTypeMapping TypeName="EasModel.LOAD_PARAMETERS">
+              <MappingFragment StoreEntitySet="LOAD_PARAMETERS">
+                <ScalarProperty Name="HoverText" ColumnName="HoverText" />
+                <ScalarProperty Name="parm_block_fk" ColumnName="parm_block_fk" />
+                <ScalarProperty Name="visible" ColumnName="visible" />
+                <ScalarProperty Name="dropdown_value" ColumnName="dropdown_value" />
+                <ScalarProperty Name="interface_element" ColumnName="interface_element" />
+                <ScalarProperty Name="parm_page" ColumnName="parm_page" />
+                <ScalarProperty Name="last_modified_date" ColumnName="last_modified_date" />
+                <ScalarProperty Name="parm_order" ColumnName="parm_order" />
+                <ScalarProperty Name="parm_label" ColumnName="parm_label" />
+                <ScalarProperty Name="parm_type" ColumnName="parm_type" />
+                <ScalarProperty Name="parm_value" ColumnName="parm_value" />
+                <ScalarProperty Name="parm_name" ColumnName="parm_name" />
+                <ScalarProperty Name="parameter_id_pk" ColumnName="parameter_id_pk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Widgets">
+            <EntityTypeMapping TypeName="EasModel.Widget">
+              <MappingFragment StoreEntitySet="Widget">
+                <ScalarProperty Name="MinVal" ColumnName="MinVal" />
+                <ScalarProperty Name="MaxVal" ColumnName="MaxVal" />
+                <ScalarProperty Name="Decimals" ColumnName="Decimals" />
+                <ScalarProperty Name="NumFormat" ColumnName="NumFormat" />
+                <ScalarProperty Name="TextMask" ColumnName="TextMask" />
+                <ScalarProperty Name="DataSourceReadAction" ColumnName="DataSourceReadAction" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="WidgetTypeId" ColumnName="WidgetTypeId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WidgetSelections">
+            <EntityTypeMapping TypeName="EasModel.WidgetSelection">
+              <MappingFragment StoreEntitySet="WidgetSelection">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="WidgetSelectionId" ColumnName="WidgetSelectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WidgetTypes">
+            <EntityTypeMapping TypeName="EasModel.WidgetType">
+              <MappingFragment StoreEntitySet="WidgetType">
+                <ScalarProperty Name="EditorType" ColumnName="EditorType" />
+                <ScalarProperty Name="WidgetTypeId" ColumnName="WidgetTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WidgetContexts">
+            <EntityTypeMapping TypeName="EasModel.WidgetContext">
+              <MappingFragment StoreEntitySet="WidgetContext">
+                <ScalarProperty Name="ContextType" ColumnName="ContextType" />
+                <ScalarProperty Name="ContextId" ColumnName="ContextId" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WidgetSelectionWidgets">
+            <EntityTypeMapping TypeName="EasModel.WidgetSelectionWidget">
+              <MappingFragment StoreEntitySet="WidgetSelectionWidget">
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="WidgetSelectionId" ColumnName="WidgetSelectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

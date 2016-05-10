@@ -4,7 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3b1e1b0ee772438da337c4583f04e47b" Name="Diagram1" ZoomLevel="72">
+      <Diagram DiagramId="3b1e1b0ee772438da337c4583f04e47b" Name="Diagram1" ZoomLevel="79">
+        <EntityTypeShape EntityType="EasModel.LOAD_PARAMETERS" Width="1.5" PointX="5.625" PointY="4.875" />
+        <EntityTypeShape EntityType="EasModel.Widget" Width="2" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="EasModel.WidgetSelection" Width="3" PointX="9.25" PointY="2.375" />
+        <EntityTypeShape EntityType="EasModel.WidgetType" Width="1.5" PointX="0.75" PointY="2.5" />
+        <EntityTypeShape EntityType="EasModel.WidgetContext" Width="1.5" PointX="2.875" PointY="6.375" />
+        <EntityTypeShape EntityType="EasModel.WidgetSelectionWidget" Width="2.25" PointX="5.625" PointY="2.375" />
+        <AssociationConnector Association="EasModel.dbo_Widget_dbo_WidgetType_WidgetTypeId" />
+        <AssociationConnector Association="EasModel.dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" />
+        <AssociationConnector Association="EasModel.FK_dbo_WidgetContext_dbo_Widget_WidgetId" />
+        <AssociationConnector Association="EasModel.dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

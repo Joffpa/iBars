@@ -16,6 +16,13 @@ namespace ExhibitGrid.Globals
         {
             public static readonly string Total = "total";
             public static readonly string Collapse = "collapse";
+            public static readonly string Template = "template";
+        }
+
+        public static class CalcUpdateContext
+        {
+            public static readonly string CellValue = "cellvalue";
+            public static readonly string DeltaCheck = "deltacheck";
         }
 
         public static class Attribute
@@ -46,10 +53,8 @@ namespace ExhibitGrid.Globals
                 public static readonly string Right = "right";
                 public static readonly string Center = "center";
             }
-            
-
-
         }
+
 
     }
 }

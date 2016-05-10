@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace ExhibitGrid.ViewModel
 {
-    public class CellVm
+    public class CellVm 
     {
         public string GridCode { get; set; }
         public string RowCode { get; set; }
@@ -22,8 +24,10 @@ namespace ExhibitGrid.ViewModel
         public int? MaxChars { get; set; }
         public int? DecimalPlaces { get; set; }
         public string HoverBase { get; set; }
-        public string HoverExpression { get; set; }
+        public string HoverAddition { get; set; }
+        public string TextColor { get; set; }
 
         public List<CalcExpressionVm> Calcs { get; set; }
+
     }
 }

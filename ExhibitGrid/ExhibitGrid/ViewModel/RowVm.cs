@@ -13,6 +13,7 @@ namespace ExhibitGrid.ViewModel
         public decimal DisplayOrder { get; set; }
         public bool IsHidden { get; set; }
         public bool IsCollapsed { get; set; }
+        public bool ChildrenAreCollapsed { get; set; }
         public string Class { get; set; }
         public bool CanCollapse { get; set; }
         public bool CanAdd { get; set; }
@@ -21,17 +22,15 @@ namespace ExhibitGrid.ViewModel
         public bool IsSelected { get; set; }
         public bool IsEditable { get; set; }
         public string Type { get; set; }
-        public string CollapseParent { get; set; }
+
+        public string CollapseParentRowCode { get; set; }
         public string TotalParentRowCode{ get; set; }
-
-
-        //alignment
-        //hovertext
-
+        
+ 
         public List<CellVm> Cells { get; set; }
-        public List<string> CollapseableChildren { get; set; }
+        public List<string> CollapseableChildrenRowCodes { get; set; }
         public List<string> TotalChildrenRowCodes{ get; set; }
-
+        public List<RowVm> TemplateRows { get; set; }
 
     }
 }

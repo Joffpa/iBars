@@ -43,7 +43,6 @@ ON [dbo].[CalcOperand](GridCode, RowCode, ColCode)
 go
 
 Create Table CalcExpressionOperand(
-	--CalcExpressionOperandId  int  PRIMARY KEY CLUSTERED IDENTITY(1,1),
 	CalcExpressionId int,
 	CalcOperandId int
 	PRIMARY KEY CLUSTERED (CalcExpressionId, CalcOperandId),
@@ -52,11 +51,6 @@ Create Table CalcExpressionOperand(
 	CONSTRAINT FK_CalcExpression_CalcExpressionId FOREIGN KEY (CalcExpressionId) 
     REFERENCES CalcExpression(CalcExpressionId) 
 )
-
---CREATE NONCLUSTERED INDEX IX_CalcExpressionOperand_CalcExpressionId
---ON [dbo].[CalcExpressionOperand](CalcExpressionId)
---include(CalcOperandId)
---go
 
 CREATE NONCLUSTERED INDEX IX_CalcExpressionOperand_CalcOperandId
 ON [dbo].[CalcExpressionOperand](CalcOperandId)

@@ -1,13 +1,27 @@
-if exists (SELECT * FROM sys.objects WHERE type = 'P' and name = 'UspGetCalcsAllContexts') drop procedure GetCalcs
+if exists (SELECT * FROM sys.objects WHERE type = 'P' and name = 'UspGetCalcs') drop procedure UspGetCalcs
 go
 
-Create Procedure dbo.UspGetCalcsAllContexts(
-	@GridCode varchar(100)
-)
-as
+/*-----------------------------------------------------------------------
+CREATED BY Joffrey Pannee
+Gets all relevant calcs for a grid, including operands for external grids and calcs that cascade to other grids.
+-- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING
+DECLARE @GridCode VARCHAR(100)
+SET @GridCode = 'PBA12_ProgData1'
 
---DECLARE @GridCode VARCHAR(100)
---SET @GridCode = 'PBA12_ProgData1'
+EXEC UspGetCalcs @GridCode, null ;
+-- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING
+
+------------------------------------------------------------------------*/
+Create Procedure dbo.UspGetCalcs(
+	@GridCode nvarchar(100)
+)
+AS
+SET FMTONLY OFF;
+SET NOCOUNT ON; 
+DECLARE @call VARCHAR(max);
+/*LogActivity*/ EXEC USP_LOAD_LOG '17','BeginBeginBeginBeginBeginBeginBeginBeginBeginBegin',@@PROCID,@@error;
+SET @call = 'EXEC [UspGetCalcs] @GridCode=' + @GridCode; 
+/*LogActivity*/ EXEC USP_LOAD_LOG '25 Proc Call',@call,@@PROCID,@@ERROR;
 
 ;WITH
 CalcsFromThisGridsOperands AS
@@ -40,3 +54,7 @@ CalcsFromThisGridsOperands AS
 	WHERE e.TargetGridCode = @GridCode AND o.GridCode != @GridCode
 	OPTION(MAXRECURSION 100)
 	GO 
+		
+
+/*LogActivity*/ EXEC USP_LOAD_LOG '69  END [UspGetCalcs]' ,@@PROCID,@@ERROR
+/*LogActivity*/ EXEC USP_LOAD_LOG '1000 ','EndEndEndEndEndEndEndEndEndEndEndEndEndEnd',@@PROCID,@@ERROR

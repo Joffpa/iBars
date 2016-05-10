@@ -340,13 +340,22 @@ delete from CalcOperand
 delete from CalcExpression
 
 
+delete from CalcExpressionOperand 
+where CalcExpressionId in(
+	select CalcExpressionId from CalcExpression 
+	where TargetGridCode = 'PBA12_ProgData1'	
+)
+delete from CalcOperand where GridCode = 'PBA12_ProgData1'	
+delete from CalcExpression where TargetGridCode = 'PBA12_ProgData1'	
+
+
 DECLARE @totExprId int, @colExprId int, @grandTotExrId int, @sourceExprId int
-insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
-select 'PBA12_ProgData1','PBA12_ProgData_TOTAL','','{PBA12_ProgData1.PBA12_ProgData_CommunSustBase..} + {PBA12_ProgData1.PBA12_ProgData_CommunLongHaul..} + {PBA12_ProgData1.PBA12_ProgData_CommunDeplMobl..} + {PBA12_ProgData1.PBA12_ProgData_CmdCntrlNatnl..} + {PBA12_ProgData1.PBA12_ProgData_CmdCntrlOpera..} + {PBA12_ProgData1.PBA12_ProgData_CmdCntrlTact..} + {PBA12_ProgData1.PBA12_ProgData_C3RelNavig..} + {PBA12_ProgData1.PBA12_ProgData_C3RelMetrlgy..} + {PBA12_ProgData1.PBA12_ProgData_C3RelCombID..} + {PBA12_ProgData1.PBA12_ProgData_C3RelInfoAssur..}'
+insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression, UpdateContext)
+select 'PBA12_ProgData1','PBA12_ProgData_TOTAL','','{PBA12_ProgData1.PBA12_ProgData_CommunSustBase..} + {PBA12_ProgData1.PBA12_ProgData_CommunLongHaul..} + {PBA12_ProgData1.PBA12_ProgData_CommunDeplMobl..} + {PBA12_ProgData1.PBA12_ProgData_CmdCntrlNatnl..} + {PBA12_ProgData1.PBA12_ProgData_CmdCntrlOpera..} + {PBA12_ProgData1.PBA12_ProgData_CmdCntrlTact..} + {PBA12_ProgData1.PBA12_ProgData_C3RelNavig..} + {PBA12_ProgData1.PBA12_ProgData_C3RelMetrlgy..} + {PBA12_ProgData1.PBA12_ProgData_C3RelCombID..} + {PBA12_ProgData1.PBA12_ProgData_C3RelInfoAssur..}', 'CellValue'
 SET @totExprId = @@IDENTITY
 
-insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression)
-select 'PBA12_ProgData1','','PyProg','{PBA12_ProgData1..Py.} + {PBA12_ProgData1..PyPrice.}'
+insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression, UpdateContext)
+select 'PBA12_ProgData1','','PyProg','{PBA12_ProgData1..Py.} + {PBA12_ProgData1..PyPrice.}', 'CellValue'
 SET @colExprId = @@IDENTITY
 
 

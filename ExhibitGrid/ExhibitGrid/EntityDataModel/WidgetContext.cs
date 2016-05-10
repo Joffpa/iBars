@@ -10,17 +10,14 @@
 namespace ExhibitGrid.EntityDataModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class UspGetCalcsAllContexts_Result
+    public partial class WidgetContext
     {
-        public int CalcExpressionId { get; set; }
-        public string TargetGridCode { get; set; }
-        public string TargetRowCode { get; set; }
-        public string TargetColCode { get; set; }
-        public string Expression { get; set; }
-        public string UpdateContext { get; set; }
-        public string GridCode { get; set; }
-        public string RowCode { get; set; }
-        public string ColCode { get; set; }
+        public int WidgetId { get; set; }
+        public int ContextId { get; set; }
+        public string ContextType { get; set; }
+    
+        public virtual Widget Widget { get; set; }
     }
 }

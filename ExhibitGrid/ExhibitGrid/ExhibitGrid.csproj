@@ -183,10 +183,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EntityDataModel\UspGetCalcsAllContexts_Result.cs">
+    <Compile Include="EntityDataModel\LOAD_PARAMETERS.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\UspGetCalcs_Result.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityDataModel\UspGetRowRelationship_Result.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\Widget.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\WidgetContext.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\WidgetSelection.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\WidgetSelectionWidget.cs">
+      <DependentUpon>EasModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDataModel\WidgetType.cs">
       <DependentUpon>EasModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\DbContextExtensions.cs" />
@@ -615,18 +633,19 @@
       <DependentUpon>EasModel.edmx</DependentUpon>
     </Content>
     <Content Include="Scripts\es6-shim.min.js" />
+    <Content Include="Scripts\Grid\addRowService.js" />
     <Content Include="Scripts\Grid\calcService.js" />
-    <Content Include="Scripts\Grid\CellBasedGrid.js" />
     <Content Include="Scripts\Grid\commonUI.js" />
-    <Content Include="Scripts\Grid\directives.js" />
+    <Content Include="Scripts\Grid\dynamicCellGrid.js" />
+    <Content Include="Scripts\old\directives.js" />
     <Content Include="Scripts\Grid\filters.js" />
-    <Content Include="Scripts\Grid\grid.js" />
+    <Content Include="Scripts\old\grid.js" />
     <Content Include="Scripts\Grid\Interface.js" />
     <Content Include="Scripts\Grid\modelService.js" />
     <Content Include="Content\gridTable.less" />
     <Content Include="Scripts\Grid\Interface.js.map" />
-    <Content Include="Scripts\Grid\directives.js.map" />
-    <Content Include="Scripts\Grid\grid.js.map" />
+    <Content Include="Scripts\old\directives.js.map" />
+    <Content Include="Scripts\old\grid.js.map" />
     <Content Include="Scripts\Grid\modelService.js.map" />
     <Content Include="Content\kendo\2016.1.112\kendo.common.min.css.map" />
     <Content Include="Content\kendo\2016.1.112\kendo.uniform.min.css.map" />
@@ -1486,6 +1505,8 @@
     <Content Include="Scripts\system-polyfills.src.js" />
     <Content Include="Scripts\system.js" />
     <Content Include="Scripts\system.src.js" />
+    <Content Include="Scripts\tether.min.js" />
+    <Content Include="Sql to submit\InsertNegativeNumParm.sql" />
     <Content Include="Sql\create new zo tables.sql" />
     <None Include="Properties\PublishProfiles\Easapps Publish.pubxml" />
     <Content Include="Scripts\Grid\commonUI.js.map" />
@@ -1501,7 +1522,8 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\Grid\CellBasedGrid.js.map" />
+    <Content Include="Scripts\Grid\dynamicCellGrid.js.map" />
+    <Content Include="Scripts\Grid\addRowService.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\inversify.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -1536,9 +1558,11 @@
       <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
     </Content>
     <Content Include="Scripts\_references.js" />
+    <Content Include="Sql\Create Testing Grid.sql" />
+    <Content Include="Sql\CreateCalcTestGrids.sql" />
     <Content Include="Sql\CreateMiniOp-5.sql" />
     <Content Include="Sql\CreatePBA10.sql" />
-    <Content Include="Sql\EF Version of Calc.sql" />
+    <Content Include="Sql to submit\EF Version of Calc.sql" />
     <Content Include="Sql to submit\GetCalcs.sql" />
     <Content Include="Sql to submit\InsertAttribCols.sql" />
     <Content Include="Sql\PBA12_Attribs.sql" />
@@ -1596,12 +1620,13 @@
     <TypeScriptCompile Include="Scripts\Enums.ts">
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\Grid\addRowService.ts" />
     <TypeScriptCompile Include="Scripts\Grid\calcService.ts" />
-    <TypeScriptCompile Include="Scripts\Grid\CellBasedGrid.ts" />
+    <TypeScriptCompile Include="Scripts\Grid\dynamicCellGrid.ts" />
     <TypeScriptCompile Include="Scripts\Grid\commonUI.ts" />
-    <TypeScriptCompile Include="Scripts\Grid\directives.ts" />
+    <TypeScriptCompile Include="Scripts\old\directives.ts" />
     <TypeScriptCompile Include="Scripts\Grid\filters.ts" />
-    <TypeScriptCompile Include="Scripts\Grid\grid.ts" />
+    <TypeScriptCompile Include="Scripts\old\grid.ts" />
     <TypeScriptCompile Include="Scripts\Grid\Interface.ts" />
     <TypeScriptCompile Include="Scripts\Grid\modelService.ts" />
     <TypeScriptCompile Include="Scripts\TypeLite.Net4.d.ts">

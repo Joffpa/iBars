@@ -12,6 +12,7 @@ namespace ExhibitGrid.ViewModel
         public string TargetRowCode { get; set; }
         public string TargetColCode { get; set; }
         public string Expression { get; set; }
+        public string UpdateContext { get; set; }
         public List<CalcOperandVm> Operands { get; set; } 
     }
 }

@@ -27,6 +27,12 @@ namespace ExhibitGrid.EntityDataModel
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<LOAD_PARAMETERS> LOAD_PARAMETERS { get; set; }
+        public virtual DbSet<Widget> Widgets { get; set; }
+        public virtual DbSet<WidgetSelection> WidgetSelections { get; set; }
+        public virtual DbSet<WidgetType> WidgetTypes { get; set; }
+        public virtual DbSet<WidgetContext> WidgetContexts { get; set; }
+        public virtual DbSet<WidgetSelectionWidget> WidgetSelectionWidgets { get; set; }
     
         public virtual ObjectResult<Attributes> UspGetAttribVal(string gridCode)
         {
@@ -50,13 +56,13 @@ namespace ExhibitGrid.EntityDataModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetRowRelationship_Result>("UspGetRowRelationship", parGridCodeParameter, chGridCodeParameter);
         }
     
-        public virtual ObjectResult<UspGetCalcsAllContexts_Result> UspGetCalcsAllContexts(string gridCode)
+        public virtual ObjectResult<UspGetCalcs_Result> UspGetCalcs(string gridCode)
         {
             var gridCodeParameter = gridCode != null ?
                 new ObjectParameter("GridCode", gridCode) :
                 new ObjectParameter("GridCode", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetCalcsAllContexts_Result>("UspGetCalcsAllContexts", gridCodeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetCalcs_Result>("UspGetCalcs", gridCodeParameter);
         }
     }
 }

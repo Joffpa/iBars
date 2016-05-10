@@ -8,6 +8,25 @@ namespace ExhibitGrid
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/exhibit").Include(
+                        "~/Scripts/angular.min.js",
+                        "~/Scripts/Grid/addRowService.js",
+                        "~/Scripts/Grid/modelService.js",
+                        "~/Scripts/Grid/calcService.js",
+                        "~/Scripts/Grid/filters.js",
+                        "~/Scripts/math.js",
+                        "~/Scripts/hashtable.js",
+                        "~/Scripts/jquery.numberformatter-1.2.4.jsmin.js",
+                        "~/Scripts/kendo/2016.1.112/kendo.all.min.js",
+                        "~/Scripts/Grid/dynamicCellGrid.js"
+                        ));
+
+            bundles.Add(new StyleBundle("~/Content/css/exhibit").Include(
+                      "~/Content/kendo/2016.1.112/kendo.common.min.css",
+                      "~/Content/kendo/2016.1.112/kendo.silver.min.css",
+                      "~/Content/gridTable.min.css"
+                      ));
+            
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery.unobtrusive-ajax.js",
                         "~/Scripts/jquery-{version}.js"));
@@ -27,6 +46,7 @@ namespace ExhibitGrid
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
         }
     }
 }

@@ -16,6 +16,9 @@ declare module ExhibitGrid.ViewModel {
         Alignment: string;
         MaxChars: number;
         DecimalPlaces: number;
+        HoverBase: string;
+        HoverAddition: string;
+        TextColor: string;
         Calcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
     }
     interface ICalcExpressionVm {
@@ -24,6 +27,7 @@ declare module ExhibitGrid.ViewModel {
         TargetRowCode: string;
         TargetColCode: string;
         Expression: string;
+        UpdateContext: string;
         Operands: ExhibitGrid.ViewModel.ICalcOperandVm[];
     }
     interface ICalcOperandVm {
@@ -40,8 +44,10 @@ declare module ExhibitGrid.ViewModel {
         HasCollapseCol: boolean;
         HasAddCol: boolean;
         HasDeleteCol: boolean;
+        ShowNegativeNumsInParens: boolean;
         Columns: ExhibitGrid.ViewModel.IColumnVm[];
         Rows: ExhibitGrid.ViewModel.IRowVm[];
+        ColCalcs: ExhibitGrid.ViewModel.ICalcExpressionVm[];
     }
     interface IColumnVm {
         ColCode: string;
@@ -65,6 +71,7 @@ declare module ExhibitGrid.ViewModel {
         DisplayOrder: number;
         IsHidden: boolean;
         IsCollapsed: boolean;
+        ChildrenAreCollapsed: boolean;
         Class: string;
         CanCollapse: boolean;
         CanAdd: boolean;
@@ -73,11 +80,16 @@ declare module ExhibitGrid.ViewModel {
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;
-        CollapseParent: string;
+        CollapseParentRowCode: string;
         TotalParentRowCode: string;
         Cells: ExhibitGrid.ViewModel.ICellVm[];
-        CollapseableChildren: string[];
+        CollapseableChildrenRowCodes: string[];
         TotalChildrenRowCodes: string[];
+        TemplateRows: ExhibitGrid.ViewModel.IRowVm[];
+    }
+    interface ICellValueFormattting {
+        Value: string;
+        TextColor: string;
     }
 }
 

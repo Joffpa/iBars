@@ -1,21 +1,10 @@
 ﻿@using Newtonsoft.Json
 @model ExhibitGrid.ViewModel.ExhibitVm
 
-<script src="~/Scripts/angular.min.js"></script>
-@*<script src="~/Scripts/angular-route.min.js"></script>*@
-@*<script src="~/Scripts/Grid/grid.js"></script>*@
-<script src="~/Scripts/Grid/CellBasedGrid.js"></script>
-<script src="~/Scripts/Grid/directives.js"></script>
-<script src="~/Scripts/Grid/modelService.js"></script>
-<script src="~/Scripts/Grid/calcService.js"></script>
-<script src="~/Scripts/Grid/filters.js"></script>
-<script src="~/Scripts/math.js"></script>
-<link href="~/Content/gridTable.min.css" rel="stylesheet" />
-<script src="~/Scripts/kendo/2016.1.112/kendo.all.min.js"></script>
-<link href="~/Content/kendo/2016.1.112/kendo.common.min.css" rel="stylesheet" />
-<link href="~/Content/kendo/2016.1.112/kendo.silver.min.css" rel="stylesheet" />
-<script src="~/Scripts/hashtable.js"></script>
-<script src="~/Scripts/jquery.numberformatter-1.2.4.jsmin.js"></script>
+@Scripts.Render("~/bundles/exhibit")
+@Styles.Render("~/Content/css/exhibit")
+
+
 @{
     var thisGrid = Model.Grids.FirstOrDefault(g => g.GridCode == Model.PrimaryGridCode);
     var extraCols = (thisGrid.HasSelectCol ? 1 : 0) + (thisGrid.HasCollapseCol ? 1 : 0) + (thisGrid.HasAddCol ? 1 : 0) + (thisGrid.HasDeleteCol ? 1 : 0);
@@ -58,25 +47,28 @@
                 <tr ng-repeat="row in gridCtrl.GridVm.Rows | filter:{IsHidden: false, IsCollapsed: false} | orderBy:'DisplayOrder' track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class" ng-model-options="{ updateOn: 'default blur' }">
                     @if (thisGrid.HasSelectCol)
                     {
-                        <td colspan="1">
+                        <td colspan="1" style="width:22px">
                             <input type="checkbox" ng-if="::row.CanSelect" ng-model="row.IsSelected">
                         </td>
                     }
                     @if (thisGrid.HasCollapseCol)
                     {
-                        <td colspan="1">
-                            <i class="fa fa-plus fa-lg" ng-if="::row.CanCollapse" style="cursor: pointer" ng-click="rowCtrl.collapseChildren()"></i>
+                        <td colspan="1" style="width:22px">
+                            <div ng-if="::row.CanCollapse">
+                                <i class="fa fa-plus fa-lg" ng-show="row.ChildrenAreCollapsed" style="cursor: pointer" ng-click="rowCtrl.unCollapseChildren()"></i>
+                                <i class="fa fa-minus fa-lg" ng-hide="row.ChildrenAreCollapsed" style="cursor: pointer" ng-click="rowCtrl.collapseChildren()"></i>
+                            </div>
                         </td>
                     }
                     @if (thisGrid.HasAddCol)
                     {
-                        <td colspan="1">
+                        <td colspan="1" style="width:22px">
                             <i class="fa fa-user-plus fa-lg" ng-if="::row.CanAdd" style="cursor: pointer" ng-click="rowCtrl.addRow()"></i>
                         </td>
                     }
                     @if (thisGrid.HasDeleteCol)
                     {
-                        <td colspan="1">
+                        <td colspan="1" style="width:22px">
                             <i class="fa fa-trash fa-lg" ng-if="::row.CanDelete" style="cursor: pointer" ng-click="rowCtrl.deleteRow()"></i>
                         </td>
                     }
