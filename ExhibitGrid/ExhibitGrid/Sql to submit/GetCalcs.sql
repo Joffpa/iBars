@@ -6,9 +6,9 @@ CREATED BY Joffrey Pannee
 Gets all relevant calcs for a grid, including operands for external grids and calcs that cascade to other grids.
 -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING
 DECLARE @GridCode VARCHAR(100)
-SET @GridCode = 'PBA12_ProgData1'
+SET @GridCode = 'MiniOp5'
 
-EXEC UspGetCalcs @GridCode, null ;
+EXEC UspGetCalcs @GridCode;
 -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING -- TESTING
 
 ------------------------------------------------------------------------*/
@@ -38,8 +38,8 @@ CalcsFromThisGridsOperands AS
 		FROM CalcExpression e2
 		join CalcExpressionOperand eo2 ON e2.CalcExpressionId = eo2.CalcExpressionId
 		join CalcOperand o2 ON eo2.CalcOperandId = o2.CalcOperandId
-		Inner Join CalcsFromThisGridsOperands a ON a.TargetGridCode = o2.GridCode and a.TargetRowCode = o2.RowCode and a.TargetColCode = o2.ColCode
-		WHERE o2.GridCode != @GridCode
+		Inner Join CalcsFromThisGridsOperands a ON a.TargetGridCode = o2.GridCode and a.TargetRowCode = o2.RowCode and a.TargetColCode = o2.ColCode and a.TargetGridCode = e2.TargetGridCode AND a.TargetRowCode = e2.TargetRowCode AND a.TargetColCode = e2.TargetColCode
+		WHERE o2.GridCode != a.TargetGridCode
 	)
 	SELECT DISTINCT a.CalcExpressionId, a.TargetGridCode, a.TargetRowCode, a.TargetColCode, a.Expression, a.UpdateContext, o.GridCode, o.RowCode, o.ColCode
 	FROM CalcsFromThisGridsOperands a

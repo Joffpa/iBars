@@ -54,6 +54,14 @@ var app;
                     _.forEach(calcTargets, function (c) { _this.runCellCalcs(c); });
                 }
             };
+            CalcService.prototype.runTotalParentCalcsForRow = function (parentRowVm) {
+                var _this = this;
+                _.forEach(parentRowVm.Cells, function (cell) {
+                    if (cell.Type.toLowerCase() == "numeric" || cell.Type.toLowerCase() == "percent") {
+                        _this.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
+                    }
+                });
+            };
             CalcService.prototype.evaluateTotalParentCellForColumn = function (parentRowVm, colCode) {
                 var _this = this;
                 var childRows = this.ModelService.getRowVms(parentRowVm.GridCode, parentRowVm.TotalChildrenRowCodes);

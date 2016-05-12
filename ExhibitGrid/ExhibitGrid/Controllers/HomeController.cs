@@ -17,31 +17,21 @@ namespace ExhibitGrid.Controllers
         {
             var exhibit = new ExhibitVm()
             {
-                Grids = new List<GridVm>(),
-                PrimaryGridCode = gridCode
+                Grids = new List<GridVm>()
             };
 
-            var exhibitVm = ExhibitVmProcess.GetExhibitVmWithCalcs(gridCode, exhibit);
+            var exhibitVm = ExhibitVmProcess.GetGridVmForUi(gridCode, exhibit);
+            if (gridCode == "CalcGrid1")
+            {
+                exhibitVm = ExhibitVmProcess.GetGridVmForUi("CalcGrid2", exhibitVm);
+            }
             CalcGridProcess.Process(exhibitVm, gridCode);
 
-            foreach (var gridVm in exhibitVm.Grids)
+            if (gridCode == "CalcGrid1")
             {
-                Debug.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                Debug.WriteLine("Grid: " + gridVm.GridCode);
-                Debug.WriteLine("");
-                foreach (var row in gridVm.Rows)
-                {
-                    Debug.WriteLine("Row: " + row.RowCode);
-                    foreach (var cell in row.Cells)
-                    {
-                        Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    Value=" + cell.Value +";       HoverAddition: " + cell.HoverAddition);
-                    }
-                    Debug.WriteLine("");
-                }
-                Debug.WriteLine("");
-                Debug.WriteLine("");
-                Debug.WriteLine("");
+                CalcGridProcess.Process(exhibitVm, "CalcGrid2");
             }
+
             return View(exhibitVm);
         }
         

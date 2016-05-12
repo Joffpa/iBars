@@ -11,34 +11,32 @@ namespace ExhibitGrid.Processes
 {
     public class CalcGridProcess
     {
+        /// <summary>
+        /// Runs Calcs for a grid. Will retrieve the GridVm from the DB and build the viewmodel using ExhibitVmProcess.GetGridVmForMidtierCalcs().
+        /// </summary>
+        /// <param name="gridCode">The grid to retreive from the DB and run calcs against.</param>
         public static void Process(string gridCode)
         {
-            using (var db = new DEV_AF())
+            try
             {
-                var exhibitVm = ExhibitVmProcess.GetExhibitVmWithoutCalcsOrTemplates(gridCode);
-                RunCalcs(db, exhibitVm, gridCode);
-                //SaveAllCellValues(db, gridVm);
-                foreach (var gridVm in exhibitVm.Grids)
+                using (var db = new DEV_AF())
                 {
-                    Debug.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                    Debug.WriteLine("Grid: " + gridVm.GridCode);
-                    Debug.WriteLine("");
-                    foreach (var row in gridVm.Rows)
-                    {
-                        Debug.WriteLine("Row: " + row.RowCode);
-                        foreach (var cell in row.Cells)
-                        {
-                            Debug.WriteLine(cell.GridCode + ", " + cell.RowCode + ", " + cell.ColCode + ":    " + cell.Value);
-                        }
-                        Debug.WriteLine("");
-                    }
-                    Debug.WriteLine("");
-                    Debug.WriteLine("");
-                    Debug.WriteLine("");
+                    var exhibitVm = ExhibitVmProcess.GetGridVmForMidtierCalcs(gridCode);
+                    RunCalcs(db, exhibitVm, gridCode);
+                    //SaveAllCellValues(db, exhibitVm);
                 }
+            }
+            catch (Exception e)
+            {
+                LogError(e);
             }
         }
 
+        /// <summary>
+        /// Runs Calcs for a grid, where the GridVm has been previously been built and is added to an ExhibitVm.
+        /// </summary>
+        /// <param name="exhibitVm">The ExhibitVm which contains the GridVm to run calcs on</param>
+        /// <param name="gridCode">The GridVm in the ExhibitVm to run calcs for. If the grid is not found in the ExhibitVm, then the method returns without runnign any calcs.</param>
         public static void Process(ExhibitVm exhibitVm, string gridCode)
         {
             try
@@ -59,9 +57,9 @@ namespace ExhibitGrid.Processes
             var grid = exhibit.Grids.FirstOrDefault(g => g.GridCode == gridCode);
             if (grid == null) return;
             var calcs = db.UspGetCalcs(grid.GridCode);
-            List<UspGetCalcs_Result> rowCalcResults = new List<UspGetCalcs_Result>();
-            List<UspGetCalcs_Result> colCalcResults = new List<UspGetCalcs_Result>();
-            List<UspGetCalcs_Result> cellCalcResults = new List<UspGetCalcs_Result>();
+            var rowCalcResults = new List<UspGetCalcs_Result>();
+            var colCalcResults = new List<UspGetCalcs_Result>();
+            var cellCalcResults = new List<UspGetCalcs_Result>();
             var externalDependantCells = new List<CellVm>(); 
             //Separate ColCalcs, RowCalcs, and CellCalcs
             foreach (var calc in calcs)
@@ -81,7 +79,7 @@ namespace ExhibitGrid.Processes
                 //identify external cells
                 if (calc.TargetGridCode != grid.GridCode && !externalDependantCells.Any(ec => ec.GridCode == calc.TargetGridCode && ec.RowCode == calc.TargetRowCode && ec.ColCode == calc.TargetColCode))
                 {
-                    externalDependantCells.Add(new CellVm()
+                    externalDependantCells.Add(new CellVm
                     {
                         GridCode = calc.TargetGridCode,
                         RowCode = calc.TargetRowCode,
@@ -91,7 +89,7 @@ namespace ExhibitGrid.Processes
                 //Both target and operand may be external
                 if (calc.GridCode != grid.GridCode && !externalDependantCells.Any(ec => ec.GridCode == calc.GridCode && ec.RowCode == calc.RowCode && ec.ColCode == calc.ColCode))
                 {
-                    externalDependantCells.Add(new CellVm()
+                    externalDependantCells.Add(new CellVm
                     {
                         GridCode = calc.GridCode,
                         RowCode = calc.RowCode,
@@ -99,8 +97,27 @@ namespace ExhibitGrid.Processes
                     });
                 }
             }
+            
 
-            ExhibitVmProcess.GetExternalCells(exhibit, externalDependantCells, db, cellCalcResults, null, null, null);
+            if (externalDependantCells.Any())
+            {
+                //Remove any external cells that are already in the VM.
+                //Assumes that the VM in memory has the most up to date values for cells
+                for (int i = 0; i < externalDependantCells.Count; i++)
+                {
+                    var externalDependantCell = externalDependantCells[i];
+                    var externallGrid = exhibit.Grids.FirstOrDefault(g => g.GridCode == externalDependantCell.GridCode);
+                    if (externallGrid == null) continue;
+                    var externalRow = externallGrid.Rows.FirstOrDefault(r => r.RowCode == externalDependantCell.RowCode);
+                    if (externalRow == null) continue;
+                    var externalcell = externalRow.Cells.FirstOrDefault(r => r.RowCode == externalDependantCell.RowCode);
+                    if (externalcell == null) continue;
+                    externalDependantCells.RemoveAt(i);
+                }
+                ExhibitVmProcess.GetExternalCells(exhibit, externalDependantCells, db, cellCalcResults, null, null, null);
+            }
+
+            //Run Parent Child Calcs distinguished by RowRelationship (Context = total)
             //Get all Parent Rows (rows that have any children)
             var allParentRows = grid.Rows.Select(r => r.TotalParentRowCode).ToList();
             if (allParentRows.Any())
@@ -114,7 +131,8 @@ namespace ExhibitGrid.Processes
                     RunRowCalcSumChildrenLoop(row, grid);
                 }
             }
-
+            
+            //Run all Row Calcs
             var rowCalcs = new List<CalcExpressionVm>();
             if (rowCalcResults.Any())
             {
@@ -123,7 +141,7 @@ namespace ExhibitGrid.Processes
                 
                 //get colCalcs whose targets are not operands of other colCals, these will be run first, Calcs that have operands that update from running the first calcs are considered dependant calcs
                 //  Upon performing the calc, recursively call "cascaded" calculations that are dependant on this calc
-                var startingRowCalcs = rowCalcs.Where(rc1 => !rc1.Operands.Any(o => rowCalcs.Any(rc2 => rc2.TargetGridCode == o.GridCode && rc2.TargetRowCode == o.RowCode)));
+                var startingRowCalcs = rowCalcs.Where(rc => CalcOperandsAreNotTargetsOfOtherCalcs(rc, rowCalcs));
 
                 foreach (var calc in startingRowCalcs)
                 {
@@ -135,6 +153,7 @@ namespace ExhibitGrid.Processes
                 }
             }
 
+            //Run all Column Calcs
             var colCalcs = new List<CalcExpressionVm>();
             // pass in colCalcResults and grid
             if (colCalcResults.Any())
@@ -144,7 +163,7 @@ namespace ExhibitGrid.Processes
 
                 //get colCalcs whose targets are not operands of other colCals, these will be run first, Calcs that have operands that update from running the first calcs are considered dependant calcs
                 //  Upon performing the calc, recursively call "cascaded" calculations that are dependant on this calc
-                var startingColCalcs = colCalcs.Where(cc1 => !cc1.Operands.Any(o => colCalcs.Any(cc2 => cc2.TargetGridCode == o.GridCode && cc2.TargetColCode == o.ColCode)));
+                var startingColCalcs = colCalcs.Where(cc => CalcOperandsAreNotTargetsOfOtherCalcs(cc, colCalcs));
 
                 foreach (var calc in startingColCalcs)
                 {
@@ -156,20 +175,23 @@ namespace ExhibitGrid.Processes
                 }
             }
             
+            //Run all Cell Calcs
             if(cellCalcResults.Any())
             {
                 //Take the list of GetCalcs_Results and transform into a list of CalcExpressionVm
                 var cellCalcs = GroupCalcResultsIntoVm(cellCalcResults);
-                var startingCellCalcs = cellCalcs.Where(cc1 => UpdateContextIsCellValue(cc1.UpdateContext)
-                    && !cc1.Operands.Any(o => cellCalcs.Any(cc2 => cc2.TargetGridCode == o.GridCode && cc2.TargetRowCode == o.RowCode && cc2.TargetColCode == o.ColCode)));
-
+                //Cell Value Calcs run first
+                //Get Cell Calcs that are not targets of other calcs. These are the inital calcs that start the "Calc Cascade"
+                var startingCellCalcs = cellCalcs.Where(cc => UpdateContextIsCellValue(cc.UpdateContext) && CalcOperandsAreNotTargetsOfOtherCalcs(cc, cellCalcs));
+                //Run all the starting Calcs, these will recursively call the other calcs that have operands which are targets of the starting calcs
                 foreach (var calc in startingCellCalcs)
                 {
                     RunCellCalcRecursive(calc, cellCalcs, exhibit, rowCalcs, colCalcs);
                 }
-
+                //Delta Check calcs run last
+                //No cascade happens with delta checks, all cell values should be correct at this point
                 var deltaChecks = cellCalcs.Where(cc => UpdateContextIsDeltaCheck(cc.UpdateContext));
-
+                //Even though delta checks will not cause a "cascade", we can still use the same recursive method to run the calcs, the recusion case will never trigger here
                 foreach (var calc in deltaChecks)
                 {
                     RunCellCalcRecursive(calc, cellCalcs, exhibit, rowCalcs, colCalcs);
@@ -357,7 +379,7 @@ namespace ExhibitGrid.Processes
         
         private static void RunAllRowAndColCalcsForCellRecursive(CellVm cell, List<CalcExpressionVm> rowCalcs, List<CalcExpressionVm> colCalcs, GridVm grid)
         {
-            var affectedRowCalcs = rowCalcs.Where(r => r.Operands.Select(o => o.RowCode).Contains(cell.RowCode)).ToList();
+            var affectedRowCalcs = rowCalcs.Where(r => r.Operands.Any(o => o.RowCode == cell.RowCode && o.GridCode == cell.GridCode)).ToList();
             if (affectedRowCalcs.Any())
             {
                 var col = grid.Columns.FirstOrDefault(c => c.ColCode == cell.ColCode);
@@ -372,7 +394,7 @@ namespace ExhibitGrid.Processes
                     }
                 }
             }
-            var affectedColCalcs = colCalcs.Where(r => r.Operands.Select(o => o.ColCode).Contains(cell.ColCode)).ToList();
+            var affectedColCalcs = colCalcs.Where(r => r.Operands.Any(o => o.ColCode == cell.ColCode && o.GridCode == cell.GridCode)).ToList();
             if (affectedColCalcs.Any())
             {
                 var row = grid.Rows.FirstOrDefault(c => c.RowCode == cell.RowCode);
@@ -449,7 +471,7 @@ namespace ExhibitGrid.Processes
             return cellVm.DecimalPlaces != null ? String.Format("{0:n" + cellVm.DecimalPlaces + "}", value) : String.Format("{0:n0}", value);
         }
 
-        private static void SaveAllCellValues(DEV_AF db, GridVm grid)
+        private static void SaveAllCellValues(DEV_AF db, ExhibitVm grid)
         {
             //TODO: save cells
         }
@@ -486,6 +508,11 @@ namespace ExhibitGrid.Processes
         private static bool UpdateContextIsDeltaCheck(string updateContext)
         {
             return String.Equals(updateContext, Literals.CalcUpdateContext.DeltaCheck, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        private static bool CalcOperandsAreNotTargetsOfOtherCalcs(CalcExpressionVm thisCalc, List<CalcExpressionVm> allCalcs)
+        {
+            return !thisCalc.Operands.Any(o => allCalcs.Any(cc2 => cc2.TargetGridCode == o.GridCode && cc2.TargetRowCode == o.RowCode &&cc2.TargetColCode == o.ColCode));
         }
         #endregion
 

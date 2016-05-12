@@ -16,7 +16,7 @@ namespace ExhibitGrid.Globals
         {
             public static readonly string Total = "total";
             public static readonly string Collapse = "collapse";
-            public static readonly string Template = "template";
+            public static readonly string Template = "addrowtemplate";
         }
 
         public static class CalcUpdateContext

@@ -69,14 +69,6 @@ var app;
                 var grid = this.getGridVm(gridCode);
                 return _.filter(grid.Rows, function (r) { return _.includes(rowCodes, r.RowCode); });
             };
-            ModelService.prototype.getChildRowVms = function (parentRow) {
-                var grid = this.getGridVm(parentRow.GridCode);
-                var rows = _.filter(grid.Rows, function (row) {
-                    var isChild = _.includes(parentRow.TotalChildrenRowCodes, row.RowCode);
-                    return isChild;
-                });
-                return rows;
-            };
             ModelService.prototype.getCellVm = function (gridCode, rowCode, colCode) {
                 var row = this.getRowVm(gridCode, rowCode);
                 var cell = _.find(row.Cells, { 'ColCode': colCode });
@@ -161,6 +153,9 @@ var app;
                 parentRow.CollapseableChildrenRowCodes.forEach(function (childRowCode) {
                     var childRow = _this.getRowVm(parentRow.GridCode, childRowCode);
                     childRow.IsCollapsed = collapse;
+                    if (childRow.CollapseableChildrenRowCodes) {
+                        _this.collapseChildren(childRow, collapse);
+                    }
                 });
             };
             ModelService.prototype.formatCellValue = function (cellVm) {

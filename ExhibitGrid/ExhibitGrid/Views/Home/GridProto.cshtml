@@ -5,11 +5,6 @@
 @Styles.Render("~/Content/css/exhibit")
 
 
-@{
-    var thisGrid = Model.Grids.FirstOrDefault(g => g.GridCode == Model.PrimaryGridCode);
-    var extraCols = (thisGrid.HasSelectCol ? 1 : 0) + (thisGrid.HasCollapseCol ? 1 : 0) + (thisGrid.HasAddCol ? 1 : 0) + (thisGrid.HasDeleteCol ? 1 : 0);
-}
-
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1">
     </div>
@@ -19,91 +14,21 @@
 </div>
 <br/>
 <br/>
-<br/>
-
-<div ng-app="app">
-    <div ng-controller="gridController as gridCtrl" gridcode="@thisGrid.GridCode">
-        <table class="table table-bordered exhibit-grid-table" ngcloak>
-            <thead class="exhibit-grid-head">
-                @foreach (var level in thisGrid.Columns.Select(ch => ch.Level).Distinct().OrderByDescending(i => i))
-                {
-                    <tr>
-                        @{
-                        var thisLevel = level;
-                        var thisLevelsColumns = thisGrid.Columns.Where(h => h.Level == thisLevel && h.HasHeader && !h.IsHidden).OrderBy(h => h.DisplayOrder);
-                        var firstHeader = true;
-                        }
-                        @foreach (var column in thisLevelsColumns)
-                        {
-                            <th scope="col" colspan="@(column.ColSpan + (firstHeader ? extraCols : 0))" style="text-align:@(column.Alignment)">
-                                @Html.Raw(column.DisplayText)
-                            </th>
-                            firstHeader = false;
-                        }
-                    </tr>
-                }
-            </thead>
-            <tbody>
-                <tr ng-repeat="row in gridCtrl.GridVm.Rows | filter:{IsHidden: false, IsCollapsed: false} | orderBy:'DisplayOrder' track by row.RowCode " ng-controller="rowController as rowCtrl" ng-class="::row.Class" ng-model-options="{ updateOn: 'default blur' }">
-                    @if (thisGrid.HasSelectCol)
-                    {
-                        <td colspan="1" style="width:22px">
-                            <input type="checkbox" ng-if="::row.CanSelect" ng-model="row.IsSelected">
-                        </td>
-                    }
-                    @if (thisGrid.HasCollapseCol)
-                    {
-                        <td colspan="1" style="width:22px">
-                            <div ng-if="::row.CanCollapse">
-                                <i class="fa fa-plus fa-lg" ng-show="row.ChildrenAreCollapsed" style="cursor: pointer" ng-click="rowCtrl.unCollapseChildren()"></i>
-                                <i class="fa fa-minus fa-lg" ng-hide="row.ChildrenAreCollapsed" style="cursor: pointer" ng-click="rowCtrl.collapseChildren()"></i>
-                            </div>
-                        </td>
-                    }
-                    @if (thisGrid.HasAddCol)
-                    {
-                        <td colspan="1" style="width:22px">
-                            <i class="fa fa-user-plus fa-lg" ng-if="::row.CanAdd" style="cursor: pointer" ng-click="rowCtrl.addRow()"></i>
-                        </td>
-                    }
-                    @if (thisGrid.HasDeleteCol)
-                    {
-                        <td colspan="1" style="width:22px">
-                            <i class="fa fa-trash fa-lg" ng-if="::row.CanDelete" style="cursor: pointer" ng-click="rowCtrl.deleteRow()"></i>
-                        </td>
-                    }
-                    @{
-                        var headerLevelZero = thisGrid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder);
-                    }
-                    @for (var i = 0; i < headerLevelZero.Count(); i++)
-                    {
-                        var col = headerLevelZero.ElementAt(i);
-                        if (col.IsHidden)
-                        {
-                            continue;
-                        }
-                        if (col.ColCode == "RowText")
-                        {
-                            <th colspan="{{::row.Cells[@i].ColSpan}}">
-                                <eas-cell cellvm="row.Cells[@i]"></eas-cell>
-                            </th>
-                        }
-                        else
-                        {
-                            <td colspan="{{::row.Cells[@i].ColSpan}}" ng-if="row.Cells[@i] && row.Cells[@i].ColSpan" headers="{{::row.Text}} {{::row.Cells[@i].ColumnHeader}}">
-                                <eas-cell cellvm="row.Cells[@i]"></eas-cell>
-                            </td>
-                        }
-                    }
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div id="Exhibit-Content" ng-app="app.main">
+    @{
+        foreach (var grid in Model.Grids.Where(g => g.IsRendered))
+        {
+            Html.RenderPartial("_ExhibitGridPartial", grid);
+            <br/>
+            <br/>
+        }
+    }
 </div>
 
 <script>
+    
     (function (gridModel) {
         gridModel.exhibit = @Html.Raw(JsonConvert.SerializeObject(Model));
-        gridModel.gridCode = '@thisGrid.GridCode';
     }(window.gridModel = window.gridModel || {} ));
+
 </script>

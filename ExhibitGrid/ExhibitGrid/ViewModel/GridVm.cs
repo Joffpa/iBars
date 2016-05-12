@@ -9,6 +9,7 @@ namespace ExhibitGrid.ViewModel
     public class GridVm
     {
         public string GridCode { get; set; }
+        public bool IsRendered { get; set; }
         //public string DisplayText { get; set; }
         public bool IsEditable { get; set; }
         public int Width { get; set; }
@@ -22,7 +23,5 @@ namespace ExhibitGrid.ViewModel
         public List<RowVm> Rows { get; set; }
         public List<CalcExpressionVm> ColCalcs { get; set; }
             
-        [JsonIgnore]
-        public List<RowVm> TemplateRows { get; set; } 
     }
 }

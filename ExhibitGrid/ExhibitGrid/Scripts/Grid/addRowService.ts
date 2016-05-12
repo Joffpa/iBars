@@ -1,9 +1,15 @@
-﻿module app.addRow {
+﻿'use strict'
+
+module app.addRow {
+
+    interface RowCodeMap {
+        ActualRowCode: string,
+        TemplateRowCode: string
+    }
 
     export interface IAddRowService {
 
         addRowsFromRowTemplate(parentRowVm: ExhibitGrid.ViewModel.IRowVm): void;
-        addRowsFromGridTemplate(gridCode: string): void;
         deleteRow(rowVm: ExhibitGrid.ViewModel.IRowVm): void;
     }
 
@@ -28,12 +34,16 @@
 
             //Get ColCalcs
             var colCalcs = this.ModelService.getGridColCalcs(parentRowVm.GridCode);
-            var preExistingChildRows = this.ModelService.getChildRowVms(parentRowVm);
+
+            var preExistingChildRows = _.filter(grid.Rows, row => {
+                return _.startsWith(row.RowCode, parentRowVm.RowCode) && row.RowCode != parentRowVm.RowCode;
+            });
 
             var nextRowNum = this.getNextChildRowNumber(preExistingChildRows);
             var displayOrder = this.getNextDisplayOrder(preExistingChildRows, parentRowVm.DisplayOrder);
 
-            var newRows: ExhibitGrid.ViewModel.IRowVm[] = [];
+            var rowCodeMappings: RowCodeMap[] = [];
+            var newRowVms: ExhibitGrid.ViewModel.IRowVm[] = [];
             _.forEach(templateRows, templateRow => {
                 //increment order
                 displayOrder = displayOrder + .01;
@@ -41,6 +51,12 @@
                 nextRowNum = nextRowNum + 1;
                 //create new rowcode
                 var newRowCode = parentRowVm.RowCode + "_child_" + nextRowNum.toString();
+                var rowCodeMapping: RowCodeMap = {
+                    ActualRowCode: newRowCode,
+                    TemplateRowCode: templateRow.RowCode
+                }
+                rowCodeMappings.push(rowCodeMapping);
+
                 var newRow = this.createRowFromTemplate(templateRow, displayOrder, newRowCode, colCalcs);
                 if (templateRow.CollapseParentRowCode) {
                     var collapseParentVm;
@@ -49,7 +65,9 @@
                     } else {
                         collapseParentVm = this.ModelService.getRowVm(templateRow.GridCode, templateRow.CollapseParentRowCode)
                     }
-                    collapseParentVm.CollapseableChildrenRowCodes.push(newRow.RowCode);
+                    if (collapseParentVm) {
+                        collapseParentVm.CollapseableChildrenRowCodes.push(newRow.RowCode);
+                    }
                 }
                 if (templateRow.TotalParentRowCode) {
                     var totalParentVm;
@@ -58,17 +76,54 @@
                     } else {
                         totalParentVm = this.ModelService.getRowVm(templateRow.GridCode, templateRow.TotalParentRowCode)
                     }
-                    totalParentVm.TotalChildrenRowCodes.push(newRow.RowCode);
+                    if (totalParentVm) {
+                        totalParentVm.TotalChildrenRowCodes.push(newRow.RowCode);
+                    }
                 }
-                grid.Rows.push(newRow);
+                newRowVms.push(newRow);
             });
 
+            //Convert parent.child row codes into the newly created actual row codes if the newly created rows still reference the template rows
+            _.forEach(newRowVms, newRowVm => {
+                if (newRowVm.TotalParentRowCode) {
+                    newRowVm.TotalParentRowCode = this.convertTemplateRowCodeToActualRowCode(newRowVm.TotalParentRowCode, rowCodeMappings);
+                };
+                if (newRowVm.CollapseParentRowCode) {
+                    newRowVm.CollapseParentRowCode = this.convertTemplateRowCodeToActualRowCode(newRowVm.CollapseParentRowCode, rowCodeMappings);
+                };
+                if (newRowVm.TotalChildrenRowCodes) {
+                    var totalChildren: string[] = [];
+                    _.forEach(newRowVm.TotalChildrenRowCodes, childRowCode => {
+                        var rowCode = this.convertTemplateRowCodeToActualRowCode(childRowCode, rowCodeMappings);
+                        totalChildren.push(rowCode);
+                    });
+                    newRowVm.TotalChildrenRowCodes = totalChildren;
+                };
+                if (newRowVm.CollapseableChildrenRowCodes) {
+                    var collapseChildren: string[] = [];
+                    _.forEach(newRowVm.CollapseableChildrenRowCodes, childRowCode => {
+                        var rowCode = this.convertTemplateRowCodeToActualRowCode(childRowCode, rowCodeMappings);
+                        collapseChildren.push(rowCode);
+                    });
+                    newRowVm.CollapseableChildrenRowCodes = collapseChildren;
+                };
+            });
+            _.forEach(newRowVms, newRowVm => {
+                grid.Rows.push(newRowVm);
+            });
+            
             //uncollapse parent to show new children
             this.ModelService.collapseChildren(parentRowVm, false);
         }
 
-        addRowsFromGridTemplate(gridCode: string) {
-
+        convertTemplateRowCodeToActualRowCode(rowCode: string, rowCodeMappings: RowCodeMap[]) {
+            var rowCodeMap = _.find(rowCodeMappings, rowCodeMap => {
+                return rowCodeMap.TemplateRowCode == rowCode;
+            });
+            if (rowCodeMap) {
+                return rowCodeMap.ActualRowCode;
+            }
+            return rowCode;
         }
 
         createRowFromTemplate(templateRow: ExhibitGrid.ViewModel.IRowVm, order: number, rowCode: string, colCalcs: ExhibitGrid.ViewModel.ICalcExpressionVm[]) {
@@ -165,6 +220,7 @@
         deleteRow(rowVm: ExhibitGrid.ViewModel.IRowVm) {
             //delete all references from parent (collapse children, total children)
             var collapseParentVm;
+            //If the delted row is a collapseableChild, remove child reference from parent's CollapseableChildrenRowCodes
             if (rowVm.CollapseParentRowCode) {
                 collapseParentVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.CollapseParentRowCode);
                 _.remove(collapseParentVm.CollapseableChildrenRowCodes, childRowCode => {
@@ -172,6 +228,7 @@
                 })
             }
             var totalParentVm: ExhibitGrid.ViewModel.IRowVm;
+            //If the deleted row is a TotalChild, remove child reference from parent's TotalChildrenRowCodes
             if (rowVm.TotalParentRowCode) {
                 if (collapseParentVm && rowVm.CollapseParentRowCode == rowVm.TotalParentRowCode) {
                     totalParentVm = collapseParentVm;
@@ -191,11 +248,28 @@
                     }
                 }
             }
-            //delete references from grid
+            
+            if (rowVm.TotalChildrenRowCodes && rowVm.TotalChildrenRowCodes.length > 0) {
+                var i = rowVm.TotalChildrenRowCodes.length;
+                while (i--) {
+                    var childRowVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.TotalChildrenRowCodes[i]);
+                    this.deleteRow(childRowVm);
+                }
+            }
+            if (rowVm.CollapseableChildrenRowCodes && rowVm.CollapseableChildrenRowCodes.length > 0) {
+                var i = rowVm.CollapseableChildrenRowCodes.length;
+                while (i--) {
+                    var childRowVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.CollapseableChildrenRowCodes[i]);
+                    this.deleteRow(childRowVm);
+                }
+            }
+
             var gridVm = this.ModelService.getGridVm(rowVm.GridCode);
+            //delete references from grid
             _.remove(gridVm.Rows, row => {
-                return row.RowCode == rowVm.RowCode;
+                return row.RowCode == rowVm.RowCode; 
             })
+
         }
     }
     

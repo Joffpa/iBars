@@ -12,7 +12,6 @@ module app.model {
         getGridVm(gridCode: string): ExhibitGrid.ViewModel.IGridVm;
         getRowVm(gridCode: string, rowCode: string): ExhibitGrid.ViewModel.IRowVm;
         getRowVms(gridCode: string, rowCodes: string[]): ExhibitGrid.ViewModel.IRowVm[];
-        getChildRowVms(parentRow: ExhibitGrid.ViewModel.IRowVm): ExhibitGrid.ViewModel.IRowVm[];
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm;
         getCellValueForCalc(gridCode: string, rowCode: string, colCode: string): number;
         getCellValueForCalcFromVm(cell: ExhibitGrid.ViewModel.ICellVm): number;
@@ -150,16 +149,7 @@ module app.model {
             var grid = this.getGridVm(gridCode);
             return _.filter(grid.Rows, function (r) { return _.includes(rowCodes, r.RowCode)});
         }
-
-        getChildRowVms(parentRow: ExhibitGrid.ViewModel.IRowVm) {
-            var grid = this.getGridVm(parentRow.GridCode);
-            var rows = _.filter(grid.Rows, row => {
-                var isChild = _.includes(parentRow.TotalChildrenRowCodes, row.RowCode);
-                return isChild;
-            });
-            return rows;
-        }
-
+        
         getCellVm(gridCode: string, rowCode: string, colCode: string): ExhibitGrid.ViewModel.ICellVm {
             var row = this.getRowVm(gridCode, rowCode);
             var cell = _.find(row.Cells, { 'ColCode': colCode });
@@ -247,6 +237,9 @@ module app.model {
             parentRow.CollapseableChildrenRowCodes.forEach(childRowCode => {
                 var childRow = this.getRowVm(parentRow.GridCode, childRowCode);
                 childRow.IsCollapsed = collapse;
+                if (childRow.CollapseableChildrenRowCodes) {
+                    this.collapseChildren(childRow, collapse);
+                }
             });
         }
 

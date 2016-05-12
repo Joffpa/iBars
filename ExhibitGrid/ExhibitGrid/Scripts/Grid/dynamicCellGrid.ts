@@ -155,7 +155,7 @@ module CellApp {
 
     // ReSharper disable once TsResolvedFromInaccessibleModule
     var exhibitApp = angular
-        .module('app', ['app.model', 'app.calc', 'app.filters', 'app.addRow'])
+        .module('app.main', ['app.model', 'app.calc', 'app.filters', 'app.addRow'])
         .component('easCell', {
             template: `
                     <div ng-switch="cellCtrl.cellvm.Type">

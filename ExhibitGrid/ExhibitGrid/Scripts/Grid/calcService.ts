@@ -8,7 +8,8 @@ module app.calc{
     export interface ICalcService {
         runCellCalcs(cellVm: ExhibitGrid.ViewModel.ICellVm): void;
         evaluateTotalParentCellForColumn(parentRowVm: ExhibitGrid.ViewModel.IRowVm, colCode: string): ExhibitGrid.ViewModel.ICellVm;
-        expandColCalcsForCell(colCalcs: ExhibitGrid.ViewModel.ICalcExpressionVm[], rowCode:string): ExhibitGrid.ViewModel.ICalcExpressionVm[];
+        expandColCalcsForCell(colCalcs: ExhibitGrid.ViewModel.ICalcExpressionVm[], rowCode: string): ExhibitGrid.ViewModel.ICalcExpressionVm[];
+        runTotalParentCalcsForRow(parentRowVm: ExhibitGrid.ViewModel.IRowVm):void;
     }
 
     export class CalcService implements ICalcService {
@@ -62,6 +63,14 @@ module app.calc{
             if (calcTargets.length > 0) {
                 _.forEach(calcTargets, c => { this.runCellCalcs(c) });
             }
+        }
+
+        runTotalParentCalcsForRow(parentRowVm: ExhibitGrid.ViewModel.IRowVm) {
+            _.forEach(parentRowVm.Cells, cell => {
+                if (cell.Type.toLowerCase() == "numeric" || cell.Type.toLowerCase() == "percent") {
+                    this.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
+                }
+            });
         }
 
         evaluateTotalParentCellForColumn(parentRowVm: ExhibitGrid.ViewModel.IRowVm, colCode: string) {
