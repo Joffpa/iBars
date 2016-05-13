@@ -55,5 +55,6 @@ namespace ExhibitGrid.EntityDataModel
         public Nullable<int> MaxChars { get; set; }
         public Nullable<int> DecimalPlaces { get; set; }
         public Nullable<bool> OverrideColSettings { get; set; }
+        public string OutType { get; set; }
     }
 }

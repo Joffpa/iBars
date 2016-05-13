@@ -95,7 +95,7 @@ module app.calc{
             var targetCell = _.find(parentRowVm.Cells, cell => { return cell.ColCode == colCode; });
 
             this.evaluateExpression(targetCell, equation, 'CELLVALUE');
-            if (targetCell.Calcs && targetCell.Calcs.length > 0) {
+            if ((targetCell.Calcs && targetCell.Calcs.length > 0) || parentRowVm.TotalParentRowCode) {
                 return targetCell;
             }
             return null;

@@ -1,16 +1,8 @@
+EXEC DeleteGrid 'TestGrid'
 
 EXEC CreateZgridTbls 'TestGrid'
 
-select * from zo_TestGrid
-
---update zo_TestGrid
---	set ColOne = '0.00', ColTwo = '0.00', ColThree = '0.00', ColFour = '0.00', ColFive = '0.00'
---	where RowCode in ('RowA', 'RowB', 'RowC', 'RowD')   --RowCode = ''
---	and OutType = 'UI'
-
-select * from ColMap 
-
---update ColMap set ColOrd = .1 where GridCode = 'TestGrid'  and ColCode = 'RowText'
+--select * from zo_TestGrid
 
 DECLARE @Cols GridCols;
 INSERT INTO @Cols ( ColCode, ColOrd, DataType, NumOrTxt)
@@ -22,20 +14,22 @@ INSERT INTO @Cols ( ColCode, ColOrd, DataType, NumOrTxt)
 
 EXEC AddZgridCols 'TestGrid',@Cols
 
+--select * from ColMap 
+--where GridCode = 'TestGrid'
+
 DECLARE @Rows GridRows;
 INSERT INTO @Rows ( RowCode, RowOrd, RowText, RowType, Model)
     VALUES	
-	--(  N'RowA', 1.0, N'Row A', N'HEADERROW', N''),
-			--(  N'RowB', 2.0, N'Row B', null, N''),
-			--(  N'RowC', 3.0, N'Row C', null, N''),
-			--(  N'RowD', 4.0, N'Row D', null, N''),
-			--(  N'TemplateRowA', 5.0, N'Template Row', null, N'Model'),
-			--(  N'TemplateRowB2', 5.0, N'Template Row', null, N'Model'),
-			--(  N'TemplateRowB', 5.0, N'Template Row', null, N'Model'),
-			--(  N'TemplateRowC1', 1.0, N'Template Row', null, N'Model'),
-			--(  N'TemplateRowC2', 2.0, N'Template Row', null, N'Model'),
-			--(  N'TemplateRowC3', 2.0, N'Template Row', null, N'Model')
-			--(  N'TemplateRowC3', 2.0, N'Template Row', null, N'Model'),
+	(  N'RowA', 1.0, N'Row A', N'HEADERROW', N''),
+			(  N'RowB', 2.0, N'Row B', null, N''),
+			(  N'RowC', 3.0, N'Row C', null, N''),
+			(  N'RowD', 4.0, N'Row D', null, N''),
+			(  N'TemplateRowA', 5.0, N'Template Row', null, N'Model'),
+			(  N'TemplateRowB2', 5.0, N'Template Row', null, N'Model'),
+			(  N'TemplateRowB', 5.0, N'Template Row', null, N'Model'),
+			(  N'TemplateRowC1', 1.0, N'Template Row', null, N'Model'),
+			(  N'TemplateRowC2', 2.0, N'Template Row', null, N'Model'),
+			(  N'TemplateRowC3', 2.0, N'Template Row', null, N'Model'),
 			(  N'TemplateRowD1', 2.0, N'Template Row', null, N'Model'),
 			(  N'TemplateRowD2', 2.0, N'Template Row', null, N'Model'),
 			(  N'TemplateRowD3', 2.0, N'Template Row', null, N'Model'),
@@ -44,7 +38,19 @@ INSERT INTO @Rows ( RowCode, RowOrd, RowText, RowType, Model)
 
 Exec AddZgridRows 'TestGrid', @Rows
 
---UspPopAttributeDeNormRecs 'TestGrid', 0
+update zo_TestGrid
+	set ColOne = '0.00', ColTwo = '0.00', ColThree = '0.00', ColFour = '0.00', ColFive = '0.00'
+	where RowCode in ('RowA', 'RowB', 'RowC', 'RowD')   --RowCode = ''
+	and OutType = 'UI'
+
+update zo_TestGrid
+	set ColOne = '0.00', ColTwo = '0.00', ColThree = '0.00', ColFour = '0.00', ColFive = '0.00'
+	where RowCode like'Template%'   --RowCode = ''
+	and OutType = 'Model'
+
+--select * from zo_TestGrid
+
+EXEC UspPopAttributeDeNormRecs 'TestGrid', 0
 
 --select * from AttributeDeNorm
 --where GridCode = 'TestGrid'
@@ -60,16 +66,16 @@ exec UspUpdAttribVal 'TestGrid', '', 'ColFive',		'IsEditable=0,HasHeader=1,IsHid
 exec UspUpdAttribVal 'TestGrid', 'RowA', '',  'Type=''subtotal'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=1,CanDelete=0', ''
 exec UspUpdAttribVal 'TestGrid', 'RowB', '',  'Type=''subtotal'',IsEditable=0,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=1,CanDelete=0', ''
 exec UspUpdAttribVal 'TestGrid', 'RowC', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=1,CanDelete=0', ''
-exec UspUpdAttribVal 'TestGrid', 'RowD', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=1,CanDelete=0', ''
+exec UspUpdAttribVal 'TestGrid', 'RowD', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=1,CanDelete=0', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowA', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=1,CanAdd=0,CanDelete=1', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowB', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=1,CanAdd=0,CanDelete=1', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowB2', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=1,CanAdd=0,CanDelete=1', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowC1', '',  'Type=''header'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=1', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowC2', '',  'Type=''header'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowC3', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD1', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD2', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', '',  'Type=''header'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD1', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=1', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD2', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=1', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=1', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowD4', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowD5', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 --Cells
@@ -158,12 +164,12 @@ exec UspUpdAttribVal 'TestGrid', 'TemplateRowD2', 'ColThree',	'ColSpan=1,IsEdita
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowD2', 'ColFour',	'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowD2', 'ColFive',	'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
 --TemplateRowD2
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'RowText',	'ColSpan=1,IsEditable=1,Indent=1,OverrideColSettings=0,Type=null,MaxChars=200,DecimalPlaces=0,Alignment=''left''', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColOne',		'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColTwo',		'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColThree',	'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColFour',	'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
-exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColFive',	'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'RowText',	'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=200,DecimalPlaces=0,Alignment=''left''', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColOne',		'ColSpan=1,IsEditable=0,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColTwo',		'ColSpan=1,IsEditable=0,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColThree',	'ColSpan=1,IsEditable=0,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColFour',	'ColSpan=1,IsEditable=0,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
+exec UspUpdAttribVal 'TestGrid', 'TemplateRowD3', 'ColFive',	'ColSpan=1,IsEditable=0,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
 --TemplateRowD4
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowD4', 'RowText',	'ColSpan=1,IsEditable=1,Indent=2,OverrideColSettings=0,Type=null,MaxChars=200,DecimalPlaces=0,Alignment=''left''', ''
 exec UspUpdAttribVal 'TestGrid', 'TemplateRowD4', 'ColOne',		'ColSpan=1,IsEditable=1,Indent=0,OverrideColSettings=0,Type=null,MaxChars=5,DecimalPlaces=2,Alignment=''right''', ''
@@ -227,21 +233,32 @@ select 'TestGrid','RowD','TestGrid','TemplateRowD1','collapse'
 union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD1','addrowtemplate'
 union all
+select 'TestGrid','RowD','TestGrid','TemplateRowD1','total'
+union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD2','collapse'
 union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD2','addrowtemplate'
+union all
+select 'TestGrid','RowD','TestGrid','TemplateRowD2','total'
 union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD3','collapse'
 union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD3','addrowtemplate'
 union all
-select 'TestGrid','RowD','TestGrid','TemplateRowD4','collapse'
+select 'TestGrid','RowD','TestGrid','TemplateRowD3','total'
 union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD4','addrowtemplate'
 union all
-select 'TestGrid','RowD','TestGrid','TemplateRowD5','collapse'
-union all
 select 'TestGrid','RowD','TestGrid','TemplateRowD5','addrowtemplate'
+union all
+select 'TestGrid','TemplateRowD3','TestGrid','TemplateRowD4','collapse'
+union all
+select 'TestGrid','TemplateRowD3','TestGrid','TemplateRowD5','collapse'
+union all
+select 'TestGrid','TemplateRowD3','TestGrid','TemplateRowD4','total'
+union all
+select 'TestGrid','TemplateRowD3','TestGrid','TemplateRowD5','total'
+
 
 --UspGetCalcs 'TestGrid' 
 

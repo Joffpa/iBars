@@ -280,6 +280,7 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           <Property Type="Int32" Name="MaxChars" Nullable="true" />
           <Property Type="Int32" Name="DecimalPlaces" Nullable="true" />
           <Property Type="Boolean" Name="OverrideColSettings" Nullable="true" />
+          <Property Type="String" Name="OutType" Nullable="false" />
         </ComplexType>
         <ComplexType Name="CellValue" >
           <Property Type="String" Name="GridCode" Nullable="false" />
