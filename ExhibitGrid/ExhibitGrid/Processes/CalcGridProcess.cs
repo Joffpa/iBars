@@ -119,12 +119,12 @@ namespace ExhibitGrid.Processes
 
             //Run Parent Child Calcs distinguished by RowRelationship (Context = total)
             //Get all Parent Rows (rows that have any children)
-            var allParentRows = grid.Rows.Select(r => r.TotalParentRowCode).ToList();
+            var allParentRows = grid.Rows.Select(r => r.ParentRowCode).Distinct().ToList();
             if (allParentRows.Any())
             {
                 //Get all parent rows (rows that have any children) whose children are not themselves parents (all children are not found in the collection of all parents 'allParentRows')
                 //This is done to start the cascade of parent row calcs at the lowest level of ancestry, and work our way up to the topmost parent
-                var startingRowSumCalcs = grid.Rows.Where(r => r.TotalChildrenRowCodes.Any() && r.TotalChildrenRowCodes.All(c => !allParentRows.Contains(c)));
+                var startingRowSumCalcs = grid.Rows.Where(r => r.SumChildrenIntoRow && r.ChildRowCodes.Any() && r.ChildRowCodes.All(c => !allParentRows.Contains(c)));
                 
                 foreach (var row in startingRowSumCalcs)
                 {
@@ -225,7 +225,7 @@ namespace ExhibitGrid.Processes
             {
                 var resultDic = new Dictionary<string, double>();
                 //Go through operand rows and add up numeric and percent cells, saving into dictionary
-                foreach (var operandRowCode in targetRow.TotalChildrenRowCodes)
+                foreach (var operandRowCode in targetRow.ChildRowCodes)
                 {
                     var operandRow = grid.Rows.FirstOrDefault(r => r.RowCode == operandRowCode);
                     if (operandRow == null) continue;
@@ -247,9 +247,9 @@ namespace ExhibitGrid.Processes
                     if(resultDic.ContainsKey(cell.ColCode)) cell.Value = FormatCellValue(resultDic[cell.ColCode], cell);
                 }
 
-                if (!string.IsNullOrEmpty(targetRow.TotalParentRowCode))
+                if (!string.IsNullOrEmpty(targetRow.ParentRowCode))
                 {
-                    var parentRow = grid.Rows.FirstOrDefault(r => r.RowCode == targetRow.TotalParentRowCode);
+                    var parentRow = grid.Rows.FirstOrDefault(r => r.SumChildrenIntoRow && r.RowCode == targetRow.ParentRowCode);
                     if (parentRow != null)
                     {
                         targetRow = parentRow;

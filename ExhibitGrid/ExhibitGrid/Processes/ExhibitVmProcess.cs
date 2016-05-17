@@ -31,7 +31,7 @@ namespace ExhibitGrid.Processes
                     var attribs = db.UspGetAttribVal(gridCode).ToList();
                     var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
                     var templateRowCodes = new List<string>();
-                    var templateRowRelations = rowRelations.Where(IsTemplateRelationContext).ToList();
+                    var templateRowRelations = rowRelations.Where(IsModelRelationContext).ToList();
                     if (templateRowRelations.Any())
                     {
                         templateRowCodes = templateRowRelations.Select(tr => tr.ChRowCode).ToList();
@@ -170,7 +170,7 @@ namespace ExhibitGrid.Processes
                     calcExpressions.AddRange(GroupCalcResultsIntoExpressionVm(cellCalcResults));
 
                     var templateRowCodes = new List<string>();
-                    var templateRowRelations = rowRelations.Where(IsTemplateRelationContext).ToList();
+                    var templateRowRelations = rowRelations.Where(IsModelRelationContext).ToList();
                     if (templateRowRelations.Any())
                     {
                         templateRowCodes = templateRowRelations.Select(tr => tr.ChRowCode).ToList();
@@ -211,7 +211,7 @@ namespace ExhibitGrid.Processes
                         else if (!string.IsNullOrEmpty(attrib.RowCode) && string.IsNullOrEmpty(attrib.ColCode))
                         {
                             var row = BuildRowVmFromAttributes(attrib, rowRelations);
-                            var isTemplateRow = templateRowCodes.Contains(row.RowCode);
+                            var isTemplateRow = String.Equals(attrib.OutType, Literals.Attribute.OutType.Model, StringComparison.CurrentCultureIgnoreCase) ;
                             if (isTemplateRow)
                             {
                                 templateRowVms.Add(row);
@@ -277,19 +277,14 @@ namespace ExhibitGrid.Processes
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
                         {
                             var cellAttrib = cellDictionary[grid.GridCode + templateRow.RowCode + col.ColCode];
-                            templateRow.Cells.Add(BuildCellVmFromAttributes(grid, templateRow, col, cellAttrib));
+                            var cell = BuildCellVmFromAttributes(grid, templateRow, col, cellAttrib);
+                            templateRow.Cells.Add(cell);
                         }
+                        AppendTemplateRowstoRowVm(templateRow, templateRowVms, templateRowRelations);
                     }
                     
                     foreach (var row in grid.Rows)
                     {
-                        var templateRows = templateRowRelations.Where(rr => rr.ParRowCode == row.RowCode).ToList();
-                        if (templateRows.Any())
-                        {
-                            var childTemplateRowCodes = templateRows.Select(tr => tr.ChRowCode);
-                            row.TemplateRows = templateRowVms.Where(r => childTemplateRowCodes.Contains(r.RowCode)).OrderBy(t => t.DisplayOrder).ToList();
-                        }
-
                         foreach (var col in grid.Columns.Where(c => c.Level == 0).OrderBy(c => c.DisplayOrder))
                         {
                             var cellAttrib = cellDictionary[grid.GridCode + row.RowCode + col.ColCode];
@@ -301,6 +296,7 @@ namespace ExhibitGrid.Processes
                             row.Cells.Add(cell);
                             col.Cells.Add(cell);
                         }
+                        AppendTemplateRowstoRowVm(row, templateRowVms, templateRowRelations);
                     }
                 }
             }
@@ -415,22 +411,7 @@ namespace ExhibitGrid.Processes
         {
             //NOTE: We do not append template rows here, as the template rows may not have been built at this point.
             //Template Rows are added later in the GetGridVmForUi method
-            var thisRowsParentRelations = relations.Where(r => r.ChRowCode == attrib.RowCode).ToList();
-            //Do not include template row codes in the child arrays for collapsing/totaling
-            var templateRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && String.Equals(r.Context, Literals.RowRelationshipContext.Template)).Select(r => r.ChRowCode).ToList();
-            var thisRowsChildRelations = relations.Where(r => r.ParRowCode == attrib.RowCode && !templateRowCodes.Contains(r.ChRowCode)).ToList();
-            var parentTotalRowCode = "";
-            var parentTotalRealtion = thisRowsParentRelations.FirstOrDefault(IsTotalRelationContext);
-            if (parentTotalRealtion != null)
-            {
-                parentTotalRowCode = parentTotalRealtion.ParRowCode;
-            }
-            var parentCollapseRowCode = "";
-            var parentCollapseRealtion = thisRowsParentRelations.FirstOrDefault(IsCollapseRelationContext);
-            if (parentCollapseRealtion != null)
-            {
-                parentCollapseRowCode = parentCollapseRealtion.ParRowCode;
-            }
+            var uiParentRelation = relations.FirstOrDefault(r => r.ChRowCode == attrib.RowCode && IsUiRelationContext(r));
             return new RowVm()
             {
                 GridCode = attrib.GridCode,
@@ -443,16 +424,23 @@ namespace ExhibitGrid.Processes
                 Cells = new List<CellVm>(),
                 Class = GetRowClassByType(attrib.Type),
                 DisplayOrder = attrib.DisplayOrder ?? 0,
+                SumChildrenIntoRow = attrib.SumChildrenIntoRow ?? false,
                 IsSelected = false,
-                IsCollapsed = thisRowsParentRelations.Any(IsCollapseRelationContext),
-                ChildrenAreCollapsed = true,
+                IsCollapsed = false,
+                ChildrenAreCollapsed = false,
                 IsHidden = attrib.IsHidden ?? false,
                 IsEditable = attrib.IsEditable ?? false,
-                CollapseParentRowCode = parentCollapseRowCode,
-                CollapseableChildrenRowCodes = thisRowsChildRelations.Where(IsCollapseRelationContext).Select(r => r.ChRowCode).ToList(),
-                TotalChildrenRowCodes = thisRowsChildRelations.Where(IsTotalRelationContext).Select(r => r.ChRowCode).ToList(),
-                TotalParentRowCode = parentTotalRowCode
+                ParentRowCode = uiParentRelation != null ? uiParentRelation.ParRowCode : null,
+                ChildRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && IsUiRelationContext(r)).Select(r => r.ChRowCode).ToList()
             };
+        }
+
+        private static void AppendTemplateRowstoRowVm(RowVm rowVm, List<RowVm> templateRowVms, List<UspGetRowRelationship_Result> templateRowRelations)
+        {
+            var templateRows = templateRowRelations.Where(rr => rr.ParRowCode == rowVm.RowCode).ToList();
+            if (!templateRows.Any()) return;
+            var childTemplateRowCodes = templateRows.Select(tr => tr.ChRowCode);
+            rowVm.TemplateRows = templateRowVms.Where(r => childTemplateRowCodes.Contains(r.RowCode)).OrderBy(t => t.DisplayOrder).ToList();
         }
 
         private static CellVm BuildCellVmFromAttributes(GridVm grid, RowVm row, ColumnVm col, Attributes cellAttrib)
@@ -621,19 +609,14 @@ namespace ExhibitGrid.Processes
         #endregion
         
         #region Predicates
-        private static bool IsTotalRelationContext(UspGetRowRelationship_Result relation)
+        private static bool IsModelRelationContext(UspGetRowRelationship_Result relation)
         {
-            return String.Equals(relation.Context, Literals.RowRelationshipContext.Total, StringComparison.CurrentCultureIgnoreCase);
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.Model, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        private static bool IsCollapseRelationContext(UspGetRowRelationship_Result relation)
+        private static bool IsUiRelationContext(UspGetRowRelationship_Result relation)
         {
-            return String.Equals(relation.Context, Literals.RowRelationshipContext.Collapse, StringComparison.CurrentCultureIgnoreCase);
-        }
-
-        private static bool IsTemplateRelationContext(UspGetRowRelationship_Result relation)
-        {
-            return String.Equals(relation.Context, Literals.RowRelationshipContext.Template, StringComparison.CurrentCultureIgnoreCase);
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.Ui, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private static bool IsNumericOrPercentType(string type)

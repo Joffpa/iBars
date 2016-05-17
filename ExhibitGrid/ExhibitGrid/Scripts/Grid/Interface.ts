@@ -1,5 +1,6 @@
 ﻿
 
+
 declare module ExhibitGrid.ViewModel {
     interface ICellVm {
         GridCode: string;
@@ -37,7 +38,7 @@ declare module ExhibitGrid.ViewModel {
     }
     interface IGridVm {
         GridCode: string;
-        DisplayText: string;
+        IsRendered: boolean;
         IsEditable: boolean;
         Width: number;
         HasSelectCol: boolean;
@@ -77,20 +78,19 @@ declare module ExhibitGrid.ViewModel {
         CanAdd: boolean;
         CanDelete: boolean;
         CanSelect: boolean;
+        SumChildrenIntoRow: boolean;
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;
-        CollapseParentRowCode: string;
-        TotalParentRowCode: string;
+        ParentRowCode: string;
+        ChildRowCodes: string[];
         Cells: ExhibitGrid.ViewModel.ICellVm[];
-        CollapseableChildrenRowCodes: string[];
-        TotalChildrenRowCodes: string[];
         TemplateRows: ExhibitGrid.ViewModel.IRowVm[];
     }
+
     interface ICellValueFormattting {
         Value: string;
         TextColor: string;
     }
 }
-
 

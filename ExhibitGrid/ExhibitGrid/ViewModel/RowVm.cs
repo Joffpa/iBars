@@ -19,17 +19,15 @@ namespace ExhibitGrid.ViewModel
         public bool CanAdd { get; set; }
         public bool CanDelete { get; set; }
         public bool CanSelect { get; set; }
+        public bool SumChildrenIntoRow { get; set; }
         public bool IsSelected { get; set; }
         public bool IsEditable { get; set; }
         public string Type { get; set; }
 
-        public string CollapseParentRowCode { get; set; }
-        public string TotalParentRowCode{ get; set; }
-        
+        public string ParentRowCode { get; set; }
+        public List<string> ChildRowCodes { get; set; }
  
         public List<CellVm> Cells { get; set; }
-        public List<string> CollapseableChildrenRowCodes { get; set; }
-        public List<string> TotalChildrenRowCodes{ get; set; }
         public List<RowVm> TemplateRows { get; set; }
 
     }

@@ -151,26 +151,26 @@ exec UspUpdAttribVal 'MiniOp5', '', 'Op0308',  'IsEditable=1,HasHeader=1,IsHidde
 
 --row attribs 
 exec UspUpdAttribVal 'MiniOp5', 'TransIn_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'TransIn_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'TransIn_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransIn_Blank', '',  'Type=''blank'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransOut_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'TransOut_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'TransOut_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransOut_Blank', '',  'Type=''blank'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_TactEx', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_TactEx', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_TactEx_c1', '',  'Type=''data'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_CombSup', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_CombSup', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_CombSup_c1', '',  'Type=''data'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'ProgGrowth_Blank', '',  'Type=''blank'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_CivWork', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_CivWork', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_CivWork_c1', '',  'Type=''data'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_CivWork_c2', '',  'Type=''data'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_CivWork_c3', '',  'Type=''data'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_ArSer', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_ArSer', '',  'Type=''subtotal'',IsEditable=1,IsHidden=0,CanCollapse=1,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_ArSer_c1', '',  'Type=''data'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 
 
 
@@ -563,30 +563,17 @@ exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_Total', 'Op0308',  'ColSpan=1,IsEd
 delete from RowRelationship where ParGridCode = 'MiniOp5'
 
 insert into RowRelationship (ParGridCode,ParRowCode, ChGridCode, ChRowCode, Context)
-select 'MiniOp5','ProgGrowth_TactEx','MiniOp5','ProgGrowth_TactEx_c1','total'
+select 'MiniOp5','ProgGrowth_TactEx','MiniOp5','ProgGrowth_TactEx_c1','UI'
 union all
-select 'MiniOp5','ProgGrowth_TactEx','MiniOp5','ProgGrowth_TactEx_c1','collapse'
+select 'MiniOp5','ProgGrowth_CombSup','MiniOp5','ProgGrowth_CombSup_c1','UI'
 union all
-select 'MiniOp5','ProgGrowth_CombSup','MiniOp5','ProgGrowth_CombSup_c1','total'
+select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c1','UI'
 union all
-select 'MiniOp5','ProgGrowth_CombSup','MiniOp5','ProgGrowth_CombSup_c1','collapse'
+select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c2','UI'
 union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c1','total'
+select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c3','UI'
 union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c1','collapse'
-union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c2','total'
-union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c2','collapse'
-union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c3','total'
-union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c3','collapse'
-union all
-select 'MiniOp5','TransProgDec_ArSer','MiniOp5','TransProgDec_ArSer_c1','total'
-union all
-select 'MiniOp5','TransProgDec_ArSer','MiniOp5','TransProgDec_ArSer_c1','collapse'
-
+select 'MiniOp5','TransProgDec_ArSer','MiniOp5','TransProgDec_ArSer_c1','UI'
 
 
 GetCalcs 'MiniOp5'

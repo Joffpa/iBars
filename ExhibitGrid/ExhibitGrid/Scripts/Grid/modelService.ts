@@ -38,6 +38,7 @@ module app.model {
 
     export class GridVm implements ExhibitGrid.ViewModel.IGridVm {
         GridCode: string;
+        IsRendered: boolean;
         DisplayText: string;
         IsEditable: boolean;
         Width: number;
@@ -66,15 +67,17 @@ module app.model {
         CanAdd: boolean;
         CanDelete: boolean;
         CanSelect: boolean;
+        SumChildrenIntoRow: boolean;
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;
-        CollapseParentRowCode: string;
-        TotalParentRowCode: string;
+
+        ParentRowCode: string;
+        ChildRowCodes: string[];
+
         Cells: ExhibitGrid.ViewModel.ICellVm[];
-        CollapseableChildrenRowCodes: string[];
-        TotalChildrenRowCodes: string[];
         TemplateRows: ExhibitGrid.ViewModel.IRowVm[];
+
         constructor(RowCode: string, Class: string, Text: string, CanCollapse: boolean, CanSelect: boolean, IsSelected: boolean) {
             this.RowCode = RowCode;
             this.Class = Class;
@@ -234,10 +237,10 @@ module app.model {
         
         collapseChildren(parentRow: ExhibitGrid.ViewModel.IRowVm, collapse: boolean) {
             parentRow.ChildrenAreCollapsed = collapse;
-            parentRow.CollapseableChildrenRowCodes.forEach(childRowCode => {
+            parentRow.ChildRowCodes.forEach(childRowCode => {
                 var childRow = this.getRowVm(parentRow.GridCode, childRowCode);
                 childRow.IsCollapsed = collapse;
-                if (childRow.CollapseableChildrenRowCodes) {
+                if (childRow.ChildRowCodes) {
                     this.collapseChildren(childRow, collapse);
                 }
             });

@@ -90,7 +90,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', '', 'By1',  'IsEditable=1,HasHeader=
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Officer', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Enlisted', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', '',  'Type=''total'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0,SumChildrenIntoRow=1', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Blank', '',  'Type=''blank'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Header', '',  'Type=''header'',IsEditable=0,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ResGuard_Officer', '',  'Type=''data'',IsEditable=1,IsHidden=0,CanCollapse=0,CanSelect=0,CanAdd=0,CanDelete=0', ''
@@ -248,9 +248,9 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'By1',  'ColSpan=1,IsEd
 delete from RowRelationship where ParGridCode = 'PBA10_PersonnelData'
 
 insert into RowRelationship (ParGridCode,ParRowCode, ChGridCode, ChRowCode, Context)
-select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Officer','total'
+select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Officer','UI'
 union all
-select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Enlisted','total'
+select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Enlisted','UI'
 
 
 

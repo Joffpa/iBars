@@ -9,7 +9,6 @@ var app;
                 this.CalcService = calcService;
             }
             AddRowService.prototype.addRowsFromRowTemplate = function (parentRowVm) {
-                var _this = this;
                 if (parentRowVm.TemplateRows == null || parentRowVm.TemplateRows.length < 1) {
                     return;
                 }
@@ -18,86 +17,92 @@ var app;
                 var templateRows = parentRowVm.TemplateRows;
                 //Get ColCalcs
                 var colCalcs = this.ModelService.getGridColCalcs(parentRowVm.GridCode);
+                var childRowPrefix = parentRowVm.RowCode + "_child_";
                 var preExistingChildRows = _.filter(grid.Rows, function (row) {
-                    return _.startsWith(row.RowCode, parentRowVm.RowCode) && row.RowCode != parentRowVm.RowCode;
+                    return _.contains(parentRowVm.ChildRowCodes, row.RowCode);
                 });
                 var nextRowNum = this.getNextChildRowNumber(preExistingChildRows);
-                var displayOrder = this.getNextDisplayOrder(preExistingChildRows, parentRowVm.DisplayOrder);
+                var displayOrder = parentRowVm.DisplayOrder;
+                if (preExistingChildRows && preExistingChildRows.length > 0) {
+                    displayOrder = this.getMaxOrderAllDecendants(preExistingChildRows, grid);
+                }
                 var rowCodeMappings = [];
                 var newRowVms = [];
-                _.forEach(templateRows, function (templateRow) {
+                _.forEach(grid.Rows, function (rowVm) {
+                    if (rowVm.DisplayOrder > displayOrder) {
+                        rowVm.DisplayOrder += templateRows.length;
+                    }
+                });
+                for (var i = 0; i < templateRows.length; i++) {
+                    var templateRow = templateRows[i];
                     //increment order
-                    displayOrder = displayOrder + .01;
+                    displayOrder = displayOrder + 1;
                     //increment rowNumber
                     nextRowNum = nextRowNum + 1;
                     //create new rowcode
-                    var newRowCode = parentRowVm.RowCode + "_child_" + nextRowNum.toString();
+                    var newRowCode = childRowPrefix + nextRowNum.toString();
                     var rowCodeMapping = {
                         ActualRowCode: newRowCode,
                         TemplateRowCode: templateRow.RowCode
                     };
                     rowCodeMappings.push(rowCodeMapping);
-                    var newRow = _this.createRowFromTemplate(templateRow, displayOrder, newRowCode, colCalcs);
-                    if (templateRow.CollapseParentRowCode) {
-                        var collapseParentVm;
-                        if (templateRow.CollapseParentRowCode == parentRowVm.RowCode) {
-                            collapseParentVm = parentRowVm;
-                        }
-                        else {
-                            collapseParentVm = _this.ModelService.getRowVm(templateRow.GridCode, templateRow.CollapseParentRowCode);
-                        }
-                        if (collapseParentVm) {
-                            collapseParentVm.CollapseableChildrenRowCodes.push(newRow.RowCode);
-                        }
-                    }
-                    if (templateRow.TotalParentRowCode) {
-                        var totalParentVm;
-                        if (templateRow.TotalParentRowCode == parentRowVm.RowCode) {
-                            totalParentVm = parentRowVm;
-                        }
-                        else {
-                            totalParentVm = _this.ModelService.getRowVm(templateRow.GridCode, templateRow.TotalParentRowCode);
-                        }
-                        if (totalParentVm) {
-                            totalParentVm.TotalChildrenRowCodes.push(newRow.RowCode);
-                        }
-                    }
+                    var newRow = this.createRowFromTemplate(templateRow, parentRowVm, displayOrder, newRowCode, colCalcs);
                     newRowVms.push(newRow);
-                });
+                }
                 //Convert parent.child row codes into the newly created actual row codes if the newly created rows still reference the template rows
-                _.forEach(newRowVms, function (newRowVm) {
-                    if (newRowVm.TotalParentRowCode) {
-                        newRowVm.TotalParentRowCode = _this.convertTemplateRowCodeToActualRowCode(newRowVm.TotalParentRowCode, rowCodeMappings);
+                for (var i = 0; i < newRowVms.length; i++) {
+                    var newRowVm = newRowVms[i];
+                    this.convertAllParentAndChildRowCodesToActualRowCodes(newRowVm, rowCodeMappings);
+                    if (newRowVm.TemplateRows) {
+                        for (var i = 0; i < newRowVm.TemplateRows.length; i++) {
+                            var templateRow = newRowVm.TemplateRows[i];
+                            this.convertAllParentAndChildRowCodesToActualRowCodes(templateRow, rowCodeMappings);
+                        }
                     }
-                    ;
-                    if (newRowVm.CollapseParentRowCode) {
-                        newRowVm.CollapseParentRowCode = _this.convertTemplateRowCodeToActualRowCode(newRowVm.CollapseParentRowCode, rowCodeMappings);
+                    if (newRowVm.ParentRowCode == parentRowVm.RowCode) {
+                        parentRowVm.ChildRowCodes.push(newRowVm.RowCode);
                     }
-                    ;
-                    if (newRowVm.TotalChildrenRowCodes) {
-                        var totalChildren = [];
-                        _.forEach(newRowVm.TotalChildrenRowCodes, function (childRowCode) {
-                            var rowCode = _this.convertTemplateRowCodeToActualRowCode(childRowCode, rowCodeMappings);
-                            totalChildren.push(rowCode);
-                        });
-                        newRowVm.TotalChildrenRowCodes = totalChildren;
-                    }
-                    ;
-                    if (newRowVm.CollapseableChildrenRowCodes) {
-                        var collapseChildren = [];
-                        _.forEach(newRowVm.CollapseableChildrenRowCodes, function (childRowCode) {
-                            var rowCode = _this.convertTemplateRowCodeToActualRowCode(childRowCode, rowCodeMappings);
-                            collapseChildren.push(rowCode);
-                        });
-                        newRowVm.CollapseableChildrenRowCodes = collapseChildren;
-                    }
-                    ;
-                });
+                }
                 _.forEach(newRowVms, function (newRowVm) {
                     grid.Rows.push(newRowVm);
                 });
                 //uncollapse parent to show new children
                 this.ModelService.collapseChildren(parentRowVm, false);
+            };
+            AddRowService.prototype.getMaxOrderAllDecendants = function (rowVms, gridVm) {
+                if (rowVms && rowVms.length > 0) {
+                    var maxRow = rowVms[0];
+                    for (var i = 1; i < rowVms.length; i++) {
+                        if (rowVms[i].DisplayOrder > maxRow.DisplayOrder) {
+                            maxRow = rowVms[i];
+                        }
+                    }
+                    if (maxRow.ChildRowCodes && maxRow.ChildRowCodes.length > 0) {
+                        var childRows = _.filter(gridVm.Rows, function (rowVm) {
+                            return _.contains(maxRow.ChildRowCodes, rowVm.RowCode);
+                        });
+                        return this.getMaxOrderAllDecendants(childRows, gridVm);
+                    }
+                    else {
+                        return maxRow.DisplayOrder;
+                    }
+                }
+            };
+            AddRowService.prototype.convertAllParentAndChildRowCodesToActualRowCodes = function (rowVm, rowCodeMappings) {
+                var _this = this;
+                if (rowVm.ParentRowCode) {
+                    rowVm.ParentRowCode = this.convertTemplateRowCodeToActualRowCode(rowVm.ParentRowCode, rowCodeMappings);
+                }
+                ;
+                if (rowVm.ChildRowCodes) {
+                    var childRowCodes = [];
+                    _.forEach(rowVm.ChildRowCodes, function (childRowCode) {
+                        var rowCode = _this.convertTemplateRowCodeToActualRowCode(childRowCode, rowCodeMappings);
+                        childRowCodes.push(rowCode);
+                    });
+                    rowVm.ChildRowCodes = childRowCodes;
+                }
+                ;
             };
             AddRowService.prototype.convertTemplateRowCodeToActualRowCode = function (rowCode, rowCodeMappings) {
                 var rowCodeMap = _.find(rowCodeMappings, function (rowCodeMap) {
@@ -108,7 +113,11 @@ var app;
                 }
                 return rowCode;
             };
-            AddRowService.prototype.createRowFromTemplate = function (templateRow, order, rowCode, colCalcs) {
+            AddRowService.prototype.createRowFromTemplate = function (templateRow, parentRowVm, order, rowCode, colCalcs) {
+                var parentRowCode = parentRowVm.RowCode;
+                if (templateRow.ParentRowCode) {
+                    parentRowCode = templateRow.ParentRowCode;
+                }
                 var newRow = {
                     GridCode: templateRow.GridCode,
                     RowCode: rowCode,
@@ -119,16 +128,15 @@ var app;
                     CanDelete: templateRow.CanDelete,
                     CanSelect: templateRow.CanSelect,
                     IsHidden: templateRow.IsHidden,
+                    SumChildrenIntoRow: templateRow.SumChildrenIntoRow,
                     IsCollapsed: false,
                     ChildrenAreCollapsed: false,
                     IsSelected: templateRow.IsSelected,
                     IsEditable: templateRow.IsEditable,
                     Type: templateRow.Type,
-                    CollapseParentRowCode: templateRow.CollapseParentRowCode,
-                    TotalParentRowCode: templateRow.TotalParentRowCode,
+                    ParentRowCode: parentRowCode,
                     Cells: this.createCellsFromTemplate(templateRow, rowCode, colCalcs),
-                    CollapseableChildrenRowCodes: templateRow.CollapseableChildrenRowCodes,
-                    TotalChildrenRowCodes: templateRow.TotalChildrenRowCodes,
+                    ChildRowCodes: templateRow.ChildRowCodes,
                     TemplateRows: templateRow.TemplateRows
                 };
                 return newRow;
@@ -186,56 +194,28 @@ var app;
                 });
                 return _.max(childNums);
             };
-            AddRowService.prototype.getNextDisplayOrder = function (preExistingChildRows, parentRowOrder) {
-                var displayOrder = parentRowOrder;
-                _.forEach(preExistingChildRows, function (childRow) {
-                    if (childRow.DisplayOrder > displayOrder) {
-                        displayOrder = childRow.DisplayOrder;
-                    }
-                });
-                return displayOrder;
-            };
             AddRowService.prototype.deleteRow = function (rowVm) {
-                //delete all references from parent (collapse children, total children)
-                var collapseParentVm;
-                //If the delted row is a collapseableChild, remove child reference from parent's CollapseableChildrenRowCodes
-                if (rowVm.CollapseParentRowCode) {
-                    collapseParentVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.CollapseParentRowCode);
-                    _.remove(collapseParentVm.CollapseableChildrenRowCodes, function (childRowCode) {
+                //delete all references from parent 
+                var parentRowVm;
+                if (rowVm.ParentRowCode) {
+                    parentRowVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.ParentRowCode);
+                    _.remove(parentRowVm.ChildRowCodes, function (childRowCode) {
                         return childRowCode == rowVm.RowCode;
                     });
-                }
-                var totalParentVm;
-                //If the deleted row is a TotalChild, remove child reference from parent's TotalChildrenRowCodes
-                if (rowVm.TotalParentRowCode) {
-                    if (collapseParentVm && rowVm.CollapseParentRowCode == rowVm.TotalParentRowCode) {
-                        totalParentVm = collapseParentVm;
-                    }
-                    else {
-                        totalParentVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.TotalParentRowCode);
-                    }
-                    _.remove(totalParentVm.TotalChildrenRowCodes, function (childRowCode) {
-                        return childRowCode == rowVm.RowCode;
-                    });
-                    for (var i = 0; i < totalParentVm.Cells.length; i++) {
-                        var cell = totalParentVm.Cells[i];
-                        var cellType = cell.Type.toLowerCase();
-                        if (cellType === "numeric" || cellType === "percent") {
-                            this.CalcService.evaluateTotalParentCellForColumn(totalParentVm, cell.ColCode);
+                    if (parentRowVm.SumChildrenIntoRow) {
+                        for (var i = 0; i < parentRowVm.Cells.length; i++) {
+                            var cell = parentRowVm.Cells[i];
+                            var cellType = cell.Type.toLowerCase();
+                            if (cellType === "numeric" || cellType === "percent") {
+                                this.CalcService.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
+                            }
                         }
                     }
                 }
-                if (rowVm.TotalChildrenRowCodes && rowVm.TotalChildrenRowCodes.length > 0) {
-                    var i = rowVm.TotalChildrenRowCodes.length;
+                if (rowVm.ChildRowCodes && rowVm.ChildRowCodes.length > 0) {
+                    var i = rowVm.ChildRowCodes.length;
                     while (i--) {
-                        var childRowVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.TotalChildrenRowCodes[i]);
-                        this.deleteRow(childRowVm);
-                    }
-                }
-                if (rowVm.CollapseableChildrenRowCodes && rowVm.CollapseableChildrenRowCodes.length > 0) {
-                    var i = rowVm.CollapseableChildrenRowCodes.length;
-                    while (i--) {
-                        var childRowVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.CollapseableChildrenRowCodes[i]);
+                        var childRowVm = this.ModelService.getRowVm(rowVm.GridCode, rowVm.ChildRowCodes[i]);
                         this.deleteRow(childRowVm);
                     }
                 }

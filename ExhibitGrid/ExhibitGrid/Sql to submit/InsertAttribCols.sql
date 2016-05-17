@@ -40,6 +40,8 @@ UspAddNewAttribCol 'DecimalPlaces', 'INTEGER'
 go
 UspAddNewAttribCol 'OverrideColSettings', 'BIT'
 go
+UspAddNewAttribCol 'SumChildrenIntoRow', 'BIT'
+go
 
 
 --UspDropAttribCol 'OverrideType'

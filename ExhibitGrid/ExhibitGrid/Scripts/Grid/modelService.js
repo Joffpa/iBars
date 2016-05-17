@@ -150,10 +150,10 @@ var app;
             ModelService.prototype.collapseChildren = function (parentRow, collapse) {
                 var _this = this;
                 parentRow.ChildrenAreCollapsed = collapse;
-                parentRow.CollapseableChildrenRowCodes.forEach(function (childRowCode) {
+                parentRow.ChildRowCodes.forEach(function (childRowCode) {
                     var childRow = _this.getRowVm(parentRow.GridCode, childRowCode);
                     childRow.IsCollapsed = collapse;
-                    if (childRow.CollapseableChildrenRowCodes) {
+                    if (childRow.ChildRowCodes) {
                         _this.collapseChildren(childRow, collapse);
                     }
                 });

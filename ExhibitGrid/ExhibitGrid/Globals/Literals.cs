@@ -14,9 +14,8 @@ namespace ExhibitGrid.Globals
 
         public static class RowRelationshipContext
         {
-            public static readonly string Total = "total";
-            public static readonly string Collapse = "collapse";
-            public static readonly string Template = "addrowtemplate";
+            public static readonly string Ui = "UI";
+            public static readonly string Model = "Model";
         }
 
         public static class CalcUpdateContext
@@ -35,6 +34,13 @@ namespace ExhibitGrid.Globals
                 public const string Subtotal = "subtotal";
                 public const string Blank = "blank";
             }
+
+            public static class OutType
+            {
+                public static readonly string Ui = "UI";
+                public static readonly string Model = "Model";
+            }
+
             //Columns and cells have the same type
             public static class ColCellType
             {

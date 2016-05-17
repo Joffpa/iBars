@@ -15,11 +15,13 @@ var app;
                 var calcTargets = [];
                 //Run calc of child rows first
                 var thisRow = this.ModelService.getRowVm(cellVm.GridCode, cellVm.RowCode);
-                if (thisRow.TotalParentRowCode) {
-                    var parentRow = this.ModelService.getRowVm(cellVm.GridCode, thisRow.TotalParentRowCode);
-                    var targetCell = this.evaluateTotalParentCellForColumn(parentRow, cellVm.ColCode);
-                    if (targetCell) {
-                        calcTargets.push(targetCell);
+                if (thisRow.ParentRowCode) {
+                    var parentRow = this.ModelService.getRowVm(cellVm.GridCode, thisRow.ParentRowCode);
+                    if (parentRow.SumChildrenIntoRow) {
+                        var targetCell = this.evaluateTotalParentCellForColumn(parentRow, cellVm.ColCode);
+                        if (targetCell) {
+                            calcTargets.push(targetCell);
+                        }
                     }
                 }
                 if (cellVm.Calcs && cellVm.Calcs.length > 0) {
@@ -64,7 +66,7 @@ var app;
             };
             CalcService.prototype.evaluateTotalParentCellForColumn = function (parentRowVm, colCode) {
                 var _this = this;
-                var childRows = this.ModelService.getRowVms(parentRowVm.GridCode, parentRowVm.TotalChildrenRowCodes);
+                var childRows = this.ModelService.getRowVms(parentRowVm.GridCode, parentRowVm.ChildRowCodes);
                 var equation = "";
                 _.each(childRows, function (childrow) {
                     var cell = _.find(childrow.Cells, { 'ColCode': colCode });
@@ -83,7 +85,7 @@ var app;
                 }
                 var targetCell = _.find(parentRowVm.Cells, function (cell) { return cell.ColCode == colCode; });
                 this.evaluateExpression(targetCell, equation, 'CELLVALUE');
-                if ((targetCell.Calcs && targetCell.Calcs.length > 0) || parentRowVm.TotalParentRowCode) {
+                if ((targetCell.Calcs && targetCell.Calcs.length > 0) || parentRowVm.ParentRowCode) {
                     return targetCell;
                 }
                 return null;
