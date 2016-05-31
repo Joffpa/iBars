@@ -124,7 +124,7 @@ namespace ExhibitGrid.Processes
             {
                 //Get all parent rows (rows that have any children) whose children are not themselves parents (all children are not found in the collection of all parents 'allParentRows')
                 //This is done to start the cascade of parent row calcs at the lowest level of ancestry, and work our way up to the topmost parent
-                var startingRowSumCalcs = grid.Rows.Where(r => r.SumChildrenIntoRow && r.ChildRowCodes.Any() && r.ChildRowCodes.All(c => !allParentRows.Contains(c)));
+                var startingRowSumCalcs = grid.Rows.Where(r => r.ChildRowCodes.Any() && r.ChildRowCodes.All(c => !allParentRows.Contains(c)));
                 
                 foreach (var row in startingRowSumCalcs)
                 {
@@ -249,7 +249,7 @@ namespace ExhibitGrid.Processes
 
                 if (!string.IsNullOrEmpty(targetRow.ParentRowCode))
                 {
-                    var parentRow = grid.Rows.FirstOrDefault(r => r.SumChildrenIntoRow && r.RowCode == targetRow.ParentRowCode);
+                    var parentRow = grid.Rows.FirstOrDefault(r => r.RowCode == targetRow.ParentRowCode);
                     if (parentRow != null)
                     {
                         targetRow = parentRow;

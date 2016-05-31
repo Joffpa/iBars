@@ -1,4 +1,4 @@
-/// <reference path="../typings/lodash/lodash.d.ts" />
+/// <reference path="../typings/lodash/lodash-3.10.d.ts" />
 'use strict';
 var app;
 (function (app) {

@@ -1,3 +1,4 @@
+/// <reference path="../typings/lodash/lodash-3.10.d.ts" />
 'use strict';
 var app;
 (function (app) {
@@ -18,13 +19,11 @@ var app;
                 //Get ColCalcs
                 var colCalcs = this.ModelService.getGridColCalcs(parentRowVm.GridCode);
                 var childRowPrefix = parentRowVm.RowCode + "_child_";
-                var preExistingChildRows = _.filter(grid.Rows, function (row) {
-                    return _.contains(parentRowVm.ChildRowCodes, row.RowCode);
-                });
-                var nextRowNum = this.getNextChildRowNumber(preExistingChildRows);
+                var allDecendantRows = this.getAllDecendantRows(parentRowVm, grid);
+                var nextRowNum = this.getNextChildRowNumber(allDecendantRows);
                 var displayOrder = parentRowVm.DisplayOrder;
-                if (preExistingChildRows && preExistingChildRows.length > 0) {
-                    displayOrder = this.getMaxOrderAllDecendants(preExistingChildRows, grid);
+                if (allDecendantRows && allDecendantRows.length > 0) {
+                    displayOrder = this.getMaxOrder(allDecendantRows, grid);
                 }
                 var rowCodeMappings = [];
                 var newRowVms = [];
@@ -69,7 +68,20 @@ var app;
                 //uncollapse parent to show new children
                 this.ModelService.collapseChildren(parentRowVm, false);
             };
-            AddRowService.prototype.getMaxOrderAllDecendants = function (rowVms, gridVm) {
+            AddRowService.prototype.getAllDecendantRows = function (parentRowVm, gridVm) {
+                if (!parentRowVm.ChildRowCodes || parentRowVm.ChildRowCodes.length < 1) {
+                    return [];
+                }
+                var childRows = _.filter(gridVm.Rows, function (row) {
+                    return _.includes(parentRowVm.ChildRowCodes, row.RowCode);
+                });
+                for (var i = 0; i < childRows.length; i++) {
+                    var grandChildren = this.getAllDecendantRows(childRows[i], gridVm);
+                    childRows = _.union(childRows, grandChildren);
+                }
+                return childRows;
+            };
+            AddRowService.prototype.getMaxOrder = function (rowVms, gridVm) {
                 if (rowVms && rowVms.length > 0) {
                     var maxRow = rowVms[0];
                     for (var i = 1; i < rowVms.length; i++) {
@@ -77,16 +89,9 @@ var app;
                             maxRow = rowVms[i];
                         }
                     }
-                    if (maxRow.ChildRowCodes && maxRow.ChildRowCodes.length > 0) {
-                        var childRows = _.filter(gridVm.Rows, function (rowVm) {
-                            return _.contains(maxRow.ChildRowCodes, rowVm.RowCode);
-                        });
-                        return this.getMaxOrderAllDecendants(childRows, gridVm);
-                    }
-                    else {
-                        return maxRow.DisplayOrder;
-                    }
+                    return maxRow.DisplayOrder;
                 }
+                return 1;
             };
             AddRowService.prototype.convertAllParentAndChildRowCodesToActualRowCodes = function (rowVm, rowCodeMappings) {
                 var _this = this;
@@ -128,7 +133,6 @@ var app;
                     CanDelete: templateRow.CanDelete,
                     CanSelect: templateRow.CanSelect,
                     IsHidden: templateRow.IsHidden,
-                    SumChildrenIntoRow: templateRow.SumChildrenIntoRow,
                     IsCollapsed: false,
                     ChildrenAreCollapsed: false,
                     IsSelected: templateRow.IsSelected,
@@ -202,13 +206,11 @@ var app;
                     _.remove(parentRowVm.ChildRowCodes, function (childRowCode) {
                         return childRowCode == rowVm.RowCode;
                     });
-                    if (parentRowVm.SumChildrenIntoRow) {
-                        for (var i = 0; i < parentRowVm.Cells.length; i++) {
-                            var cell = parentRowVm.Cells[i];
-                            var cellType = cell.Type.toLowerCase();
-                            if (cellType === "numeric" || cellType === "percent") {
-                                this.CalcService.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
-                            }
+                    for (var i = 0; i < parentRowVm.Cells.length; i++) {
+                        var cell = parentRowVm.Cells[i];
+                        var cellType = cell.Type.toLowerCase();
+                        if (cellType === "numeric" || cellType === "percent") {
+                            this.CalcService.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
                         }
                     }
                 }

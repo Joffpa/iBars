@@ -14,8 +14,8 @@ namespace ExhibitGrid.Globals
 
         public static class RowRelationshipContext
         {
-            public static readonly string Ui = "UI";
-            public static readonly string Model = "Model";
+            public static readonly string CollapseAndSumChildrenToParent = "CollapseAndSumChildrenToParent";
+            public static readonly string AddRowTemplate = "AddRowTemplate";
         }
 
         public static class CalcUpdateContext

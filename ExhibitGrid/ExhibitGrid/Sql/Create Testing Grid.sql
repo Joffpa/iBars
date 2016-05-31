@@ -14,6 +14,7 @@ INSERT INTO @Cols ( ColCode, ColOrd, DataType, NumOrTxt)
 
 EXEC AddZgridCols 'TestGrid',@Cols
 
+
 --select * from ColMap 
 --where GridCode = 'TestGrid'
 
@@ -225,39 +226,39 @@ delete from RowRelationship where ParGridCode = 'TestGrid'
 insert into RowRelationship (ParGridCode,ParRowCode, ChGridCode, ChRowCode, Context)
 --select 'TestGrid','RowA','TestGrid','TemplateRowA','total'
 --union all
-select 'TestGrid','RowA','TestGrid','TemplateRowA','Model'
+select 'TestGrid','RowA','TestGrid','TemplateRowA','AddRowTemplate'
 union all
-select 'TestGrid','RowB','TestGrid','TemplateRowB','Model'
+select 'TestGrid','RowB','TestGrid','TemplateRowB','AddRowTemplate'
 union all
-select 'TestGrid','RowC','TestGrid','TemplateRowC1','Model'
+select 'TestGrid','RowC','TestGrid','TemplateRowC1','AddRowTemplate'
 union all
-select 'TestGrid','RowC','TestGrid','TemplateRowC2','Model'
+select 'TestGrid','RowC','TestGrid','TemplateRowC2','AddRowTemplate'
 union all
-select 'TestGrid','RowC','TestGrid','TemplateRowC3','Model'
+select 'TestGrid','RowC','TestGrid','TemplateRowC3','AddRowTemplate'
 union all
-select 'TestGrid','TemplateRowC2','TestGrid','TemplateRowC3','UI'
+select 'TestGrid','TemplateRowC2','TestGrid','TemplateRowC3','CollapseAndSumChildrenToParent'
 union all
-select 'TestGrid','RowC','TestGrid','TemplateRowC4','Model'
+select 'TestGrid','RowC','TestGrid','TemplateRowC4','AddRowTemplate'
 union all
-select 'TestGrid','RowC','TestGrid','TemplateRowC5','Model'
+select 'TestGrid','RowC','TestGrid','TemplateRowC5','AddRowTemplate'
 union all
-select 'TestGrid','TemplateRowC4','TestGrid','TemplateRowC5','UI'
+select 'TestGrid','TemplateRowC4','TestGrid','TemplateRowC5','CollapseAndSumChildrenToParent'
 union all
-select 'TestGrid','RowD','TestGrid','TemplateRowD1','Model'
+select 'TestGrid','RowD','TestGrid','TemplateRowD1','AddRowTemplate'
 union all
-select 'TestGrid','RowD','TestGrid','TemplateRowD2','Model'
+select 'TestGrid','RowD','TestGrid','TemplateRowD2','AddRowTemplate'
 union all
-select 'TestGrid','TemplateRowD1','TestGrid','TemplateRowD2','UI'
+select 'TestGrid','TemplateRowD1','TestGrid','TemplateRowD2','CollapseAndSumChildrenToParent'
 union all
-select 'TestGrid','RowD','TestGrid','TemplateRowD3','Model'
+select 'TestGrid','RowD','TestGrid','TemplateRowD3','AddRowTemplate'
 union all
-select 'TestGrid','RowD','TestGrid','TemplateRowD4','Model'
+select 'TestGrid','RowD','TestGrid','TemplateRowD4','AddRowTemplate'
 union all
-select 'TestGrid','TemplateRowD3','TestGrid','TemplateRowD4','UI'
+select 'TestGrid','TemplateRowD3','TestGrid','TemplateRowD4','CollapseAndSumChildrenToParent'
 union all
-select 'TestGrid','RowE','TestGrid','TemplateRowE1','Model'
+select 'TestGrid','RowE','TestGrid','TemplateRowE1','AddRowTemplate'
 union all
-select 'TestGrid','TemplateRowE1','TestGrid','TemplateRowE2','Model'
+select 'TestGrid','TemplateRowE1','TestGrid','TemplateRowE2','AddRowTemplate'
 
 
 --UspGetCalcs 'TestGrid' 

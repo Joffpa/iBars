@@ -70,17 +70,8 @@ INSERT INTO @Cols ( ColCode, ColOrd, DataType, NumOrTxt)
     (  N'CMEs', 19.0, N'DECIMAL(8,2)', N'N'),
     (  N'MILs', 20.0, N'DECIMAL(8,2)', N'N'),
     (  N'Op32Total', 21.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0101', 22.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0103', 23.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0104', 24.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0105', 25.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0106', 26.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0107', 27.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0110', 28.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0111', 29.0, N'DECIMAL(8,2)', N'N'),
-    (  N'Op0308', 30.0, N'DECIMAL(8,2)', N'N')
-
-	
+    (  N'Op0101', 22.0, N'DECIMAL(8,2)', N'N')
+    	
 EXEC AddZgridCols 'MiniOp5',@Cols
 
 
@@ -563,17 +554,17 @@ exec UspUpdAttribVal 'MiniOp5', 'TransProgDec_Total', 'Op0308',  'ColSpan=1,IsEd
 delete from RowRelationship where ParGridCode = 'MiniOp5'
 
 insert into RowRelationship (ParGridCode,ParRowCode, ChGridCode, ChRowCode, Context)
-select 'MiniOp5','ProgGrowth_TactEx','MiniOp5','ProgGrowth_TactEx_c1','UI'
+select 'MiniOp5','ProgGrowth_TactEx','MiniOp5','ProgGrowth_TactEx_c1','CollapseAndSumChildrenToParent'
 union all
-select 'MiniOp5','ProgGrowth_CombSup','MiniOp5','ProgGrowth_CombSup_c1','UI'
+select 'MiniOp5','ProgGrowth_CombSup','MiniOp5','ProgGrowth_CombSup_c1','CollapseAndSumChildrenToParent'
 union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c1','UI'
+select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c1','CollapseAndSumChildrenToParent'
 union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c2','UI'
+select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c2','CollapseAndSumChildrenToParent'
 union all
-select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c3','UI'
+select 'MiniOp5','TransProgDec_CivWork','MiniOp5','TransProgDec_CivWork_c3','CollapseAndSumChildrenToParent'
 union all
-select 'MiniOp5','TransProgDec_ArSer','MiniOp5','TransProgDec_ArSer_c1','UI'
+select 'MiniOp5','TransProgDec_ArSer','MiniOp5','TransProgDec_ArSer_c1','CollapseAndSumChildrenToParent'
 
 
 GetCalcs 'MiniOp5'
@@ -614,10 +605,6 @@ SET @ProgDecRowTot = @@IDENTITY
 
 
 insert into CalcOperand (GridCode, RowCode, ColCode)
---select 'MiniOp5','ProgGrowth_TactEx_c1',''
---union all
---select 'MiniOp5','ProgGrowth_CombSup_c1',''
---union all
 select 'MiniOp5','ProgGrowth_CombSup',''
 union all
 select 'MiniOp5','ProgGrowth_TactEx',''
@@ -648,14 +635,6 @@ select 'MiniOp5','','Op0111'
 union all
 select 'MiniOp5','','Op0308'
 union all
---select 'MiniOp5','TransProgDec_CivWork_c1',''
---union all
---select 'MiniOp5','TransProgDec_CivWork_c2',''
---union all
---select 'MiniOp5','TransProgDec_CivWork_c3',''
---union all
---select 'MiniOp5','TransProgDec_ArSer_c1',''
---union all
 select 'MiniOp5','TransProgDec_ArSer',''
 union all
 select 'MiniOp5','TransProgDec_CivWork',''
@@ -664,10 +643,6 @@ select 'MiniOp5','TransProgDec_CivWork',''
 
 
 insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
---select @TenCapRow, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'ProgGrowth_TactEx_c1' and ColCode = '')
---union all
---select @ComRow, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'ProgGrowth_CombSup_c1' and ColCode = '')
---union all
 select @ProgRowTot, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'ProgGrowth_CombSup' and ColCode = '')
 union all
 select @ProgRowTot, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'ProgGrowth_TactEx' and ColCode = '')
@@ -679,6 +654,7 @@ union all
 select @By1Col, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = '' and ColCode = 'ForeignCurr')
 union all
 select @By1Col, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = '' and ColCode = 'PriceGrowth')
+
 union all
 select @Op32Col, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = '' and ColCode = 'Op0101')
 union all
@@ -698,14 +674,6 @@ select @Op32Col, (Select top 1 CalcOperandId from CalcOperand where GridCode = '
 union all
 select @Op32Col, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = '' and ColCode = 'Op0308')
 union all
---select @CivRow, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'TransProgDec_CivWork_c1' and ColCode = '')
---union all
---select @CivRow, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'TransProgDec_CivWork_c2' and ColCode = '')
---union all
---select @CivRow, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'TransProgDec_CivWork_c3' and ColCode = '')
---union all
---select @ArmRow, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'TransProgDec_ArSer_c1' and ColCode = '')
---union all
 select @ProgDecRowTot, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'TransProgDec_CivWork' and ColCode = '')
 union all
 select @ProgDecRowTot, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'MiniOp5' and RowCode = 'TransProgDec_ArSer' and ColCode = '')

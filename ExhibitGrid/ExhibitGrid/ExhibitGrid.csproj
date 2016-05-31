@@ -637,6 +637,8 @@
     <Content Include="Scripts\Grid\calcService.js" />
     <Content Include="Scripts\Grid\commonUI.js" />
     <Content Include="Scripts\Grid\dynamicCellGrid.js" />
+    <Content Include="Scripts\lodash.core.js" />
+    <Content Include="Scripts\lodash.core.min.js" />
     <Content Include="Scripts\old\directives.js" />
     <Content Include="Scripts\Grid\filters.js" />
     <Content Include="Scripts\old\grid.js" />
@@ -1647,7 +1649,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery-extensions.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\kendo-ui\kendo-ui.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\lodash\lodash-3.10.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\mathjs\mathjs.d.ts" />
   </ItemGroup>
   <ItemGroup>

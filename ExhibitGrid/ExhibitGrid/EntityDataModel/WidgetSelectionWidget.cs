@@ -16,6 +16,7 @@ namespace ExhibitGrid.EntityDataModel
     {
         public int WidgetSelectionId { get; set; }
         public int WidgetId { get; set; }
+        public Nullable<int> ValueOrder { get; set; }
     
         public virtual Widget Widget { get; set; }
         public virtual WidgetSelection WidgetSelection { get; set; }

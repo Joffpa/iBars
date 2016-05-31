@@ -34,13 +34,17 @@ namespace ExhibitGrid.EntityDataModel
         public virtual DbSet<WidgetContext> WidgetContexts { get; set; }
         public virtual DbSet<WidgetSelectionWidget> WidgetSelectionWidgets { get; set; }
     
-        public virtual ObjectResult<Attributes> UspGetAttribVal(string gridCode)
+        public virtual ObjectResult<Attributes> UspGetAttribVal(string gridCode, string whereFilter)
         {
             var gridCodeParameter = gridCode != null ?
                 new ObjectParameter("GridCode", gridCode) :
                 new ObjectParameter("GridCode", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Attributes>("UspGetAttribVal", gridCodeParameter);
+            var whereFilterParameter = whereFilter != null ?
+                new ObjectParameter("WhereFilter", whereFilter) :
+                new ObjectParameter("WhereFilter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Attributes>("UspGetAttribVal", gridCodeParameter, whereFilterParameter);
         }
     
         public virtual ObjectResult<UspGetRowRelationship_Result> UspGetRowRelationship(string parGridCode, string chGridCode)
@@ -63,6 +67,11 @@ namespace ExhibitGrid.EntityDataModel
                 new ObjectParameter("GridCode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<UspGetCalcs_Result>("UspGetCalcs", gridCodeParameter);
+        }
+    
+        public virtual ObjectResult<CellValue> UspGetCellVal()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CellValue>("UspGetCellVal");
         }
     }
 }

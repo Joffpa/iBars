@@ -78,7 +78,6 @@ declare module ExhibitGrid.ViewModel {
         CanAdd: boolean;
         CanDelete: boolean;
         CanSelect: boolean;
-        SumChildrenIntoRow: boolean;
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;

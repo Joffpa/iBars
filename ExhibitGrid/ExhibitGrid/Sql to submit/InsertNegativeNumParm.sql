@@ -17,11 +17,11 @@ SET  @parmOrder = (SELECT max(parm_order) from LOAD_PARAMETERS WHERE parm_block_
 SET  @widgetId = (SELECT TOP 1 WidgetId from Widget WHERE Code = 'YesNoDropDown')
 
 insert into LOAD_PARAMETERS(parm_name, parm_value, parm_label, parm_order, visible, parm_block_fk, HoverText)
-values ('ShowNegativeInParensInUI', 'N', 'Show negative numbers in parenthesis in UI', @parmOrder + 1, 1, @parmBlockId, 'Determines if the UI will show negative numbers in parentheses.')
+select 'ShowNegativeInParensInUI', 'N', 'Show negative numbers in parenthesis in UI', @parmOrder + 1, 1, @parmBlockId, 'Determines if the UI will show negative numbers in parentheses.'
 SET @parmId = @@IDENTITY
 
 insert into WidgetContext (WidgetId,ContextId,ContextType)
-VALUES (  @widgetId, @parmId, 'PARM')
+select   @widgetId, @parmId, 'PARM'
 
 
 update LOAD_PARAMETERS set parm_value = 'N' where parm_name = 'ShowNegativeInParensInUI'

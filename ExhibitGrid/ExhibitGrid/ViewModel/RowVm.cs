@@ -19,7 +19,6 @@ namespace ExhibitGrid.ViewModel
         public bool CanAdd { get; set; }
         public bool CanDelete { get; set; }
         public bool CanSelect { get; set; }
-        public bool SumChildrenIntoRow { get; set; }
         public bool IsSelected { get; set; }
         public bool IsEditable { get; set; }
         public string Type { get; set; }

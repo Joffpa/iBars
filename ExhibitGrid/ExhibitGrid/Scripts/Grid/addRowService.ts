@@ -1,4 +1,6 @@
-﻿'use strict'
+﻿/// <reference path="../typings/lodash/lodash-3.10.d.ts" />
+
+'use strict'
 
 module app.addRow {
 
@@ -8,7 +10,6 @@ module app.addRow {
     }
 
     export interface IAddRowService {
-
         addRowsFromRowTemplate(parentRowVm: ExhibitGrid.ViewModel.IRowVm): void;
         deleteRow(rowVm: ExhibitGrid.ViewModel.IRowVm): void;
     }
@@ -36,14 +37,12 @@ module app.addRow {
 
             var childRowPrefix = parentRowVm.RowCode + "_child_";
 
-            var preExistingChildRows = _.filter(grid.Rows, row => {
-                return _.contains(parentRowVm.ChildRowCodes, row.RowCode);
-            });
+            var allDecendantRows = this.getAllDecendantRows(parentRowVm, grid);
 
-            var nextRowNum = this.getNextChildRowNumber(preExistingChildRows);
+            var nextRowNum = this.getNextChildRowNumber(allDecendantRows);
             var displayOrder = parentRowVm.DisplayOrder;
-            if (preExistingChildRows && preExistingChildRows.length > 0) {
-                displayOrder = this.getMaxOrderAllDecendants(preExistingChildRows, grid);
+            if (allDecendantRows && allDecendantRows.length > 0) {
+                displayOrder = this.getMaxOrder(allDecendantRows, grid);
             }
 
             var rowCodeMappings: RowCodeMap[] = [];
@@ -95,7 +94,21 @@ module app.addRow {
             this.ModelService.collapseChildren(parentRowVm, false);
         }
 
-        getMaxOrderAllDecendants(rowVms: ExhibitGrid.ViewModel.IRowVm[], gridVm: ExhibitGrid.ViewModel.IGridVm) {
+        getAllDecendantRows(parentRowVm: ExhibitGrid.ViewModel.IRowVm, gridVm: ExhibitGrid.ViewModel.IGridVm) {
+            if (!parentRowVm.ChildRowCodes || parentRowVm.ChildRowCodes.length < 1 ) {
+                return [];
+            }
+            var childRows = _.filter(gridVm.Rows, row => {
+                return _.includes(parentRowVm.ChildRowCodes, row.RowCode);
+            });
+            for (var i = 0; i < childRows.length; i++) {
+                var grandChildren = this.getAllDecendantRows(childRows[i], gridVm);
+                childRows = _.union(childRows, grandChildren);
+            }
+            return childRows;
+        }
+        
+        getMaxOrder(rowVms: ExhibitGrid.ViewModel.IRowVm[], gridVm: ExhibitGrid.ViewModel.IGridVm) {
             if (rowVms && rowVms.length > 0) {
                 var maxRow = rowVms[0];
                 for (var i = 1; i < rowVms.length; i++) {
@@ -103,15 +116,9 @@ module app.addRow {
                         maxRow = rowVms[i];
                     }
                 }
-                if (maxRow.ChildRowCodes && maxRow.ChildRowCodes.length > 0) {
-                    var childRows = _.filter(gridVm.Rows, rowVm => {
-                        return _.contains(maxRow.ChildRowCodes, rowVm.RowCode);
-                    });
-                    return this.getMaxOrderAllDecendants(childRows, gridVm);
-                } else {
-                    return maxRow.DisplayOrder;
-                }
+                return maxRow.DisplayOrder;
             }
+            return 1;
         }
 
         convertAllParentAndChildRowCodesToActualRowCodes(rowVm: ExhibitGrid.ViewModel.IRowVm, rowCodeMappings: RowCodeMap[]) {
@@ -153,7 +160,6 @@ module app.addRow {
                 CanDelete: templateRow.CanDelete,
                 CanSelect: templateRow.CanSelect,
                 IsHidden: templateRow.IsHidden,
-                SumChildrenIntoRow: templateRow.SumChildrenIntoRow,
                 IsCollapsed: false,
                 ChildrenAreCollapsed: false,
                 IsSelected: templateRow.IsSelected,
@@ -231,13 +237,11 @@ module app.addRow {
                     return childRowCode == rowVm.RowCode;
                 })
 
-                if (parentRowVm.SumChildrenIntoRow) {
-                    for (var i = 0; i < parentRowVm.Cells.length; i++) {
-                        var cell = parentRowVm.Cells[i];
-                        var cellType = cell.Type.toLowerCase();
-                        if (cellType === "numeric" || cellType === "percent") {
-                            this.CalcService.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
-                        }
+                for (var i = 0; i < parentRowVm.Cells.length; i++) {
+                    var cell = parentRowVm.Cells[i];
+                    var cellType = cell.Type.toLowerCase();
+                    if (cellType === "numeric" || cellType === "percent") {
+                        this.CalcService.evaluateTotalParentCellForColumn(parentRowVm, cell.ColCode);
                     }
                 }
             }

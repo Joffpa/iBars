@@ -28,10 +28,10 @@ namespace ExhibitGrid.Processes
             {
                 using (var db = new DEV_AF())
                 {
-                    var attribs = db.UspGetAttribVal(gridCode).ToList();
+                    var attribs = db.UspGetAttribVal(gridCode, "").ToList();
                     var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
                     var templateRowCodes = new List<string>();
-                    var templateRowRelations = rowRelations.Where(IsModelRelationContext).ToList();
+                    var templateRowRelations = rowRelations.Where(IsAddRowTemplateRelationContext).ToList();
                     if (templateRowRelations.Any())
                     {
                         templateRowCodes = templateRowRelations.Select(tr => tr.ChRowCode).ToList();
@@ -108,7 +108,7 @@ namespace ExhibitGrid.Processes
                     //Make calls to DB for Calcs, Attributes, and Row Relationships, and various parms
                     var calcs = db.UspGetCalcs(gridCode).ToList();
                     var rowRelations = db.UspGetRowRelationship(gridCode, null).ToList();
-                    var attribs = db.UspGetAttribVal(gridCode).ToList();
+                    var attribs = db.UspGetAttribVal(gridCode, "").ToList();
                     var showNegativeInParen = false;
                     var negativeParm = db.LOAD_PARAMETERS.FirstOrDefault(p => p.parm_name == "ShowNegativeInParensInUI");
                     if (negativeParm != null)
@@ -170,7 +170,7 @@ namespace ExhibitGrid.Processes
                     calcExpressions.AddRange(GroupCalcResultsIntoExpressionVm(cellCalcResults));
 
                     var templateRowCodes = new List<string>();
-                    var templateRowRelations = rowRelations.Where(IsModelRelationContext).ToList();
+                    var templateRowRelations = rowRelations.Where(IsAddRowTemplateRelationContext).ToList();
                     if (templateRowRelations.Any())
                     {
                         templateRowCodes = templateRowRelations.Select(tr => tr.ChRowCode).ToList();
@@ -398,7 +398,8 @@ namespace ExhibitGrid.Processes
                 DisplayOrder = attrib.DisplayOrder ?? new decimal(1.0),
                 DisplayText = attrib.DisplayText,
                 HasHeader = attrib.HasHeader ?? true,
-                IsHidden = attrib.IsHidden ?? false,
+                // IsHidden = attrib.IsHidden ?? false, //todo: DisplayInCycle
+                IsHidden = attrib.DisplayInCycle == "None",
                 Level = attrib.Level ?? 0,
                 Width = attrib.Width,
                 IsEditable = attrib.IsEditable ?? false,
@@ -411,7 +412,7 @@ namespace ExhibitGrid.Processes
         {
             //NOTE: We do not append template rows here, as the template rows may not have been built at this point.
             //Template Rows are added later in the GetGridVmForUi method
-            var uiParentRelation = relations.FirstOrDefault(r => r.ChRowCode == attrib.RowCode && IsUiRelationContext(r));
+            var uiParentRelation = relations.FirstOrDefault(r => r.ChRowCode == attrib.RowCode && IsCollapseAndSumChildrenToParentRelationContext(r));
             return new RowVm()
             {
                 GridCode = attrib.GridCode,
@@ -424,14 +425,14 @@ namespace ExhibitGrid.Processes
                 Cells = new List<CellVm>(),
                 Class = GetRowClassByType(attrib.Type),
                 DisplayOrder = attrib.DisplayOrder ?? 0,
-                SumChildrenIntoRow = attrib.SumChildrenIntoRow ?? false,
                 IsSelected = false,
                 IsCollapsed = false,
                 ChildrenAreCollapsed = false,
-                IsHidden = attrib.IsHidden ?? false,
+                //IsHidden = attrib.IsHidden ?? false,  //todo: DisplayInCycle
+                IsHidden = attrib.DisplayInCycle == "None",
                 IsEditable = attrib.IsEditable ?? false,
                 ParentRowCode = uiParentRelation != null ? uiParentRelation.ParRowCode : null,
-                ChildRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && IsUiRelationContext(r)).Select(r => r.ChRowCode).ToList()
+                ChildRowCodes = relations.Where(r => r.ParRowCode == attrib.RowCode && IsCollapseAndSumChildrenToParentRelationContext(r)).Select(r => r.ChRowCode).ToList()
             };
         }
 
@@ -485,7 +486,8 @@ namespace ExhibitGrid.Processes
                 ColumnHeader = col.DisplayText,
                 Indent = cellAttrib.Indent ?? 0,
                 IsEditable = (cellAttrib.IsEditable ?? false) && row.IsEditable && col.IsEditable && grid.IsEditable,
-                IsHidden = cellAttrib.IsHidden ?? false,
+                //IsHidden = cellAttrib.IsHidden ?? false,  //todo: DisplayInCycle
+                IsHidden = cellAttrib.DisplayInCycle == "None",
                 Value = cellVal,
                 //NumValue = valParsed ? numval : 0,
                 Width = (span == 1 ? col.Width : "100%"),
@@ -609,14 +611,14 @@ namespace ExhibitGrid.Processes
         #endregion
         
         #region Predicates
-        private static bool IsModelRelationContext(UspGetRowRelationship_Result relation)
+        private static bool IsAddRowTemplateRelationContext(UspGetRowRelationship_Result relation)
         {
-            return String.Equals(relation.Context, Literals.RowRelationshipContext.Model, StringComparison.CurrentCultureIgnoreCase);
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.AddRowTemplate, StringComparison.CurrentCultureIgnoreCase);
         }
 
-        private static bool IsUiRelationContext(UspGetRowRelationship_Result relation)
+        private static bool IsCollapseAndSumChildrenToParentRelationContext(UspGetRowRelationship_Result relation)
         {
-            return String.Equals(relation.Context, Literals.RowRelationshipContext.Ui, StringComparison.CurrentCultureIgnoreCase);
+            return String.Equals(relation.Context, Literals.RowRelationshipContext.CollapseAndSumChildrenToParent, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private static bool IsNumericOrPercentType(string type)

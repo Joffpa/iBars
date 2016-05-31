@@ -17,5 +17,6 @@ namespace ExhibitGrid.EntityDataModel
         public string RowCode { get; set; }
         public string ColCode { get; set; }
         public string Val { get; set; }
+        public decimal RowOrder { get; set; }
     }
 }

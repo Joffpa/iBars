@@ -1,4 +1,4 @@
-﻿/// <reference path="../typings/lodash/lodash.d.ts" />
+﻿/// <reference path="../typings/lodash/lodash-3.10.d.ts" />
 
 'use strict';
 
@@ -67,7 +67,6 @@ module app.model {
         CanAdd: boolean;
         CanDelete: boolean;
         CanSelect: boolean;
-        SumChildrenIntoRow: boolean;
         IsSelected: boolean;
         IsEditable: boolean;
         Type: string;

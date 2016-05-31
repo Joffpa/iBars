@@ -1,4 +1,4 @@
-/// <reference path="../typings/lodash/lodash.d.ts" />
+/// <reference path="../typings/lodash/lodash-3.10.d.ts" />
 /// <reference path="../typings/mathjs/mathjs.d.ts" />
 'use strict';
 var app;
@@ -17,11 +17,9 @@ var app;
                 var thisRow = this.ModelService.getRowVm(cellVm.GridCode, cellVm.RowCode);
                 if (thisRow.ParentRowCode) {
                     var parentRow = this.ModelService.getRowVm(cellVm.GridCode, thisRow.ParentRowCode);
-                    if (parentRow.SumChildrenIntoRow) {
-                        var targetCell = this.evaluateTotalParentCellForColumn(parentRow, cellVm.ColCode);
-                        if (targetCell) {
-                            calcTargets.push(targetCell);
-                        }
+                    var targetCell = this.evaluateTotalParentCellForColumn(parentRow, cellVm.ColCode);
+                    if (targetCell) {
+                        calcTargets.push(targetCell);
                     }
                 }
                 if (cellVm.Calcs && cellVm.Calcs.length > 0) {

@@ -18,7 +18,6 @@ namespace ExhibitGrid.EntityDataModel
             this.CanCollapse = false;
             this.CanSelect = false;
             this.IsEditable = false;
-            this.IsHidden = false;
             this.DisplayText = "";
             this.Width = "";
             this.HasHeader = false;
@@ -37,7 +36,6 @@ namespace ExhibitGrid.EntityDataModel
         public Nullable<bool> CanSelect { get; set; }
         public Nullable<decimal> DisplayOrder { get; set; }
         public Nullable<bool> IsEditable { get; set; }
-        public Nullable<bool> IsHidden { get; set; }
         public string HoverBase { get; set; }
         public string HoverAddition { get; set; }
         public string DisplayText { get; set; }
@@ -56,6 +54,6 @@ namespace ExhibitGrid.EntityDataModel
         public Nullable<int> DecimalPlaces { get; set; }
         public Nullable<bool> OverrideColSettings { get; set; }
         public string OutType { get; set; }
-        public Nullable<bool> SumChildrenIntoRow { get; set; }
+        public string DisplayInCycle { get; set; }
     }
 }

@@ -137,7 +137,7 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'RowText',  'ColSpan
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'Py',  'ColSpan=1,IsEditable=0,Indent=0,HoverBase=''Hover Testing some text </br> blah blah blah''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'PyCyChange',  'ColSpan=1,IsEditable=0,Indent=0', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'Cy',  'ColSpan=1,IsEditable=0,Indent=0', ''
-exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0,HoverBase=''Delta Check with PBA 10 Selected</br>Reserve/Guard Cy/By1 Change Total''', ''
+exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'CyBy1Change',  'ColSpan=1,IsEditable=0,Indent=0,HoverBase=''Delta Check with PBA 10 Selected</br>Reserve/Guard Cy/By1 Change Total'',HoverAddition=''<div class="delta-balanced">In Balance</div>''', ''
 exec UspUpdAttribVal 'PBA10_PersonnelData', 'ActFor_Total', 'By1',  'ColSpan=1,IsEditable=0,Indent=0', ''
 
 --ActFor_Blank Row
@@ -248,9 +248,9 @@ exec UspUpdAttribVal 'PBA10_PersonnelData', 'Civ_Total', 'By1',  'ColSpan=1,IsEd
 delete from RowRelationship where ParGridCode = 'PBA10_PersonnelData'
 
 insert into RowRelationship (ParGridCode,ParRowCode, ChGridCode, ChRowCode, Context)
-select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Officer','UI'
+select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Officer','CollapseAndSumChildrenToParent'
 union all
-select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Enlisted','UI'
+select 'PBA10_PersonnelData','ActFor_Total','PBA10_PersonnelData','ActFor_Enlisted','CollapseAndSumChildrenToParent'
 
 
 
@@ -306,9 +306,9 @@ SET @CyBy1Change = @@IDENTITY
 insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression, UpdateContext)
 select 'PBA10_PersonnelData','ActFor_Total','CyBy1Change','{PBA10_PersonnelData.ActFor_Total.CyBy1Change.} - {PBA10_PersonnelData.ResGuard_Total.CyBy1Change.}', 'DeltaCheck'
 SET @delta1 = @@IDENTITY
-insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression, UpdateContext)
-select 'PBA10_PersonnelData','ActFor_Officer','Py','{PBA12_ProgData1.PBA12_ProgData_TOTAL.Py.} - {PBA12_ProgData1.PBA12_ProgData_TOTAL.Pyprice.}', 'CellValue'
-SET @externalOper = @@IDENTITY
+--insert into CalcExpression (TargetGridCode, TargetRowCode, TargetColCode, Expression, UpdateContext)
+--select 'PBA10_PersonnelData','ActFor_Officer','Py','{PBA12_ProgData1.PBA12_ProgData_TOTAL.Py.} - {PBA12_ProgData1.PBA12_ProgData_TOTAL.Pyprice.}', 'CellValue'
+--SET @externalOper = @@IDENTITY
 
 
 insert into CalcOperand (GridCode, RowCode, ColCode)
@@ -335,10 +335,10 @@ union all
 select 'PBA10_PersonnelData','ActFor_Total','CyBy1Change'
 union all
 select 'PBA10_PersonnelData','ResGuard_Total','CyBy1Change'
-union all
-select 'PBA12_ProgData1','PBA12_ProgData_TOTAL','Py'
-union all
-select 'PBA12_ProgData1','PBA12_ProgData_TOTAL','Pyprice'
+--union all
+--select 'PBA12_ProgData1','PBA12_ProgData_TOTAL','Py'
+--union all
+--select 'PBA12_ProgData1','PBA12_ProgData_TOTAL','Pyprice'
 
 
 insert into CalcExpressionOperand(CalcExpressionId, CalcOperandId)
@@ -371,7 +371,7 @@ union all
 select @delta1, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ActFor_Total' and ColCode = 'CyBy1Change')
 union all
 select @delta1, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA10_PersonnelData' and RowCode = 'ResGuard_Total' and ColCode = 'CyBy1Change')
-union all
-select @externalOper, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_TOTAL' and ColCode = 'Py')
-union all
-select @externalOper, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_TOTAL' and ColCode = 'Pyprice')
+--union all
+--select @externalOper, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_TOTAL' and ColCode = 'Py')
+--union all
+--select @externalOper, (Select top 1 CalcOperandId from CalcOperand where GridCode = 'PBA12_ProgData1' and RowCode = 'PBA12_ProgData_TOTAL' and ColCode = 'Pyprice')

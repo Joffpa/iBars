@@ -67,6 +67,7 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           </Key>
           <Property Name="WidgetSelectionId" Type="int" Nullable="false" />
           <Property Name="WidgetId" Type="int" Nullable="false" />
+          <Property Name="ValueOrder" Type="int" />
         </EntityType>
         <EntityType Name="WidgetType">
           <Key>
@@ -161,10 +162,12 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
         </Association>
         <Function Name="UspGetAttribVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="WhereFilter" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="UspGetCalcs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GridCode" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="UspGetCellVal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="UspGetRowRelationship" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ParGridCode" Type="nvarchar" Mode="In" />
           <Parameter Name="ChGridCode" Type="nvarchar" Mode="In" />
@@ -184,7 +187,8 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           <EntitySet Name="WidgetSelectionWidget" EntityType="Self.WidgetSelectionWidget" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [WidgetSelectionWidget].[WidgetSelectionId] AS [WidgetSelectionId], 
-    [WidgetSelectionWidget].[WidgetId] AS [WidgetId]
+    [WidgetSelectionWidget].[WidgetId] AS [WidgetId], 
+    [WidgetSelectionWidget].[ValueOrder] AS [ValueOrder]
     FROM [dbo].[WidgetSelectionWidget] AS [WidgetSelectionWidget]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="dbo_Widget_dbo_WidgetType_WidgetTypeId" Association="Self.dbo_Widget_dbo_WidgetType_WidgetTypeId">
@@ -222,7 +226,8 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
       <Schema Namespace="EasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DEV_AF" annotation:LazyLoadingEnabled="true">
           <FunctionImport Name="UspGetAttribVal" ReturnType="Collection(EasModel.Attributes)">
-          <Parameter Name="GridCode" Mode="In" Type="String" />
+            <Parameter Name="GridCode" Mode="In" Type="String" />
+            <Parameter Name="WhereFilter" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="UspGetRowRelationship" ReturnType="Collection(EasModel.UspGetRowRelationship_Result)">
             <Parameter Name="ParGridCode" Mode="In" Type="String" />
@@ -253,6 +258,7 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
             <End Role="WidgetSelection" EntitySet="WidgetSelections" />
             <End Role="WidgetSelectionWidget" EntitySet="WidgetSelectionWidgets" />
           </AssociationSet>
+          <FunctionImport Name="UspGetCellVal" ReturnType="Collection(EasModel.CellValue)" />
         </EntityContainer>
         <ComplexType Name="Attributes" >
           <Property Type="String" Name="GridCode" Nullable="false" />
@@ -262,7 +268,6 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           <Property Type="Boolean" Name="CanSelect" DefaultValue="false" Nullable="true" />
           <Property Type="Decimal" Name="DisplayOrder" Nullable="true" />
           <Property Type="Boolean" Name="IsEditable" Nullable="true" DefaultValue="false" />
-          <Property Type="Boolean" Name="IsHidden" Nullable="true" DefaultValue="false" />
           <Property Type="String" Name="HoverBase" Nullable="true" />
           <Property Type="String" Name="HoverAddition" Nullable="true" />
           <Property Type="String" Name="DisplayText" Nullable="true" DefaultValue="" />
@@ -281,13 +286,14 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           <Property Type="Int32" Name="DecimalPlaces" Nullable="true" />
           <Property Type="Boolean" Name="OverrideColSettings" Nullable="true" />
           <Property Type="String" Name="OutType" Nullable="false" />
-          <Property Type="Boolean" Name="SumChildrenIntoRow" Nullable="true" />
+          <Property Type="String" Name="DisplayInCycle" Nullable="true" />
         </ComplexType>
         <ComplexType Name="CellValue" >
           <Property Type="String" Name="GridCode" Nullable="false" />
           <Property Type="String" Name="RowCode" Nullable="false" />
           <Property Type="String" Name="ColCode" Nullable="false" />
           <Property Type="String" Name="Val" Nullable="false" />
+          <Property Type="Decimal" Name="RowOrder" Nullable="false" />
         </ComplexType>
         <ComplexType Name="UspGetRowRelationship_Result">
           <Property Type="Int32" Name="RowRelationshipId" Nullable="false" />
@@ -381,6 +387,7 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           <Property Name="WidgetId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Widget" Relationship="EasModel.dbo_WidgetSelectionWidget_dbo_Widget_WidgetId" FromRole="WidgetSelectionWidget" ToRole="Widget" />
           <NavigationProperty Name="WidgetSelection" Relationship="EasModel.dbo_WidgetSelectionWidget_dbo_WidgetSelection_WidgetSelectionId" FromRole="WidgetSelectionWidget" ToRole="WidgetSelection" />
+          <Property Name="ValueOrder" Type="Int32" />
         </EntityType>
         <Association Name="dbo_Widget_dbo_WidgetType_WidgetTypeId">
           <End Type="EasModel.WidgetType" Role="WidgetType" Multiplicity="1" />
@@ -446,7 +453,6 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
                 <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
                 <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
-                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
                 <ScalarProperty Name="HoverBase" ColumnName="HoverBase" />
                 <ScalarProperty Name="HoverAddition" ColumnName="HoverAddition" />
                 <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
@@ -554,11 +560,22 @@ warning 6002: The table/view 'EAS_DEV_AF.dbo.WidgetSelectionWidget' does not hav
           <EntitySetMapping Name="WidgetSelectionWidgets">
             <EntityTypeMapping TypeName="EasModel.WidgetSelectionWidget">
               <MappingFragment StoreEntitySet="WidgetSelectionWidget">
+                <ScalarProperty Name="ValueOrder" ColumnName="ValueOrder" />
                 <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
                 <ScalarProperty Name="WidgetSelectionId" ColumnName="WidgetSelectionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UspGetCellVal" FunctionName="EasModel.Store.UspGetCellVal" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EasModel.CellValue">
+                <ScalarProperty Name="GridCode" ColumnName="GridCode" />
+                <ScalarProperty Name="RowCode" ColumnName="RowCode" />
+                <ScalarProperty Name="ColCode" ColumnName="ColCode" />
+                <ScalarProperty Name="Val" ColumnName="Val" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

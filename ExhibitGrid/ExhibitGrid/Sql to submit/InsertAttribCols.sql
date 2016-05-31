@@ -1,12 +1,9 @@
-﻿
---*******************ADD ATTRIB COLS*******************
+﻿--*******************ADD ATTRIB COLS*******************
 UspAddNewAttribCol 'DisplayText', 'NVARCHAR(500)'
 go
 UspAddNewAttribCol 'IsEditable', 'BIT'
 go
 UspAddNewAttribCol 'HasHeader', 'BIT'
-go
-UspAddNewAttribCol 'IsHidden', 'BIT'
 go
 UspAddNewAttribCol 'Width', 'NVARCHAR(100)'
 go
@@ -40,8 +37,5 @@ UspAddNewAttribCol 'DecimalPlaces', 'INTEGER'
 go
 UspAddNewAttribCol 'OverrideColSettings', 'BIT'
 go
-UspAddNewAttribCol 'SumChildrenIntoRow', 'BIT'
+UspAddNewAttribCol 'DisplayInCycle', 'NVARCHAR(250)'
 go
-
-
---UspDropAttribCol 'OverrideType'
